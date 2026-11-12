@@ -714,3 +714,10 @@ ol.chain > li.skip > .cs-b .cs-t::after{content:"no hizo falta";font-size:.82rem
 .chk li.mand > label > span::after{content:" \00b7  al marcar la mazmorra";font-size:.82rem;color:var(--muted);font-variant-caps:all-small-caps;letter-spacing:.04em;white-space:nowrap}
 #imp-unk-box{margin-top:10px}
 #imp-unk-box > summary{cursor:pointer;font-weight:700}
+
+/* gráfico de mazmorras: un solo color; la trama marca las nuevas y la H el territorio de la Horda, para que el color no se lea como facción */
+.gb{background:var(--inlay)}
+.gb.gn{background:repeating-linear-gradient(135deg,var(--inlay) 0 4px,color-mix(in srgb,var(--inlay) 38%,var(--paper)) 4px 7px)}
+.gh{display:inline-grid;place-items:center;width:15px;height:15px;margin-right:6px;font-family:var(--f-mono);font-size:.62rem;font-weight:600;font-style:normal;line-height:1;background:var(--fire);color:var(--paper);vertical-align:1px}
+.gantt .lg .gh{margin-right:0}
+.gantt > .src{margin:0 0 8px;max-width:none}

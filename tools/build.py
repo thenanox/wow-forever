@@ -27,19 +27,19 @@ DG = [
  ('hall-of-thanes', 'Hall of Thanes', 'The Hall of Thanes', True, 'Bajo Ironforge', 'hall-of-thanes', ['hall-of-thanes'], 'hall-of-thanes', [('hall-of-thanes', '', 13, 20, 'N')]),
  ('ragefire-chasm', 'Ragefire Chasm', 'Ragefire Chasm', False, 'Orgrimmar (Horda)', 'ragefire-chasm', [], 'ragefire-chasm', [('ragefire-chasm', '', 13, 18, 'N')]),
  ('ruins-of-lordaeron', 'Ruins of Lordaeron', 'Ruins of Lordaeron', True, 'Tirisfal Glades (Horda)', 'the-ruins-of-lordaeron', ['the-ruins-of-lordaeron'], 'ruins-of-lordaeron', [('ruins-of-lordaeron', '', 15, 22, 'N')]),
- ('wailing-caverns', 'Wailing Caverns', 'Wailing Caverns', False, 'The Barrens', 'wailing-caverns', ['wailing-caverns'], 'wailing-caverns', [('wailing-caverns', '', 15, 24, 'N')]),
+ ('wailing-caverns', 'Wailing Caverns', 'Wailing Caverns', False, 'The Barrens (Horda)', 'wailing-caverns', ['wailing-caverns'], 'wailing-caverns', [('wailing-caverns', '', 15, 24, 'N')]),
  ('deadmines', 'The Deadmines', 'The Deadmines', False, 'Moonbrook, Westfall', 'the-deadmines', ['the-deadmines'], 'deadmines', [('deadmines', '', 17, 26, 'N')]),
  ('shadowfang-keep', 'Shadowfang Keep', 'Shadowfang Keep', False, 'Silverpine Forest (Horda)', 'shadowfang-keep', [], 'shadowfang-keep', [('shadowfang-keep', '', 20, 30, 'N')]),
  ('blackfathom-deeps', 'Blackfathom Deeps', 'Blackfathom Deeps', False, 'Zoram Strand, Ashenvale', 'blackfathom-deeps', ['blackfathom-deeps'], 'blackfathom-deeps', [('blackfathom-deeps', '', 24, 32, 'E')]),
  ('stockade', 'The Stockade', 'The Stockade', False, 'Stormwind', 'the-stockade-dungeon-map-location-bosses', ['the-stockade'], 'stockade', [('stockade', '', 25, 29, '')]),
  ('excavation-site', 'Excavation Site: Wetlands', 'Excavation Site: Wetlands', True, 'Wetlands', 'excavation-site-wetlands', ['excavation-site-wetlands'], 'excavation-site', [('excavation-site', '', 26, 33, 'N')]),
  ('city-of-dalaran', 'City of Dalaran', 'City of Dalaran', True, 'Alterac Mountains', 'city-of-dalaran', ['city-of-dalaran'], None, [('city-of-dalaran', '', 28, 35, 'E')]),
- ('razorfen-kraul', 'Razorfen Kraul', 'Razorfen Kraul', False, 'Sur de The Barrens', 'razorfen-kraul', ['razorfen-kraul'], 'razorfen-kraul', [('razorfen-kraul', '', 29, 38, 'E')]),
+ ('razorfen-kraul', 'Razorfen Kraul', 'Razorfen Kraul', False, 'Sur de The Barrens (Horda)', 'razorfen-kraul', ['razorfen-kraul'], 'razorfen-kraul', [('razorfen-kraul', '', 29, 38, 'E')]),
  ('gnomeregan', 'Gnomeregan', 'Gnomeregan', False, 'Dun Morogh', 'gnomeregan', ['gnomeregan'], 'gnomeregan', [('gnomeregan', '', 29, 38, 'E')]),
  ('scarlet-monastery', 'Scarlet Monastery', 'Scarlet Monastery', False, 'Tirisfal Glades (Horda)', 'scarlet-monastery', ['scarlet-monastery'], 'scarlet-monastery',
   [('sm-graveyard', 'Graveyard', 30, 38, 'E'), ('sm-library', 'Library', 33, 41, 'E'), ('sm-armory', 'Armory', 36, 44, 'E'), ('sm-cathedral', 'Cathedral', 38, 46, 'E')]),
  ('drowned-city', 'The Drowned City', 'The Drowned City', True, 'Frente a Stranglethorn Vale, bajo el agua', 'the-drowned-city', [], None, [('drowned-city', '', 35, 42, 'E')]),
- ('razorfen-downs', 'Razorfen Downs', 'Razorfen Downs', False, 'Sur de The Barrens', 'razorfen-downs', ['razorfen-downs'], 'razorfen-downs', [('razorfen-downs', '', 37, 46, 'M')]),
+ ('razorfen-downs', 'Razorfen Downs', 'Razorfen Downs', False, 'Sur de The Barrens (Horda)', 'razorfen-downs', ['razorfen-downs'], 'razorfen-downs', [('razorfen-downs', '', 37, 46, 'M')]),
  ('kroldok-stronghold', "Krol'dok Stronghold", "Krol'dok Stronghold", True, 'Riverglades', 'kroldok-stronghold', [], None, [('kroldok-stronghold', '', 40, 45, 'E')]),
  ('uldaman', 'Uldaman', 'Uldaman', False, 'Badlands', 'uldaman', ['uldaman'], 'uldaman', [('uldaman', '', 41, 51, 'M')]),
  ('zulfarrak', "Zul'Farrak", "Zul'Farrak", False, 'Tanaris', 'zulfarrak', ['zulfarrak'], None, [('zulfarrak', '', 44, 54, 'M')]),
@@ -536,12 +536,13 @@ def render_gantt(dash):
     for d in dash:
         left, width = pct(d['a']), max(pct(d['b']) - pct(d['a']), 2.2)
         rows.append(f'<a class="gr" href="#dg-{d["g"]}" data-dg="{d["k"]}" data-lv="{d["a"]}-{d["b"]}" data-tip="{esc(d["n"])} · niveles {d["a"]}-{d["b"]} · {esc(d["loc"])} · {d["q"]} quests">'
-                    f'<span class="gl">{esc(d["n"])}</span><span class="gt"><i class="gb{" gn" if d["new"] else ""}" style="left:{left:.2f}%;width:{width:.2f}%"></i></span>'
+                    f'<span class="gl">{"<i class=gh>H</i>" if "(Horda)" in d["loc"] else ""}{esc(d["n"])}</span><span class="gt"><i class="gb{" gn" if d["new"] else ""}" style="left:{left:.2f}%;width:{width:.2f}%"></i></span>'
                     f'<span class="gv">{d["a"]}-{d["b"]}</span></a>')
     ticks = ''.join(f'<span style="left:{pct(v):.2f}%">{v}</span>' for v in range(LO, HI + 1, 10))
     return f'''
 <figure class="gantt" aria-label="Mazmorras por rango de nivel">
-<figcaption><b>Mazmorras por nivel</b><span class="lg"><i class="gb"></i>Clásica</span><span class="lg"><i class="gb gn"></i>Nueva en Forever</span><span class="lg"><i class="gline"></i>Tu nivel</span></figcaption>
+<figcaption><b>Mazmorras por nivel</b><span class="lg"><i class="gb"></i>Ya estaba en Classic</span><span class="lg"><i class="gb gn"></i>Nueva en Forever</span><span class="lg"><i class="gh">H</i>En territorio de la Horda</span><span class="lg"><i class="gline"></i>Tu nivel</span></figcaption>
+<p class="src">El color no indica facción: todas las mazmorras se pueden hacer con la Alianza. La H marca las que están en zona de la Horda, donde llegar cuesta más.</p>
 <div class="g-body"><div class="g-rows">{"".join(rows)}</div><div class="g-now" aria-hidden="true"></div></div>
 <div class="g-axis" aria-hidden="true"><span class="gl"></span><span class="gt">{ticks}</span><span class="gv"></span></div>
 <div class="g-tip" hidden></div>
