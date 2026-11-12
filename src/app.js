@@ -50,6 +50,15 @@
     storeOK = store.set('chk-' + k, on ? '1' : '0') && storeOK;
     $$('input[data-k="' + k + '"]').forEach(function(o){ if (!o.dataset.dep) o.checked = on; });
   }
+  // marcar una quest da por hechas las que el juego exige antes (si hay varias alternativas no se sabe cuál, y no se toca)
+  function markBefore(id, seen){
+    var q = D.q[id]; if (!q || seen[id]) return; seen[id] = 1;
+    (q.pa || []).concat(q.po && q.po.length === 1 ? q.po : []).forEach(function(p){
+      if (!D.q[p]) return;
+      if (!KS['q' + p]) setKey('q' + p, true);
+      markBefore(p, seen);
+    });
+  }
   function syncViews(){
     views.forEach(function(b){
       var ks = b.dataset.dep.split(','), n = ks.filter(function(k){ return KS[k]; }).length;
@@ -102,8 +111,8 @@
     if (!b.matches || !b.matches('input[type=checkbox][data-k]')) return;
     storeOK = true;
     if (b.checked) tink();
-    if (b.dataset.dep) b.dataset.dep.split(',').forEach(function(k){ setKey(k, b.checked); });
-    else setKey(b.dataset.k, b.checked);
+    var ks = b.dataset.dep ? b.dataset.dep.split(',') : [b.dataset.k];
+    ks.forEach(function(k){ setKey(k, b.checked); if (b.checked && /^q\d+$/.test(k)) markBefore(+k.slice(1), {}); });
     savedToast(storeOK);
     syncViews(); updateBlocks(); refresh();
   });
@@ -133,9 +142,10 @@
   function markSteps(root){
     var lis = $$('ol.chain > li', root), done = 0, next = 0;
     lis.forEach(function(li, i){
-      var on = $('input', li).checked;
-      li.classList.toggle('done', on); li.classList.remove('next');
-      if (on) done++; else if (!next){ next = i + 1; li.classList.add('next'); }
+      // un paso sin marcar cuenta como superado si ya está hecho uno posterior que depende de él o al que solo llevaba
+      var on = $('input', li).checked, skip = !on && !!li.dataset.imp && li.dataset.imp.split(',').some(function(k){ return KS[k]; });
+      li.classList.toggle('done', on); li.classList.toggle('skip', skip); li.classList.remove('next');
+      if (on || skip) done++; else if (!next){ next = i + 1; li.classList.add('next'); }
     });
     return { done: done, n: lis.length, next: next };
   }
@@ -765,7 +775,7 @@
   function bindRune(c){
     var ids = c.ids || [], n = ids.length, H = 10 + n * 9, all = n > 0;
     var segs = ids.map(function(id, k){
-      var on = !!KS['q' + id]; if (!on) all = false;
+      var im = c.im && c.im[id], on = !!KS['q' + id] || !!(im && im.some(function(x){ return KS['q' + x]; })); if (!on) all = false;
       return '<path' + (on ? ' class="on"' : '') + ' transform="translate(0 ' + (H - 21.5 - k * 9) + ')" d="' + RUNE_MID[(D.q[id] || {}).ac || 5] + '"/>';
     });
     return '<svg viewBox="0 0 16 ' + H + '"' + (all ? ' class="full"' : '') + ' aria-hidden="true"><path class="st" d="M8 2V' + (H - 2) + '"/>' + segs.join('') + '</svg>';

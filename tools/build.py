@@ -683,6 +683,10 @@ QCHAIN = {}                                # quest -> (clave de cadena, número 
 CHAIN_IDS = {}                             # clave de cadena -> ids de quest de sus pasos
 CHAIN_REQ = {}                             # lo mismo, sin los pasos opcionales
 
+def imp_attr(implied, s):
+    v = implied.get(s.get('q'))
+    return f' data-imp="{",".join("q%d" % x for x in v)}"' if v else ''
+
 def render_chains():
     """(páginas, datos para tarjetas, enlaces por zona, enlaces por mazmorra)"""
     pages, meta, byzone, bydg = [], [], defaultdict(list), defaultdict(list)
@@ -691,11 +695,20 @@ def render_chains():
     for ch in specs:
         ids = [s['q'] for s in ch['s'] if 'q' in s and s['q'] in Q]
         CHAIN_IDS[ch['k']] = ids
-        CHAIN_REQ[ch['k']] = [s['q'] for s in ch['s'] if 'q' in s and s['q'] in Q and not s.get('opt')]
+        for s in ch['s']:                                    # recado que solo lleva al paso siguiente: no es obligatorio
+            if 'q' in s and (G.QS.get(s['q']) or {}).get('bfor') in ids: s['bc'] = 1
+        CHAIN_REQ[ch['k']] = [s['q'] for s in ch['s'] if 'q' in s and s['q'] in Q and not s.get('opt') and not s.get('bc')]
         for n, s in enumerate(ch['s'], 1):
             if 'q' in s: QCHAIN.setdefault(s['q'], (ch['k'], n, ch['t']))
     for ch in specs:
-        lis, zsteps, seen = [], {z: [] for z in ch.get('z', [])}, set()
+        lis, zsteps, seen, implied = [], {z: [] for z in ch.get('z', [])}, set(), {}
+        qsteps = [x for x in ch['s'] if 'q' in x]
+        for n, x in enumerate(qsteps):                       # pasos posteriores que dan este por superado
+            if x.get('opt'): continue
+            nxt, cur_ = set(), (G.QS.get(x['q']) or {}).get('next')
+            while cur_ and cur_ not in nxt: nxt.add(cur_); cur_ = (G.QS.get(cur_) or {}).get('next')
+            later = [y['q'] for y in qsteps[n + 1:] if not y.get('opt') and (x.get('bc') or y['q'] in nxt or x['q'] in ancestors(y['q']))]
+            if later: implied[x['q']] = later
         for i, s in enumerate(ch['s'], 1):
             note = linkify(s.get('d') or s.get('o') or '')
             obj = rw = lv = tag = need = ''
@@ -710,6 +723,7 @@ def render_chains():
                 if q['id'] in DQ_OF or q.get('type') == 'Dungeon': tag = '<span class="tag ty">mazmorra</span>'
                 elif q.get('type') in QTYPE: tag = f'<span class="tag ty">{QTYPE[q["type"]]}</span>'
                 if s.get('opt'): tag += '<span class="tag st">opcional</span>'
+                if s.get('bc'): tag += '<span class="tag st">recado opcional</span>'
                 al, an = PRE.get(q['id'], ([], []))
                 miss = [x for x in al if x not in seen]
                 if miss: need = 'Requiere antes: ' + ', '.join(qa(x) for x in miss) + '.'
@@ -723,7 +737,7 @@ def render_chains():
             else:
                 key = f'c-{ch["k"]}-{s["x"]}'; title = f'<b>{esc(s["n"])}</b>'; where = linkify(s.get('w', ''))
             lis.append(
-                f'<li><label class="cs-n"><input type="checkbox" data-k="{key}" aria-label="Paso {i} hecho"><span data-n="{i}"></span></label>'
+                f'<li{imp_attr(implied, s)}><label class="cs-n"><input type="checkbox" data-k="{key}" aria-label="Paso {i} hecho"><span data-n="{i}"></span></label>'
                 f'<div class="cs-b"><div class="cs-t">{title}' + (f'<span class="lv">{lv}</span>' if lv else '') + tag + '</div>'
                 + (f'<p class="cs-w">{where}</p>' if where else '')
                 + (f'<p class="cs-o">{obj}</p>' if obj else '')
@@ -756,7 +770,7 @@ def render_chains():
 <ol class="chain">{"".join(lis)}</ol>
 {f'<p class="after"><b>Al terminar se abre:</b> {", ".join(qa(x) for x in after[:8])}.</p>' if after else ''}</section>
 </article>''')
-        meta.append({'k': ch['k'], 't': ch['t'], 'g': ch['g'], 'lv': ch['lv'], 'a': a, 'b': b, 'n': len(lis), 'sub': sub, 'ids': ids})
+        meta.append({'k': ch['k'], 't': ch['t'], 'g': ch['g'], 'lv': ch['lv'], 'a': a, 'b': b, 'n': len(lis), 'sub': sub, 'ids': ids, 'im': {str(k): v for k, v in implied.items()}})
     order = ['Tu chamán', 'Tu personaje', 'Mazmorras', 'Zonas']
     meta.sort(key=lambda m: (order.index(m['g']), m['a'] or 0, m['b'] or 0))
     return ''.join(pages), meta, byzone, bydg
@@ -785,14 +799,14 @@ DONE_DEFAULT = set()
 
 # casilla -> de qué depende, cuando no se deduce bien del texto ([] = manual)
 DEP_MAP = {k: [f'q{i}' for i in v] for k, v in {
-    'wl1': [94495, 94497], 'rr3': [94499], 'av1': [94500], 'lm5': [94494], 'lm4': [94465, 94466, 94467, 94468], 'dm6': [94449],
+    'wl1': [94495, 94497], 'rr3': [94499], 'av1': [94500], 'lm5': [94494], 'lm4': [94465, 94466, 94467, 94468], 'dm6': [],
     'wf5': [79008], 'bs1': [79192, 79980], 'lm3': [79974], 'ar2': [79975, 79976],
     'ar1': [94789], 'tw1': [96264], 'tw2': [79358], 'tw3': [96135], 'tw4': [96016],
-    'rt1d': [96392, 96390, 96391], 'rt3a': [94449, 94465, 94466, 94467, 94468], 'rt4d': [79008], 'rt4e': [168, 167, 2040],
+    'rt1d': [96392, 96390, 96391], 'rt3a': [94465, 94466, 94467, 94468], 'rt4d': [79008], 'rt4e': [168, 167, 2040],
     'rt6b': [94494, 94495, 94497], 'rt6c': [94499], 'rt6d': [94500], 'rt6e': [79192, 79980, 79974, 79975, 79976], 'rt6f': [94501, 94502, 94503, 94505],
     'rt8b': [94789], 'rt8c': [96264], 'rt8e': [79358, 96135, 96016],
     'wf4': [153], 'wf6': [92744], 'rt11d': [],
-    'rt1a': [], 'rt2a': [], 'rt2b': [], 'rt2c': [], 'rt3b': [], 'rt3d': [], 'rt4a': [], 'rt5a': [], 'rt6a': [], 'dm3': [], 'dm4': [], 'ew3': [],
+    'rt1a': [233, 234], 'dm3': [233, 234], 'rt1f': [], 'rt2a': [], 'rt2b': [], 'rt2c': [], 'rt3b': [], 'rt3d': [], 'rt4a': [], 'rt5a': [], 'rt6a': [], 'dm4': [], 'ew3': [],
 }.items()}
 NAME_IDS = defaultdict(list)
 for _i in Q:
@@ -924,8 +938,9 @@ def build():
     zones.sort(key=zkey)
 
     cpages, cmeta, czone, cdg = render_chains()
-    secs['ruta'] = re.sub(r'(<li><label><input type="checkbox" data-k="(rt[0-9a-z]+)")(><span>)(.*?)(</span></label></li>)',
-                          lambda m: m.group(1) + dep_attr(m.group(2), m.group(4)) + m.group(3) + m.group(4) + m.group(5), secs.get('ruta', ''), flags=re.S)
+    secs['ruta'] = re.sub(r'<li>(<label><input type="checkbox" data-k="(rt[0-9a-z]+)")(><span>)(.*?)(</span></label></li>)',
+                          lambda m: ('<li>' if deps_for(m.group(2), m.group(4)) else '<li class="man">') + m.group(1) + dep_attr(m.group(2), m.group(4)) + m.group(3) + m.group(4) + m.group(5),
+                          secs.get('ruta', ''), flags=re.S)
     zpages, zdash = [], []
     for z in zones:
         name = z['name']
@@ -935,7 +950,7 @@ def build():
         items = imp.get(name, [])
         imp_html = ''
         if items:
-            lis = ''.join(f'<li><label><input type="checkbox" data-k="{k}"{dep_attr(k, inner)}><span>{inner}</span></label></li>' for k, inner in items)
+            lis = ''.join(f'<li{"" if deps_for(k, inner) else " class=man"}><label><input type="checkbox" data-k="{k}"{dep_attr(k, inner)}><span>{inner}</span></label></li>' for k, inner in items)
             imp_html = (f'<section class="blk imp"><h3>Imprescindibles <span class="prog"></span></h3>'
                         f'<ul class="chk">{lis}</ul>{paras.get(name, "")}</section>')
         guide = (f'<a href="https://wowforeverinfo.com/guides/{wslug}/" target="_blank" rel="noopener">Guía paso a paso</a>') if wslug else ''

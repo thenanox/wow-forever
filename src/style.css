@@ -705,3 +705,9 @@ a.rn:hover{color:var(--ink)}
 @media screen{ .friso{--c:14px;clip-path:var(--oct)} #muro{--c:26px;clip-path:var(--oct)} }
 @media (max-width:640px){ #muro{padding:20px 14px 22px} .brune svg{height:64px} .cpage .ph{padding-right:40px} }
 @media print{ #v-muro,#tu-muro,.brune{display:none!important} }
+
+/* pasos superados sin marcar y puntos que no dependen de ninguna quest */
+ol.chain > li.skip > .cs-b{opacity:.62}
+ol.chain > li.skip > .cs-b .cs-t::after{content:"no hizo falta";font-size:.82rem;font-weight:400;color:var(--muted);font-variant-caps:all-small-caps;letter-spacing:.04em}
+@media screen{ li.skip > .cs-n span{background:var(--stone);color:var(--paper)} li.skip > .cs-n span::before{content:"\2013"} ol.chain > li.skip::before{background:repeating-linear-gradient(to bottom,var(--stone) 0 9px,transparent 9px 13px)} }
+.chk li.man > label > span::after{content:" \00b7  a mano";font-size:.82rem;color:var(--muted);font-variant-caps:all-small-caps;letter-spacing:.04em;white-space:nowrap}

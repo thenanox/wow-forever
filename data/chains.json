@@ -41,7 +41,8 @@
    {
     "q": 94449,
     "w": "Eldrun Stormbreaker, entrenador de chamán de Ironforge (47.1, 13.5), o cualquier otro entrenador de chamán. Se entrega a Bruegs Kindleborn.",
-    "d": "Bruegs está en una cueva al este de Dun Morogh (87.6, 43.7). El sendero sube desde 86.7, 47.0, junto a la carretera que va a Loch Modan."
+    "d": "Es solo el recado que te manda hasta Bruegs: si vas a verle directamente, él te da el paso siguiente y este no hace falta. Bruegs está en una cueva al este de Dun Morogh (87.6, 43.7). El sendero sube desde 86.7, 47.0, junto a la carretera que va a Loch Modan.",
+    "bc": 1
    },
    {
     "q": 94465,
