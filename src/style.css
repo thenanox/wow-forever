@@ -711,3 +711,6 @@ ol.chain > li.skip > .cs-b{opacity:.62}
 ol.chain > li.skip > .cs-b .cs-t::after{content:"no hizo falta";font-size:.82rem;font-weight:400;color:var(--muted);font-variant-caps:all-small-caps;letter-spacing:.04em}
 @media screen{ li.skip > .cs-n span{background:var(--stone);color:var(--paper)} li.skip > .cs-n span::before{content:"\2013"} ol.chain > li.skip::before{background:repeating-linear-gradient(to bottom,var(--stone) 0 9px,transparent 9px 13px)} }
 .chk li.man > label > span::after{content:" \00b7  a mano";font-size:.82rem;color:var(--muted);font-variant-caps:all-small-caps;letter-spacing:.04em;white-space:nowrap}
+.chk li.mand > label > span::after{content:" \00b7  al marcar la mazmorra";font-size:.82rem;color:var(--muted);font-variant-caps:all-small-caps;letter-spacing:.04em;white-space:nowrap}
+#imp-unk-box{margin-top:10px}
+#imp-unk-box > summary{cursor:pointer;font-weight:700}

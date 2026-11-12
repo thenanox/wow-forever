@@ -19,6 +19,7 @@ FILES = [('foreverNpcDB.lua', 'data/Forever/foreverNpcDB.lua'),
          ('foreverBaseQuest.lua', 'src/corrections/Forever/generated/foreverBaseQuest.lua'),
          ('foreverQuestFixes.lua', 'src/corrections/Forever/foreverQuestFixes.lua')]
 DWARF, SHAMAN = 4, 64
+BLACKLIST = 'QuestieQuestBlacklist.lua'
 ALLY_BITS, HORDE_BITS = 77 | 1 << 32, 178 | 1 << 33      # bits 32 y 33: la raza nueva (Skyborne) en cada facción
 TOKEN = re.compile(r'-?\d+(?:\.\d+)?|-?[A-Za-z_][\w.]*')
 NAMEKEY = re.compile(r'([A-Za-z_]\w*)\s*=(?!=)')
@@ -176,6 +177,11 @@ def download(refresh=False):
         data = subprocess.run(['gh', 'api', f'repos/Questie/QuestieDB/contents/{path}', '-H', 'Accept: application/vnd.github.raw'],
                               capture_output=True, check=True).stdout
         open(dst, 'wb').write(data)
+    dst = os.path.join(DIR, BLACKLIST)                        # quests que el addon oculta siempre: duplicadas o fuera del juego
+    if refresh or not os.path.exists(dst):
+        data = subprocess.run(['gh', 'api', 'repos/Questie/Questie/contents/Database/Corrections/QuestieQuestBlacklist.lua',
+                               '-H', 'Accept: application/vnd.github.raw'], capture_output=True, check=True).stdout
+        open(dst, 'wb').write(data)
 
 
 def build():
@@ -193,6 +199,9 @@ def build():
         for qid, fields in tab.items():
             raw.setdefault(qid, {}).update({k: v for k, v in fields.items() if isinstance(k, int)})
     K = keys
+    hidden = set()
+    if os.path.exists(os.path.join(DIR, BLACKLIST)):
+        hidden = {int(m.group(1)) for m in re.finditer(r'^\s*\[(\d+)\] = true,', read(BLACKLIST), re.M)}
     out = {}
     for qid, r in raw.items():
         if not r.get(K['name']): continue
@@ -211,7 +220,7 @@ def build():
              'en': flat_ids(en.get(1)), 'eo': flat_ids(en.get(2)),
              'skill': skill if skill else None, 'zone': r.get(K['zoneOrSort']),
              'obj': next((x for x in seq(r.get(K['objectivesText'])) if isinstance(x, str)), ''),
-             'flags': r.get(K['specialFlags']) or 0}
+             'flags': r.get(K['specialFlags']) or 0, 'hid': qid in hidden}
         out[qid] = q
     json.dump(out, open(OUT, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
     return out

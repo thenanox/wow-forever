@@ -38,4 +38,6 @@ Los enlaces van a Wowhead Forever. Los identificadores son los del juego, así q
 - Warcraft DB no trae los requisitos entre quests: salen de Questie. Las quests que Questie todavía no tiene (casi todas de nivel 60) aparecen sin requisitos.
 - Questie marca solo para la Horda las quests de clase de nivel 50 y 58 (Da Voodoo, The Darkreaver Menace): la guía las deja como sin confirmar.
 - Cada quest tiene una sola marca (`chk-q<id>` en `localStorage`). Imprescindibles, ruta y filas de varios pasos no guardan nada: muestran el estado de sus quests.
+- Reglas de sincronización: un recado que solo lleva a otra quest no es obligatorio; dos variantes que se excluyen cuentan como la misma quest; marcar una quest marca las que el juego exige antes. Los puntos que no dependen de ninguna quest llevan la etiqueta «a mano».
+- Warcraft DB deja sin nivel unas 450 quests reales: se toman de Questie, salvo las que el addon oculta siempre, las repetibles y los encargos en serie.
 - Las fichas de mazmorras de nivel 44 o más usan guías basadas en Classic para jefes y consejos.

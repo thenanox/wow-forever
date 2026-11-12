@@ -73,7 +73,14 @@ def playable(qid):
     """¿Puede hacerla un enano chamán? None si Questie no conoce la quest."""
     s = QS.get(qid)
     if not s: return None
-    return bool(s['dwarf'] and s['shaman'] and s['side'] != 'H')
+    return bool(s['dwarf'] and s['shaman'] and s['side'] != 'H' and not s.get('hid'))
+
+
+NOISE = re.compile(r"^Craftsman's Writ|\bMission [IVXLC]+:", re.I)
+
+def repeatable(qid):
+    f = (QS.get(qid) or {}).get('flags', 0)
+    return 'REPEATABLE' in str(f).upper() if isinstance(f, (str, list, tuple)) else bool(int(f or 0) & 1)
 
 
 def prereqs(qid):
@@ -107,7 +114,8 @@ def enrich(Q):
     for i, q in Q.items():
         s = QS.get(i)
         if not s: continue
-        if q.get('level') is None and i in seen and playable(i) and (s.get('lv') or 0) > 0:
+        # Warcraft DB deja sin nivel muchas quests reales: valen las de Questie que no sean repetibles ni encargos en serie
+        if q.get('level') is None and playable(i) and (s.get('lv') or 0) > 0 and (i in seen or not (repeatable(i) or NOISE.search(q.get('name') or ''))):
             q['level'], q['min'] = s['lv'], s.get('min') or q.get('min')
         if not q.get('obj') and s.get('obj'): q['obj'] = s['obj']
         if not q.get('starts'): need.update(s['sn'][:1])

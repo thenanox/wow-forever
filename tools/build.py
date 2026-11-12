@@ -98,7 +98,7 @@ EXTRA_ZONES = [
  ('Ironforge', 'ciudad', 'Tu capital', ['Ironforge'], None, 'Entrenadores de chamán y de armas, Tinker Town, Hall of Explorers y el Deeprun Tram a Stormwind.'),
  ('Stormwind City', 'ciudad', 'Capital humana', ['Stormwind City', 'Deeprun Tram'], None, 'Quests de Deadmines, Stockade y Dalaran, y el barco nuevo a Auberdine.'),
  ('Elwynn Forest', '1-10', 'base: Goldshire', ['Elwynn Forest', 'Northshire Valley'], 'elwynn-forest-1-10', 'Zona inicial humana. Gris a partir de nivel 15: solo por completar y explorar.'),
- ('Teldrassil y Darnassus', '1-12', 'base: Dolanaar', ['Teldrassil', 'Darnassus'], 'teldrassil-1-12', 'Zona inicial élfica. En Darnassus se cogen quests de Blackfathom Deeps y Blackmaw Hold.'),
+ ('Teldrassil y Darnassus', '1-12', 'base: Dolanaar', ['Teldrassil', 'Darnassus', 'Shadowglen', "Rut'theran Village"], 'teldrassil-1-12', 'Zona inicial élfica. En Darnassus se cogen quests de Blackfathom Deeps y Blackmaw Hold.'),
  ('The Barrens', '10-25', 'base: Ratchet (neutral)', ['The Barrens', 'Ratchet'], None, 'Zona de la Horda con Ratchet como puerto neutral. Aquí están Wailing Caverns, Razorfen Kraul y Razorfen Downs.'),
  ('Stonetalon Mountains', '15-27', 'base: Stonetalon Peak', ['Stonetalon Mountains'], None, 'Paso entre Ashenvale y Desolace. Un tramo de la bolsa de dormir.'),
  ('Thousand Needles', '25-35', 'base: Shimmering Flats (neutral)', ['Thousand Needles', 'The Shimmering Flats'], None, 'Aquí termina Heed My Call, de tu cadena del arma, y empieza la quest de Razorfen Kraul del diario de Lonebrow.'),
@@ -278,7 +278,10 @@ def qd(q):
     if G.is_new(q): d['nw'] = 1
     zp = MAP2ZONE.get(q.get('zone'))
     if zp: d['zp'] = slug(zp)
-    if q['id'] in DQ_OF: d['dg'] = DQ_OF[q['id']]
+    if q['id'] in DQ_OF or q.get('zone') in DGZ: d['dg'] = DQ_OF.get(q['id']) or DGZ[q['zone']]
+    ex = sorted(EXCL.get(q['id'], ()))
+    if ex: d['ex'] = ex
+    if q['id'] in BREAD: d['bc'] = 1
     if q['id'] in QCHAIN: d['ch'] = list(QCHAIN[q['id']][:2])
     return d
 
@@ -336,12 +339,13 @@ def zone_list(title, dbzones, slug):
             groups[n].append(q)
     if not groups: return '', 0
     rows = []
-    for n, g in groups.items():
-        g.sort(key=lambda q: (q['level'], q['id']))
-        rows.append((min(q['level'] for q in g), n, g))
-    rows.sort(key=lambda r: (r[0], r[1]))
+    for n, grp in groups.items():
+        for kind, g in split_group(grp):
+            g.sort(key=lambda q: (q['level'], q['id']))
+            rows.append((min(q['level'] for q in g), n, g, kind))
+    rows.sort(key=lambda r: (r[0], r[1], r[2][0]['id']))
     out = []
-    for lvl, n, g in rows:
+    for lvl, n, g, kind in rows:
         first = g[0]
         USED_Q.add(first['id'])
         tags = ''
@@ -350,13 +354,15 @@ def zone_list(title, dbzones, slug):
         t = first.get('type')
         if t in ('Elite', 'Dungeon', 'Raid', 'PvP'):
             tags += f'<span class="tag ty">{ {"Elite": "élite", "Dungeon": "mazmorra", "Raid": "raid", "PvP": "JcJ"}[t] }</span>'
-        if len(g) > 1: tags += f'<span class="tag st">{len(g)} pasos</span>'
+        if kind == 'chain': tags += f'<span class="tag st">{len(g)} pasos</span>'
+        elif kind == 'alt': tags += f'<span class="tag st">{len(g)} variantes: basta una</span>'
+        if first['id'] in BREAD: tags += '<span class="tag st">recado opcional</span>'
         star = '<span class="star" title="Aparece en la guía paso a paso">★</span>' if ally_txt and n in ally_txt else ''
         chain = chain_badge(g)
         meta = quest_meta(g, dbzones)
-        xp = sum(q.get('xp') or 0 for q in g)
+        xp = max(q.get('xp') or 0 for q in g) if kind == 'alt' else sum(q.get('xp') or 0 for q in g)
         lo = min((q.get('min') or q['level']) for q in g)
-        box = f'data-k="g{first["id"]}" data-dep="{",".join("q%d" % q["id"] for q in g)}"' if len(g) > 1 else f'data-k="q{first["id"]}"'
+        box = (f'data-k="g{first["id"]}" data-dep="{("|" if kind == "alt" else ",").join("q%d" % q["id"] for q in g)}"' if len(g) > 1 else f'data-k="q{first["id"]}"')
         out.append(
             f'<li data-lv="{lo}-{lvl + 2}"{" data-new" if isnew else ""}{" data-star" if star else ""}><label><input type="checkbox" {box}><span>'
             f'<span class="lv">{lvl}</span> {star}{A("quest", first["id"], esc(n))}{tags}'
@@ -609,6 +615,49 @@ for _i in Q:
     if _al or _an: PRE[_i] = (_al, _an)
     for _p in _al + _an: SUCC[_p].append(_i)
 
+# variantes que se excluyen entre sí (solo se puede hacer una): cuentan como la misma gesta
+EXCL = defaultdict(set)
+for _i in Q:
+    if not in_guide(_i): continue
+    for _e in (G.QS.get(_i) or {}).get('excl', []):
+        if _e != _i and in_guide(_e): EXCL[_i].add(_e); EXCL[_e].add(_i)
+BREAD = {i for i in Q if in_guide(i) and (G.QS.get(i) or {}).get('bfor')}      # recados que solo llevan a otra quest
+DGZ = {d[2]: d[0] for d in DG}
+
+def linked(a, b):
+    """¿Son dos pasos de la misma cadena?"""
+    return a in ancestors(b) or b in ancestors(a) or (G.QS.get(a) or {}).get('next') == b or (G.QS.get(b) or {}).get('next') == a
+
+def split_group(g):
+    """Parte las quests de un mismo nombre en filas: [(tipo, quests)] con tipo 'one', 'chain' (varios pasos) o 'alt' (variantes: basta una)."""
+    left, comps = sorted(g, key=lambda q: q['id']), []
+    while left:
+        c, grew = [left.pop(0)], True
+        while grew:
+            grew = False
+            for r in list(left):
+                if any(linked(r['id'], x['id']) for x in c): c.append(r); left.remove(r); grew = True
+        comps.append(c)
+    out = []
+    while comps:
+        c = comps.pop(0)
+        alts = [c]
+        for o in list(comps):
+            if any(b['id'] in EXCL[a['id']] for grp in alts for a in grp for b in o): alts.append(o); comps.remove(o)
+        if len(alts) > 1: out.append(('alt', [sorted(x, key=lambda q: (q['level'], q['id']))[-1] for x in alts]))
+        else: out.append(('chain' if len(c) > 1 else 'one', c))
+    return out
+
+def req_tokens(ids):
+    """Claves de casilla para una lista de quests: las variantes excluyentes se juntan en «una u otra»."""
+    out, used = [], set()
+    for i in ids:
+        if i in used: continue
+        alts = [i] + [j for j in ids if j != i and j in EXCL[i] and j not in used]
+        used.update(alts)
+        out.append('|'.join(f'q{j}' for j in alts))
+    return out
+
 def repeatable(i):
     f = (G.QS.get(i) or {}).get('flags', 0)
     return 'REPEATABLE' in str(f).upper() if isinstance(f, (str, list, tuple)) else bool(int(f or 0) & 1)
@@ -709,6 +758,14 @@ def render_chains():
             while cur_ and cur_ not in nxt: nxt.add(cur_); cur_ = (G.QS.get(cur_) or {}).get('next')
             later = [y['q'] for y in qsteps[n + 1:] if not y.get('opt') and (x.get('bc') or y['q'] in nxt or x['q'] in ancestors(y['q']))]
             if later: implied[x['q']] = later
+        inchain = [x['q'] for x in qsteps]
+        for x in qsteps:
+            alt = [e for e in EXCL.get(x['q'], ()) if e in inchain]
+            for t in inchain:                                # dos requisitos alternativos de un mismo paso: con uno basta
+                an = [a for a in PRE.get(t, ([], []))[1] if a in inchain]
+                if len(an) > 1 and x['q'] in an: alt += [a for a in an if a != x['q']]
+            if alt: implied[x['q']] = list(dict.fromkeys(implied.get(x['q'], []) + alt))
+            if x.get('bc'): BREAD.add(x['q'])
         for i, s in enumerate(ch['s'], 1):
             note = linkify(s.get('d') or s.get('o') or '')
             obj = rw = lv = tag = need = ''
@@ -798,7 +855,8 @@ _imp('pl1', 'Western Plaguelands', 'Eastern Plaguelands'); _imp('pl2 pl3', 'West
 DONE_DEFAULT = set()
 
 # casilla -> de qué depende, cuando no se deduce bien del texto ([] = manual)
-DEP_MAP = {k: [f'q{i}' for i in v] for k, v in {
+_tok = lambda x: x if isinstance(x, str) else '|'.join(f'q{i}' for i in x) if isinstance(x, tuple) else f'q{x}'
+DEP_MAP = {k: [_tok(i) for i in v] for k, v in {
     'wl1': [94495, 94497], 'rr3': [94499], 'av1': [94500], 'lm5': [94494], 'lm4': [94465, 94466, 94467, 94468], 'dm6': [],
     'wf5': [79008], 'bs1': [79192, 79980], 'lm3': [79974], 'ar2': [79975, 79976],
     'ar1': [94789], 'tw1': [96264], 'tw2': [79358], 'tw3': [96135], 'tw4': [96016],
@@ -806,7 +864,11 @@ DEP_MAP = {k: [f'q{i}' for i in v] for k, v in {
     'rt6b': [94494, 94495, 94497], 'rt6c': [94499], 'rt6d': [94500], 'rt6e': [79192, 79980, 79974, 79975, 79976], 'rt6f': [94501, 94502, 94503, 94505],
     'rt8b': [94789], 'rt8c': [96264], 'rt8e': [79358, 96135, 96016],
     'wf4': [153], 'wf6': [92744], 'rt11d': [],
-    'rt1a': [233, 234], 'dm3': [233, 234], 'rt1f': [], 'rt2a': [], 'rt2b': [], 'rt2c': [], 'rt3b': [], 'rt3d': [], 'rt4a': [], 'rt5a': [], 'rt6a': [], 'dm4': [], 'ew3': [],
+    # puntos que eran manuales y son en realidad una quest
+    'ds1': [1275], 'bd3': [1393], 'rg4': [94980], 'ar3': [685], 'sg3': [3801, 3802, 7848], 'sg2': [4363, 4126], 'dm4': [(2926, 2927), 971, 1050],
+    'rt5a': [65], 'bs2': ['dg-wailing-caverns'], 'sd1': [208], 'rt12a': [3962], 'pl4': [5944], 'pl1': [(5401, 5405, 5503)],
+    'rt13a': [(5401, 5405, 5503), 5505], 'rt11e': [(4022, 4023)],
+    'rt1a': [233, 234], 'dm3': [233, 234], 'rt1f': [], 'rt2a': [], 'rt2b': [], 'rt2c': [], 'rt3b': [], 'rt3d': [], 'rt4a': [], 'rt6a': [], 'ew3': [],
 }.items()}
 NAME_IDS = defaultdict(list)
 for _i in Q:
@@ -818,12 +880,13 @@ def deps_for(key, inner):
     if key in DEP_MAP: out = DEP_MAP[key]
     else:
         cads = re.findall(r'href="#cad-([a-z0-9]+)"', inner)
-        out = list(dict.fromkeys(f'q{i}' for c in cads for i in CHAIN_REQ.get(c, [])))
-        if not out:
+        ids = list(dict.fromkeys(i for c in cads for i in CHAIN_REQ.get(c, [])))
+        if not ids:
             for i in map(int, re.findall(r'data-t="quest" data-id="(\d+)"', inner)):
                 if in_guide(i):
                     for j in sorted(NAME_IDS[G.norm(Q[i]['name'])]):
-                        if f'q{j}' not in out: out.append(f'q{j}')
+                        if j not in ids and j not in BREAD: ids.append(j)
+        out = req_tokens(ids)
         if not out:
             out = [f'dg-{w}' for g in dict.fromkeys(re.findall(r'href="#dg-([a-z0-9-]+)"', inner)) for w in WINGS.get(g, [])]
     DEPS_SEEN[key] = out
@@ -885,6 +948,9 @@ IMPORT_HTML = '''<section id="importar" class="sec">
 <textarea id="imp-ids" rows="2" spellcheck="false" placeholder="65, 132, 135, 141…" aria-label="Lista de números de quest"></textarea>
 <div class="sync-btns"><button id="imp-go" type="button">Marcar las quests completadas</button></div>
 <div id="imp-msg" aria-live="polite"></div>
+<details id="imp-unk-box" hidden><summary><span id="imp-unk-n"></span> quests completadas que la guía no conoce</summary>
+<p class="src">Suelen ser de otra raza o clase, de eventos o repetibles. Si crees que falta alguna de verdad, copia estos números: con ellos se puede comprobar una a una.</p>
+<textarea id="imp-unk" rows="3" readonly spellcheck="false" aria-label="Números de quest que la guía no conoce"></textarea></details>
 </div>
 <p class="src">Solo añade marcas, nunca quita. Marca las quests de las listas de cada zona y los pasos de las cadenas. Los imprescindibles y la ruta del inicio no son quests sueltas: esos se marcan a mano. El formato del archivo es el de Questie para Classic; si el de Forever cambia y no reconoce tu archivo, el mensaje lo dirá.</p>
 </section>'''
@@ -939,7 +1005,7 @@ def build():
 
     cpages, cmeta, czone, cdg = render_chains()
     secs['ruta'] = re.sub(r'<li>(<label><input type="checkbox" data-k="(rt[0-9a-z]+)")(><span>)(.*?)(</span></label></li>)',
-                          lambda m: ('<li>' if deps_for(m.group(2), m.group(4)) else '<li class="man">') + m.group(1) + dep_attr(m.group(2), m.group(4)) + m.group(3) + m.group(4) + m.group(5),
+                          lambda m: ('<li class="man">' if not deps_for(m.group(2), m.group(4)) else '<li class="mand">' if all(d.startswith('dg-') for d in deps_for(m.group(2), m.group(4))) else '<li>') + m.group(1) + dep_attr(m.group(2), m.group(4)) + m.group(3) + m.group(4) + m.group(5),
                           secs.get('ruta', ''), flags=re.S)
     zpages, zdash = [], []
     for z in zones:
@@ -1096,7 +1162,7 @@ def build():
         if k:
             for j in (k[3], k[4]):
                 if j: USED_Q.add(j)
-    IMQ = {int(k[1:]) for k2, v in DEPS_SEEN.items() if not k2.startswith('rt') for k in v if k[0] == 'q'}
+    IMQ = {int(t[1:]) for k2, v in DEPS_SEEN.items() if not k2.startswith('rt') for k in v for t in k.split('|') if t[0] == 'q'}
     for i in Q:
         if in_guide(i): USED_Q.add(i)
     npcloc = {}
@@ -1133,7 +1199,7 @@ def build():
     print(f'index.html {os.path.getsize(os.path.join(ROOT, "index.html")) // 1024} KB')
     if '--deps' in sys.argv:
         for k, v in DEPS_SEEN.items():
-            names = list(dict.fromkeys(Q[int(x[1:])]['name'] if x[0] == 'q' else x for x in v))
+            names = list(dict.fromkeys(' o '.join(dict.fromkeys(Q[int(t[1:])]['name'] for t in x.split('|'))) if x[0] == 'q' else x for x in v))
             print(f'  {k:6} {len(v):3}  ' + ' | '.join(names)[:150])
 
 def prefetch():
