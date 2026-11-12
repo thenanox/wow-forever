@@ -1,7 +1,9 @@
 """Datos del juego: carga de la caché, clasificación por facción, resolución de nombres
 y consultas a forever.warcraftdb.com (siempre con caché en disco)."""
 import os, re, json, glob, html, time, urllib.request, urllib.parse
-from collections import defaultdict
+from collections import defaultdict, Counter
+
+import questie
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CACHE = os.path.join(ROOT, 'cache')
@@ -9,6 +11,7 @@ DATA = os.path.join(ROOT, 'data')
 HOST = 'https://forever.warcraftdb.com'
 UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36'
 OFFLINE = False
+QS = questie.load()          # Questie: requisitos, raza y clase de cada quest ({} si no se ha descargado)
 
 ALLY_REP = {'Stormwind', 'Ironforge', 'Gnomeregan Exiles', 'Darnassus', 'Wildhammer Clan', 'Brotherhood of the Horse',
             'The League of Arathor', 'Stormpike Guard', 'Silverwing Sentinels', 'Theramore Expeditionary Force',
@@ -62,11 +65,90 @@ def load_quests():
         d = json.load(open(p, encoding='utf-8'))
         if 'err' in d or not d.get('name'): continue
         Q[d['id']] = d
+    enrich(Q)
     return Q
 
 
+def playable(qid):
+    """¿Puede hacerla un enano chamán? None si Questie no conoce la quest."""
+    s = QS.get(qid)
+    if not s: return None
+    return bool(s['dwarf'] and s['shaman'] and s['side'] != 'H')
+
+
+def prereqs(qid):
+    """(todas estas, una de estas): requisitos de Questie que el personaje puede hacer."""
+    s = QS.get(qid)
+    if not s: return [], []
+    al = [i for i in s['preg'] + ([s['parent']] if s['parent'] else []) if playable(i)]
+    return al, [i for i in s['pres'] if playable(i)]
+
+
+def pretty_zone(z):
+    return ' '.join(w.capitalize() if w not in ('OF', 'THE') or k == 0 else w.lower() for k, w in enumerate(z.split('.')[-1].split('_')))
+
+
+def enrich(Q):
+    """Completa las fichas de Warcraft DB con Questie: nivel y objetivo que falten, quién da y recoge, requisitos."""
+    if not QS: return
+    # las quests sin nivel en Warcraft DB solo cuentan si enlazan por requisitos con una que sí lo tiene
+    link = defaultdict(set)
+    for i in Q:
+        if not playable(i): continue
+        al, an = prereqs(i)
+        for p in al + an:
+            if p in Q: link[i].add(p); link[p].add(i)
+    seen = {i for i, q in Q.items() if q.get('level') is not None}
+    stack = list(seen)
+    while stack:
+        for j in link[stack.pop()]:
+            if j not in seen: seen.add(j); stack.append(j)
+    need = set()
+    for i, q in Q.items():
+        s = QS.get(i)
+        if not s: continue
+        if q.get('level') is None and i in seen and playable(i) and (s.get('lv') or 0) > 0:
+            q['level'], q['min'] = s['lv'], s.get('min') or q.get('min')
+        if not q.get('obj') and s.get('obj'): q['obj'] = s['obj']
+        if not q.get('starts'): need.update(s['sn'][:1])
+        if not q.get('ends'): need.update(s['en'][:1])
+        need.update(x['id'] for x in (q.get('starts') or [])[:1] if x.get('t') == 'npc')
+    NP = questie.npcs(need)
+    votes = defaultdict(Counter)                             # número de zona de Questie -> nombre de mapa de Warcraft DB
+    for q in Q.values():
+        st = (q.get('starts') or [None])[0]
+        if st and st.get('t') == 'npc' and q.get('sc') and q['sc'][2] and st['id'] in NP:
+            zs = [z for z in NP[st['id']][1] if isinstance(z, int)]
+            if len(zs) == 1: votes[zs[0]][q['sc'][2]] += 1
+    zname = {z: c.most_common(1)[0][0] for z, c in votes.items()}
+    zn = lambda z: zname.get(z) if isinstance(z, int) else pretty_zone(z) if isinstance(z, str) else None
+    def where(nid, qzone):
+        """Referencia al PNJ y su posición: en la zona de la quest si aparece allí; si hay varias y ninguna encaja, sin posición."""
+        n = NP.get(nid)
+        if not n: return None, None
+        named = [(zn(z), xy) for z, xy in n[1].items()]
+        pick = next(((z, xy) for z, xy in named if z and z == qzone), None) or (named[0] if len(named) == 1 and named[0][0] else None)
+        return {'t': 'npc', 'id': nid, 'name': n[0]}, ([round(pick[1][0], 1), round(pick[1][1], 1), pick[0]] if pick else None)
+    for i, q in Q.items():
+        s = QS.get(i)
+        if not s: continue
+        if not q.get('starts') and s['sn']:
+            ref, c = where(s['sn'][0], q.get('zone'))
+            if ref:
+                q['starts'] = [ref]
+                if c and not q.get('sc'): q['sc'] = c
+        if not q.get('ends') and s['en']:
+            ref, c = where(s['en'][0], q.get('zone'))
+            if ref:
+                q['ends'] = [ref]
+                if c and not q.get('ec'): q['ec'] = c
+
+
 def faction(q):
-    """'A' Alianza, 'H' Horda, 'N' neutral o desconocida."""
+    """'A' Alianza, 'H' Horda o no disponible para un enano chamán, 'N' neutral o desconocida."""
+    ok = playable(q['id'])
+    if ok is False: return 'H'
+    if ok: return 'A' if QS[q['id']]['side'] == 'A' else 'N'
     if q.get('side') == 'Horde': return 'H'
     if q.get('side') == 'Alliance': return 'A'
     reps = {r['name'] for r in (q.get('rep') or []) if (r.get('v') or 0) > 0}

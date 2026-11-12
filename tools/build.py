@@ -235,6 +235,15 @@ def chain_info(q):
     k = ids.index(q['id'])
     return [q['chain'], k + 1, len(ids), ids[k - 1] if k else 0, ids[k + 1] if k + 1 < len(ids) else 0]
 
+def action(q):
+    """Qué pide la quest, para su runa: 1 matar, 2 recoger, 3 llevar o hablar, 4 escoltar, 5 otra cosa."""
+    o = (q.get('obj') or '').lower()
+    if re.search(r'\b(escort|protect)\b', o): return 4
+    if re.search(r'\b(kill|slay|defeat|destroy|eliminate|hunt)\b', o): return 1
+    if re.search(r'\b(bring|collect|gather|obtain|retrieve|acquire|recover|steal|fill)\b', o): return 2
+    if re.search(r'\b(speak|talk|deliver|take|report|find|seek|return|travel|give|show|locate)\b', o): return 3
+    return 5
+
 def qd(q):
     d = {'n': q['name'], 'l': q['level'], 'm': q.get('min') or 0, 'z': q.get('zone') or ''}
     if q.get('type'): d['t'] = q['type']
@@ -259,6 +268,18 @@ def qd(q):
     if q.get('group'): d['gr'] = q['group']
     if q.get('timer'): d['ti'] = G.clean(str(q['timer']))
     if q.get('provided'): d['pv'] = [q['provided']['id'], q['provided']['name']]
+    al, an = PRE.get(q['id'], ([], []))
+    if al: d['pa'] = al
+    if an: d['po'] = an
+    nx = [x for x in SUCC.get(q['id'], []) if not repeatable(x)]
+    if nx: d['nx'] = nx
+    if q['id'] in CLASS_Q: d['cl'] = 1
+    d['ac'] = action(q)
+    if G.is_new(q): d['nw'] = 1
+    zp = MAP2ZONE.get(q.get('zone'))
+    if zp: d['zp'] = slug(zp)
+    if q['id'] in DQ_OF: d['dg'] = DQ_OF[q['id']]
+    if q['id'] in QCHAIN: d['ch'] = list(QCHAIN[q['id']][:2])
     return d
 
 
@@ -294,6 +315,17 @@ def quest_meta(group, dbzones):
         if c: return c
     return ''
 
+def chain_badge(g):
+    """Enlace a la cadena de una fila: a su página si la tiene, o a la vista de requisitos de la quest."""
+    for q in g:
+        if q['id'] in QCHAIN:
+            k, n, _ = QCHAIN[q['id']]
+            return f' · <a class="qc" href="#cad-{k}">cadena, paso {n}</a>'
+    for q in reversed(g):
+        if q['id'] in PRE or any(not repeatable(x) for x in SUCC.get(q['id'], [])):
+            return f' · <a class="qc" href="#q-{q["id"]}">cadena</a>'
+    return ''
+
 def zone_list(title, dbzones, slug):
     ally_txt, horde_txt = wfi_sections(slug)
     groups = defaultdict(list)
@@ -320,14 +352,13 @@ def zone_list(title, dbzones, slug):
             tags += f'<span class="tag ty">{ {"Elite": "élite", "Dungeon": "mazmorra", "Raid": "raid", "PvP": "JcJ"}[t] }</span>'
         if len(g) > 1: tags += f'<span class="tag st">{len(g)} pasos</span>'
         star = '<span class="star" title="Aparece en la guía paso a paso">★</span>' if ally_txt and n in ally_txt else ''
-        k = chain_info(first)
-        chain = f' · cadena {esc(k[0])}' if k else ''
+        chain = chain_badge(g)
         meta = quest_meta(g, dbzones)
         xp = sum(q.get('xp') or 0 for q in g)
         lo = min((q.get('min') or q['level']) for q in g)
-        allids = f' data-all="{",".join(str(q["id"]) for q in g)}"' if len(g) > 1 else ''
+        box = f'data-k="g{first["id"]}" data-dep="{",".join("q%d" % q["id"] for q in g)}"' if len(g) > 1 else f'data-k="q{first["id"]}"'
         out.append(
-            f'<li data-lv="{lo}-{lvl + 2}"{" data-new" if isnew else ""}{" data-star" if star else ""}><label><input type="checkbox" data-k="q{g[-1]["id"]}"{allids}><span>'
+            f'<li data-lv="{lo}-{lvl + 2}"{" data-new" if isnew else ""}{" data-star" if star else ""}><label><input type="checkbox" {box}><span>'
             f'<span class="lv">{lvl}</span> {star}{A("quest", first["id"], esc(n))}{tags}'
             f'<span class="qm">{meta}{chain}{f" · {xp} XP" if xp else ""}</span></span></label></li>')
     note = ('Datos del juego (Warcraft DB). Puede incluir alguna quest de otra clase o retirada. '
@@ -553,14 +584,121 @@ def chain_link(ch, here=''):
     return (f'<li><a class="clink" href="#cad-{ch["k"]}" data-chain="{ch["k"]}" data-lv="{ch["lv"]}"><b>{esc(ch["t"])}</b>'
             f'<span class="lv">{ch["lv"]}</span><span class="cl-h">{here}</span><span class="cl-p"></span></a></li>')
 
+def _class_ids():
+    """Quests de la lista de clase de chamán de Warcraft DB."""
+    p, out = os.path.join(G.CACHE, 'list', 'class__shaman.json'), set()
+    def walk(x):
+        if isinstance(x, dict):
+            if 'id' in x and 'name' in x: out.add(x['id'])
+            for v in x.values(): walk(v)
+        elif isinstance(x, list):
+            for v in x: walk(v)
+    if os.path.exists(p): walk(json.load(open(p, encoding='utf-8')))
+    return out
+CLASS_Q = _class_ids()
+
+def in_guide(i):
+    return i in Q and G.usable(Q[i]) and G.faction(Q[i]) != 'H'
+
+# requisitos entre quests (Questie), solo entre las que puede hacer el personaje
+PRE, SUCC = {}, defaultdict(list)
+for _i in Q:
+    if not in_guide(_i): continue
+    _al, _an = G.prereqs(_i)
+    _al, _an = [x for x in _al if in_guide(x)], [x for x in _an if in_guide(x)]
+    if _al or _an: PRE[_i] = (_al, _an)
+    for _p in _al + _an: SUCC[_p].append(_i)
+
+def repeatable(i):
+    f = (G.QS.get(i) or {}).get('flags', 0)
+    return 'REPEATABLE' in str(f).upper() if isinstance(f, (str, list, tuple)) else bool(int(f or 0) & 1)
+
+def ancestors(i, acc=None):
+    """Todo lo que hay que hacer antes de la quest i, sin orden."""
+    acc = [] if acc is None else acc
+    al, an = PRE.get(i, ([], []))
+    for x in al + an:
+        if x not in acc: acc.append(x); ancestors(x, acc)
+    return acc
+
+def topo(ids):
+    """Ordena por requisitos: primero lo que no depende de nada; a igualdad, por nivel."""
+    ids, depth = list(dict.fromkeys(ids)), {}
+    def d(i, guard=()):
+        if i in depth: return depth[i]
+        al, an = PRE.get(i, ([], []))
+        ps = [x for x in al + an if x in ids and x not in guard]
+        depth[i] = 1 + max((d(x, guard + (i,)) for x in ps), default=0)
+        return depth[i]
+    return sorted(ids, key=lambda i: (d(i), Q[i].get('level') or 0, i))
+
+def payoff(ids):
+    """Qué se gana con una cadena: XP, reputación y premio del último paso."""
+    qs = [Q[i] for i in ids if i in Q]
+    xp = sum(q.get('xp') or 0 for q in qs)
+    rep = defaultdict(int)
+    for q in qs:
+        for r in q.get('rep') or []:
+            if (r.get('v') or 0) > 0: rep[r['name']] += r['v']
+    out = []
+    if xp: out.append(f'{xp:,} XP en total'.replace(',', '.'))
+    top = sorted(rep.items(), key=lambda x: -x[1])[:2]
+    if top: out.append('reputación: ' + ', '.join(f'+{v} {esc(n)}' for n, v in top))
+    last = next((q for q in reversed(qs) if (q.get('choice') or q.get('items'))), None)
+    if last:
+        rw = reward_chips(last, 4)
+        if rw: out.append(f'premio de {qa(last["id"])}: {rw}')
+    return '; '.join(out)
+
+DQ_OF, WINGS = {}, {}                      # quest de mazmorra -> clave de mazmorra; mazmorra -> claves de sus alas
+for _d in DG:
+    WINGS[_d[0]] = [w[0] for w in _d[8]]
+    for _i in dungeon_quest_ids(_d[2], _d[6]): DQ_OF.setdefault(_i, _d[0])
+
+def auto_chains(covered):
+    """Cadenas previas a quests de mazmorra, según los requisitos de Questie, que no cubre ninguna cadena escrita a mano."""
+    groups = []                                              # [conjunto de quests, mazmorras, quests finales]
+    for t, gk in sorted(DQ_OF.items()):
+        anc = ancestors(t)
+        if not anc: continue
+        ids = set(anc) | {t}
+        hit = [g for g in groups if g[0] & ids]
+        for g in hit:
+            ids |= g[0]; groups.remove(g)
+        groups.append([ids, sorted({gk} | {x for g in hit for x in g[1]}), sorted({t} | {x for g in hit for x in g[2]})])
+    out = []
+    for ids, dgs, targets in groups:
+        if ids <= covered: continue
+        order = topo(ids)
+        lv = [Q[i]['level'] for i in order if Q[i].get('level')]
+        last = order[-1]
+        tn = ', '.join(dict.fromkeys(f'<em>{esc(Q[t]["name"])}</em>' for t in targets[:4])) + (' y otras' if len(targets) > 4 else '')
+        out.append({'k': f'a{last}', 't': Q[last]['name'], 'g': 'Mazmorras', 'lv': f'{min(Q[i].get("min") or Q[i]["level"] for i in order)}-{max(lv)}',
+                    'dg': dgs, 'auto': True, 's': [{'q': i} for i in order],
+                    'why': f'Lo que hay que hacer antes para poder coger {tn}, de {" y ".join(esc(DG_NAME[g]) for g in dgs)}. '
+                           'Si entras a la mazmorra sin estos pasos, esas quests no te aparecen. El orden sale de los requisitos de Questie.'})
+    return out
+
+QCHAIN = {}                                # quest -> (clave de cadena, número de paso, título)
+CHAIN_IDS = {}                             # clave de cadena -> ids de quest de sus pasos
+CHAIN_REQ = {}                             # lo mismo, sin los pasos opcionales
+
 def render_chains():
     """(páginas, datos para tarjetas, enlaces por zona, enlaces por mazmorra)"""
     pages, meta, byzone, bydg = [], [], defaultdict(list), defaultdict(list)
-    for ch in CHAINS:
-        lis, zsteps = [], {z: [] for z in ch.get('z', [])}
+    covered = {s['q'] for ch in CHAINS for s in ch['s'] if 'q' in s}
+    specs = CHAINS + auto_chains(covered)
+    for ch in specs:
+        ids = [s['q'] for s in ch['s'] if 'q' in s and s['q'] in Q]
+        CHAIN_IDS[ch['k']] = ids
+        CHAIN_REQ[ch['k']] = [s['q'] for s in ch['s'] if 'q' in s and s['q'] in Q and not s.get('opt')]
+        for n, s in enumerate(ch['s'], 1):
+            if 'q' in s: QCHAIN.setdefault(s['q'], (ch['k'], n, ch['t']))
+    for ch in specs:
+        lis, zsteps, seen = [], {z: [] for z in ch.get('z', [])}, set()
         for i, s in enumerate(ch['s'], 1):
             note = linkify(s.get('d') or s.get('o') or '')
-            obj = rw = lv = tag = ''
+            obj = rw = lv = tag = need = ''
             if 'q' in s:
                 q = Q[s['q']]; key = f'q{q["id"]}'
                 title = qa(q['id'])
@@ -569,7 +707,15 @@ def render_chains():
                 where = linkify(s['w']) if s.get('w') else step_where(q)
                 obj = esc(G.clean(q.get('obj') or ''))
                 rw = reward_chips(q, 3)
-                if q.get('type') in QTYPE: tag = f'<span class="tag ty">{QTYPE[q["type"]]}</span>'
+                if q['id'] in DQ_OF or q.get('type') == 'Dungeon': tag = '<span class="tag ty">mazmorra</span>'
+                elif q.get('type') in QTYPE: tag = f'<span class="tag ty">{QTYPE[q["type"]]}</span>'
+                if s.get('opt'): tag += '<span class="tag st">opcional</span>'
+                al, an = PRE.get(q['id'], ([], []))
+                miss = [x for x in al if x not in seen]
+                if miss: need = 'Requiere antes: ' + ', '.join(qa(x) for x in miss) + '.'
+                elif an and not any(x in seen for x in an):
+                    need = ('Requiere antes: ' if len(an) == 1 else 'Requiere antes una de estas: ') + ', '.join(qa(x) for x in an) + '.'
+                seen.add(q['id'])
                 if not s.get('w'):
                     for c in (q.get('sc'), q.get('ec')):
                         z = MAP2ZONE.get(c[2]) if c else None
@@ -582,30 +728,37 @@ def render_chains():
                 + (f'<p class="cs-w">{where}</p>' if where else '')
                 + (f'<p class="cs-o">{obj}</p>' if obj else '')
                 + (f'<p class="cs-d">{note}</p>' if note else '')
+                + (f'<p class="cs-need">{need}</p>' if need else '')
                 + (f'<p class="cs-r">Premio: {rw}</p>' if rw else '') + '</div></li>')
         for z, nums in zsteps.items():
             byzone[z].append(chain_link(ch, f'aquí: paso{"s" if len(nums) > 1 or "-" in runs(nums) else ""} {runs(nums)}' if nums else 'pasa por aquí'))
         for g in ch.get('dg', []):
             bydg[g].append(chain_link(ch))
+        ids = CHAIN_IDS[ch['k']]
+        after = [x for x in dict.fromkeys(j for i in ids for j in SUCC.get(i, [])) if x not in ids and not repeatable(x)]
         zl = ', '.join(f'<a href="#z-{slug(z)}">{esc(z)}</a>' for z in zsteps)
         dl = ', '.join(f'<a href="#dg-{g}">{esc(DG_NAME[g])}</a>' for g in ch.get('dg', []))
+        gain = payoff(ids)
         a, b = lv_nums(ch['lv'])
+        sub = ' · '.join(DG_NAME[g] for g in ch.get('dg', [])) if ch.get('auto') else ''
         pages.append(f'''
 <article class="page cpage" id="cad-{ch["k"]}" data-name="{esc(ch["t"])}" data-lv="{ch["lv"]}" hidden>
 <header class="ph">
 <div class="crumb"><a href="#cadenas">Cadenas</a><span>›</span>{esc(ch["t"])}</div>
 <h2>{esc(ch["t"])}</h2>
-<div class="ph-meta"><span class="lv">{ch["lv"]}</span><span>{esc(ch["g"])}</span><span>{len(lis)} pasos</span><span class="cprog"></span></div>
+<div class="ph-meta"><span class="lv">{ch["lv"]}</span><span>{esc(sub or ch["g"])}</span><span>{len(lis)} pasos</span><span class="cprog"></span></div>
 </header>
-<section class="blk why"><p>{linkify(ch["why"])}</p>
+<section class="blk why"><h3>Por qué hacerla</h3><p>{linkify(ch["why"])}</p>
+{f'<p class="gain"><b>Qué ganas:</b> {gain}.</p>' if gain else ''}
 {f'<p class="src">Pasa por: {zl}.</p>' if zl else ''}{f'<p class="src">Mazmorra: {dl}.</p>' if dl else ''}</section>
 <section class="blk csteps"><h3>Pasos <span class="prog"></span></h3>
 <p class="src">Marca cada paso al entregarlo. El siguiente que te toca queda resaltado. El texto en inglés es el objetivo tal como sale en el juego.</p>
-<ol class="chain">{"".join(lis)}</ol></section>
+<ol class="chain">{"".join(lis)}</ol>
+{f'<p class="after"><b>Al terminar se abre:</b> {", ".join(qa(x) for x in after[:8])}.</p>' if after else ''}</section>
 </article>''')
-        meta.append({'k': ch['k'], 't': ch['t'], 'g': ch['g'], 'lv': ch['lv'], 'a': a, 'b': b, 'n': len(lis)})
-    order = ['Tu chamán', 'Tu personaje', 'Hacia las mazmorras', 'Zonas']
-    meta.sort(key=lambda m: (order.index(m['g']), m['a'] or 0))
+        meta.append({'k': ch['k'], 't': ch['t'], 'g': ch['g'], 'lv': ch['lv'], 'a': a, 'b': b, 'n': len(lis), 'sub': sub, 'ids': ids})
+    order = ['Tu chamán', 'Tu personaje', 'Mazmorras', 'Zonas']
+    meta.sort(key=lambda m: (order.index(m['g']), m['a'] or 0, m['b'] or 0))
     return ''.join(pages), meta, byzone, bydg
 
 def chains_block(links, title='Cadenas paso a paso'):
@@ -630,6 +783,42 @@ _imp('ug1 ug2', "Un'Goro Crater"); _imp('ug3', 'Felwood'); _imp('ug4', 'Azshara'
 _imp('pl1', 'Western Plaguelands', 'Eastern Plaguelands'); _imp('pl2 pl3', 'Western Plaguelands'); _imp('pl4', 'Eastern Plaguelands'); _imp('pl5', 'Winterspring')
 DONE_DEFAULT = set()
 
+# casilla -> de qué depende, cuando no se deduce bien del texto ([] = manual)
+DEP_MAP = {k: [f'q{i}' for i in v] for k, v in {
+    'wl1': [94495, 94497], 'rr3': [94499], 'av1': [94500], 'lm5': [94494], 'lm4': [94465, 94466, 94467, 94468], 'dm6': [94449],
+    'wf5': [79008], 'bs1': [79192, 79980], 'lm3': [79974], 'ar2': [79975, 79976],
+    'ar1': [94789], 'tw1': [96264], 'tw2': [79358], 'tw3': [96135], 'tw4': [96016],
+    'rt1d': [96392, 96390, 96391], 'rt3a': [94449, 94465, 94466, 94467, 94468], 'rt4d': [79008], 'rt4e': [168, 167, 2040],
+    'rt6b': [94494, 94495, 94497], 'rt6c': [94499], 'rt6d': [94500], 'rt6e': [79192, 79980, 79974, 79975, 79976], 'rt6f': [94501, 94502, 94503, 94505],
+    'rt8b': [94789], 'rt8c': [96264], 'rt8e': [79358, 96135, 96016],
+    'wf4': [153], 'wf6': [92744], 'rt11d': [],
+    'rt1a': [], 'rt2a': [], 'rt2b': [], 'rt2c': [], 'rt3b': [], 'rt3d': [], 'rt4a': [], 'rt5a': [], 'rt6a': [], 'dm3': [], 'dm4': [], 'ew3': [],
+}.items()}
+NAME_IDS = defaultdict(list)
+for _i in Q:
+    if in_guide(_i): NAME_IDS[G.norm(Q[_i]['name'])].append(_i)
+DEPS_SEEN = {}
+
+def deps_for(key, inner):
+    """Claves de las casillas de las que depende un punto de la guía: sus quests o, si solo nombra una mazmorra, sus alas."""
+    if key in DEP_MAP: out = DEP_MAP[key]
+    else:
+        cads = re.findall(r'href="#cad-([a-z0-9]+)"', inner)
+        out = list(dict.fromkeys(f'q{i}' for c in cads for i in CHAIN_REQ.get(c, [])))
+        if not out:
+            for i in map(int, re.findall(r'data-t="quest" data-id="(\d+)"', inner)):
+                if in_guide(i):
+                    for j in sorted(NAME_IDS[G.norm(Q[i]['name'])]):
+                        if f'q{j}' not in out: out.append(f'q{j}')
+        if not out:
+            out = [f'dg-{w}' for g in dict.fromkeys(re.findall(r'href="#dg-([a-z0-9-]+)"', inner)) for w in WINGS.get(g, [])]
+    DEPS_SEEN[key] = out
+    return out
+
+def dep_attr(key, inner):
+    d = deps_for(key, inner)
+    return f' data-dep="{",".join(d)}"' if d else ''
+
 ZD = re.compile(r'<details class="zona" data-lv="([^"]*)"><summary><span class="zn">(.*?)</span><span class="lv">(.*?)</span>(.*?)</summary><div class="body">(.*?)</div></details>', re.S)
 CKG = re.compile(r'<details class="zona ck"[^>]*><summary><span class="zn">(.*?)</span>.*?</summary><div class="body">(.*?)</div></details>', re.S)
 CKI = re.compile(r'<li><label><input type="checkbox" data-k="([a-z0-9]+)"><span>(.*?)</span></label></li>', re.S)
@@ -643,9 +832,9 @@ def bracket(a):
     return 'Niveles 1-20' if a < 20 else 'Niveles 20-35' if a < 35 else 'Niveles 35-50' if a < 50 else 'Niveles 50-60'
 
 TOP = '''<header class="top"><div class="top-in">
-<a class="brand" href="#inicio">Enano Chamán<span>WoW Forever</span></a>
+<a class="brand" href="#inicio"><svg viewBox="0 0 20 30" aria-hidden="true"><path fill="var(--air)" d="M5 0h10l2 2v5H3V2z"/><path fill="var(--water)" d="M2 8h16v6H2z"/><path fill="var(--fire)" d="M3 15h14v6H3z"/><path fill="var(--earth)" d="M3 22h14l3 3v5H0v-5z"/></svg>Enano Chamán<span>WoW Forever</span></a>
 <nav class="tabs" aria-label="Secciones">
-<a href="#inicio" data-view="inicio">Inicio</a><a href="#zonas" data-view="zonas">Zonas</a><a href="#mazmorras" data-view="mazmorras">Mazmorras</a><a href="#cadenas" data-view="cadenas">Cadenas</a><a href="#chaman" data-view="chaman">Tu chamán</a><a href="#referencia" data-view="referencia">Referencia</a>
+<a href="#inicio" data-view="inicio">Inicio</a><a href="#zonas" data-view="zonas">Zonas</a><a href="#mazmorras" data-view="mazmorras">Mazmorras</a><a href="#cadenas" data-view="cadenas">Cadenas</a><a href="#quests" data-view="quests">Quests</a><a href="#chaman" data-view="chaman">Tu chamán</a><a href="#profesiones" data-view="profesiones">Profesiones</a><a href="#referencia" data-view="referencia">Referencia</a>
 </nav>
 <div class="top-tools">
 <label class="lvl" for="nivel">Nivel<input id="nivel" type="number" min="1" max="60" value="1" inputmode="numeric"></label>
@@ -661,7 +850,9 @@ TOP = '''<header class="top"><div class="top-in">
 <div class="sync-btns"><button id="sync-copy" type="button">Copiar código</button><button id="sync-load" type="button">Cargar código</button></div>
 <div id="sync-msg" aria-live="polite"></div>
 </div></details>
-</div></div></header>'''
+</div></div>
+<div class="rail" aria-hidden="true"><i></i><b class="e1" style="--at:4"></b><b class="e2" style="--at:10"></b><b class="e3" style="--at:20"></b><b class="e4" style="--at:30"></b><b style="--at:40"></b><b style="--at:60"></b></div>
+</header>'''
 
 IMPORT_HTML = '''<section id="importar" class="sec">
 <h2>Importar tu progreso del juego</h2>
@@ -733,6 +924,8 @@ def build():
     zones.sort(key=zkey)
 
     cpages, cmeta, czone, cdg = render_chains()
+    secs['ruta'] = re.sub(r'(<li><label><input type="checkbox" data-k="(rt[0-9a-z]+)")(><span>)(.*?)(</span></label></li>)',
+                          lambda m: m.group(1) + dep_attr(m.group(2), m.group(4)) + m.group(3) + m.group(4) + m.group(5), secs.get('ruta', ''), flags=re.S)
     zpages, zdash = [], []
     for z in zones:
         name = z['name']
@@ -742,7 +935,7 @@ def build():
         items = imp.get(name, [])
         imp_html = ''
         if items:
-            lis = ''.join(f'<li><label><input type="checkbox" data-k="{k}"><span>{inner}</span></label></li>' for k, inner in items)
+            lis = ''.join(f'<li><label><input type="checkbox" data-k="{k}"{dep_attr(k, inner)}><span>{inner}</span></label></li>' for k, inner in items)
             imp_html = (f'<section class="blk imp"><h3>Imprescindibles <span class="prog"></span></h3>'
                         f'<ul class="chk">{lis}</ul>{paras.get(name, "")}</section>')
         guide = (f'<a href="https://wowforeverinfo.com/guides/{wslug}/" target="_blank" rel="noopener">Guía paso a paso</a>') if wslug else ''
@@ -770,17 +963,38 @@ def build():
         dungeons, k = re.subn(r'(<article class="page dpage" id="dg-%s".*?</header>)' % re.escape(gk),
                               lambda m: m.group(1) + '\n' + chains_block(links, 'Cadenas que acaban aquí'), dungeons, count=1, flags=re.S)
         assert k == 1, gk
-    sec = lambda sid, newid=None: f'<section id="{newid or sid}" class="sec">{secs[sid]}</section>' if secs.get(sid) else ''
+    secs['explorar'] = '<h2>Exploración y reputaciones</h2>' + explore if explore else ''
+    secs['importar'] = re.sub(r'^<section[^>]*>|</section>$', '', IMPORT_HTML.strip())
+    sec = lambda sid: f'<section id="{sid}" class="sec">{secs[sid]}</section>' if secs.get(sid) else ''
+    def hub(view, title, intro, items):
+        """Vista con tarjetas arriba y una página por apartado."""
+        cards, pages = [], []
+        for sid, desc in items:
+            src = secs.get('zonas' if sid == 'tabla-zonas' else sid)
+            if not src: continue
+            m = re.search(r'<h2>(.*?)</h2>', src, re.S)
+            name = re.sub(r'<[^>]+>', '', m.group(1)).strip()
+            cards.append(f'<a class="card" href="#{sid}"><span class="c-h"><b>{esc(name)}</b></span><span class="c-s">{desc}</span></a>')
+            pages.append(f'<article class="page spage" id="{sid}" data-name="{esc(name)}" hidden><header class="ph"><div class="crumb"><a href="#{view}">{title}</a>'
+                         f'<span>›</span>{esc(name)}</div><h2>{name}</h2></header>{src[:m.start()] + src[m.end():]}</article>')
+        return (f'<section class="view" id="v-{view}" hidden>\n<div class="overview"><h2 class="vh">{title}</h2>\n<p class="intro">{intro}</p>\n'
+                f'<div class="cards hubcards">{"".join(cards)}</div></div>\n{"".join(pages)}\n</section>')
     views = f'''
 <section class="view" id="v-inicio">
 {hero}
 {NOW_HTML.split('<section id="tus-pendientes"')[0]}
+<section id="tu-muro" class="sec">
+<h2>Tu muro de gestas</h2>
+<p class="insc" id="insc-ini"></p>
+<div class="friso" id="friso-ini"></div>
+<p class="src">Los enanos no apuntan sus hazañas: las tallan. Cada asta es una de tus cadenas, y se va dorando paso a paso. <a href="#muro">Entra a ver el muro entero</a>, con una runa por cada quest del juego.</p>
+</section>
 {sec('ruta')}
 <section id="tus-pendientes"{NOW_HTML.split('<section id="tus-pendientes"')[1]}
 </section>
 <section class="view" id="v-zonas" hidden>
 <div class="overview"><h2 class="vh">Zonas</h2>
-<p class="intro">Una página por zona con sus imprescindibles, su ruta y todas sus quests. Las de tu nivel van resaltadas.</p>
+<p class="intro">Una página por zona con sus imprescindibles, sus cadenas, su ruta y todas sus quests. Las de tu nivel van resaltadas.</p>
 <div id="zcards"></div></div>
 {"".join(zpages)}
 </section>
@@ -793,19 +1007,72 @@ def build():
 </section>
 <section class="view" id="v-cadenas" hidden>
 <div class="overview"><h2 class="vh">Cadenas paso a paso</h2>
-<p class="intro">Las quests encadenadas, con cada paso numerado: quién lo da, dónde se entrega y qué hay que hacer. Marca cada paso y la guía te señala el siguiente. Las casillas son las mismas que las de las listas de cada zona.</p>
-<div id="ccards"></div></div>
+<p class="intro">Las quests encadenadas, con cada paso numerado: quién lo da, dónde se entrega, qué hay que hacer y qué ganas. El orden sale de los requisitos de Questie. Están las de tu clase, las que llevan a cada mazmorra y las largas de cada zona.</p>
+<div id="ccards"></div>
+<h3 class="cg">Más cadenas, por zona</h3>
+<p class="src">Todas las demás quests con requisitos. Cada una abre su ficha con lo que hay que hacer antes.</p>
+<div id="zchains"></div></div>
 {cpages}
 </section>
-<section class="view" id="v-chaman" hidden>
-{sec('compras')}{sec('clase')}{sec('spec')}{sec('personaje')}{sec('profesiones')}
+<section class="view" id="v-quests" hidden>
+<div class="overview"><h2 class="vh">Todas las quests</h2>
+<p class="intro">La base de datos completa de lo que puede hacer un enano chamán. Cada quest es una sola ficha: si la marcas aquí, queda marcada en su zona, en su cadena, en su mazmorra y en los imprescindibles. Y al revés.</p>
+<div class="qf">
+<input id="qf-text" type="search" placeholder="Nombre de la quest o de quien la da…" autocomplete="off" aria-label="Filtrar por nombre">
+<select id="qf-zone" aria-label="Zona"><option value="">Todas las zonas</option></select>
+<select id="qf-state" aria-label="Estado"><option value="">Hechas y pendientes</option><option value="p">Pendientes</option><option value="d">Hechas</option></select>
+<select id="qf-kind" aria-label="Tipo"><option value="">Todos los tipos</option><option value="im">Imprescindibles</option><option value="ch">Con cadena</option><option value="dg">De mazmorra</option><option value="cl">De clase</option><option value="nw">Nuevas en Forever</option><option value="el">Élite o de grupo</option></select>
+<label class="qf-lv"><input id="qf-level" type="checkbox"> Solo las de mi nivel</label>
+</div>
+<div id="qstats" class="src" aria-live="polite"></div>
+<ul class="chk ql" id="qlist"></ul>
+<button id="qmore" type="button" hidden>Ver más</button></div>
+<article class="page qpage" id="qdetail" data-name="" hidden></article>
 </section>
-<section class="view" id="v-referencia" hidden>
-{sec('vocabulario')}{sec('plan')}{sec('zonas', 'tabla-zonas')}{sec('cadenas')}{sec('estado')}
-{f'<section id="explorar" class="sec"><h2>Exploración y reputaciones</h2>{explore}</section>' if explore else ''}
-{IMPORT_HTML}
-{sec('pendiente')}{sec('fuentes')}
-</section>'''
+<section class="view" id="v-muro" hidden>
+<div class="muro">
+<p class="eyebrow">Sala de los Thanes · Ironforge</p>
+<h2 class="vh">El muro de gestas</h2>
+<p class="insc" id="insc"></p>
+<div class="muro-tools">
+<label for="nombre">Nombre de tu enano <input id="nombre" type="text" maxlength="24" autocomplete="off" placeholder="sin nombre"></label>
+<label class="qf-lv" for="cincel"><input id="cincel" type="checkbox"> Oír el cincel al tallar</label>
+<span id="muro-new" class="src" aria-live="polite"></span>
+</div>
+<p class="intro">Los enanos no apuntan sus hazañas: las tallan. Este muro tiene una runa por cada quest que puede hacer tu personaje. Las que aún no has hecho están solo marcadas a punzón; cada quest que entregas se talla y se rellena de oro. Pasa por encima de una runa para saber cuál es, y entra en ella para ver su ficha.</p>
+<details class="leer"><summary>Cómo se leen las runas</summary><div id="leyenda"></div></details>
+<h3>Las sagas</h3>
+<p class="src">Cada cadena es una runa ligada: un asta con un trazo por paso, de abajo arriba. Las más altas son las cadenas más largas.</p>
+<div class="friso" id="friso"></div>
+<h3>Las gestas, zona a zona</h3>
+<div id="muro"></div>
+</div>
+</section>
+{hub('chaman', 'Tu chamán', 'Cómo se juega la clase, dónde poner los talentos, qué arma llevar y qué hay que comprar o entrenar.', [
+    ('basico', 'Totems, imbuir el arma, shocks y por qué llevas un arma lenta.'),
+    ('clase', 'Las quests que te dan cada totem y tu arma.'),
+    ('talentos', 'Dónde poner cada punto de 10 a 60 y por qué.'),
+    ('rotacion', 'Qué pulsar al questear y qué estadísticas buscar.'),
+    ('armas', 'La mejor arma de dos manos de cada tramo y dónde sale.'),
+    ('rol', 'Curar o tanquear en mazmorras y los totems que salvan al grupo.'),
+    ('compras', 'Lo que hay que pagar o ir a aprender: armas, hechizos, montura.'),
+    ('personaje', 'Bolsa de dormir, cocina, campamentos y ventajas de enano.'),
+    ('legacy', 'El sistema de puntos de cuenta y qué talentos convienen.')])}
+{hub('profesiones', 'Profesiones', 'Minería e Ingeniería: qué rango toca a cada nivel, qué buscar, qué fabricar y qué guardar para quests.', [
+    ('prof-plan', 'Rangos, entrenadores, precios y la habilidad que conviene llevar a cada nivel.'),
+    ('mineria', 'Qué mineral buscar en cada tramo y en qué zonas.'),
+    ('ingenieria', 'Qué fabricar para subir de 1 a 300, especialización y qué guardar.'),
+    ('prof-quests', 'Quests que piden barras o inventos tuyos: guárdalos al fabricarlos.')])}
+{hub('referencia', 'Referencia', 'Material de consulta: vocabulario, tablas, llaves, estado del juego y fuentes.', [
+    ('vocabulario', 'Las palabras del juego que usa la guía.'),
+    ('importar', 'Marca solas las quests completadas a partir de Questie.'),
+    ('plan', 'El plan maestro por tramos de nivel.'),
+    ('tabla-zonas', 'Todas las zonas en una tabla, con lo que aporta cada una.'),
+    ('llaves', 'Llaves de mazmorra y cadenas que saltan de una mazmorra a otra.'),
+    ('estado', 'Cómo está el juego y los últimos hotfixes que te afectan.'),
+    ('explorar', 'Lo que aporta explorar: reputaciones, barcos y rincones.'),
+    ('pendiente', 'Lo que ninguna fuente confirma todavía.'),
+    ('fuentes', 'De dónde sale cada dato y cómo abrir las fichas.')])}'''
     foot = re.search(r'<footer>.*?</footer>', body, re.S)
     main = f'{TOP}\n<div class="shell"><aside class="side" id="side" aria-label="En esta sección"></aside>\n<main>{views}\n{foot.group(0) if foot else ""}</main></div>'
 
@@ -814,12 +1081,15 @@ def build():
         if k:
             for j in (k[3], k[4]):
                 if j: USED_Q.add(j)
+    IMQ = {int(k[1:]) for k2, v in DEPS_SEEN.items() if not k2.startswith('rt') for k in v if k[0] == 'q'}
+    for i in Q:
+        if in_guide(i): USED_Q.add(i)
     npcloc = {}
     for q in Q.values():
         if q.get('starts') and q.get('sc') and q['starts'][0]['t'] == 'npc':
             npcloc.setdefault(q['starts'][0]['id'], q['sc'])
     data = {
-        'q': {str(i): qd(Q[i]) for i in sorted(USED_Q) if i in Q},
+        'q': {str(i): dict(qd(Q[i]), **({'im': 1} if i in IMQ else {}), **({'u': 1} if in_guide(i) else {})) for i in sorted(USED_Q) if i in Q},
         'i': {str(i): t for i, t in USED_I.items()},
         'n': {str(i): [n] + (npcloc.get(i) or []) for i, n in USED_N.items()},
         'zones': zdash, 'dungeons': dash, 'chains': cmeta, 'miles': [list(m) for m in MILESTONES], 'prof': [list(p) for p in PROF],
@@ -827,16 +1097,17 @@ def build():
     blob = json.dumps(data, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
     page = ('<title>Enano Chamán en WoW Forever</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n'
             '<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
-            '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">\n'
+            '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Germania+One&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">\n'
             f'<style>\n{css}</style>\n{main}\n<script id="gd" type="application/json">{blob}</script>\n<script>\n{js}</script>\n')
-    ids = set(re.findall(r'\sid="([^"]+)"', main)) | {'inicio', 'zonas', 'mazmorras', 'cadenas', 'chaman', 'referencia'}
-    broken = sorted({h for h in re.findall(r'href="#([^"]+)"', main) if h not in ids})
+    ids = set(re.findall(r'\sid="([^"]+)"', main)) | {'inicio', 'zonas', 'mazmorras', 'cadenas', 'quests', 'chaman', 'profesiones', 'referencia', 'muro'}
+    broken = sorted({h for h in re.findall(r'href="#([^"]+)"', main) if h not in ids and not re.fullmatch(r'q-\d+', h)})
     if broken: print('ENLACES INTERNOS ROTOS:', ', '.join(broken))
     os.makedirs(os.path.join(ROOT, 'dist'), exist_ok=True)
     open(os.path.join(ROOT, 'dist', 'artifact.html'), 'w', encoding='utf-8').write(page)
     def wrap(p, cls):
         return ('<!doctype html>\n<html lang="es"><head><meta charset="utf-8">'
                 '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
+                '<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 fill=%27%2310151A%27/%3E%3Cpath fill=%27%237FC0CE%27 d=%27M11 3h10l2 2v4H9V5z%27/%3E%3Cpath fill=%27%2362ADE5%27 d=%27M8 10h16v5H8z%27/%3E%3Cpath fill=%27%23F47B40%27 d=%27M9 16h14v5H9z%27/%3E%3Cpath fill=%27%23CFA560%27 d=%27M9 22h14l3 3v4H6v-4z%27/%3E%3C/svg%3E">\n'
                 + p.replace('</style>', f'</style></head><body class="{cls}">', 1) + '\n</body></html>\n')
     open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write(wrap(page, 'local'))
     pr = re.sub(r'<section class="blk allq".*?<!--/allq-->', '', page, flags=re.S)
@@ -845,6 +1116,10 @@ def build():
     print(f'quests en caché {len(Q)} · fichas de quest {len(data["q"])} · objetos {len(data["i"])} · PNJ {len(data["n"])}')
     print(f'enlaces en el texto: {STATS["linked"]} directos, {STATS["search"]} por búsqueda · zonas {len(zdash)} · mazmorras {len(dash)} · cadenas {len(cmeta)}')
     print(f'index.html {os.path.getsize(os.path.join(ROOT, "index.html")) // 1024} KB')
+    if '--deps' in sys.argv:
+        for k, v in DEPS_SEEN.items():
+            names = list(dict.fromkeys(Q[int(x[1:])]['name'] if x[0] == 'q' else x for x in v))
+            print(f'  {k:6} {len(v):3}  ' + ' | '.join(names)[:150])
 
 def prefetch():
     """Resuelve en paralelo los nombres de jefes y objetos de las fichas de mazmorra."""

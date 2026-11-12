@@ -9,7 +9,7 @@
     set: function(k, v){ try { window.localStorage.setItem(k, v); return true; } catch(e){ return false; } }
   };
   function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
-  var VIEWS = ['inicio', 'zonas', 'mazmorras', 'cadenas', 'chaman', 'referencia'];
+  var VIEWS = ['inicio', 'zonas', 'mazmorras', 'cadenas', 'quests', 'chaman', 'profesiones', 'referencia', 'muro'];
   var cur = { view: 'inicio', page: null };
 
   // grupos de mazmorra (una entrada por mazmorra, con sus alas)
@@ -34,7 +34,30 @@
   if (mode !== 'wh') applyLinks();
 
   // ---------------------------------------------------------------- casillas y progreso
+  // Cada quest y cada mazmorra tiene una sola marca, guardada por su clave. Las casillas con data-dep
+  // (imprescindibles, ruta, filas de varios pasos) no guardan nada: muestran el estado de las claves de las que dependen.
   var boxes = $$('input[type=checkbox][data-k]');
+  var plain = boxes.filter(function(b){ return !b.dataset.dep; }), views = boxes.filter(function(b){ return !!b.dataset.dep; });
+  var KS = {}, storeOK = true;
+  try {
+    for (var si = 0; si < window.localStorage.length; si++){
+      var sk = window.localStorage.key(si);
+      if (sk && sk.indexOf('chk-') === 0 && window.localStorage.getItem(sk) === '1') KS[sk.slice(4)] = 1;
+    }
+  } catch(e){}
+  function setKey(k, on){
+    if (on) KS[k] = 1; else delete KS[k];
+    storeOK = store.set('chk-' + k, on ? '1' : '0') && storeOK;
+    $$('input[data-k="' + k + '"]').forEach(function(o){ if (!o.dataset.dep) o.checked = on; });
+  }
+  function syncViews(){
+    views.forEach(function(b){
+      var ks = b.dataset.dep.split(','), n = ks.filter(function(k){ return KS[k]; }).length;
+      b.checked = n === ks.length; b.indeterminate = n > 0 && n < ks.length;
+      var sp = b.nextElementSibling;
+      if (sp){ if (b.indeterminate) sp.dataset.part = n + ' de ' + ks.length; else sp.removeAttribute('data-part'); }
+    });
+  }
   function countIn(el, q){
     if (!el) return [0, 0];
     var all = $$(q || 'input[type=checkbox][data-k]', el);
@@ -57,27 +80,43 @@
     $$('input[data-dg]').forEach(function(b){
       var row = $('.gr[data-dg="' + b.dataset.dg + '"]'); if (row) row.classList.toggle('done', b.checked);
     });
-    var dg = countIn(document, 'input[data-dg]'), im = uniq('.blk.imp input[data-k]'), ql = countIn(document, '.allq input[data-k]'), rt = countIn($('#ruta'));
+    var dg = countIn(document, 'input[data-dg]'), im = uniq('.blk.imp input[data-k]'), rt = countIn($('#ruta'));
+    var ql = [QALL.filter(function(id){ return KS['q' + id]; }).length, QALL.length];
     var box = $('#progreso');
     if (box) box.innerHTML = '<span>Mazmorras <b>' + dg[0] + '/' + dg[1] + '</b></span><span>Imprescindibles <b>' + im[0] + '/' + im[1] +
-      '</b></span><span>Quests de zona <b>' + ql[0] + '/' + ql[1] + '</b></span><span>Ruta <b>' + rt[0] + '/' + rt[1] + '</b></span>';
-    updateChains(); renderCards(); renderSide(); renderNow(); updateRoute();
+      '</b></span><span>Quests <b>' + ql[0] + '/' + ql[1] + '</b></span><span>Ruta <b>' + rt[0] + '/' + rt[1] + '</b></span>';
+    updateChains(); renderCards(); renderSide(); renderNow(); updateRoute(); questStats(); updateTotems(); updateWall();
   }
   function restore(){
-    boxes.forEach(function(b){ var v = store.get('chk-' + b.dataset.k); b.checked = v === null ? b.defaultChecked : v === '1'; });
-    updateBlocks(); refresh();
+    // una marca antigua puesta a mano en una vista pasa a sus quests
+    views.forEach(function(b){
+      if (!KS[b.dataset.k]) return;
+      b.dataset.dep.split(',').forEach(function(k){ setKey(k, true); });
+      setKey(b.dataset.k, false);
+    });
+    plain.forEach(function(b){ b.checked = !!KS[b.dataset.k]; });
+    syncViews(); updateBlocks(); refresh();
   }
   document.addEventListener('change', function(e){
     var b = e.target;
     if (!b.matches || !b.matches('input[type=checkbox][data-k]')) return;
-    savedToast(store.set('chk-' + b.dataset.k, b.checked ? '1' : '0'));
-    $$('input[data-k="' + b.dataset.k + '"]').forEach(function(o){ o.checked = b.checked; });
-    // una fila de varios pasos marcada da por hechos todos sus pasos
-    if (b.checked && b.dataset.all) b.dataset.all.split(',').forEach(function(id){
-      store.set('chk-q' + id, '1'); $$('input[data-k="q' + id + '"]').forEach(function(o){ o.checked = true; });
-    });
-    updateBlocks(b.dataset.all ? document : b.closest('.page') || document); refresh();
+    storeOK = true;
+    if (b.checked) tink();
+    if (b.dataset.dep) b.dataset.dep.split(',').forEach(function(k){ setKey(k, b.checked); });
+    else setKey(b.dataset.k, b.checked);
+    savedToast(storeOK);
+    syncViews(); updateBlocks(); refresh();
   });
+
+  // los cuatro totems de la portada se encienden al entregar la quest que da cada uno
+  function updateTotems(){
+    var v = L();
+    $$('a.totem').forEach(function(a){
+      var got = !!KS['q' + a.dataset.q], lv = +a.dataset.tl, st = $('i', a);
+      a.classList.toggle('got', got); a.classList.toggle('ready', !got && v >= lv);
+      if (st) st.textContent = got ? 'conseguido' : v >= lv ? 'disponible' : 'a nivel ' + lv;
+    });
+  }
 
   // aviso de guardado
   var toast = document.createElement('div'), toastT = null;
@@ -91,24 +130,29 @@
   // cadenas: progreso y paso siguiente
   var CH = {};
   function chainState(c){ return CH[c.k] || { done: 0, n: c.n, next: 1 }; }
+  function markSteps(root){
+    var lis = $$('ol.chain > li', root), done = 0, next = 0;
+    lis.forEach(function(li, i){
+      var on = $('input', li).checked;
+      li.classList.toggle('done', on); li.classList.remove('next');
+      if (on) done++; else if (!next){ next = i + 1; li.classList.add('next'); }
+    });
+    return { done: done, n: lis.length, next: next };
+  }
   function updateChains(){
     (D.chains || []).forEach(function(c){
       var pg = document.getElementById('cad-' + c.k); if (!pg) return;
-      var lis = $$('ol.chain > li', pg), done = 0, next = 0;
-      lis.forEach(function(li, i){
-        var on = $('input', li).checked;
-        li.classList.toggle('done', on); li.classList.remove('next');
-        if (on) done++; else if (!next){ next = i + 1; li.classList.add('next'); }
-      });
-      CH[c.k] = { done: done, n: lis.length, next: next };
-      var cp = $('.cprog', pg);
-      if (cp) cp.textContent = done === lis.length ? 'completada' : done ? done + ' de ' + lis.length + ' · sigue el paso ' + next : 'sin empezar';
+      var s = CH[c.k] = markSteps(pg), cp = $('.cprog', pg);
+      if (cp) cp.textContent = s.done === s.n ? 'completada' : s.done ? s.done + ' de ' + s.n + ' · sigue el paso ' + s.next : 'sin empezar';
     });
-    $$('a.clink').forEach(function(a){
+    $$('a.clink[data-chain]').forEach(function(a){
       var s = CH[a.dataset.chain]; if (!s) return;
       a.classList.toggle('done', s.done === s.n);
       $('.cl-p', a).textContent = s.done === s.n ? 'completada' : s.done ? s.done + '/' + s.n + ' · sigue el paso ' + s.next : s.n + ' pasos';
     });
+    if (cur.page && cur.page.classList.contains('cpage')) chainEmblem(cur.page);
+    var qd = $('#qdetail');
+    if (qd && !qd.hidden){ var s = markSteps(qd), pr = $('.cprog', qd); if (pr) pr.textContent = s.n > 1 ? s.done + ' de ' + s.n : ''; }
   }
 
   // pasos de la ruta: hecho, pendiente de antes o el que toca
@@ -134,7 +178,22 @@
     $$('[data-lv]').forEach(function(el){ var p = el.dataset.lv.split('-'); el.classList.toggle('at-level', inRange(v, +p[0], +p[1])); });
     var now = $('.g-now');
     if (now){ now.hidden = !(v >= 10); now.style.setProperty('--p', (Math.max(10, Math.min(60, v)) - 10) / 50); now.dataset.l = v; }
+    var rail = $('.rail'); if (rail) rail.style.setProperty('--lv', v || 1);
+    updateTotems(); updateWall();
+    var tnow = $('#tl-now');
+    if (tnow){
+      var curT = null, nextT = null, tname = function(li){ return $('b', li).textContent; };
+      $$('ol.tl > li').forEach(function(li){
+        var p = li.dataset.lv.split('-'), a = +p[0], b = +p[1];
+        li.classList.toggle('past', v > b);
+        if (v >= a && v <= b) curT = li; else if (v < a && !nextT) nextT = li;
+      });
+      tnow.textContent = !v ? '' : v < 10 ? 'Los talentos empiezan a nivel 10. El primero es ' + tname(nextT) + '.'
+        : 'Con nivel ' + v + ' tienes ' + (v - 9) + ' puntos.' + (curT ? ' Ahora toca ' + tname(curT) + '.' : '') +
+          (nextT ? ' Después, a nivel ' + nextT.dataset.lv.split('-')[0] + ', ' + tname(nextT) + '.' : '');
+    }
     renderCards(); renderSide(); renderNow(); updateRoute();
+    if (cur.view === 'quests' && !cur.page && qf.level && qf.level.checked) renderQuests();
   }
   lvl.addEventListener('input', function(){ store.set('nivel', lvl.value); applyLevel(); });
 
@@ -161,10 +220,21 @@
         if (!cby[c.g]){ cby[c.g] = []; cg.push(c.g); }
         var s = chainState(c), done = s.done === s.n;
         cby[c.g].push('<a class="card' + (inRange(v, c.a, c.b) && !done ? ' at-level' : '') + (done ? ' done' : '') + '" href="#cad-' + c.k + '">' +
-          '<span class="c-h"><b>' + esc(c.t) + '</b><span class="lv">' + esc(c.lv) + '</span></span>' + bar(s.done, s.n) +
+          '<span class="c-h"><b>' + esc(c.t) + '</b><span class="lv">' + esc(c.lv) + '</span></span>' + (c.sub ? '<span class="c-s">' + esc(c.sub) + '</span>' : '') + bar(s.done, s.n) +
           '<span class="c-f">' + (done ? 'Completada' : s.done ? 'Vas por el paso ' + s.next + ' de ' + s.n : s.n + ' pasos') + '</span></a>');
       });
       host.innerHTML = cg.map(function(g){ return '<h4 class="cg">' + esc(g) + '</h4><div class="cards">' + cby[g].join('') + '</div>'; }).join('');
+    }
+    host = $('#zchains');
+    if (host){
+      var zg = [], zby = {};
+      leafChains().forEach(function(c){
+        if (!zby[c.place]){ zby[c.place] = []; zg.push(c.place); }
+        var d = c.ids.filter(function(i){ return KS['q' + i]; }).length, q = D.q[c.id];
+        zby[c.place].push('<li><a class="clink' + (d === c.ids.length ? ' done' : '') + (inRange(v, q.m || q.l, q.l + 3) ? ' at-level' : '') + '" href="#q-' + c.id + '"><b>' + esc(q.n) +
+          '</b><span class="lv">' + (q.l || '') + '</span><span class="cl-h">' + c.ids.length + ' pasos</span><span class="cl-p">' + (d === c.ids.length ? 'completada' : d + '/' + c.ids.length) + '</span></a></li>');
+      });
+      host.innerHTML = zg.map(function(g){ return '<h4 class="cg">' + esc(g) + '</h4><ul class="clinks">' + zby[g].join('') + '</ul>'; }).join('');
     }
     host = $('#dcards');
     if (host){
@@ -208,10 +278,10 @@
         h += '<a href="#cad-' + c.k + '" class="' + ('cad-' + c.k === pid ? 'on ' : '') + (inRange(v, c.a, c.b) ? 'at-level ' : '') + (s.done === s.n ? 'done' : '') +
           '"><span>' + esc(c.t) + '</span><span class="lv">' + esc(c.lv) + '</span></a>';
       });
-    } else if (cur.view === 'chaman' || cur.view === 'referencia'){
-      h = '<h4>En esta sección</h4>';
-      $$('#v-' + cur.view + ' > section.sec').forEach(function(s){
-        var t = $('h2', s); if (t && s.id) h += '<a href="#' + s.id + '"><span>' + esc(t.textContent.trim()) + '</span></a>';
+    } else if (cur.view === 'chaman' || cur.view === 'profesiones' || cur.view === 'referencia'){
+      h = '<a class="s-all' + (pid ? '' : ' on') + '" href="#' + cur.view + '">Resumen</a><h4>Apartados</h4>';
+      $$('#v-' + cur.view + ' > .spage').forEach(function(s){
+        h += '<a href="#' + s.id + '" class="' + (s.id === pid ? 'on' : '') + '"><span>' + esc(s.dataset.name) + '</span></a>';
       });
     }
     side.innerHTML = h;
@@ -238,13 +308,16 @@
       (ds.map(function(d){ return chip('dg-' + d.g, d.n, d.a + '-' + d.b, isDone(d.k) ? 'done' : ''); }).join('') || '<li><small>Ninguna todavía: la primera es a nivel 13.</small></li>') + '</ul>' +
       (dn.length ? '<small>Pronto:</small><ul class="chips">' + dn.map(function(d){ return chip('dg-' + d.g, d.n, d.a + '-' + d.b, 'soon'); }).join('') + '</ul>' : '') + '</div>';
     var cs = (D.chains || []).filter(function(c){ var s = chainState(c); return s.done !== s.n && (inRange(v, c.a, c.b) || s.done > 0); });
+    var GORD = { 'Tu chamán': 0, 'Tu personaje': 1, 'Mazmorras': 2, 'Zonas': 3 };
+    cs.sort(function(a, b){ return (chainState(b).done > 0) - (chainState(a).done > 0) || GORD[a.g] - GORD[b.g] || a.a - b.a; });
+    var extra = cs.length - 6;
     h += '<div class="tile"><h4>Cadenas a tu nivel</h4><ul class="chips">' +
-      (cs.map(function(c){ var s = chainState(c); return chip('cad-' + c.k, c.t, s.done + '/' + s.n, ''); }).join('') || '<li><small>Ninguna pendiente.</small></li>') + '</ul>' +
-      '<small><a href="#cadenas">Ver todas las cadenas paso a paso</a></small></div>';
+      (cs.slice(0, 6).map(function(c){ var s = chainState(c); return chip('cad-' + c.k, c.t, s.done + '/' + s.n, ''); }).join('') || '<li><small>Ninguna pendiente.</small></li>') + '</ul>' +
+      '<small><a href="#cadenas">' + (extra > 0 ? 'Y ' + extra + ' más: ver todas las cadenas' : 'Ver todas las cadenas paso a paso') + '</a></small></div>';
     h += '<div class="tile"><h4>Lo que tienes y lo que viene</h4><ul class="ms">' +
       past.map(function(m){ return '<li class="past"><span class="lv">' + m[0] + '</span><span>' + esc(m[1]) + '</span></li>'; }).join('') +
-      next.map(function(m){ return '<li><span class="lv">' + m[0] + '</span><span>' + esc(m[1]) + '</span></li>'; }).join('') + '</ul></div>';
-    h += '<div class="tile"><h4>Profesiones a este nivel</h4><p>' + esc(pr[1]) + '</p><p>' + esc(pr[2]) + '</p><small><a href="#profesiones">Ver rutas y materiales que guardar</a></small></div>';
+      next.map(function(m){ return '<li><span class="lv">' + m[0] + '</span><span>' + esc(m[1]) + '</span></li>'; }).join('') + '</ul>' +
+      '<h4 class="t2">Profesiones a este nivel</h4><p>' + esc(pr[1]) + '</p><p>' + esc(pr[2]) + '</p><small><a href="#profesiones">Ver el plan de profesiones</a></small></div>';
     host.innerHTML = h;
     var pend = $('#pend');
     if (pend){
@@ -267,10 +340,11 @@
   function pageOrder(page){
     if (page.classList.contains('zpage')) return D.zones.map(function(z){ return { id: z.id, n: z.n }; });
     if (page.classList.contains('cpage')) return (D.chains || []).map(function(c){ return { id: 'cad-' + c.k, n: c.t }; });
+    if (page.classList.contains('spage')) return $$('.spage', page.parentNode).map(function(s){ return { id: s.id, n: s.dataset.name }; });
     return DG.map(function(g){ return { id: 'dg-' + g.g, n: g.n }; });
   }
   function addPrevNext(page){
-    if ($('.pn', page)) return;
+    if ($('.pn', page) || page.classList.contains('qpage')) return;
     var list = pageOrder(page), i = -1;
     list.forEach(function(x, k){ if (x.id === page.id) i = k; });
     var p = list[i - 1], n = list[i + 1], nav = document.createElement('nav');
@@ -283,7 +357,9 @@
     id = (id != null ? id : (location.hash || '')).replace(/^#/, '');
     try { id = decodeURIComponent(id); } catch(e){}
     var view = 'inicio', page = null, target = null;
-    if (VIEWS.indexOf(id) >= 0) view = id;
+    var mq = /^q-(\d+)$/.exec(id);
+    if (mq && D.q[mq[1]]){ view = 'quests'; page = $('#qdetail'); renderQuest(+mq[1]); }
+    else if (VIEWS.indexOf(id) >= 0) view = id;
     else if (id){
       var el = document.getElementById(id);
       if (el){
@@ -295,10 +371,16 @@
     cur = { view: view, page: page };
     $$('.view').forEach(function(v){ v.hidden = v.id !== 'v-' + view; });
     $$('.tabs a').forEach(function(a){ a.classList.toggle('on', a.dataset.view === view); });
+    var tabOn = $('.tabs a.on'), tabs = $('.tabs');
+    if (tabOn && tabs && tabs.scrollWidth > tabs.clientWidth) tabs.scrollLeft = Math.max(0, tabOn.offsetLeft - 24);
     var vEl = $('#v-' + view), pages = $$('.page', vEl), ov = $('.overview', vEl);
     pages.forEach(function(p){ p.hidden = p !== page; });
     if (ov) ov.hidden = !!page;
     if (page) addPrevNext(page);
+    if (view === 'quests' && !page) renderQuests();
+    if (view === 'muro') openWall();
+    if (page && page.classList.contains('cpage')) chainEmblem(page);
+    if (page && page.id === 'qdetail') updateChains();
     renderSide();
     var go = pending || target; pending = null;
     if (go){
@@ -378,6 +460,8 @@
     if (t === 'quest') h = questHTML(id); else if (t === 'item') h = itemHTML(id); else if (t === 'npc') h = npcHTML(id);
     if (!h) return '';
     var where = mode === 'wdb' ? 'Warcraft DB' : 'Wowhead';
+    if (a.classList.contains('rn')) return h + '<div class="p-f"><span>' + (KS['q' + id] ? 'Tallada' : 'Sin tallar') + '</span>' +
+      (touch ? '<a href="' + a.getAttribute('href') + '">Ver su ficha</a>' : '<span>Clic para ver su ficha</span>') + '</div>';
     return h + '<div class="p-f"><span>' + (touch ? '' : 'Clic para abrir en ' + where) + '</span>' +
       (touch ? '<a href="' + a.href + '" target="_blank" rel="noopener">Abrir en ' + where + '</a>' : '') + '</div>';
   }
@@ -391,7 +475,7 @@
     return true;
   }
   function hide(){ pop.hidden = true; curA = null; }
-  function target(e){ return e.target.closest ? e.target.closest('a.x[data-t], .gr[data-tip]') : null; }
+  function target(e){ return e.target.closest ? e.target.closest('a.x[data-t], a.rn[data-t], [data-tip]') : null; }
   if (!touch){
     document.addEventListener('mouseover', function(e){ var a = target(e); if (a && a !== curA) show(a); else if (e.target.closest && e.target.closest('#pop')) clearTimeout(hideT); });
     document.addEventListener('mouseout', function(e){ if (target(e) || (e.target.closest && e.target.closest('#pop'))){ clearTimeout(hideT); hideT = setTimeout(hide, 140); } });
@@ -400,7 +484,7 @@
   } else {
     document.addEventListener('click', function(e){
       var a = target(e);
-      if (a && a !== curA && !a.classList.contains('gr')){ if (show(a)) e.preventDefault(); }
+      if (a && a !== curA && !a.classList.contains('gr') && !a.classList.contains('br')){ if (show(a)) e.preventDefault(); }
       else if (!(e.target.closest && e.target.closest('#pop'))) hide();
     }, true);
   }
@@ -416,7 +500,8 @@
     D.zones.forEach(function(z){ add('Zona', z.n, 'niveles ' + z.lv, z.id); });
     DG.forEach(function(g){ add('Mazmorra', g.n, 'niveles ' + g.a + '-' + g.b + ' · ' + g.loc, 'dg-' + g.g); });
     (D.chains || []).forEach(function(c){ add('Cadena', c.t, 'niveles ' + c.lv + ' · ' + c.n + ' pasos', 'cad-' + c.k); });
-    $$('.view > section.sec').forEach(function(s){ var h = $('h2', s); if (h && s.id) add('Sección', h.textContent, '', s.id); });
+    $$('.spage').forEach(function(s){ add('Sección', s.dataset.name, '', s.id); });
+    QALL.forEach(function(id){ add('Quest', D.q[id].n, qPlace(D.q[id]) + ' · ficha', 'q-' + id); });
     $$('ol.chain > li').forEach(function(li){ var a = $('.cs-t a.x-quest, .cs-t b', li); if (a) add('Quest', a.textContent, 'cadena ' + pageName(li), li); });
     $$('ul.ql > li').forEach(function(li){ var a = $('a.x-quest', li); if (a) add('Quest', a.textContent, pageName(li), li); });
     $$('.blk.imp li').forEach(function(li){ var a = $('a.x', li); if (a) add('Quest', a.textContent, pageName(li) + ' · imprescindible', li); });
@@ -465,9 +550,7 @@
   // ---------------------------------------------------------------- copiar y cargar progreso
   var code = $('#sync-code'), msg = $('#sync-msg');
   function exportCode(){
-    var on = {}, off = {};
-    boxes.forEach(function(b){ if (b.checked) on[b.dataset.k] = 1; else if (b.defaultChecked) off[b.dataset.k] = 1; });
-    return btoa(unescape(encodeURIComponent(JSON.stringify({ v: 2, nivel: lvl.value, on: Object.keys(on), off: Object.keys(off) }))));
+    return btoa(unescape(encodeURIComponent(JSON.stringify({ v: 3, nivel: lvl.value, on: Object.keys(KS) }))));
   }
   var bc = $('#sync-copy'), bl = $('#sync-load');
   if (bc) bc.addEventListener('click', function(){
@@ -477,12 +560,13 @@
   });
   if (bl) bl.addEventListener('click', function(){
     try {
-      var d = JSON.parse(decodeURIComponent(escape(atob(code.value.trim()))));
-      var on = {}; (d.on || []).forEach(function(k){ on[k] = 1; });
-      boxes.forEach(function(b){ store.set('chk-' + b.dataset.k, on[b.dataset.k] ? '1' : '0'); });
+      var d = JSON.parse(decodeURIComponent(escape(atob(code.value.trim())))), on = {};
+      (d.on || []).forEach(function(k){ on[k] = 1; });
+      Object.keys(KS).forEach(function(k){ if (!on[k]) setKey(k, false); });
+      Object.keys(on).forEach(function(k){ setKey(k, true); });
       if (d.nivel){ lvl.value = d.nivel; store.set('nivel', d.nivel); }
       restore(); applyLevel();
-      msg.textContent = 'Progreso cargado: ' + (d.on || []).length + ' casillas.';
+      msg.textContent = 'Progreso cargado: ' + (d.on || []).length + ' marcas.';
     } catch (err){ msg.textContent = 'Ese código no es válido. Cópialo entero desde el otro dispositivo.'; }
   });
 
@@ -502,13 +586,13 @@
     return chars;
   }
   function markDone(ids){
-    var have = {}, fresh = 0, known = 0;
-    boxes.forEach(function(b){ have[b.dataset.k] = 1; });
+    var fresh = 0, known = 0;
     ids.forEach(function(id){
-      var k = 'q' + id; if (!have[k]) return;
-      known++; if (store.get('chk-' + k) !== '1'){ store.set('chk-' + k, '1'); fresh++; }
+      if (!D.q[id] || !D.q[id].u) return;
+      known++; if (!KS['q' + id]){ setKey('q' + id, true); fresh++; }
     });
     restore(); applyLevel();
+    if (cur.view === 'quests' && !cur.page) renderQuests();
     return [fresh, known];
   }
   if (impFile) impFile.addEventListener('change', function(){
@@ -536,6 +620,242 @@
     var r = markDone(ids);
     impMsg.textContent = 'De ' + src + ': ' + ids.length + ' quests completadas, ' + r[1] + ' están en la guía. Marcadas ahora ' + r[0] + (r[1] - r[0] ? '; las otras ' + (r[1] - r[0]) + ' ya lo estaban.' : '.');
   });
+
+  // ---------------------------------------------------------------- todas las quests: una ficha por quest y vistas de ella
+  var QALL = Object.keys(D.q).filter(function(id){ return D.q[id].u; }).map(Number);
+  QALL.sort(function(a, b){ var x = D.q[a], y = D.q[b]; return (x.l || 0) - (y.l || 0) || x.n.localeCompare(y.n) || a - b; });
+  var ZN = {}, DN = {};
+  D.zones.forEach(function(z){ ZN[z.id.slice(2)] = z.n; });
+  DG.forEach(function(g){ DN[g.g] = g.n; });
+  function qPlace(q){ return q.dg ? DN[q.dg] : q.zp ? ZN[q.zp] : q.z || ''; }
+  function qHome(q){ return q.dg ? 'dg-' + q.dg : q.zp ? 'z-' + q.zp : ''; }
+  function qTags(q){
+    var t = '';
+    if (q.nw) t += '<span class="tag new">nueva</span>';
+    if (q.dg) t += '<span class="tag ty">mazmorra</span>'; else if (q.t && TY[q.t]) t += '<span class="tag ty">' + TY[q.t] + '</span>';
+    if (q.cl) t += '<span class="tag ty">clase</span>';
+    if (q.im) t += '<span class="tag st">imprescindible</span>';
+    return t;
+  }
+  function qLink(id){ return '<a class="x x-quest" data-t="quest" data-id="' + id + '" href="' + url('quest', id) + '" target="_blank" rel="noopener">' + esc(D.q[id].n) + '</a>'; }
+  function qBox(id, label){ return '<input type="checkbox" data-k="q' + id + '"' + (KS['q' + id] ? ' checked' : '') + (label ? ' aria-label="' + label + '"' : '') + '>'; }
+  function spot(ref, c){ return esc(ref[2]) + (c ? ' <span class="co">' + esc(c[2] || '') + ' ' + c[0] + ', ' + c[1] + '</span>' : ''); }
+  function qRow(id){
+    var q = D.q[id], meta = [], home = qHome(q);
+    if (qPlace(q)) meta.push(home ? '<a href="#' + home + '">' + esc(qPlace(q)) + '</a>' : esc(qPlace(q)));
+    if (q.g) meta.push(esc(q.g[2]) + (q.gc ? ' · ' + q.gc[0] + ', ' + q.gc[1] : ''));
+    if (q.ch) meta.push('<a class="qc" href="#cad-' + q.ch[0] + '">cadena, paso ' + q.ch[1] + '</a>');
+    else if (q.pa || q.po || q.nx) meta.push('<a class="qc" href="#q-' + id + '">cadena</a>');
+    else meta.push('<a class="qc" href="#q-' + id + '">ficha</a>');
+    return '<li><label>' + qBox(id) + '<span><span class="lv">' + (q.l || '?') + '</span> ' + qLink(id) + qTags(q) + '<span class="qm">' + meta.join(' · ') + '</span></span></label></li>';
+  }
+  var qf = { text: $('#qf-text'), zone: $('#qf-zone'), state: $('#qf-state'), kind: $('#qf-kind'), level: $('#qf-level') }, qshown = 150;
+  if (qf.zone){
+    qf.zone.innerHTML = '<option value="">Todas las zonas y mazmorras</option><optgroup label="Zonas">' +
+      D.zones.map(function(z){ return '<option value="' + z.id + '">' + esc(z.n) + '</option>'; }).join('') + '</optgroup><optgroup label="Mazmorras">' +
+      DG.map(function(g){ return '<option value="dg-' + g.g + '">' + esc(g.n) + '</option>'; }).join('') + '</optgroup>';
+  }
+  function qFilter(){
+    var t = qf.text.value.trim().toLowerCase(), z = qf.zone.value, st = qf.state.value, k = qf.kind.value, lv = qf.level.checked ? L() : 0;
+    return QALL.filter(function(id){
+      var q = D.q[id];
+      if (t && q.n.toLowerCase().indexOf(t) < 0 && !(q.g && q.g[2].toLowerCase().indexOf(t) >= 0)) return false;
+      if (z && qHome(q) !== z) return false;
+      if (st && (st === 'd') !== !!KS['q' + id]) return false;
+      if (k === 'im' && !q.im || k === 'dg' && !q.dg || k === 'cl' && !q.cl || k === 'nw' && !q.nw) return false;
+      if (k === 'ch' && !(q.ch || q.pa || q.po || q.nx) || k === 'el' && !(q.t === 'Elite' || q.gr)) return false;
+      if (lv && !((q.m || q.l || 0) <= lv && (q.l || 0) >= lv - 4)) return false;
+      return true;
+    });
+  }
+  function questStats(ids){
+    var el = $('#qstats'); if (!el || !qf.text) return;
+    ids = ids || qFilter();
+    var d = ids.filter(function(id){ return KS['q' + id]; }).length;
+    el.textContent = ids.length + ' quests · ' + d + ' hechas · ' + (ids.length - d) + ' pendientes';
+  }
+  function renderQuests(){
+    var list = $('#qlist'); if (!list) return;
+    var ids = qFilter(), more = $('#qmore');
+    questStats(ids);
+    list.innerHTML = ids.slice(0, qshown).map(qRow).join('') || '<li class="src">Ninguna quest con esos filtros.</li>';
+    more.hidden = ids.length <= qshown;
+    more.textContent = 'Ver ' + Math.min(150, ids.length - qshown) + ' más';
+  }
+  ['text', 'zone', 'state', 'kind', 'level'].forEach(function(k){
+    if (qf[k]) qf[k].addEventListener(k === 'text' ? 'input' : 'change', function(){ qshown = 150; renderQuests(); });
+  });
+  if ($('#qmore')) $('#qmore').addEventListener('click', function(){ qshown += 150; renderQuests(); });
+
+  // lo que hay que hacer antes de una quest, en orden: primero lo más lejano
+  function chainOf(id){
+    var seen = {}, out = [];
+    (function walk(i){
+      var q = D.q[i]; if (!q) return;
+      (q.pa || []).concat(q.po || []).forEach(function(p){ if (!seen[p] && D.q[p]){ seen[p] = 1; walk(p); out.push(p); } });
+    })(id);
+    return out;
+  }
+  var LEAF = null;
+  function leafChains(){
+    if (LEAF) return LEAF;
+    LEAF = [];
+    QALL.forEach(function(id){
+      var q = D.q[id];
+      if (q.ch || (q.nx && q.nx.length) || !(q.pa || q.po)) return;
+      var ids = chainOf(id).concat([id]);
+      if (ids.length >= 3) LEAF.push({ id: id, ids: ids, place: qPlace(q) || 'Otras' });
+    });
+    var order = {}; D.zones.forEach(function(z, i){ order[z.n] = i; }); DG.forEach(function(g, i){ order[g.n] = 500 + i; });
+    LEAF.sort(function(a, b){ return (order[a.place] == null ? 999 : order[a.place]) - (order[b.place] == null ? 999 : order[b.place]) || (D.q[a.id].l || 0) - (D.q[b.id].l || 0); });
+    return LEAF;
+  }
+  function stepLi(id, n, isCur){
+    var q = D.q[id], w = [];
+    if (q.g) w.push('La da ' + spot(q.g, q.gc) + '.');
+    if (q.e) w.push('Se entrega a ' + spot(q.e, q.ec) + '.');
+    var alt = q.po && q.po.length > 1 ? '<p class="cs-need">Para que te la den basta con haber hecho una de estas: ' + q.po.map(qLink).join(', ') + '.</p>' : '';
+    return '<li' + (isCur ? ' class="cur"' : '') + '><label class="cs-n">' + qBox(id, 'Paso ' + n + ' hecho') + '<span data-n="' + n + '"></span></label>' +
+      '<div class="cs-b"><div class="cs-t">' + qLink(id) + '<span class="lv">nivel ' + (q.l || '?') + (q.m && q.m < q.l ? ', desde ' + q.m : '') + '</span>' + qTags(q) +
+      (isCur ? '' : '<a class="qc" href="#q-' + id + '">ficha</a>') + '</div>' +
+      (w.length ? '<p class="cs-w">' + w.join(' ') + '</p>' : '') + (q.o ? '<p class="cs-o">' + esc(q.o) + '</p>' : '') + alt + '</div></li>';
+  }
+  function renderQuest(id){
+    var pg = $('#qdetail'), q = D.q[id], anc = chainOf(id), home = qHome(q), rows = [], rw = [];
+    pg.dataset.name = q.n;
+    if (q.o) rows.push('<dt>Objetivo</dt><dd>' + esc(q.o) + '</dd>');
+    if (q.g) rows.push('<dt>La da</dt><dd>' + spot(q.g, q.gc) + '</dd>');
+    if (q.e) rows.push('<dt>Se entrega a</dt><dd>' + spot(q.e, q.ec) + '</dd>');
+    if (q.x) rw.push(q.x + ' XP'); if (q.c) rw.push(money(q.c));
+    if (rw.length) rows.push('<dt>Premio</dt><dd>' + rw.join(' · ') + '</dd>');
+    if (q.rc) rows.push('<dt>A elegir</dt><dd>' + items(q.rc) + '</dd>');
+    if (q.r) rows.push('<dt>Además</dt><dd>' + items(q.r) + '</dd>');
+    if (q.p) rows.push('<dt>Reputación</dt><dd>' + q.p.map(function(x){ return '+' + x[1] + ' ' + esc(x[0]); }).join(', ') + '</dd>');
+    var where = [];
+    if (home) where.push('<a href="#' + home + '">' + esc(qPlace(q)) + '</a>');
+    if (q.ch) where.push('<a href="#cad-' + q.ch[0] + '">su cadena, paso ' + q.ch[1] + '</a>');
+    if (q.im) where.push('imprescindibles' + (home ? ' de <a href="#' + home + '">' + esc(qPlace(q)) + '</a>' : ''));
+    var after = (q.nx || []).filter(function(i){ return D.q[i]; });
+    pg.innerHTML = '<header class="ph"><div class="crumb"><a href="#quests">Quests</a><span>›</span>' + esc(q.n) + '</div><h2>' + esc(q.n) + '</h2>' +
+      '<div class="ph-meta"><span class="lv">nivel ' + (q.l || '?') + (q.m && q.m < q.l ? ', desde ' + q.m : '') + '</span>' + (qPlace(q) ? '<span>' + esc(qPlace(q)) + '</span>' : '') + qTags(q) +
+      '<span class="cprog"></span></div><div class="dones"><label class="done">' + qBox(id) + ' Hecha</label> ' + qLink(id).replace('>' + esc(q.n) + '<', '>Abrir en ' + (mode === 'wdb' ? 'Warcraft DB' : 'Wowhead') + '<') + '</div></header>' +
+      '<section class="blk"><h3>Ficha</h3><dl class="qd">' + rows.join('') + '</dl>' + (where.length ? '<p class="src">Aparece en: ' + where.join(', ') + '.</p>' : '') + '</section>' +
+      '<section class="blk csteps"><h3>' + (anc.length ? 'Cadena hasta aquí' : 'Requisitos') + '</h3>' +
+      (anc.length ? '<p class="src">Lo que hay que haber hecho antes, en orden, según los requisitos de Questie. La última es esta quest.</p><ol class="chain">' +
+        anc.concat([id]).map(function(i, n){ return stepLi(i, n + 1, i === id); }).join('') + '</ol>'
+        : '<p>No tiene requisitos: se puede coger directamente' + (q.m ? ' desde nivel ' + q.m : '') + '.</p><ol class="chain" hidden>' + stepLi(id, 1, true) + '</ol>') + '</section>' +
+      (after.length ? '<section class="blk"><h3>Al terminarla se abre</h3><ul class="clinks">' + after.map(function(i){
+        var n = D.q[i]; return '<li><a class="clink" href="#q-' + i + '"><b>' + esc(n.n) + '</b><span class="lv">' + (n.l || '') + '</span><span class="cl-h">' + esc(qPlace(n)) + '</span><span class="cl-p">' + (KS['q' + i] ? 'hecha' : '') + '</span></a></li>';
+      }).join('') + '</ul></section>' : '');
+  }
+
+  // ---------------------------------------------------------------- el muro de gestas
+  // Cada quest es una runa que se puede leer: el trazo de arriba dice el nivel, el del centro qué hay que hacer,
+  // el del pie si da objeto, y las marcas del asta si es de mazmorra, de grupo o de clase. Una cadena es una runa ligada.
+  var RUNE_TOP = ['', 'M8 8L14 3', 'M8 8L14 3M8 8L2 3', 'M8 4L14 9', 'M8 4L14 9M8 4L2 9', 'M8 3L14 6L8 9'];
+  var RUNE_MID = { 1: 'M3 9L13 15M13 9L3 15', 2: 'M8 10H13V15H8', 3: 'M8 12H14', 4: 'M2 12H14', 5: 'M8 9L12 12L8 15L4 12Z' };
+  function runeSVG(q){
+    var d = 'M8 2V22' + RUNE_TOP[Math.min(5, Math.floor((q.l || 1) / 10))] + RUNE_MID[q.ac || 5];
+    if (q.rc || q.r) d += 'M8 17L14 21';
+    if (q.dg) d += 'M3 22H13';
+    if (q.t === 'Elite' || q.gr) d += 'M4 2H12';
+    if (q.cl) d += 'M8 0L10.5 2.5L8 5L5.5 2.5Z';
+    return '<svg viewBox="0 0 16 24" aria-hidden="true"><path d="' + d + '"/></svg>';
+  }
+  function bindRune(c){
+    var ids = c.ids || [], n = ids.length, H = 10 + n * 9, all = n > 0;
+    var segs = ids.map(function(id, k){
+      var on = !!KS['q' + id]; if (!on) all = false;
+      return '<path' + (on ? ' class="on"' : '') + ' transform="translate(0 ' + (H - 21.5 - k * 9) + ')" d="' + RUNE_MID[(D.q[id] || {}).ac || 5] + '"/>';
+    });
+    return '<svg viewBox="0 0 16 ' + H + '"' + (all ? ' class="full"' : '') + ' aria-hidden="true"><path class="st" d="M8 2V' + (H - 2) + '"/>' + segs.join('') + '</svg>';
+  }
+  function frieze(){
+    return (D.chains || []).map(function(c){
+      var s = chainState(c);
+      return '<a class="br" href="#cad-' + c.k + '" data-tip="' + esc(c.t + (c.sub ? ' · ' + c.sub : '') + ' · ' + (s.done === s.n ? 'saga completa' : s.done + ' de ' + s.n + ' pasos')) + '" aria-label="' + esc(c.t) + '">' + bindRune(c) + '</a>';
+    }).join('');
+  }
+  function chainEmblem(pg){
+    var c = null; (D.chains || []).forEach(function(x){ if ('cad-' + x.k === pg.id) c = x; });
+    var ph = $('.ph', pg); if (!c || !ph) return;
+    var el = $('.brune', ph);
+    if (!el){ el = document.createElement('div'); el.className = 'brune'; el.setAttribute('aria-hidden', 'true'); ph.appendChild(el); }
+    el.innerHTML = bindRune(c);
+  }
+  function inscription(){
+    var name = (store.get('nombre') || '').trim(), v = L();
+    var nq = QALL.filter(function(id){ return KS['q' + id]; }).length;
+    var nc = (D.chains || []).filter(function(c){ var s = CH[c.k]; return s && s.n && s.done === s.n; }).length;
+    var nd = DG.filter(function(g){ return g.wings.filter(isDone).length === g.wings.length; }).length;
+    var nt = $$('a.totem.got').length;
+    if (!nq && !nd) return 'Este muro está por tallar. Aquí constarán las gestas de <b>' + esc(name || 'un enano todavía sin nombre') + '</b>, chamán de Ironforge.';
+    return 'Aquí consta que <b>' + esc(name || 'un enano sin nombre') + '</b>, chamán de Ironforge, ha tallado <b>' + nq + '</b> de ' + QALL.length + ' gestas, ha cerrado <b>' + nc + '</b> ' + (nc === 1 ? 'saga' : 'sagas') +
+      ', ha limpiado <b>' + nd + '</b> ' + (nd === 1 ? 'mazmorra' : 'mazmorras') + ' y ha alzado <b>' + nt + '</b> de sus cuatro totems.' + (v ? ' Nivel ' + v + '.' : '');
+  }
+  var wallBuilt = false, wallGroups = [];
+  function buildWall(){
+    var by = {}, order = [];
+    D.zones.forEach(function(z){ by[z.id] = { id: z.id, n: z.n, lv: z.lv, ids: [] }; order.push(z.id); });
+    DG.forEach(function(g){ by['dg-' + g.g] = { id: 'dg-' + g.g, n: g.n, lv: g.a + '-' + g.b, ids: [] }; order.push('dg-' + g.g); });
+    by[''] = { id: '', n: 'Sin zona fija', lv: '', ids: [] }; order.push('');
+    QALL.forEach(function(id){ (by[qHome(D.q[id])] || by['']).ids.push(id); });
+    wallGroups = order.map(function(k){ return by[k]; }).filter(function(g){ return g.ids.length; });
+    $('#muro').innerHTML = wallGroups.map(function(g, gi){
+      return '<section class="mz" data-g="' + gi + '"><h4>' + (g.id ? '<a href="#' + g.id + '">' + esc(g.n) + '</a>' : esc(g.n)) + (g.lv ? '<span class="lv">' + esc(g.lv) + '</span>' : '') + '<span class="mz-n"></span></h4><div class="runes">' +
+        g.ids.map(function(id){ return '<a class="rn" tabindex="-1" href="#q-' + id + '" data-t="quest" data-id="' + id + '" aria-label="' + esc(D.q[id].n) + '">' + runeSVG(D.q[id]) + '</a>'; }).join('') + '</div></section>';
+    }).join('');
+    var S = function(q, t){ return '<span class="ley"><i class="rn on">' + runeSVG(q) + '</i>' + t + '</span>'; };
+    $('#leyenda').innerHTML =
+      '<p><b>El trazo de arriba es el nivel.</b></p><div class="leys">' + ['1 a 9', '10 a 19', '20 a 29', '30 a 39', '40 a 49', '50 a 60'].map(function(t, i){ return S({ l: i * 10 + 1, ac: 3 }, t); }).join('') + '</div>' +
+      '<p><b>El trazo del centro es lo que te piden.</b></p><div class="leys">' + [[1, 'matar'], [2, 'recoger o conseguir'], [3, 'llevar algo o hablar'], [4, 'escoltar'], [5, 'otra cosa']].map(function(x){ return S({ l: 1, ac: x[0] }, x[1]); }).join('') + '</div>' +
+      '<p><b>El pie y las marcas.</b></p><div class="leys">' + S({ l: 1, ac: 3, r: 1 }, 'da un objeto') + S({ l: 1, ac: 3, dg: 'x' }, 'se hace en una mazmorra') + S({ l: 1, ac: 3, t: 'Elite' }, 'élite o de grupo') + S({ l: 1, ac: 3, cl: 1 }, 'de tu clase') + '</div>' +
+      '<p class="src">Ejemplo: ' + S({ l: 22, ac: 1, r: 1, dg: 'x' }, 'una quest de nivel 20 a 29 de matar, con premio, dentro de una mazmorra.') + '</p>';
+    wallBuilt = true;
+  }
+  function updateWall(){
+    var a = $('#insc-ini'), f = $('#friso-ini'), text = inscription();
+    if (a) a.innerHTML = text;
+    if (f) f.innerHTML = frieze();
+    if (!wallBuilt || cur.view !== 'muro') return;
+    $('#insc').innerHTML = text; $('#friso').innerHTML = frieze();
+    $$('#muro .mz').forEach(function(sec){
+      var g = wallGroups[+sec.dataset.g], d = 0;
+      $$('.rn', sec).forEach(function(r){ var on = !!KS['q' + r.dataset.id]; if (on) d++; if (r.classList.contains('on') !== on) r.classList.toggle('on', on); });
+      $('.mz-n', sec).textContent = d + ' de ' + g.ids.length;
+      sec.classList.toggle('full', d === g.ids.length);
+    });
+  }
+  // al entrar, las gestas nuevas desde la última visita se tallan una a una
+  function openWall(){
+    if (!wallBuilt) buildWall();
+    updateWall();
+    var seen = {}, fresh = [];
+    try { (JSON.parse(store.get('muro-visto') || '[]') || []).forEach(function(id){ seen[id] = 1; }); } catch(e){}
+    $$('#muro .rn.on').forEach(function(r){ r.classList.remove('fresh'); if (!seen[r.dataset.id]) fresh.push(r); });
+    fresh.forEach(function(r, i){ r.style.setProperty('--i', Math.min(i, 90)); r.classList.add('fresh'); });
+    for (var k = 0; k < Math.min(fresh.length, 12); k++) tink(0.05 + k * 0.19);
+    $('#muro-new').textContent = fresh.length ? (fresh.length === 1 ? 'Una gesta nueva tallada desde tu última visita.' : fresh.length + ' gestas nuevas talladas desde tu última visita.') : '';
+    store.set('muro-visto', JSON.stringify(QALL.filter(function(id){ return KS['q' + id]; })));
+  }
+  // el cincel: un golpe corto y un timbre de metal, solo si se ha pedido
+  var actx = null;
+  function tink(delay){
+    if (store.get('cincel') !== '1') return;
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      var t = actx.currentTime + (delay || 0), o = actx.createOscillator(), g = actx.createGain();
+      o.type = 'triangle'; o.frequency.setValueAtTime(1900 + Math.random() * 900, t);
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.08, t + 0.004); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.17);
+      o.connect(g); g.connect(actx.destination); o.start(t); o.stop(t + 0.2);
+      var buf = actx.createBuffer(1, 1100, actx.sampleRate), ch = buf.getChannelData(0), n = actx.createBufferSource(), ng = actx.createGain();
+      for (var i = 0; i < ch.length; i++) ch[i] = (Math.random() * 2 - 1) * (1 - i / ch.length);
+      ng.gain.value = 0.05; n.buffer = buf; n.connect(ng); ng.connect(actx.destination); n.start(t);
+    } catch(e){}
+  }
+  var nameIn = $('#nombre'), cinIn = $('#cincel');
+  if (nameIn){ nameIn.value = store.get('nombre') || ''; nameIn.addEventListener('input', function(){ store.set('nombre', nameIn.value); updateWall(); }); }
+  if (cinIn){ cinIn.checked = store.get('cincel') === '1'; cinIn.addEventListener('change', function(){ store.set('cincel', cinIn.checked ? '1' : '0'); tink(); }); }
 
   // ---------------------------------------------------------------- arranque
   restore();

@@ -1,241 +1,861 @@
 [
-{"k":"earth","t":"Call of Earth: el Totem de Tierra","g":"Tu chamán","lv":"4-9","z":["Dun Morogh"],
- "why":"Tu primera quest de clase. Te da el <b>Earth Totem</b>, un objeto que tienes que llevar siempre en la bolsa: sin él no puedes lanzar ningún totem de tierra (Stoneskin, Earthbind, Stoneclaw, Tremor), aunque los hayas entrenado.",
- "s":[
-  {"q":94373,"w":"Teo Hammerstorm, tu primer entrenador de chamán, en Anvilmar (Dun Morogh 28.8, 66.2).","d":"Los colgantes caen de los Frostmane Troll Whelps de la cueva del suroeste (27.3, 79.6)."},
-  {"q":94374,"w":"Teo Hammerstorm te da la Earth Sapta.","d":"Una sapta es una poción ritual que solo sirve bebida en el lugar sagrado de su elemento. Sube a la Spirit Stone (25.0, 62.4; el sendero empieza en 25.8, 69.3) y bébela allí: aparece el espíritu de la tierra y te da el Rough Quartz. Si pierdes la sapta, Teo te da otra con la quest <em>Earth Sapta</em>."},
-  {"q":94375,"w":"Se entrega a Teo Hammerstorm, en Anvilmar.","d":"Premio: el Earth Totem. Ya puedes entrenar Stoneskin Totem."}
- ]},
-{"k":"fire","t":"Call of Fire: el Totem de Fuego","g":"Tu chamán","lv":"10-16","z":["Ironforge","Dun Morogh","Loch Modan"],
- "why":"Te da el <b>Fire Totem</b>, necesario para Searing Totem, Fire Nova, Magma y Flametongue. Se coge a nivel 10, pero los enemigos de los pasos 3 y 4 son de nivel 13-14: no pasa nada por terminarla un par de niveles después.",
- "s":[
-  {"q":94449,"w":"Eldrun Stormbreaker, entrenador de chamán de Ironforge (47.1, 13.5), o cualquier otro entrenador de chamán. Se entrega a Bruegs Kindleborn.","d":"Bruegs está en una cueva al este de Dun Morogh (87.6, 43.7). El sendero sube desde 86.7, 47.0, junto a la carretera que va a Loch Modan."},
-  {"q":94465,"w":"Bruegs Kindleborn. Se entrega a Braldir Ashmantle, en Loch Modan (32.0, 66.3), al sur de Thelsamar.","d":"Solo hay que llevar la antorcha."},
-  {"q":94466,"w":"Braldir Ashmantle (Loch Modan 32.0, 66.3).","d":"El Fire Tar cae de los Tunnel Rat Geomancers, los kobolds del norte del lago (35.6, 20.2). La Reagent Pouch cae de los Stonesplinter Seers, los troggs del sur (31.0, 77.4): atacan a distancia y en grupo, así que ve con nivel 13-14 o acompañado."},
-  {"q":94467,"w":"Braldir Ashmantle te da la Fire Sapta.","d":"Sube a la cima que hay junto a Braldir (31.9, 64.5) y bebe la sapta. Aparece la Minor Manifestation of Fire: mátala, recoge la Glowing Ember y ponla en el brasero."},
-  {"q":94468,"w":"El brasero te da la Torch of Eternal Flame. Se entrega a Bruegs Kindleborn, en su cueva de Dun Morogh (87.6, 43.7).","d":"Premio: el Fire Totem. Entrena Searing Totem."}
- ]},
-{"k":"water","t":"Call of Water: el Totem de Agua","g":"Tu chamán","lv":"20-27","z":["Ironforge","Loch Modan","Wetlands","Redridge Mountains","Ashenvale","Westfall"],
- "why":"Te da el <b>Water Totem</b>, necesario para Healing Stream, Mana Spring y Poison Cleansing. Es la más larga: unas dos horas de viaje por Loch Modan, Wetlands, Redridge, Ashenvale y Westfall. Entrena antes Ghost Wolf (nivel 20) para correr más, coge todos los puntos de vuelo por el camino y aprovecha para avanzar la bolsa de dormir.",
- "s":[
-  {"q":94494,"w":"Eldrun Stormbreaker (Ironforge 47.1, 13.5). Se entrega a Norric Lochthane, en Loch Modan (41.9, 19.0), junto a la presa."},
-  {"q":94495,"w":"Norric Lochthane. Se entrega a Hervdana Saegrund, en Wetlands (65.7, 76.4).","d":"A Wetlands se baja andando desde Loch Modan por los túneles de Dun Algaz, al noroeste del lago. Hervdana queda cerca de esa entrada. Cuando puedas, acércate a Menethil Harbor a coger el punto de vuelo."},
-  {"x":"odre1","n":"Call of Water: el primer odre","w":"Hervdana Saegrund (Wetlands 65.7, 76.4).","o":"Hervdana te da un odre vacío para llenarlo en la cascada que tiene al lado y devolvérselo. Este paso no tiene ficha en la base de datos: sigue el texto de la quest."},
-  {"q":94499,"w":"Hervdana Saegrund. El odre se llena en Stonewatch Falls, Redridge (73.7, 61.6), y se le devuelve a ella.","d":"La cascada está al este de Lakeshire, rodeada de murlocs Nightcrawler."},
-  {"q":94500,"w":"Hervdana Saegrund. El odre se llena en el lago de Astranaar, en Ashenvale, y se le devuelve a ella.","d":"Barco de Menethil Harbor a Auberdine y de ahí al sur, a Ashenvale. El barco para antes en Southshore: no te bajes. Coge los vuelos de Auberdine y de Astranaar."},
-  {"q":94502,"w":"Al entregar los odres recibes la Water Sapta. Se usa en Stendel's Pond, Westfall (47.5, 60.4), y la quest se entrega a Norric Lochthane (Loch Modan 41.9, 19.0).","d":"Bebe la sapta en el estanque. Aparece una manifestación corrupta: mátala, coloca sus brazales donde indica la quest y habla con el espíritu ya purificado. Al volver con Norric te da el Water Totem."}
- ]},
-{"k":"air","t":"Call of Air y tu arma: The Tempest's Weapons","g":"Tu chamán","lv":"30-37","z":["Ironforge","Arathi Highlands","The Barrens","Thousand Needles","Alterac Mountains","Dustwallow Marsh","Desolace","Swamp of Sorrows","Badlands"],"dg":["razorfen-kraul"],
- "why":"El primer paso te da el <b>Air Totem</b> (Windfury, Grace of Air, Grounding). Después, el mismo PNJ empieza la cadena que acaba en <b>Rage of the Storm</b>, una maza de dos manos hecha para Mejora, más el escudo Elementalist's Guard. Ojo: el arma no la da <em>Call of Air</em>, sale del último paso. La cadena está pensada para hacerla con más gente: si ves a otro chamán de nivel 30-35, hacedla juntos.",
- "s":[
-  {"q":94789,"d":"Veyric está en una colina de Arathi; se sube desde 60.5, 35.2, junto al Shard of Myzrael. El texto de la quest lo llama Thundervein y en el juego aparece como Thunderhame: es el mismo. A Arathi se llega andando desde Wetlands por el puente de Thandol Span; coge el vuelo de Refuge Pointe. Premio: el Air Totem."},
-  {"q":96264,"w":"Veyric Thunderhame (Arathi 59.8, 27.6), desde nivel 30.","d":"Charlga Razorflank es la jefa final de Razorfen Kraul y suelta la Tattered Note. La mazmorra está al sur de The Barrens, en territorio de la Horda: ve con grupo."},
-  {"q":79358,"w":"La empieza la Tattered Note que suelta Charlga. Se entrega a Veyric Thunderhame.","d":"Cinco totems de cada tipo, y cada tipo en una zona distinta: agua, de los murlocs Mirefin (Dustwallow Marsh); aire, de los centauros Maraudine (Desolace); tierra, de los Lost Ones (Swamp of Sorrows); fuego, de los ogros Dustbelcher y los troggs Stonevault (Badlands). Es el paso largo: ve juntándolos según pases por esas zonas."},
-  {"q":96135,"w":"Veyric Thunderhame. El ritual está en las pozas de vapor de Thousand Needles.","d":"Usa los Twisted Totems en el ritual: llegan oleadas, un quilboar élite y, al final, el élite Ravaging Tempest. Para 2 o 3 jugadores. Suelta el Eye of the Tempest."},
-  {"q":96016,"w":"Se entrega a Bath'rah the Windwatcher, en Alterac Mountains (80.5, 66.9).","d":"Elige <b>Rage of the Storm</b> si vas de Mejora. Para equiparla necesitas tener entrenadas las mazas de dos manos."}
- ]},
-{"k":"voodoo","t":"Elemental Mastery, Spirit Totem y Da Voodoo","g":"Tu chamán","lv":"50-55","z":["Alterac Mountains","Western Plaguelands"],"dg":["sunken-temple"],
- "why":"La quest de clase de nivel 50, igual que en Classic. Termina dentro de Sunken Temple y da a elegir entre Azurite Fists (guantes de malla), Enamored Water Spirit (abalorio) y Wildstaff.",
- "s":[
-  {"q":8410,"w":"Tu entrenador de chamán, a nivel 50, te manda a Bath'rah the Windwatcher (Alterac Mountains 80.5, 66.9).","d":"Bath'rah pide un Elemental Air, un Elemental Fire, un Elemental Earth y un Elemental Water. Caen de elementales de nivel alto o se compran en la subasta."},
-  {"q":8412,"w":"Bath'rah the Windwatcher.","d":"Pide Bloodshot Spider Eyes y Thick Black Claws: caen de las arañas y los osos de Western Plaguelands."},
-  {"q":8413,"w":"Bath'rah the Windwatcher.","d":"Dentro de Sunken Temple: una pluma de cada pareja de jefes trol (Gasher o Zul'Lor, Hukku o Mijan, Zolo o Loro). Ten la quest cogida antes de entrar a la mazmorra."}
- ]},
-{"k":"odd","t":"Odd Totems: la cadena nueva de Tanaris","g":"Tu chamán","lv":"45-52","z":["Tanaris"],
- "why":"Cadena de chamán nueva de Forever. Está en los datos del juego, pero ninguna guía la explica todavía: el orden de abajo es orientativo y no hay datos de quién da cada paso. Pregunta a tu entrenador al llegar a nivel 45.",
- "s":[
-  {"q":95751,"w":"Tu entrenador de chamán, desde nivel 45. Los totems están en Tanaris."},
-  {"q":95739,"w":"Sin datos."},
-  {"q":95753,"w":"Sin datos."},
-  {"q":96064,"w":"Sin datos."},
-  {"q":96065,"w":"Sin datos."}
- ]},
-{"k":"material","t":"Material Assistance y The Darkreaver Menace","g":"Tu chamán","lv":"58-60","z":["Ironforge"],
- "why":"La última quest de clase. En Classic era exclusiva de la Horda y daba el Skyfury Helm; en Forever la tiene también el enano. El premio de Forever está sin confirmar.",
- "s":[
-  {"q":97168,"w":"Eldrun Stormbreaker (Ironforge 47.1, 13.5), desde nivel 58.","d":"El Azerothian Diamond sale al minar vetas de torio: guarda el primero que te salga. El Pristine Black Diamond cae de enemigos de nivel alto y se vende en la subasta."},
-  {"x":"darkreaver","n":"The Darkreaver Menace","w":"Eldrun Stormbreaker.","o":"Quest de mazmorra. En Classic había que invocar y matar a Death Knight Darkreaver en el osario de Scholomance; en Forever no está confirmado."}
- ]},
-{"k":"bag","t":"Cozy Sleeping Bag: la bolsa de dormir","g":"Tu personaje","lv":"14-32","z":["Westfall","The Barrens","Stonetalon Mountains","Loch Modan","Arathi Highlands","Hillsbrad Foothills"],
- "why":"Una búsqueda del tesoro por medio mundo. El premio es la <b>Cozy Sleeping Bag</b>: te tumbas y ganas +1% de XP por minuto, hasta +3%, que no pierdes al morir; además cuenta como zona de descanso, incluso desconectado. Aquí no hay PNJ: cada paso lo da un objeto en el suelo y se entrega en el objeto siguiente. Se puede empezar a nivel 14 y no hay que matar nada, pero el recorrido cruza zonas de la Horda (The Barrens y Stonetalon): ve por los caminos y esquiva los pueblos.",
- "s":[
-  {"q":79008,"d":"Los restos quemados están en Alexston Farmstead, en el centro de Westfall. Te mandan a otros iguales al sur de The Barrens. Para llegar a The Barrens: barco de Booty Bay a Ratchet, o a pie desde Ashenvale."},
-  {"q":79192,"d":"La tabla con la nota clavada (Nailed Plank) está junto a los restos de The Barrens. Te manda a Stonetalon Mountains, cerca de Sun Rock Retreat, que es un pueblo de la Horda: acércate con cuidado."},
-  {"q":79980,"d":"Los dos objetos están muy cerca uno del otro."},
-  {"q":79974,"d":"Te manda a la presa de Loch Modan (Stonewrought Dam): la figura tallada está en el borde de la presa."},
-  {"q":79975,"d":"Te manda a Thoradin's Wall, la muralla que separa Hillsbrad de Arathi. Sube por el carro volcado hasta la bolsa de mensajero."},
-  {"q":79976,"d":"Justo debajo está el petate enrollado con la <b>Cozy Sleeping Bag</b>. Tiene 1 hora de reutilización."}
- ]},
-{"k":"cook","t":"Cocina y campamento en Kharanos","g":"Tu personaje","lv":"4-10","z":["Dun Morogh"],
- "why":"Te enseña Cocina y el sistema de campamentos de Forever. Casi toda la comida cocinada da +5% de XP por muerte durante 15 minutos, y ese bonus se suma al de la bolsa de dormir.",
- "s":[
-  {"q":96628,"w":"Se coge en Kharanos (Dun Morogh). Se entrega a Eric Brighthammer (46.7, 53.9), a las afueras del pueblo."},
-  {"x":"outdoors","n":"The Great Outdoors","w":"Eric Brighthammer (Dun Morogh 46.7, 53.9).","o":"Paso intermedio sin ficha en la base de datos: sigue el texto de la quest."},
-  {"q":96629,"w":"Eric Brighthammer. Se entrega a Gremlock Pilsnor, el entrenador de Cocina de Kharanos."}
- ]},
-{"k":"thanes","t":"Hall of Thanes: Old Ironforge Incursion","g":"Hacia las mazmorras","lv":"9-16","dg":["hall-of-thanes"],
- "why":"La cadena que te lleva a tu primera mazmorra, Hall of Thanes, bajo Ironforge. El último paso da a elegir el Ironforge Greathammer, una maza de dos manos: entrena antes las mazas de dos manos con Buliwyf Stonehand. Las quests no caducan al subir de nivel: si no la hiciste en su momento, puedes hacerla más tarde.",
- "s":[
-  {"q":96390,"d":"Farsen está al este de Kharanos. Los espías Dark Iron rondan por los alrededores."},
-  {"q":96392,"d":"Solo hay que hablar con él."},
-  {"q":96393,"d":"Es la quest de la mazmorra: necesitas un grupo de 5. Se entrega al rey Magni, en el trono de Ironforge."}
- ]},
-{"k":"defias","t":"The Defias Brotherhood","g":"Hacia las mazmorras","lv":"14-22","dg":["deadmines"],
- "why":"La gran cadena de Westfall. Sus siete pasos se llaman todos igual, y por eso cuesta saber por cuál vas: aquí van numerados. Te pasea por Redridge y Stormwind y termina matando a Edwin VanCleef, el jefe final de The Deadmines. En Classic, Gryan no la ofrecía hasta terminar <em>The People's Militia</em>: si en Sentinel Hill no te la da, haz antes la Milicia.",
- "s":[
-  {"q":65,"d":"Lakeshire está en Redridge Mountains, al este de Elwynn Forest: desde Sentinel Hill, carretera hasta Goldshire y luego todo al este. Wiley está en el piso de arriba de la posada. Coge el punto de vuelo de Lakeshire al llegar."},
-  {"q":132,"d":"Vuelta a Sentinel Hill. Con los dos puntos de vuelo cogidos es un vuelo."},
-  {"q":135,"d":"Mathias Shaw está en Old Town, el barrio del sureste de Stormwind, en el cuartel del SI:7."},
-  {"q":141,"d":"Otra vez a Sentinel Hill."},
-  {"q":142,"d":"El Defias Messenger va andando solo por los caminos entre Moonbrook, Gold Coast Quarry y Jangolode Mine. Mátalo y recoge su mensaje."},
-  {"q":155,"w":"The Defias Traitor, preso en la torre de Sentinel Hill, junto a Gryan. Se entrega a Gryan Stoutmantle (Westfall 56.3, 47.6).","d":"Es una escolta: el traidor camina hasta Moonbrook y por el camino os atacan varios Defias a la vez. Mejor acompañado. Al terminar, Scout Riell te ofrece <em>Red Silk Bandanas</em>, otra quest de The Deadmines."},
-  {"q":166,"d":"VanCleef es el jefe final de The Deadmines, en la cubierta del barco. Necesitas un grupo de 5. De él cae también An Unsent Letter, que empieza la cadena de The Stockade."}
- ]},
-{"k":"alba","t":"La cadena de Alba Fairmoon: Toxic Soil","g":"Hacia las mazmorras","lv":"9-18","dg":["deadmines"],
- "why":"Cadena nueva de Forever. Empieza con encargos sencillos por Westfall, pasa por Stormwind, donde entra tu Ingeniería, y termina poniendo explosivos dentro de The Deadmines. Lleva hechas 10 Rough Dynamite antes del paso 6.",
- "s":[
-  {"q":92742,"d":"Las dos granjas están al norte de Sentinel Hill. Usa el kit junto a cada pozo."},
-  {"q":92744,"d":"Se puede llevar a la vez que la anterior. Los murlocs están por toda la costa oeste."},
-  {"q":92745,"d":"Jangolode Mine está al norte de la zona y Gold Coast Quarry en la costa oeste."},
-  {"q":92747,"d":"Moonbrook es el pueblo del suroeste, tomado por los Defias. Las cajas están repartidas por las casas."},
-  {"q":92748,"d":"El Dwarven District es el barrio del norte de Stormwind, donde está la entrada del Deeprun Tram."},
-  {"q":92749,"d":"Rough Dynamite es de las primeras recetas de Ingeniería: 2 Rough Blasting Powder y 1 Linen Cloth cada una. Llévalas ya hechas y entregas en el momento. Alguna guía habla de Coarse Dynamite; los datos del juego dicen Rough Dynamite. Mira el texto de tu quest antes de fabricar."},
-  {"q":92750,"w":"Sprite Jumpsprocket (Stormwind, Dwarven District). Se entrega a Jasper Fel, del SI:7, en Old Town.","d":"Stormwind Intelligence es el SI:7, el mismo edificio de Mathias Shaw."},
-  {"q":92751,"w":"Jasper Fel (Stormwind, Old Town). Se entrega a Sprite Jumpsprocket, en el Dwarven District."},
-  {"q":92752,"d":"Vuelta a Westfall."},
-  {"q":92753,"d":"Quest de mazmorra: necesitas grupo. La forja de los goblins está a mitad de The Deadmines. Después de poner los explosivos, Alba te espera fuera."},
-  {"q":92819,"d":"Solo usar el detonador."}
- ]},
-{"k":"militia","t":"The People's Militia","g":"Zonas","lv":"9-17",
- "why":"Tres rondas de matar Defias por Westfall. Es opcional, pero da buena XP si vas a su nivel, y en Classic era el requisito para que Gryan te diera <em>The Defias Brotherhood</em>.",
- "s":[
-  {"q":12,"d":"Trappers y Smugglers: en las granjas del centro y del este de Westfall."},
-  {"q":13,"d":"Pillagers y Looters: en las granjas y minas del oeste, hacia Gold Coast Quarry y Moonbrook."},
-  {"q":14,"d":"Highwaymen, Pathstalkers y Knuckledusters: al sur, por las colinas de Dagger Hills. Van en grupos."}
- ]},
-{"k":"stockade","t":"The Unsent Letter: de Deadmines a The Stockade","g":"Hacia las mazmorras","lv":"16-31","dg":["stockade"],
- "why":"Empieza con una carta que suelta VanCleef al final de The Deadmines y te lleva a The Stockade, la mazmorra que hay dentro de Stormwind.",
- "s":[
-  {"q":373,"w":"La empieza An Unsent Letter, un objeto que cae de Edwin VanCleef. Se entrega a Baros Alexston (Stormwind City 57.6, 47.9).","d":"Haz clic derecho en la carta de tu bolsa para coger la quest. Baros está en el ayuntamiento del Cathedral Square."},
-  {"q":389,"d":"El alcaide está en la entrada de The Stockade, en el barrio de los canales."},
-  {"q":391,"d":"Quest de mazmorra: Bazil Thredd está dentro de The Stockade. Necesitas grupo."},
-  {"q":392},
-  {"q":393},
-  {"q":350,"d":"A partir de aquí la cadena sigue por Stormwind, pero los pasos siguientes no aparecen en los datos de Forever."}
- ]},
-{"k":"darkthreat","t":"A Dark Threat Looms: la presa de Loch Modan","g":"Zonas","lv":"16-20","z":["Loch Modan"],
- "why":"Los Dark Iron quieren volar la presa de Stonewrought Dam. Siete pasos que se llaman igual, entre la presa y Thelsamar. Varios pasos no tienen ficha en los datos de Forever: se describen como eran en Classic.",
- "s":[
-  {"q":250,"d":"La pista es un barril sospechoso en la rampa este de la presa."},
-  {"q":199,"w":"El barril sospechoso de la presa. Se entrega a Chief Engineer Hinderweir VII (Loch Modan 45.9, 13.6).","d":"Lleva al ingeniero jefe lo que encuentras en el barril."},
-  {"q":161,"w":"Chief Engineer Hinderweir VII. Se entrega a Ashlan Stonesmirk, el experto en explosivos de Thelsamar."},
-  {"q":274,"w":"Ashlan Stonesmirk (Thelsamar). Se entrega a Chief Engineer Hinderweir VII, en la presa."},
-  {"q":278,"w":"Chief Engineer Hinderweir VII (Loch Modan 45.9, 13.6).","d":"El Lurker Venom cae de las arañas Cliff Lurker de las colinas, el Mo'grosh Crystal de los ogros de Mo'grosh Stronghold, al noreste, y la Crocolisk Tear de los crocoliscos del lago."},
-  {"q":280,"w":"Chief Engineer Hinderweir VII. Se entrega a Ashlan Stonesmirk, en Thelsamar.","d":"Llevarle los tres ingredientes."},
-  {"q":283,"w":"Ashlan Stonesmirk. Se usa en el barril de la presa y se entrega a Chief Engineer Hinderweir VII.","d":"Usa el polvo que te prepara Ashlan sobre el barril para desactivarlo."}
- ]},
-{"k":"blackrock","t":"Blackrock Menace, Tharil'zun y Shadow Magic","g":"Zonas","lv":"18-25",
- "why":"Los orcos Blackrock del norte de Redridge. La primera abre las otras dos, que se hacen juntas en Stonewatch Keep. Son enemigos en grupo: mejor acompañado.",
- "s":[
-  {"q":20,"d":"Las hachas caen de los orcos Blackrock de Render's Camp y Render's Valley, al norte."},
-  {"q":19,"d":"Tharil'zun está en Stonewatch Keep, al este, rodeado de orcos."},
-  {"q":115,"d":"Los Midnight Orbs caen de los Blackrock Shadowcasters, también en Stonewatch Keep."}
- ]},
-{"k":"greenwarden","t":"Rethiel the Greenwarden","g":"Zonas","lv":"20-26",
- "why":"La cadena del centro de Wetlands. Se coge en el puerto y te manda al guardián del pantano, que te va dando encargos por los alrededores.",
- "s":[
-  {"q":463,"d":"Fitzsimmons está en el muelle de Menethil Harbor. Rethiel está en el centro del pantano."},
-  {"q":276},
-  {"q":277,"d":"Los pedernales caen de los gnolls Mosshide más fuertes, los Fenrunners, Trappers, Brutes, Mystics y Alphas."},
-  {"q":275,"d":"Los Fen Creepers van camuflados por el agua del pantano: fíjate en las siluetas."}
- ]},
-{"k":"darkiron","t":"The Dark Iron War y The Fury Runs Deep","g":"Hacia las mazmorras","lv":"22-30","dg":["stockade"],
- "why":"Dun Modr, el pueblo en ruinas del norte de Wetlands, está tomado por los Dark Iron. La segunda quest manda a The Stockade a por Kam Deepfury.",
- "s":[
-  {"q":303,"d":"Muchos enemigos juntos y de nivel 27-30: ve acompañado o vuelve con nivel 28."},
-  {"q":378,"d":"Quest de mazmorra: Kam Deepfury está dentro de The Stockade, en Stormwind. Se entrega a Motley Garmason."}
- ]},
-{"k":"thandol","t":"The Thandol Span","g":"Zonas","lv":"26-31",
- "why":"El puente entre Wetlands y Arathi. Tres pasos que se llaman igual y un cuarto que te manda a Refuge Pointe, el campamento de la Alianza en Arathi.",
- "s":[
-  {"q":631,"d":"El cadáver está en la parte baja del puente: se baja por las escaleras de dentro."},
-  {"q":632},
-  {"q":633,"d":"Los explosivos están en el puente pequeño que queda al este del principal."},
-  {"q":634,"d":"Refuge Pointe está en el centro de Arathi. Coge allí el punto de vuelo."}
- ]},
-{"k":"nightwatch","t":"The Night Watch","g":"Zonas","lv":"18-30",
- "why":"Tres rondas contra los no-muertos del cementerio de Raven Hill, cada una más adentro. La última ya es de nivel 30.",
- "s":[{"q":56},{"q":57},{"q":58}]},
-{"k":"stalvan","t":"The Legend of Stalvan","g":"Zonas","lv":"22-35",
- "why":"Trece pasos que se llaman todos igual. Casi todo es ir de un sitio a otro y hablar, por Duskwood, Westfall, Elwynn y Stormwind: da mucha XP si la vas avanzando cuando te pille de paso. Solo el último paso es un combate.",
- "s":[
-  {"q":66},
-  {"q":67,"d":"La escuela de Moonbrook está en el suroeste de Westfall. El baúl está dentro."},
-  {"q":68},
-  {"q":69,"d":"The Lion's Pride Inn es la posada de Goldshire, en Elwynn Forest."},
-  {"q":70,"d":"El cofre está en la propia posada. El Caretaker Folsom está en los canales de Stormwind."},
-  {"q":72,"d":"La caja está al lado de Folsom."},
-  {"q":74,"d":"Marshal Haggard vive en Eastvale Logging Camp, al este de Elwynn Forest."},
-  {"q":75,"d":"El cofre está en el piso de arriba de su casa."},
-  {"q":78},
-  {"q":79},
-  {"q":80},
-  {"q":97},
-  {"q":98,"d":"Stalvan está en la casa que hay al norte de Darkshire. Es bastante más fuerte que el resto de la cadena: los datos lo marcan de nivel 35."}
- ]},
-{"k":"sven","t":"Sven's Revenge y Morbent Fel","g":"Zonas","lv":"20-32",
- "why":"La historia de Sven, acampado en el oeste de Duskwood. Empieza buscando a la figura misteriosa que mató a su familia y acaba forjando un arma para matar a Morbent Fel. Pasa por Stormwind y por Menethil Harbor.",
- "s":[
-  {"q":164,"d":"Opcional: es solo el encargo que te lleva hasta Sven."},
-  {"q":95,"d":"La granja de Sven está en el sur de Duskwood. El montón de tierra está detrás del tocón."},
-  {"q":230},
-  {"q":262},
-  {"q":265},
-  {"q":266},
-  {"q":453,"d":"La figura es Jitters, escondido en una casa de Raven Hill, el pueblo abandonado del oeste."},
-  {"q":268},
-  {"q":323,"d":"Los esqueletos están en el cementerio de Raven Hill."},
-  {"q":269,"d":"El obispo Farthing está en la catedral de Stormwind."},
-  {"q":270,"d":"Menethil Harbor es el puerto de Wetlands."},
-  {"q":321,"d":"El barco hundido está al sur del puerto, bajo el agua. Hay murlocs alrededor."},
-  {"q":324,"d":"Los lingotes los llevan los murlocs Bluegill de esa costa."},
-  {"q":322,"d":"Grimand Elmore está en el Dwarven District de Stormwind."},
-  {"q":325},
-  {"q":55,"d":"Morbent Fel está en el piso de arriba de la casa que hay junto al cementerio de Raven Hill. Usa Morbent's Bane sobre él para quitarle el escudo; sin eso no se le puede hacer daño."}
- ]},
-{"k":"embalmer","t":"The Hermit y Bride of the Embalmer","g":"Zonas","lv":"17-30",
- "why":"Abercrombie, el ermitaño que vive junto al cementerio de Raven Hill, te va pidiendo recados cada vez más raros. Quince pasos entre su cabaña y Darkshire, con final sorpresa.",
- "s":[
-  {"q":165},
-  {"q":148},
-  {"q":149,"d":"Blind Mary es un fantasma: está en una casa al sur de Darkshire."},
-  {"q":154},
-  {"q":157},
-  {"q":158},
-  {"q":156,"d":"Las Rot Blossoms caen de los no-muertos de Raven Hill."},
-  {"q":159},
-  {"q":133,"d":"Las costillas caen de los necrófagos de Raven Hill."},
-  {"q":134,"d":"La caja está en el montículo de ogros del sur de Duskwood (Vul'Gol Ogre Mound)."},
-  {"q":160},
-  {"q":251},
-  {"q":401},
-  {"q":252},
-  {"q":253,"d":"La tumba de Eliza está en el cementerio de Raven Hill. Al tocarla aparece ella con sus guardias."}
- ]},
-{"k":"stars","t":"Look to the Stars","g":"Zonas","lv":"20-30",
- "why":"El astrónomo de Darkshire necesita piezas para su telescopio. Cuatro pasos que se llaman igual.",
- "s":[
-  {"q":174,"d":"El tubo de bronce (Bronze Tube) lo fabrica un ingeniero. Como tienes Ingeniería, puedes hacértelo tú; también lo vende a veces Herble Baubbletump, el vendedor de suministros de ingeniería de Darkshire."},
-  {"q":175},
-  {"q":177,"d":"El Insane Ghoul está en la capilla de Tranquil Gardens Cemetery, el cementerio del este de Darkshire."},
-  {"q":181,"d":"Zzarc'Vul está en la cueva del montículo de ogros del sur de Duskwood."}
- ]},
-{"k":"worgen","t":"Worgen in the Woods","g":"Zonas","lv":"23-31",
- "why":"Cuatro pasos que se llaman igual, contra los huargen de Duskwood. Cada ronda es de un nivel más alto.",
- "s":[
-  {"q":173,"d":"Los Shadow Weavers están en Brightwood Grove, al norte de Darkshire."},
-  {"q":221,"d":"También en Brightwood Grove."},
-  {"q":222,"d":"En Roland's Doom, la mina del sur de Duskwood."},
-  {"q":223}
- ]}
+ {
+  "k": "earth",
+  "t": "Call of Earth: el Totem de Tierra",
+  "g": "Tu chamán",
+  "lv": "4-9",
+  "z": [
+   "Dun Morogh"
+  ],
+  "why": "Tu primera quest de clase. Te da el <b>Earth Totem</b>, un objeto que tienes que llevar siempre en la bolsa: sin él no puedes lanzar ningún totem de tierra (Stoneskin, Earthbind, Stoneclaw, Tremor, Strength of Earth), aunque los hayas entrenado. Son tres pasos en la misma zona inicial.",
+  "s": [
+   {
+    "q": 94373,
+    "w": "Teo Hammerstorm, tu primer entrenador de chamán, en Anvilmar (Dun Morogh 28.8, 66.2).",
+    "d": "Los colgantes caen de los Frostmane Troll Whelps de la cueva del suroeste (27.3, 79.6)."
+   },
+   {
+    "q": 94374,
+    "w": "Teo Hammerstorm te da la Earth Sapta.",
+    "d": "Una sapta es una poción ritual que solo sirve bebida en el lugar sagrado de su elemento. Sube a la Spirit Stone (25.0, 62.4; el sendero empieza en 25.8, 69.3) y bébela allí: aparece el espíritu de la tierra y te da el Rough Quartz. Si pierdes la sapta, Teo te da otra con la quest <em>Earth Sapta</em>."
+   },
+   {
+    "q": 94375,
+    "w": "Se entrega a Teo Hammerstorm, en Anvilmar.",
+    "d": "Premio: el Earth Totem. Ya puedes entrenar Stoneskin Totem."
+   }
+  ]
+ },
+ {
+  "k": "fire",
+  "t": "Call of Fire: el Totem de Fuego",
+  "g": "Tu chamán",
+  "lv": "10-16",
+  "z": [
+   "Ironforge",
+   "Dun Morogh",
+   "Loch Modan"
+  ],
+  "why": "Te da el <b>Fire Totem</b>, necesario para Searing Totem, Fire Nova, Magma y Flametongue: es tu daño en área y buena parte de tu daño contra un solo enemigo. Se coge a nivel 10, pero los enemigos de los pasos 3 y 4 son de nivel 13-14: no pasa nada por terminarla un par de niveles después.",
+  "s": [
+   {
+    "q": 94449,
+    "w": "Eldrun Stormbreaker, entrenador de chamán de Ironforge (47.1, 13.5), o cualquier otro entrenador de chamán. Se entrega a Bruegs Kindleborn.",
+    "d": "Bruegs está en una cueva al este de Dun Morogh (87.6, 43.7). El sendero sube desde 86.7, 47.0, junto a la carretera que va a Loch Modan."
+   },
+   {
+    "q": 94465,
+    "w": "Bruegs Kindleborn. Se entrega a Braldir Ashmantle, en Loch Modan (32.0, 66.3), al sur de Thelsamar.",
+    "d": "Solo hay que llevar la antorcha."
+   },
+   {
+    "q": 94466,
+    "w": "Braldir Ashmantle (Loch Modan 32.0, 66.3).",
+    "d": "El Fire Tar cae de los Tunnel Rat Geomancers, los kobolds del norte del lago (35.6, 20.2). La Reagent Pouch cae de los Stonesplinter Seers, los troggs del sur (31.0, 77.4): atacan a distancia y en grupo, así que ve con nivel 13-14 o acompañado."
+   },
+   {
+    "q": 94467,
+    "w": "Braldir Ashmantle te da la Fire Sapta.",
+    "d": "Sube a la cima que hay junto a Braldir (31.9, 64.5) y bebe la sapta. Aparece la Minor Manifestation of Fire: mátala, recoge la Glowing Ember y ponla en el brasero."
+   },
+   {
+    "q": 94468,
+    "w": "El brasero te da la Torch of Eternal Flame. Se entrega a Bruegs Kindleborn, en su cueva de Dun Morogh (87.6, 43.7).",
+    "d": "Premio: el Fire Totem. Entrena Searing Totem."
+   }
+  ]
+ },
+ {
+  "k": "water",
+  "t": "Call of Water: el Totem de Agua",
+  "g": "Tu chamán",
+  "lv": "20-27",
+  "z": [
+   "Ironforge",
+   "Loch Modan",
+   "Wetlands",
+   "Redridge Mountains",
+   "Ashenvale",
+   "Westfall"
+  ],
+  "why": "Te da el <b>Water Totem</b>, necesario para Healing Stream, Mana Spring y Poison Cleansing: sin él no puedes curar con totems ni recuperar maná con ellos. Es la más larga, nueve pasos y unas dos horas de viaje por Loch Modan, Wetlands, Redridge, Ashenvale y Westfall. Entrena antes Ghost Wolf (nivel 20) para correr más, coge todos los puntos de vuelo por el camino y aprovecha para avanzar la bolsa de dormir.",
+  "s": [
+   {
+    "q": 94494,
+    "w": "Eldrun Stormbreaker (Ironforge 47.1, 13.5). Se entrega a Norric Lochthane, en Loch Modan (41.9, 19.0), junto a la presa."
+   },
+   {
+    "q": 94495,
+    "w": "Norric Lochthane. Se entrega a Hervdana Saegrund, en Wetlands (65.7, 76.4).",
+    "d": "A Wetlands se baja andando desde Loch Modan por los túneles de Dun Algaz, al noroeste del lago. Hervdana vive en una cueva cerca de esa entrada. Cuando puedas, acércate a Menethil Harbor a coger el punto de vuelo."
+   },
+   {
+    "q": 94497,
+    "d": "El primer odre, el marrón. Se llena al pie de las cascadas que hay debajo de la cueva de Hervdana."
+   },
+   {
+    "q": 94499,
+    "d": "El odre rojo. Stonewatch Falls está en Redridge (73.7, 61.6), al este de Lakeshire, rodeada de murlocs Nightcrawler. Hay que volver con Hervdana para entregarlo."
+   },
+   {
+    "q": 94500,
+    "d": "El odre azul. Barco de Menethil Harbor a Auberdine y de ahí al sur, a Ashenvale. El barco para antes en Southshore: no te bajes. Coge los vuelos de Auberdine y de Astranaar. También se entrega a Hervdana."
+   },
+   {
+    "q": 94501,
+    "d": "Con los tres odres, Hervdana te da el Vial of Purest Water para Norric, en la presa de Loch Modan."
+   },
+   {
+    "q": 94502,
+    "w": "Norric Lochthane (Loch Modan 41.8, 19.0) te da la Water Sapta. Se usa en Stendel's Pond, Westfall (47.5, 60.4).",
+    "d": "Bebe la sapta en el estanque. Aparece una manifestación corrupta: mátala y coloca sus brazales donde indica la quest para purificarla."
+   },
+   {
+    "q": 94503,
+    "w": "La empieza el objeto que queda en Stendel's Pond al purificar la manifestación. Se entrega a la Minor Manifestation of Water, allí mismo.",
+    "d": "Solo hablar con el espíritu ya purificado. Te da el Shard of Water."
+   },
+   {
+    "q": 94505,
+    "d": "Vuelta a la presa de Loch Modan. Norric te da el Water Totem."
+   }
+  ]
+ },
+ {
+  "k": "air",
+  "t": "Call of Air y tu arma: The Tempest's Weapons",
+  "g": "Tu chamán",
+  "lv": "30-37",
+  "z": [
+   "Ironforge",
+   "Arathi Highlands",
+   "The Barrens",
+   "Thousand Needles",
+   "Alterac Mountains",
+   "Dustwallow Marsh",
+   "Desolace",
+   "Swamp of Sorrows",
+   "Badlands"
+  ],
+  "dg": [
+   "razorfen-kraul"
+  ],
+  "why": "El primer paso te da el <b>Air Totem</b> (Windfury, Grace of Air, Grounding). Después, el mismo PNJ empieza la cadena que acaba en <b>Rage of the Storm</b>, una maza de dos manos hecha para Mejora, más el escudo Elementalist's Guard. Ojo: el arma no la da <em>Call of Air</em>, sale del último paso. La cadena está pensada para hacerla con más gente: si ves a otro chamán de nivel 30-35, hacedla juntos.",
+  "s": [
+   {
+    "q": 94789,
+    "d": "Veyric está en una colina de Arathi; se sube desde 60.5, 35.2, junto al Shard of Myzrael. El texto de la quest lo llama Thundervein y en el juego aparece como Thunderhame: es el mismo. A Arathi se llega andando desde Wetlands por el puente de Thandol Span; coge el vuelo de Refuge Pointe. Premio: el Air Totem."
+   },
+   {
+    "q": 96264,
+    "w": "Veyric Thunderhame (Arathi 59.8, 27.6), desde nivel 30.",
+    "d": "Charlga Razorflank es la jefa final de Razorfen Kraul y suelta la Tattered Note. La mazmorra está al sur de The Barrens, en territorio de la Horda: ve con grupo."
+   },
+   {
+    "q": 79358,
+    "w": "La empieza la Tattered Note que suelta Charlga. Se entrega a Veyric Thunderhame.",
+    "d": "Cinco totems de cada tipo, y cada tipo en una zona distinta: agua, de los murlocs Mirefin (Dustwallow Marsh); aire, de los centauros Maraudine (Desolace); tierra, de los Lost Ones (Swamp of Sorrows); fuego, de los ogros Dustbelcher y los troggs Stonevault (Badlands). Es el paso largo: ve juntándolos según pases por esas zonas."
+   },
+   {
+    "q": 96135,
+    "w": "Veyric Thunderhame. El ritual está en las pozas de vapor de Thousand Needles.",
+    "d": "Usa los Twisted Totems en el ritual: llegan oleadas, un quilboar élite y, al final, el élite Ravaging Tempest. Para 2 o 3 jugadores. Suelta el Eye of the Tempest."
+   },
+   {
+    "q": 96016,
+    "w": "Se entrega a Bath'rah the Windwatcher, en Alterac Mountains (80.5, 66.9).",
+    "d": "Elige <b>Rage of the Storm</b> si vas de Mejora. Para equiparla necesitas tener entrenadas las mazas de dos manos."
+   }
+  ]
+ },
+ {
+  "k": "voodoo",
+  "t": "Elemental Mastery, Spirit Totem y Da Voodoo",
+  "g": "Tu chamán",
+  "lv": "50-55",
+  "z": [
+   "Alterac Mountains",
+   "Western Plaguelands"
+  ],
+  "dg": [
+   "sunken-temple"
+  ],
+  "why": "La quest de clase de nivel 50 de Classic. Termina dentro de Sunken Temple y da a elegir entre Azurite Fists (guantes de malla), Enamored Water Spirit (abalorio) y Wildstaff. <b>Sin confirmar para el enano:</b> en los datos de Questie estas tres quests siguen marcadas solo para razas de la Horda, así que puede que en Forever la tuya tenga otro número o no exista. Pregunta a tu entrenador al llegar a nivel 50.",
+  "s": [
+   {
+    "q": 8410,
+    "w": "Tu entrenador de chamán, a nivel 50, te manda a Bath'rah the Windwatcher (Alterac Mountains 80.5, 66.9).",
+    "d": "Bath'rah pide un Elemental Air, un Elemental Fire, un Elemental Earth y un Elemental Water. Caen de elementales de nivel alto o se compran en la subasta."
+   },
+   {
+    "q": 8412,
+    "w": "Bath'rah the Windwatcher.",
+    "d": "Pide Bloodshot Spider Eyes y Thick Black Claws: caen de las arañas y los osos de Western Plaguelands."
+   },
+   {
+    "q": 8413,
+    "w": "Bath'rah the Windwatcher.",
+    "d": "Dentro de Sunken Temple: una pluma de cada pareja de jefes trol (Gasher o Zul'Lor, Hukku o Mijan, Zolo o Loro). Ten la quest cogida antes de entrar a la mazmorra."
+   }
+  ]
+ },
+ {
+  "k": "material",
+  "t": "Material Assistance y The Darkreaver Menace",
+  "g": "Tu chamán",
+  "lv": "58-60",
+  "z": [
+   "Ironforge"
+  ],
+  "why": "La última quest de clase. <em>Material Assistance</em> sí figura para el enano en Questie: Eldrun te pide dos diamantes, uno de los cuales sale minando torio. Su continuación de Classic, <em>The Darkreaver Menace</em>, sigue marcada solo para la Horda en los datos de Questie, así que está sin confirmar para ti, igual que el premio.",
+  "s": [
+   {
+    "q": 97168,
+    "w": "Eldrun Stormbreaker (Ironforge 47.1, 13.5), desde nivel 58.",
+    "d": "El Azerothian Diamond sale al minar vetas de torio: guarda el primero que te salga. El Pristine Black Diamond cae de enemigos de nivel alto y se vende en la subasta."
+   },
+   {
+    "x": "darkreaver",
+    "n": "The Darkreaver Menace",
+    "w": "Eldrun Stormbreaker.",
+    "o": "Sin confirmar para el enano. En Classic había que invocar y matar a Death Knight Darkreaver en el osario de Scholomance y el premio era el Skyfury Helm."
+   }
+  ]
+ },
+ {
+  "k": "bag",
+  "t": "Cozy Sleeping Bag: la bolsa de dormir",
+  "g": "Tu personaje",
+  "lv": "14-32",
+  "z": [
+   "Westfall",
+   "The Barrens",
+   "Stonetalon Mountains",
+   "Loch Modan",
+   "Arathi Highlands",
+   "Hillsbrad Foothills"
+  ],
+  "why": "Una búsqueda del tesoro por medio mundo. El premio es la <b>Cozy Sleeping Bag</b>: te tumbas y ganas +1% de XP por minuto, hasta +3%, que no pierdes al morir; además cuenta como zona de descanso, incluso desconectado. Es un beneficio para todo el leveo, por eso conviene hacerla pronto. Aquí no hay PNJ: cada paso lo da un objeto en el suelo y se entrega en el objeto siguiente. Se puede empezar a nivel 14 y no hay que matar nada, pero el recorrido cruza zonas de la Horda (The Barrens y Stonetalon): ve por los caminos y esquiva los pueblos.",
+  "s": [
+   {
+    "q": 79008,
+    "d": "Los restos quemados están en Alexston Farmstead, en el centro de Westfall. Te mandan a otros iguales al sur de The Barrens. Para llegar a The Barrens: barco de Booty Bay a Ratchet, o a pie desde Ashenvale."
+   },
+   {
+    "q": 79192,
+    "d": "La tabla con la nota clavada (Nailed Plank) está junto a los restos de The Barrens. Te manda a Stonetalon Mountains, cerca de Sun Rock Retreat, que es un pueblo de la Horda: acércate con cuidado."
+   },
+   {
+    "q": 79980,
+    "d": "Los dos objetos están muy cerca uno del otro."
+   },
+   {
+    "q": 79974,
+    "d": "Te manda a la presa de Loch Modan (Stonewrought Dam): la figura tallada está en el borde de la presa."
+   },
+   {
+    "q": 79975,
+    "d": "Te manda a Thoradin's Wall, la muralla que separa Hillsbrad de Arathi. Sube por el carro volcado hasta la bolsa de mensajero."
+   },
+   {
+    "q": 79976,
+    "d": "Justo debajo está el petate enrollado con la <b>Cozy Sleeping Bag</b>. Tiene 1 hora de reutilización."
+   }
+  ]
+ },
+ {
+  "k": "cook",
+  "t": "Cocina y campamento en Kharanos",
+  "g": "Tu personaje",
+  "lv": "4-10",
+  "z": [
+   "Dun Morogh"
+  ],
+  "why": "Te enseña Cocina y el sistema de campamentos de Forever. Casi toda la comida cocinada da +5% de XP por muerte durante 15 minutos, y ese bonus se suma al de la bolsa de dormir.",
+  "s": [
+   {
+    "q": 96628,
+    "w": "Se coge en Kharanos (Dun Morogh). Se entrega a Eric Brighthammer (46.6, 53.8), a las afueras del pueblo."
+   },
+   {
+    "q": 96608,
+    "d": "Siéntate junto a la hoguera de Eric y espera a que te salga el beneficio Boosted Rest."
+   },
+   {
+    "q": 96629,
+    "w": "Eric Brighthammer. Se entrega a Gremlock Pilsnor, el entrenador de Cocina de Kharanos."
+   }
+  ]
+ },
+ {
+  "k": "thanes",
+  "t": "Hall of Thanes: Old Ironforge Incursion",
+  "g": "Mazmorras",
+  "lv": "9-16",
+  "dg": [
+   "hall-of-thanes"
+  ],
+  "why": "La cadena que abre tu primera mazmorra, Hall of Thanes, bajo Ironforge. Sin los tres primeros pasos no te dan la quest de dentro, que es la que da a elegir el Ironforge Greathammer, una maza de dos manos muy buena para nivel 13-18. Entrena antes las mazas de dos manos con Buliwyf Stonehand. Las quests no caducan al subir de nivel: si no la hiciste en su momento, puedes hacerla más tarde.",
+  "s": [
+   {
+    "q": 96392,
+    "d": "Es el primer paso: solo hay que hablar con él y mirar por su visión."
+   },
+   {
+    "q": 96390,
+    "d": "Los espías Dark Iron rondan por los alrededores. Durante este paso consigues el Dark Iron Map, que empieza el siguiente."
+   },
+   {
+    "q": 96391,
+    "w": "La empieza el Dark Iron Map, un objeto que sueltan los espías: clic derecho en él desde la bolsa. Se entrega a Earthseer Farsen (Dun Morogh 64.8, 58.5)."
+   },
+   {
+    "q": 96393,
+    "d": "Es la quest de la mazmorra: necesitas un grupo de 5. Se entrega al rey Magni, en el trono de Ironforge."
+   }
+  ]
+ },
+ {
+  "k": "defias",
+  "t": "The Defias Brotherhood",
+  "g": "Mazmorras",
+  "lv": "14-22",
+  "dg": [
+   "deadmines"
+  ],
+  "why": "La gran cadena de Westfall y la razón de ir a The Deadmines: el último paso es matar a Edwin VanCleef y da a elegir pechera, pantalón o bastón azules. Sus siete pasos se llaman todos igual, y por eso cuesta saber por cuál vas: aquí van numerados. Gryan Stoutmantle te la da directamente desde nivel 14; en Forever ya no hace falta haber hecho antes <em>The People's Militia</em>. Si no la empiezas pronto llegas a la mazmorra sin la quest, porque te pasea antes por Redridge y Stormwind.",
+  "s": [
+   {
+    "q": 65,
+    "d": "Lakeshire está en Redridge Mountains, al este de Elwynn Forest: desde Sentinel Hill, carretera hasta Goldshire y luego todo al este. Wiley está en el piso de arriba de la posada. Coge el punto de vuelo de Lakeshire al llegar."
+   },
+   {
+    "q": 132,
+    "d": "Vuelta a Sentinel Hill. Con los dos puntos de vuelo cogidos es un vuelo."
+   },
+   {
+    "q": 135,
+    "d": "Mathias Shaw está en Old Town, el barrio del sureste de Stormwind, en el cuartel del SI:7."
+   },
+   {
+    "q": 141,
+    "d": "Otra vez a Sentinel Hill."
+   },
+   {
+    "q": 142,
+    "d": "El Defias Messenger va andando solo por los caminos entre Moonbrook, Gold Coast Quarry y Jangolode Mine. Mátalo y recoge su mensaje."
+   },
+   {
+    "q": 155,
+    "w": "The Defias Traitor, preso en la torre de Sentinel Hill, junto a Gryan. Se entrega a Gryan Stoutmantle (Westfall 56.3, 47.6).",
+    "d": "Es una escolta: el traidor camina hasta Moonbrook y por el camino os atacan varios Defias a la vez. Mejor acompañado. Al terminar, Scout Riell te ofrece <em>Red Silk Bandanas</em>."
+   },
+   {
+    "q": 214,
+    "opt": 1,
+    "d": "Solo aparece al terminar la escolta. Los pañuelos caen de los Defias de dentro de The Deadmines: cógela antes de entrar."
+   },
+   {
+    "q": 166,
+    "d": "VanCleef es el jefe final de The Deadmines, en la cubierta del barco. Necesitas un grupo de 5. De él cae también An Unsent Letter, que empieza la cadena de The Stockade."
+   }
+  ]
+ },
+ {
+  "k": "alba",
+  "t": "La cadena de Alba Fairmoon: Toxic Soil",
+  "g": "Mazmorras",
+  "lv": "9-18",
+  "dg": [
+   "deadmines"
+  ],
+  "why": "Cadena nueva de Forever y la segunda razón para ir a The Deadmines. Empieza con encargos sencillos por Westfall, pasa por Stormwind, donde entra tu Ingeniería, y termina poniendo explosivos dentro de la mazmorra. Da mucha XP para su nivel y deja dos quests listas para hacer dentro. Lleva hechas 10 Rough Dynamite antes del paso 6.",
+  "s": [
+   {
+    "q": 92742,
+    "d": "Las dos granjas están al norte de Sentinel Hill. Usa el kit junto a cada pozo."
+   },
+   {
+    "q": 92744,
+    "d": "Se puede llevar a la vez que la anterior. Los murlocs están por toda la costa oeste."
+   },
+   {
+    "q": 92745,
+    "d": "Jangolode Mine está al norte de la zona y Gold Coast Quarry en la costa oeste."
+   },
+   {
+    "q": 92747,
+    "d": "Moonbrook es el pueblo del suroeste, tomado por los Defias. Las cajas están repartidas por las casas."
+   },
+   {
+    "q": 92748,
+    "d": "El Dwarven District es el barrio del norte de Stormwind, donde está la entrada del Deeprun Tram."
+   },
+   {
+    "q": 92749,
+    "d": "Rough Dynamite es de las primeras recetas de Ingeniería: 2 Rough Blasting Powder y 1 Linen Cloth cada una. Llévalas ya hechas y entregas en el momento. Alguna guía habla de Coarse Dynamite; los datos del juego dicen Rough Dynamite. Mira el texto de tu quest antes de fabricar."
+   },
+   {
+    "q": 92750,
+    "w": "Sprite Jumpsprocket (Stormwind, Dwarven District). Se entrega a Jasper Fel, del SI:7, en Old Town.",
+    "d": "Stormwind Intelligence es el SI:7, el mismo edificio de Mathias Shaw."
+   },
+   {
+    "q": 92751,
+    "w": "Jasper Fel (Stormwind, Old Town). Se entrega a Sprite Jumpsprocket, en el Dwarven District."
+   },
+   {
+    "q": 92752,
+    "d": "Vuelta a Westfall."
+   },
+   {
+    "q": 92753,
+    "d": "Quest de mazmorra: necesitas grupo. La forja de los goblins está a mitad de The Deadmines. Después de poner los explosivos, Alba te espera fuera."
+   },
+   {
+    "q": 92819,
+    "d": "Solo usar el detonador."
+   }
+  ]
+ },
+ {
+  "k": "militia",
+  "t": "The People's Militia",
+  "g": "Zonas",
+  "lv": "9-17",
+  "why": "Tres rondas de matar Defias por Westfall. Es opcional: en Forever ya no es requisito de <em>The Defias Brotherhood</em>. Merece la pena si vas a su nivel, porque matas esos mismos Defias para otras quests y el tercer paso da a elegir un arma de la Milicia.",
+  "s": [
+   {
+    "q": 12,
+    "d": "Trappers y Smugglers: en las granjas del centro y del este de Westfall."
+   },
+   {
+    "q": 13,
+    "d": "Pillagers y Looters: en las granjas y minas del oeste, hacia Gold Coast Quarry y Moonbrook."
+   },
+   {
+    "q": 14,
+    "d": "Highwaymen, Pathstalkers y Knuckledusters: al sur, por las colinas de Dagger Hills. Van en grupos."
+   }
+  ]
+ },
+ {
+  "k": "stockade",
+  "t": "The Unsent Letter: de Deadmines a The Stockade",
+  "g": "Mazmorras",
+  "lv": "16-31",
+  "dg": [
+   "stockade"
+  ],
+  "why": "Empieza con una carta que suelta VanCleef al final de The Deadmines y te lleva a The Stockade, la mazmorra que hay dentro de Stormwind. Sin la carta no te dan <em>The Stockade Riots</em>, una de las quests de dentro.",
+  "s": [
+   {
+    "q": 373,
+    "w": "La empieza An Unsent Letter, un objeto que cae de Edwin VanCleef. Se entrega a Baros Alexston (Stormwind City 57.6, 47.9).",
+    "d": "Haz clic derecho en la carta de tu bolsa para coger la quest. Baros está en el ayuntamiento del Cathedral Square."
+   },
+   {
+    "q": 389,
+    "d": "El alcaide está en la entrada de The Stockade, en el barrio de los canales."
+   },
+   {
+    "q": 391,
+    "d": "Quest de mazmorra: Bazil Thredd está dentro de The Stockade. Necesitas grupo."
+   },
+   {
+    "q": 392
+   },
+   {
+    "q": 393
+   },
+   {
+    "q": 350,
+    "d": "A partir de aquí la cadena sigue por Stormwind, pero los pasos siguientes no aparecen en los datos de Forever."
+   }
+  ]
+ },
+ {
+  "k": "darkthreat",
+  "t": "A Dark Threat Looms: la presa de Loch Modan",
+  "g": "Zonas",
+  "lv": "16-20",
+  "z": [
+   "Loch Modan"
+  ],
+  "why": "Los Dark Iron quieren volar la presa de Stonewrought Dam. Siete pasos que se llaman igual, entre la presa y Thelsamar. Da bastante XP para nivel 16-20 y reputación con Ironforge, que abarata tu montura.",
+  "s": [
+   {
+    "q": 250,
+    "d": "La pista es un barril sospechoso en la rampa este de la presa."
+   },
+   {
+    "q": 199,
+    "w": "El barril sospechoso de la presa. Se entrega a Chief Engineer Hinderweir VII (Loch Modan 45.9, 13.6).",
+    "d": "Lleva al ingeniero jefe lo que encuentras en el barril."
+   },
+   {
+    "q": 161,
+    "w": "Chief Engineer Hinderweir VII. Se entrega a Ashlan Stonesmirk, el experto en explosivos de Thelsamar."
+   },
+   {
+    "q": 274,
+    "w": "Ashlan Stonesmirk (Thelsamar). Se entrega a Chief Engineer Hinderweir VII, en la presa."
+   },
+   {
+    "q": 278,
+    "w": "Chief Engineer Hinderweir VII (Loch Modan 45.9, 13.6).",
+    "d": "El Lurker Venom cae de las arañas Cliff Lurker de las colinas, el Mo'grosh Crystal de los ogros de Mo'grosh Stronghold, al noreste, y la Crocolisk Tear de los crocoliscos del lago."
+   },
+   {
+    "q": 280,
+    "w": "Chief Engineer Hinderweir VII. Se entrega a Ashlan Stonesmirk, en Thelsamar.",
+    "d": "Llevarle los tres ingredientes."
+   },
+   {
+    "q": 283,
+    "w": "Ashlan Stonesmirk. Se usa en el barril de la presa y se entrega a Chief Engineer Hinderweir VII.",
+    "d": "Usa el polvo que te prepara Ashlan sobre el barril para desactivarlo."
+   }
+  ]
+ },
+ {
+  "k": "blackrock",
+  "t": "Blackrock Menace, Blackrock Blockade y Tharil'zun",
+  "g": "Zonas",
+  "lv": "18-25",
+  "why": "Los orcos Blackrock del norte de Redridge. La primera abre las otras dos, que se hacen juntas en Stonewatch Keep. Son enemigos en grupo: mejor acompañado.",
+  "s": [
+   {
+    "q": 20,
+    "d": "Las hachas caen de los orcos Blackrock de Render's Camp y Render's Valley, al norte."
+   },
+   {
+    "q": 98387,
+    "d": "Nueva en Forever. Hace falta para que Marris te dé las dos siguientes."
+   },
+   {
+    "q": 19,
+    "d": "Tharil'zun está en Stonewatch Keep, al este, rodeado de orcos."
+   },
+   {
+    "q": 115,
+    "d": "Los Midnight Orbs caen de los Blackrock Shadowcasters, también en Stonewatch Keep."
+   }
+  ]
+ },
+ {
+  "k": "greenwarden",
+  "t": "Rethiel the Greenwarden",
+  "g": "Zonas",
+  "lv": "20-26",
+  "why": "La cadena del centro de Wetlands. Se coge en el puerto y te manda al guardián del pantano, que te va dando encargos por los alrededores. Son cuatro pasos de matar y recoger en la misma zona en la que ya estás haciendo el resto de quests.",
+  "s": [
+   {
+    "q": 463,
+    "d": "Fitzsimmons está en el muelle de Menethil Harbor. Rethiel está en el centro del pantano."
+   },
+   {
+    "q": 276
+   },
+   {
+    "q": 277,
+    "d": "Los pedernales caen de los gnolls Mosshide más fuertes, los Fenrunners, Trappers, Brutes, Mystics y Alphas."
+   },
+   {
+    "q": 275,
+    "d": "Los Fen Creepers van camuflados por el agua del pantano: fíjate en las siluetas."
+   }
+  ]
+ },
+ {
+  "k": "darkiron",
+  "t": "The Dark Iron War y The Fury Runs Deep",
+  "g": "Mazmorras",
+  "lv": "22-30",
+  "dg": [
+   "stockade"
+  ],
+  "why": "Dun Modr, el pueblo en ruinas del norte de Wetlands, está tomado por los Dark Iron. La primera quest es la que te abre la segunda, que se hace dentro de The Stockade: si vas a la mazmorra sin ella, te quedas sin esa quest.",
+  "s": [
+   {
+    "q": 303,
+    "d": "Muchos enemigos juntos y de nivel 27-30: ve acompañado o vuelve con nivel 28."
+   },
+   {
+    "q": 378,
+    "d": "Quest de mazmorra: Kam Deepfury está dentro de The Stockade, en Stormwind. Se entrega a Motley Garmason."
+   }
+  ]
+ },
+ {
+  "k": "thandol",
+  "t": "The Thandol Span",
+  "g": "Zonas",
+  "lv": "26-31",
+  "why": "El puente entre Wetlands y Arathi. Tres pasos que se llaman igual y un cuarto que te manda a Refuge Pointe, el campamento de la Alianza en Arathi.",
+  "s": [
+   {
+    "q": 631,
+    "d": "El cadáver está en la parte baja del puente: se baja por las escaleras de dentro."
+   },
+   {
+    "q": 632
+   },
+   {
+    "q": 633,
+    "d": "Los explosivos están en el puente pequeño que queda al este del principal."
+   },
+   {
+    "q": 634,
+    "d": "Refuge Pointe está en el centro de Arathi. Coge allí el punto de vuelo."
+   }
+  ]
+ },
+ {
+  "k": "nightwatch",
+  "t": "The Night Watch",
+  "g": "Zonas",
+  "lv": "18-30",
+  "why": "Tres rondas contra los no-muertos del cementerio de Raven Hill, cada una más adentro. La última ya es de nivel 30.",
+  "s": [
+   {
+    "q": 56
+   },
+   {
+    "q": 57
+   },
+   {
+    "q": 58
+   }
+  ]
+ },
+ {
+  "k": "stalvan",
+  "t": "The Legend of Stalvan",
+  "g": "Zonas",
+  "lv": "22-35",
+  "why": "Trece pasos que se llaman todos igual. Casi todo es ir de un sitio a otro y hablar, por Duskwood, Westfall, Elwynn y Stormwind: da mucha XP por muy poco combate si la vas avanzando cuando te pille de paso. Solo el último paso es una pelea.",
+  "s": [
+   {
+    "q": 66
+   },
+   {
+    "q": 67,
+    "d": "La escuela de Moonbrook está en el suroeste de Westfall. El baúl está dentro."
+   },
+   {
+    "q": 68
+   },
+   {
+    "q": 69,
+    "d": "The Lion's Pride Inn es la posada de Goldshire, en Elwynn Forest."
+   },
+   {
+    "q": 70,
+    "d": "El cofre está en la propia posada. El Caretaker Folsom está en los canales de Stormwind."
+   },
+   {
+    "q": 72,
+    "d": "La caja está al lado de Folsom."
+   },
+   {
+    "q": 74,
+    "d": "Marshal Haggard vive en Eastvale Logging Camp, al este de Elwynn Forest."
+   },
+   {
+    "q": 75,
+    "d": "El cofre está en el piso de arriba de su casa."
+   },
+   {
+    "q": 78
+   },
+   {
+    "q": 79
+   },
+   {
+    "q": 80
+   },
+   {
+    "q": 97
+   },
+   {
+    "q": 98,
+    "d": "Stalvan está en la casa que hay al norte de Darkshire. Es bastante más fuerte que el resto de la cadena: los datos lo marcan de nivel 35."
+   }
+  ]
+ },
+ {
+  "k": "sven",
+  "t": "Sven's Revenge y Morbent Fel",
+  "g": "Zonas",
+  "lv": "20-32",
+  "why": "La historia de Sven, acampado en el oeste de Duskwood. Empieza buscando a la figura misteriosa que mató a su familia y acaba forjando un arma para matar a Morbent Fel. Es la cadena larga de Duskwood: pasa por Stormwind y por Menethil Harbor, así que cuadra con otros viajes.",
+  "s": [
+   {
+    "q": 164,
+    "d": "Opcional: es solo el encargo que te lleva hasta Sven."
+   },
+   {
+    "q": 95,
+    "d": "La granja de Sven está en el sur de Duskwood. El montón de tierra está detrás del tocón."
+   },
+   {
+    "q": 230
+   },
+   {
+    "q": 262
+   },
+   {
+    "q": 265
+   },
+   {
+    "q": 266
+   },
+   {
+    "q": 453,
+    "d": "La figura es Jitters, escondido en una casa de Raven Hill, el pueblo abandonado del oeste."
+   },
+   {
+    "q": 268
+   },
+   {
+    "q": 323,
+    "d": "Los esqueletos están en el cementerio de Raven Hill."
+   },
+   {
+    "q": 269,
+    "d": "El obispo Farthing está en la catedral de Stormwind."
+   },
+   {
+    "q": 270,
+    "d": "Menethil Harbor es el puerto de Wetlands."
+   },
+   {
+    "q": 321,
+    "d": "El barco hundido está al sur del puerto, bajo el agua. Hay murlocs alrededor."
+   },
+   {
+    "q": 324,
+    "d": "Los lingotes los llevan los murlocs Bluegill de esa costa."
+   },
+   {
+    "q": 322,
+    "d": "Grimand Elmore está en el Dwarven District de Stormwind."
+   },
+   {
+    "q": 325
+   },
+   {
+    "q": 55,
+    "d": "Morbent Fel está en el piso de arriba de la casa que hay junto al cementerio de Raven Hill. Usa Morbent's Bane sobre él para quitarle el escudo; sin eso no se le puede hacer daño."
+   }
+  ]
+ },
+ {
+  "k": "embalmer",
+  "t": "The Hermit y Bride of the Embalmer",
+  "g": "Zonas",
+  "lv": "17-30",
+  "why": "Abercrombie, el ermitaño que vive junto al cementerio de Raven Hill, te va pidiendo recados cada vez más raros. Quince pasos entre su cabaña y Darkshire, casi todos de llevar cosas, con un combate final para el que conviene ir acompañado.",
+  "s": [
+   {
+    "q": 165
+   },
+   {
+    "q": 148
+   },
+   {
+    "q": 149,
+    "d": "Blind Mary es un fantasma: está en una casa al sur de Darkshire."
+   },
+   {
+    "q": 154
+   },
+   {
+    "q": 157
+   },
+   {
+    "q": 158
+   },
+   {
+    "q": 156,
+    "d": "Las Rot Blossoms caen de los no-muertos de Raven Hill."
+   },
+   {
+    "q": 159
+   },
+   {
+    "q": 133,
+    "d": "Las costillas caen de los necrófagos de Raven Hill."
+   },
+   {
+    "q": 134,
+    "d": "La caja está en el montículo de ogros del sur de Duskwood (Vul'Gol Ogre Mound)."
+   },
+   {
+    "q": 160
+   },
+   {
+    "q": 251
+   },
+   {
+    "q": 401
+   },
+   {
+    "q": 252
+   },
+   {
+    "q": 253,
+    "d": "La tumba de Eliza está en el cementerio de Raven Hill. Al tocarla aparece ella con sus guardias."
+   }
+  ]
+ },
+ {
+  "k": "stars",
+  "t": "Look to the Stars",
+  "g": "Zonas",
+  "lv": "20-30",
+  "why": "El astrónomo de Darkshire necesita piezas para su telescopio. Cuatro pasos que se llaman igual.",
+  "s": [
+   {
+    "q": 174,
+    "d": "El tubo de bronce (Bronze Tube) lo fabrica un ingeniero. Como tienes Ingeniería, puedes hacértelo tú; también lo vende a veces Herble Baubbletump, el vendedor de suministros de ingeniería de Darkshire."
+   },
+   {
+    "q": 175
+   },
+   {
+    "q": 177,
+    "d": "El Insane Ghoul está en la capilla de Tranquil Gardens Cemetery, el cementerio del este de Darkshire."
+   },
+   {
+    "q": 181,
+    "d": "Zzarc'Vul está en la cueva del montículo de ogros del sur de Duskwood."
+   }
+  ]
+ },
+ {
+  "k": "worgen",
+  "t": "Worgen in the Woods",
+  "g": "Zonas",
+  "lv": "23-31",
+  "why": "Cuatro pasos que se llaman igual, contra los huargen de Duskwood. Cada ronda es de un nivel más alto.",
+  "s": [
+   {
+    "q": 173,
+    "d": "Los Shadow Weavers están en Brightwood Grove, al norte de Darkshire."
+   },
+   {
+    "q": 221,
+    "d": "También en Brightwood Grove."
+   },
+   {
+    "q": 222,
+    "d": "En Roland's Doom, la mina del sur de Duskwood."
+   },
+   {
+    "q": 223
+   }
+  ]
+ }
 ]
