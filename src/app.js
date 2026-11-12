@@ -6,10 +6,10 @@
   var $$ = function(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var store = {
     get: function(k){ try { return window.localStorage.getItem(k); } catch(e){ return null; } },
-    set: function(k, v){ try { window.localStorage.setItem(k, v); } catch(e){} }
+    set: function(k, v){ try { window.localStorage.setItem(k, v); return true; } catch(e){ return false; } }
   };
   function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
-  var VIEWS = ['inicio', 'zonas', 'mazmorras', 'chaman', 'referencia'];
+  var VIEWS = ['inicio', 'zonas', 'mazmorras', 'cadenas', 'chaman', 'referencia'];
   var cur = { view: 'inicio', page: null };
 
   // grupos de mazmorra (una entrada por mazmorra, con sus alas)
@@ -57,11 +57,11 @@
     $$('input[data-dg]').forEach(function(b){
       var row = $('.gr[data-dg="' + b.dataset.dg + '"]'); if (row) row.classList.toggle('done', b.checked);
     });
-    var dg = countIn(document, 'input[data-dg]'), im = uniq('.blk.imp input[data-k]'), ql = countIn(document, '.allq input[data-k]');
+    var dg = countIn(document, 'input[data-dg]'), im = uniq('.blk.imp input[data-k]'), ql = countIn(document, '.allq input[data-k]'), rt = countIn($('#ruta'));
     var box = $('#progreso');
     if (box) box.innerHTML = '<span>Mazmorras <b>' + dg[0] + '/' + dg[1] + '</b></span><span>Imprescindibles <b>' + im[0] + '/' + im[1] +
-      '</b></span><span>Quests de zona <b>' + ql[0] + '/' + ql[1] + '</b></span>';
-    renderCards(); renderSide(); renderNow();
+      '</b></span><span>Quests de zona <b>' + ql[0] + '/' + ql[1] + '</b></span><span>Ruta <b>' + rt[0] + '/' + rt[1] + '</b></span>';
+    updateChains(); renderCards(); renderSide(); renderNow(); updateRoute();
   }
   function restore(){
     boxes.forEach(function(b){ var v = store.get('chk-' + b.dataset.k); b.checked = v === null ? b.defaultChecked : v === '1'; });
@@ -70,10 +70,58 @@
   document.addEventListener('change', function(e){
     var b = e.target;
     if (!b.matches || !b.matches('input[type=checkbox][data-k]')) return;
-    store.set('chk-' + b.dataset.k, b.checked ? '1' : '0');
+    savedToast(store.set('chk-' + b.dataset.k, b.checked ? '1' : '0'));
     $$('input[data-k="' + b.dataset.k + '"]').forEach(function(o){ o.checked = b.checked; });
-    updateBlocks(b.closest('.page') || document); refresh();
+    // una fila de varios pasos marcada da por hechos todos sus pasos
+    if (b.checked && b.dataset.all) b.dataset.all.split(',').forEach(function(id){
+      store.set('chk-q' + id, '1'); $$('input[data-k="q' + id + '"]').forEach(function(o){ o.checked = true; });
+    });
+    updateBlocks(b.dataset.all ? document : b.closest('.page') || document); refresh();
   });
+
+  // aviso de guardado
+  var toast = document.createElement('div'), toastT = null;
+  toast.id = 'saved'; toast.setAttribute('aria-live', 'polite'); document.body.appendChild(toast);
+  function savedToast(ok){
+    toast.textContent = ok ? 'Guardado en este navegador' : 'Este navegador no deja guardar: la marca se perderá al cerrar la página';
+    toast.className = ok ? 'on' : 'on bad';
+    clearTimeout(toastT); toastT = setTimeout(function(){ toast.className = ''; }, ok ? 1300 : 6000);
+  }
+
+  // cadenas: progreso y paso siguiente
+  var CH = {};
+  function chainState(c){ return CH[c.k] || { done: 0, n: c.n, next: 1 }; }
+  function updateChains(){
+    (D.chains || []).forEach(function(c){
+      var pg = document.getElementById('cad-' + c.k); if (!pg) return;
+      var lis = $$('ol.chain > li', pg), done = 0, next = 0;
+      lis.forEach(function(li, i){
+        var on = $('input', li).checked;
+        li.classList.toggle('done', on); li.classList.remove('next');
+        if (on) done++; else if (!next){ next = i + 1; li.classList.add('next'); }
+      });
+      CH[c.k] = { done: done, n: lis.length, next: next };
+      var cp = $('.cprog', pg);
+      if (cp) cp.textContent = done === lis.length ? 'completada' : done ? done + ' de ' + lis.length + ' · sigue el paso ' + next : 'sin empezar';
+    });
+    $$('a.clink').forEach(function(a){
+      var s = CH[a.dataset.chain]; if (!s) return;
+      a.classList.toggle('done', s.done === s.n);
+      $('.cl-p', a).textContent = s.done === s.n ? 'completada' : s.done ? s.done + '/' + s.n + ' · sigue el paso ' + s.next : s.n + ' pasos';
+    });
+  }
+
+  // pasos de la ruta: hecho, pendiente de antes o el que toca
+  function updateRoute(){
+    var v = L();
+    $$('#ruta .steps > li').forEach(function(li){
+      var c = countIn(li), p = (li.dataset.lv || '').split('-'), b = +p[1];
+      var done = c[1] > 0 && c[0] === c[1], behind = !done && v > b;
+      li.classList.toggle('done', done); li.classList.toggle('behind', behind);
+      var t = $('.st-tag', li);
+      if (t) t.textContent = done ? 'hecho' : behind ? 'te queda ' + (c[1] - c[0]) + ' de ' + c[1] : c[0] ? c[0] + ' de ' + c[1] : '';
+    });
+  }
 
   // ---------------------------------------------------------------- nivel
   var lvl = $('#nivel');
@@ -86,7 +134,7 @@
     $$('[data-lv]').forEach(function(el){ var p = el.dataset.lv.split('-'); el.classList.toggle('at-level', inRange(v, +p[0], +p[1])); });
     var now = $('.g-now');
     if (now){ now.hidden = !(v >= 10); now.style.setProperty('--p', (Math.max(10, Math.min(60, v)) - 10) / 50); now.dataset.l = v; }
-    renderCards(); renderSide(); renderNow();
+    renderCards(); renderSide(); renderNow(); updateRoute();
   }
   lvl.addEventListener('input', function(){ store.set('nivel', lvl.value); applyLevel(); });
 
@@ -105,6 +153,18 @@
           '<span class="c-f">' + (im[1] ? 'Imprescindibles ' + im[0] + '/' + im[1] + ' · ' : '') + 'Quests ' + q[0] + '/' + q[1] + '</span></a>');
       });
       host.innerHTML = groups.map(function(g){ return '<h4 class="cg">' + esc(g) + '</h4><div class="cards">' + by[g].join('') + '</div>'; }).join('');
+    }
+    host = $('#ccards');
+    if (host){
+      var cg = [], cby = {};
+      (D.chains || []).forEach(function(c){
+        if (!cby[c.g]){ cby[c.g] = []; cg.push(c.g); }
+        var s = chainState(c), done = s.done === s.n;
+        cby[c.g].push('<a class="card' + (inRange(v, c.a, c.b) && !done ? ' at-level' : '') + (done ? ' done' : '') + '" href="#cad-' + c.k + '">' +
+          '<span class="c-h"><b>' + esc(c.t) + '</b><span class="lv">' + esc(c.lv) + '</span></span>' + bar(s.done, s.n) +
+          '<span class="c-f">' + (done ? 'Completada' : s.done ? 'Vas por el paso ' + s.next + ' de ' + s.n : s.n + ' pasos') + '</span></a>');
+      });
+      host.innerHTML = cg.map(function(g){ return '<h4 class="cg">' + esc(g) + '</h4><div class="cards">' + cby[g].join('') + '</div>'; }).join('');
     }
     host = $('#dcards');
     if (host){
@@ -139,6 +199,15 @@
         h += '<a href="#dg-' + g.g + '" class="' + ('dg-' + g.g === pid ? 'on ' : '') + (inRange(v, g.a, g.b) ? 'at-level ' : '') + (done ? 'done' : '') +
           '"><span>' + esc(g.n) + '</span><span class="lv">' + g.a + '-' + g.b + '</span></a>';
       });
+    } else if (cur.view === 'cadenas'){
+      h = '<a class="s-all' + (pid ? '' : ' on') + '" href="#cadenas">Todas las cadenas</a>';
+      var lg = '';
+      (D.chains || []).forEach(function(c){
+        if (c.g !== lg){ h += '<h4>' + esc(c.g) + '</h4>'; lg = c.g; }
+        var s = chainState(c);
+        h += '<a href="#cad-' + c.k + '" class="' + ('cad-' + c.k === pid ? 'on ' : '') + (inRange(v, c.a, c.b) ? 'at-level ' : '') + (s.done === s.n ? 'done' : '') +
+          '"><span>' + esc(c.t) + '</span><span class="lv">' + esc(c.lv) + '</span></a>';
+      });
     } else if (cur.view === 'chaman' || cur.view === 'referencia'){
       h = '<h4>En esta sección</h4>';
       $$('#v-' + cur.view + ' > section.sec').forEach(function(s){
@@ -168,6 +237,10 @@
     h += '<div class="tile"><h4>Mazmorras en rango</h4><ul class="chips">' +
       (ds.map(function(d){ return chip('dg-' + d.g, d.n, d.a + '-' + d.b, isDone(d.k) ? 'done' : ''); }).join('') || '<li><small>Ninguna todavía: la primera es a nivel 13.</small></li>') + '</ul>' +
       (dn.length ? '<small>Pronto:</small><ul class="chips">' + dn.map(function(d){ return chip('dg-' + d.g, d.n, d.a + '-' + d.b, 'soon'); }).join('') + '</ul>' : '') + '</div>';
+    var cs = (D.chains || []).filter(function(c){ var s = chainState(c); return s.done !== s.n && (inRange(v, c.a, c.b) || s.done > 0); });
+    h += '<div class="tile"><h4>Cadenas a tu nivel</h4><ul class="chips">' +
+      (cs.map(function(c){ var s = chainState(c); return chip('cad-' + c.k, c.t, s.done + '/' + s.n, ''); }).join('') || '<li><small>Ninguna pendiente.</small></li>') + '</ul>' +
+      '<small><a href="#cadenas">Ver todas las cadenas paso a paso</a></small></div>';
     h += '<div class="tile"><h4>Lo que tienes y lo que viene</h4><ul class="ms">' +
       past.map(function(m){ return '<li class="past"><span class="lv">' + m[0] + '</span><span>' + esc(m[1]) + '</span></li>'; }).join('') +
       next.map(function(m){ return '<li><span class="lv">' + m[0] + '</span><span>' + esc(m[1]) + '</span></li>'; }).join('') + '</ul></div>';
@@ -193,6 +266,7 @@
   var pending = null;
   function pageOrder(page){
     if (page.classList.contains('zpage')) return D.zones.map(function(z){ return { id: z.id, n: z.n }; });
+    if (page.classList.contains('cpage')) return (D.chains || []).map(function(c){ return { id: 'cad-' + c.k, n: c.t }; });
     return DG.map(function(g){ return { id: 'dg-' + g.g, n: g.n }; });
   }
   function addPrevNext(page){
@@ -266,7 +340,7 @@
   var TY = { Elite: 'élite', Dungeon: 'mazmorra', Raid: 'raid', PvP: 'JcJ' };
   function questHTML(id){
     var q = D.q[id]; if (!q) return '';
-    var sub = ['nivel ' + q.l + (q.m ? ' (desde ' + q.m + ')' : ''), q.z];
+    var sub = [q.l ? 'nivel ' + q.l + (q.m ? ' (desde ' + q.m + ')' : '') : '', q.z];
     if (q.t) sub.push(TY[q.t] || q.t);
     if (q.gr) sub.push('grupo de ' + q.gr);
     if (q.ti) sub.push('con tiempo');
@@ -341,13 +415,15 @@
     function add(t, n, c, ref){ n = (n || '').trim(); if (!n) return; var k = t + '|' + n + '|' + c; if (seen[k]) return; seen[k] = 1; idx.push({ t: t, n: n, c: c, s: n.toLowerCase(), ref: ref }); }
     D.zones.forEach(function(z){ add('Zona', z.n, 'niveles ' + z.lv, z.id); });
     DG.forEach(function(g){ add('Mazmorra', g.n, 'niveles ' + g.a + '-' + g.b + ' · ' + g.loc, 'dg-' + g.g); });
+    (D.chains || []).forEach(function(c){ add('Cadena', c.t, 'niveles ' + c.lv + ' · ' + c.n + ' pasos', 'cad-' + c.k); });
     $$('.view > section.sec').forEach(function(s){ var h = $('h2', s); if (h && s.id) add('Sección', h.textContent, '', s.id); });
+    $$('ol.chain > li').forEach(function(li){ var a = $('.cs-t a.x-quest, .cs-t b', li); if (a) add('Quest', a.textContent, 'cadena ' + pageName(li), li); });
     $$('ul.ql > li').forEach(function(li){ var a = $('a.x-quest', li); if (a) add('Quest', a.textContent, pageName(li), li); });
     $$('.blk.imp li').forEach(function(li){ var a = $('a.x', li); if (a) add('Quest', a.textContent, pageName(li) + ' · imprescindible', li); });
     $$('.bosses > li > b').forEach(function(b){ add('Jefe', b.textContent, pageName(b), b.parentNode); });
     $$('.keyitems > li, .loot a.x').forEach(function(el){ var a = el.matches('a') ? el : $('a.x', el); if (a) add('Objeto', a.textContent, pageName(el), el); });
   }
-  var ORDER = { Zona: 0, Mazmorra: 1, 'Sección': 2, Quest: 3, Jefe: 4, Objeto: 5 };
+  var ORDER = { Zona: 0, Mazmorra: 1, Cadena: 2, 'Sección': 3, Quest: 4, Jefe: 5, Objeto: 6 };
   function runSearch(){
     var term = q.value.trim().toLowerCase();
     if (term.length < 2){ results.hidden = true; return; }
@@ -408,6 +484,57 @@
       restore(); applyLevel();
       msg.textContent = 'Progreso cargado: ' + (d.on || []).length + ' casillas.';
     } catch (err){ msg.textContent = 'Ese código no es válido. Cópialo entero desde el otro dispositivo.'; }
+  });
+
+  // ---------------------------------------------------------------- importar quests completadas (Questie o lista de números)
+  var impFile = $('#imp-file'), impChar = $('#imp-char'), impIds = $('#imp-ids'), impGo = $('#imp-go'), impMsg = $('#imp-msg'), impData = null;
+  function parseQuestie(txt){
+    var chars = {}, re = /\["complete"\]\s*=\s*\{/g, m;
+    while ((m = re.exec(txt))){
+      var i = re.lastIndex, depth = 1;
+      while (i < txt.length && depth){ var ch = txt.charAt(i++); if (ch === '{') depth++; else if (ch === '}') depth--; }
+      var block = txt.slice(re.lastIndex, i), ids = [], r = /\[(\d+)\]\s*=\s*true|^\s*(\d+),\s*--\s*\[\d+\]/gm, x;
+      while ((x = r.exec(block))) ids.push(+(x[1] || x[2]));
+      var names = txt.slice(0, m.index).match(/\["([^"\n]+ - [^"\n]+)"\]\s*=\s*\{/g);
+      var name = names ? names[names.length - 1].replace(/^\["|"\]\s*=\s*\{$/g, '') : 'Personaje ' + (Object.keys(chars).length + 1);
+      if (ids.length) chars[name] = (chars[name] || []).concat(ids);
+    }
+    return chars;
+  }
+  function markDone(ids){
+    var have = {}, fresh = 0, known = 0;
+    boxes.forEach(function(b){ have[b.dataset.k] = 1; });
+    ids.forEach(function(id){
+      var k = 'q' + id; if (!have[k]) return;
+      known++; if (store.get('chk-' + k) !== '1'){ store.set('chk-' + k, '1'); fresh++; }
+    });
+    restore(); applyLevel();
+    return [fresh, known];
+  }
+  if (impFile) impFile.addEventListener('change', function(){
+    var f = impFile.files && impFile.files[0]; impData = null; impChar.hidden = true;
+    if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function(){
+      var chars = parseQuestie(String(rd.result)), names = Object.keys(chars);
+      if (!names.length){ impMsg.textContent = 'No encuentro la lista de quests completadas en ese archivo. Comprueba que es Questie.lua de la carpeta SavedVariables.'; return; }
+      impData = chars;
+      names.sort(function(a, b){ return chars[b].length - chars[a].length; });
+      impChar.innerHTML = names.map(function(n){ return '<option value="' + esc(n) + '">' + esc(n) + ' · ' + chars[n].length + ' quests</option>'; }).join('');
+      impChar.hidden = names.length < 2;
+      impMsg.textContent = names.length > 1 ? 'Hay ' + names.length + ' personajes en el archivo: elige uno y pulsa el botón.' : 'Leído «' + names[0] + '»: ' + chars[names[0]].length + ' quests completadas. Pulsa el botón para marcarlas.';
+    };
+    rd.onerror = function(){ impMsg.textContent = 'No se ha podido leer el archivo.'; };
+    rd.readAsText(f);
+  });
+  if (impGo) impGo.addEventListener('click', function(){
+    var ids = [], src = '';
+    if (impData){ src = impChar.value || Object.keys(impData)[0]; ids = impData[src] || []; }
+    var typed = (impIds.value.match(/\d+/g) || []).map(Number);
+    if (typed.length){ ids = ids.concat(typed); src = src ? src + ' y la lista pegada' : 'la lista pegada'; }
+    if (!ids.length){ impMsg.textContent = 'Elige antes el archivo de Questie o pega una lista de números.'; return; }
+    var r = markDone(ids);
+    impMsg.textContent = 'De ' + src + ': ' + ids.length + ' quests completadas, ' + r[1] + ' están en la guía. Marcadas ahora ' + r[0] + (r[1] - r[0] ? '; las otras ' + (r[1] - r[0]) + ' ya lo estaban.' : '.');
   });
 
   // ---------------------------------------------------------------- arranque

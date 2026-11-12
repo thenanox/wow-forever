@@ -4,7 +4,8 @@ Guía de leveo 1-60 para un enano chamán (Alianza, Mejora, Ingeniería + Miner�
 
 ## Cómo usarla
 
-- **`index.html`**: ábrelo con doble clic. Tiene índice, buscador, panel por nivel, fichas emergentes de quests y objetos, y casillas que se guardan en el navegador.
+- **`index.html`**: ábrelo con doble clic, o en https://thenanox.github.io/wow-forever/. Tiene ruta de 1 a 60, una página por zona, mazmorra y cadena de quests, buscador, panel por nivel y fichas emergentes.
+- **Progreso**: las casillas se guardan en el `localStorage` del navegador donde las marcas. En Referencia › Importar se pueden marcar las quests completadas a partir del `Questie.lua` de SavedVariables o de una lista de números de quest.
 - **`Enano-Chaman-WoW-Forever.pdf`**: versión para leer o imprimir, con marcadores. No incluye el listado completo de quests por zona.
 
 ## Cómo actualizarla
@@ -19,7 +20,8 @@ sh tools/make-pdf.sh        # regenera index.html y el PDF sin conexión
 
 | Parte | Fuente |
 | --- | --- |
-| Texto de la guía, plan y checklist | `src/guia.html`, escrito a mano |
+| Texto de la guía, ruta y checklist | `src/guia.html`, escrito a mano |
+| Cadenas paso a paso | `data/chains.json`: orden y notas a mano; nombres, PNJ, coordenadas y objetivos salen de `cache/quest/` |
 | Fichas de quest, listados por zona, quests de mazmorra | `cache/quest/`, de la API de forever.warcraftdb.com |
 | Jefes, botín y consejos de mazmorra | `data/dungeons-*.json`, extraído de Warcraft Tavern y wowforeverinfo |
 | Estadísticas de objetos | `cache/item/`, de la misma API |
@@ -30,5 +32,6 @@ Los enlaces van a Wowhead Forever. Los identificadores son los del juego, así q
 ## Limitaciones conocidas
 
 - La base de datos no distingue facción en las quests clásicas. Se descartan las de la Horda por la reputación que dan, así que en zonas disputadas puede colarse alguna.
-- Tampoco trae los requisitos entre quests clásicas ni quién da algunas de ellas.
+- Tampoco trae los requisitos entre quests clásicas ni quién da algunas de ellas. Por eso el orden de las cadenas está puesto a mano.
+- El importador de Questie asume el formato de Questie para Classic (`["complete"] = { [id] = true }` por personaje). No está probado con un archivo real de Forever.
 - Las fichas de mazmorras de nivel 44 o más usan guías basadas en Classic para jefes y consejos.

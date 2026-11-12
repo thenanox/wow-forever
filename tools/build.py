@@ -325,8 +325,9 @@ def zone_list(title, dbzones, slug):
         meta = quest_meta(g, dbzones)
         xp = sum(q.get('xp') or 0 for q in g)
         lo = min((q.get('min') or q['level']) for q in g)
+        allids = f' data-all="{",".join(str(q["id"]) for q in g)}"' if len(g) > 1 else ''
         out.append(
-            f'<li data-lv="{lo}-{lvl + 2}"{" data-new" if isnew else ""}{" data-star" if star else ""}><label><input type="checkbox" data-k="q{first["id"]}"><span>'
+            f'<li data-lv="{lo}-{lvl + 2}"{" data-new" if isnew else ""}{" data-star" if star else ""}><label><input type="checkbox" data-k="q{g[-1]["id"]}"{allids}><span>'
             f'<span class="lv">{lvl}</span> {star}{A("quest", first["id"], esc(n))}{tags}'
             f'<span class="qm">{meta}{chain}{f" · {xp} XP" if xp else ""}</span></span></label></li>')
     note = ('Datos del juego (Warcraft DB). Puede incluir alguna quest de otra clase o retirada. '
@@ -514,11 +515,107 @@ def render_gantt(dash):
 def slug(s):
     return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
 
+# ---------------------------------------------------------------- cadenas paso a paso
+CHAINS = json.load(open(os.path.join(ROOT, 'data', 'chains.json'), encoding='utf-8'))
+MAP2ZONE = {}
+for _n, (_dbz, _s) in ZONES.items():
+    for _d in _dbz: MAP2ZONE.setdefault(_d, _n)
+for _n, _lv, _b, _dbz, _s, _t in EXTRA_ZONES:
+    for _d in _dbz: MAP2ZONE.setdefault(_d, _n)
+DG_NAME = {d[0]: d[1] for d in DG}
+QTYPE = {'Dungeon': 'mazmorra', 'Elite': 'élite', 'Raid': 'raid'}
+
+def step_ref(x, c):
+    if not x: return ''
+    link = ref_link((x['t'], x['id']), x['name'], esc(x['name']))
+    loc = f' <span class="co">{esc(c[2] or "")} {c[0]:g}, {c[1]:g}</span>' if c else ''
+    return ('el objeto ' if x['t'] in ('object', 'item') else '') + link + loc
+
+def step_where(q):
+    """Quién da el paso y a quién se entrega, según los datos del juego."""
+    st, en = (q.get('starts') or [None])[0], (q.get('ends') or [None])[0]
+    a, b = step_ref(st, q.get('sc')), step_ref(en, q.get('ec'))
+    if a and b and st['id'] == en['id'] and q.get('sc') == q.get('ec'): return f'La da y la recoge {a}.'
+    to = 'Se entrega en' if en and en['t'] in ('object', 'item') else 'Se entrega a'
+    return ' '.join(x for x in (f'La da {a}.' if a else '', f'{to} {b}.' if b else '') if x)
+
+def runs(nums):
+    """[1, 2, 3, 5] -> '1-3 y 5'"""
+    out, i = [], 0
+    while i < len(nums):
+        j = i
+        while j + 1 < len(nums) and nums[j + 1] == nums[j] + 1: j += 1
+        out.append(str(nums[i]) if i == j else f'{nums[i]}-{nums[j]}')
+        i = j + 1
+    return out[0] if len(out) == 1 else ', '.join(out[:-1]) + ' y ' + out[-1]
+
+def chain_link(ch, here=''):
+    return (f'<li><a class="clink" href="#cad-{ch["k"]}" data-chain="{ch["k"]}" data-lv="{ch["lv"]}"><b>{esc(ch["t"])}</b>'
+            f'<span class="lv">{ch["lv"]}</span><span class="cl-h">{here}</span><span class="cl-p"></span></a></li>')
+
+def render_chains():
+    """(páginas, datos para tarjetas, enlaces por zona, enlaces por mazmorra)"""
+    pages, meta, byzone, bydg = [], [], defaultdict(list), defaultdict(list)
+    for ch in CHAINS:
+        lis, zsteps = [], {z: [] for z in ch.get('z', [])}
+        for i, s in enumerate(ch['s'], 1):
+            note = linkify(s.get('d') or s.get('o') or '')
+            obj = rw = lv = tag = ''
+            if 'q' in s:
+                q = Q[s['q']]; key = f'q{q["id"]}'
+                title = qa(q['id'])
+                if q.get('level'):
+                    lv = f'nivel {q["level"]}' + (f', desde {q["min"]}' if q.get('min') and q['min'] < q['level'] else '')
+                where = linkify(s['w']) if s.get('w') else step_where(q)
+                obj = esc(G.clean(q.get('obj') or ''))
+                rw = reward_chips(q, 3)
+                if q.get('type') in QTYPE: tag = f'<span class="tag ty">{QTYPE[q["type"]]}</span>'
+                if not s.get('w'):
+                    for c in (q.get('sc'), q.get('ec')):
+                        z = MAP2ZONE.get(c[2]) if c else None
+                        if z and i not in zsteps.setdefault(z, []): zsteps[z].append(i)
+            else:
+                key = f'c-{ch["k"]}-{s["x"]}'; title = f'<b>{esc(s["n"])}</b>'; where = linkify(s.get('w', ''))
+            lis.append(
+                f'<li><label class="cs-n"><input type="checkbox" data-k="{key}" aria-label="Paso {i} hecho"><span data-n="{i}"></span></label>'
+                f'<div class="cs-b"><div class="cs-t">{title}' + (f'<span class="lv">{lv}</span>' if lv else '') + tag + '</div>'
+                + (f'<p class="cs-w">{where}</p>' if where else '')
+                + (f'<p class="cs-o">{obj}</p>' if obj else '')
+                + (f'<p class="cs-d">{note}</p>' if note else '')
+                + (f'<p class="cs-r">Premio: {rw}</p>' if rw else '') + '</div></li>')
+        for z, nums in zsteps.items():
+            byzone[z].append(chain_link(ch, f'aquí: paso{"s" if len(nums) > 1 or "-" in runs(nums) else ""} {runs(nums)}' if nums else 'pasa por aquí'))
+        for g in ch.get('dg', []):
+            bydg[g].append(chain_link(ch))
+        zl = ', '.join(f'<a href="#z-{slug(z)}">{esc(z)}</a>' for z in zsteps)
+        dl = ', '.join(f'<a href="#dg-{g}">{esc(DG_NAME[g])}</a>' for g in ch.get('dg', []))
+        a, b = lv_nums(ch['lv'])
+        pages.append(f'''
+<article class="page cpage" id="cad-{ch["k"]}" data-name="{esc(ch["t"])}" data-lv="{ch["lv"]}" hidden>
+<header class="ph">
+<div class="crumb"><a href="#cadenas">Cadenas</a><span>›</span>{esc(ch["t"])}</div>
+<h2>{esc(ch["t"])}</h2>
+<div class="ph-meta"><span class="lv">{ch["lv"]}</span><span>{esc(ch["g"])}</span><span>{len(lis)} pasos</span><span class="cprog"></span></div>
+</header>
+<section class="blk why"><p>{linkify(ch["why"])}</p>
+{f'<p class="src">Pasa por: {zl}.</p>' if zl else ''}{f'<p class="src">Mazmorra: {dl}.</p>' if dl else ''}</section>
+<section class="blk csteps"><h3>Pasos <span class="prog"></span></h3>
+<p class="src">Marca cada paso al entregarlo. El siguiente que te toca queda resaltado. El texto en inglés es el objetivo tal como sale en el juego.</p>
+<ol class="chain">{"".join(lis)}</ol></section>
+</article>''')
+        meta.append({'k': ch['k'], 't': ch['t'], 'g': ch['g'], 'lv': ch['lv'], 'a': a, 'b': b, 'n': len(lis)})
+    order = ['Tu chamán', 'Tu personaje', 'Hacia las mazmorras', 'Zonas']
+    meta.sort(key=lambda m: (order.index(m['g']), m['a'] or 0))
+    return ''.join(pages), meta, byzone, bydg
+
+def chains_block(links, title='Cadenas paso a paso'):
+    return f'<section class="blk zchains"><h3>{title}</h3><ul class="clinks">{"".join(links)}</ul></section>' if links else ''
+
 # casilla de la checklist -> zonas en cuya página aparece
 IMP_MAP = {}
 def _imp(keys, *zones):
     for k in keys.split(): IMP_MAP[k] = list(zones)
-_imp('dm1 dm2 dm3', 'Dun Morogh'); _imp('dm4', 'Ironforge'); _imp('lm1 lm2 lm3', 'Loch Modan'); _imp('ds1 ds2 ds3', 'Darkshore')
+_imp('dm1 dm2 dm3 dm5', 'Dun Morogh'); _imp('dm4 dm6', 'Ironforge'); _imp('lm1 lm2 lm3 lm4 lm5', 'Loch Modan'); _imp('ds1 ds2 ds3', 'Darkshore')
 _imp('ew1 ew2 ew3', 'Elwynn Forest'); _imp('wf1 wf2 wf3 wf4 wf5 wf6', 'Westfall'); _imp('rr1 rr2 rr3 rr4', 'Redridge Mountains')
 _imp('dw1 dw2 dw3 dw4', 'Duskwood'); _imp('wl1 wl2 wl3 wl4 wl5 wl6', 'Wetlands'); _imp('av1 av2', 'Ashenvale')
 _imp('bs1', 'The Barrens', 'Stonetalon Mountains'); _imp('bs2', 'The Barrens')
@@ -531,7 +628,7 @@ _imp('ft1', 'Feralas', 'Tanaris'); _imp('ft2', 'Tanaris'); _imp('ft3', 'The Hint
 _imp('sg1', 'Searing Gorge'); _imp('sg2', 'Burning Steppes', 'Ironforge'); _imp('sg3 sg4', 'Burning Steppes')
 _imp('ug1 ug2', "Un'Goro Crater"); _imp('ug3', 'Felwood'); _imp('ug4', 'Azshara', 'Teldrassil y Darnassus'); _imp('ug5', 'Azshara'); _imp('ug6', 'Blasted Lands')
 _imp('pl1', 'Western Plaguelands', 'Eastern Plaguelands'); _imp('pl2 pl3', 'Western Plaguelands'); _imp('pl4', 'Eastern Plaguelands'); _imp('pl5', 'Winterspring')
-DONE_DEFAULT = {'Dun Morogh', 'Loch Modan'}
+DONE_DEFAULT = set()
 
 ZD = re.compile(r'<details class="zona" data-lv="([^"]*)"><summary><span class="zn">(.*?)</span><span class="lv">(.*?)</span>(.*?)</summary><div class="body">(.*?)</div></details>', re.S)
 CKG = re.compile(r'<details class="zona ck"[^>]*><summary><span class="zn">(.*?)</span>.*?</summary><div class="body">(.*?)</div></details>', re.S)
@@ -548,16 +645,17 @@ def bracket(a):
 TOP = '''<header class="top"><div class="top-in">
 <a class="brand" href="#inicio">Enano Chamán<span>WoW Forever</span></a>
 <nav class="tabs" aria-label="Secciones">
-<a href="#inicio" data-view="inicio">Inicio</a><a href="#zonas" data-view="zonas">Zonas</a><a href="#mazmorras" data-view="mazmorras">Mazmorras</a><a href="#chaman" data-view="chaman">Tu chamán</a><a href="#referencia" data-view="referencia">Referencia</a>
+<a href="#inicio" data-view="inicio">Inicio</a><a href="#zonas" data-view="zonas">Zonas</a><a href="#mazmorras" data-view="mazmorras">Mazmorras</a><a href="#cadenas" data-view="cadenas">Cadenas</a><a href="#chaman" data-view="chaman">Tu chamán</a><a href="#referencia" data-view="referencia">Referencia</a>
 </nav>
 <div class="top-tools">
-<label class="lvl" for="nivel">Nivel<input id="nivel" type="number" min="1" max="60" value="20" inputmode="numeric"></label>
+<label class="lvl" for="nivel">Nivel<input id="nivel" type="number" min="1" max="60" value="1" inputmode="numeric"></label>
 <div class="search"><input id="buscar" type="search" placeholder="Buscar quest, zona, jefe, objeto…" autocomplete="off" aria-label="Buscar en la guía"><div id="results" hidden></div></div>
 <details class="cfg"><summary>Ajustes</summary><div class="cfg-body">
 <label for="fichas">Abrir fichas en</label>
 <select id="fichas"><option value="wh">Wowhead</option><option value="whes">Wowhead en español</option><option value="wdb">Warcraft DB</option></select>
 <div id="progreso" class="prog-box" aria-live="polite"></div>
 <button id="imprimir" type="button">Imprimir o guardar PDF</button>
+<p><a href="#importar">Importar quests completadas desde Questie</a></p>
 <p>Las casillas se guardan en este navegador. Para llevarlas a otro dispositivo, copia este código y cárgalo allí.</p>
 <textarea id="sync-code" rows="3" spellcheck="false" aria-label="Código de progreso"></textarea>
 <div class="sync-btns"><button id="sync-copy" type="button">Copiar código</button><button id="sync-load" type="button">Cargar código</button></div>
@@ -565,8 +663,29 @@ TOP = '''<header class="top"><div class="top-in">
 </div></details>
 </div></div></header>'''
 
+IMPORT_HTML = '''<section id="importar" class="sec">
+<h2>Importar tu progreso del juego</h2>
+<p>Las casillas de quests de la guía usan el mismo número de quest que el juego. Por eso se pueden marcar solas a partir de la lista de quests que tu personaje ya ha completado. El archivo se lee en tu navegador y no se envía a ningún sitio; las marcas se guardan, como siempre, en este navegador.</p>
+<h3>Con Questie</h3>
+<ol>
+<li>En el juego, escribe <code>/reload</code> o sal del personaje. Los addons solo guardan sus datos en disco en ese momento.</li>
+<li>En el ordenador donde juegas, busca dentro de la carpeta del juego: <code>WTF</code> › <code>Account</code> › tu cuenta › <code>SavedVariables</code> › <code>Questie.lua</code>.</li>
+<li>Elige ese archivo aquí abajo y pulsa el botón.</li>
+</ol>
+<div class="imp-box">
+<input id="imp-file" type="file" accept=".lua,.txt,text/plain" aria-label="Archivo de Questie">
+<select id="imp-char" aria-label="Personaje" hidden></select>
+<h3>O pegando una lista</h3>
+<p class="src">Si tienes los números de las quests completadas por otra vía, pégalos separados por comas o espacios.</p>
+<textarea id="imp-ids" rows="2" spellcheck="false" placeholder="65, 132, 135, 141…" aria-label="Lista de números de quest"></textarea>
+<div class="sync-btns"><button id="imp-go" type="button">Marcar las quests completadas</button></div>
+<div id="imp-msg" aria-live="polite"></div>
+</div>
+<p class="src">Solo añade marcas, nunca quita. Marca las quests de las listas de cada zona y los pasos de las cadenas. Los imprescindibles y la ruta del inicio no son quests sueltas: esos se marcan a mano. El formato del archivo es el de Questie para Classic; si el de Forever cambia y no reconoce tu archivo, el mensaje lo dirá.</p>
+</section>'''
+
 NOW_HTML = '''<section id="ahora" class="sec">
-<h2>Ahora, con nivel <span id="now-lvl">20</span></h2>
+<h2>Ahora, con nivel <span id="now-lvl">1</span></h2>
 <div class="now" id="now"></div>
 </section>
 <section id="tus-pendientes" class="sec">
@@ -581,6 +700,7 @@ def build():
     js = open(os.path.join(ROOT, 'src', 'app.js'), encoding='utf-8').read()
     prefetch()
     body = linkify(body)
+    body = re.sub(r'\[\[cad:([a-z]+)(?:\|([^\]]+))?\]\]', lambda m: f'<a class="cgo" href="#cad-{m.group(1)}">{m.group(2) or "ver los pasos"}</a>', body)
     hero = re.search(r'<header class="hero">.*?</header>', body, re.S).group(0)
     secs = {m.group(1): m.group(2).replace('<span class="n"></span>', '')
             for m in re.finditer(r'<section id="([^"]+)">(.*?)</section>', body, re.S)}
@@ -612,6 +732,7 @@ def build():
         return (0 if a is not None else 1, a or 0, z['name'])
     zones.sort(key=zkey)
 
+    cpages, cmeta, czone, cdg = render_chains()
     zpages, zdash = [], []
     for z in zones:
         name = z['name']
@@ -627,7 +748,7 @@ def build():
         guide = (f'<a href="https://wowforeverinfo.com/guides/{wslug}/" target="_blank" rel="noopener">Guía paso a paso</a>') if wslug else ''
         dl = f' data-lv="{z["datalv"]}"' if z['datalv'] else ''
         chk = ' checked' if name in DONE_DEFAULT else ''
-        title = 'Qué hay aquí' if 'extra' in z else 'Ruta y cadenas'
+        title = 'Qué hay aquí' if 'extra' in z else 'Ruta por la zona'
         zpages.append(f'''
 <article class="page zpage" id="{zid}" data-name="{esc(name)}"{dl} hidden>
 <header class="ph">
@@ -637,6 +758,7 @@ def build():
 <div class="dones"><label class="done"><input type="checkbox" data-k="zdone-{slug(name)}" data-zdone="{zid}"{chk}> Zona completada</label></div>
 </header>
 {imp_html}
+{chains_block(czone.get(name))}
 <section class="blk ruta"><h3>{title}</h3>{z["body"]}</section>
 {lst}
 </article>''')
@@ -644,12 +766,17 @@ def build():
                       'grp': bracket(a), 'new': 1 if z['new'] else 0, 'imp': len(items), 'q': n})
 
     dungeons, dash = render_dungeons()
+    for gk, links in cdg.items():
+        dungeons, k = re.subn(r'(<article class="page dpage" id="dg-%s".*?</header>)' % re.escape(gk),
+                              lambda m: m.group(1) + '\n' + chains_block(links, 'Cadenas que acaban aquí'), dungeons, count=1, flags=re.S)
+        assert k == 1, gk
     sec = lambda sid, newid=None: f'<section id="{newid or sid}" class="sec">{secs[sid]}</section>' if secs.get(sid) else ''
     views = f'''
 <section class="view" id="v-inicio">
 {hero}
-{NOW_HTML}
-{sec('plan-20')}
+{NOW_HTML.split('<section id="tus-pendientes"')[0]}
+{sec('ruta')}
+<section id="tus-pendientes"{NOW_HTML.split('<section id="tus-pendientes"')[1]}
 </section>
 <section class="view" id="v-zonas" hidden>
 <div class="overview"><h2 class="vh">Zonas</h2>
@@ -664,12 +791,19 @@ def build():
 <div id="dcards"></div></div>
 {dungeons}
 </section>
+<section class="view" id="v-cadenas" hidden>
+<div class="overview"><h2 class="vh">Cadenas paso a paso</h2>
+<p class="intro">Las quests encadenadas, con cada paso numerado: quién lo da, dónde se entrega y qué hay que hacer. Marca cada paso y la guía te señala el siguiente. Las casillas son las mismas que las de las listas de cada zona.</p>
+<div id="ccards"></div></div>
+{cpages}
+</section>
 <section class="view" id="v-chaman" hidden>
 {sec('compras')}{sec('clase')}{sec('spec')}{sec('personaje')}{sec('profesiones')}
 </section>
 <section class="view" id="v-referencia" hidden>
-{sec('plan')}{sec('zonas', 'tabla-zonas')}{sec('cadenas')}{sec('estado')}
+{sec('vocabulario')}{sec('plan')}{sec('zonas', 'tabla-zonas')}{sec('cadenas')}{sec('estado')}
 {f'<section id="explorar" class="sec"><h2>Exploración y reputaciones</h2>{explore}</section>' if explore else ''}
+{IMPORT_HTML}
 {sec('pendiente')}{sec('fuentes')}
 </section>'''
     foot = re.search(r'<footer>.*?</footer>', body, re.S)
@@ -688,13 +822,16 @@ def build():
         'q': {str(i): qd(Q[i]) for i in sorted(USED_Q) if i in Q},
         'i': {str(i): t for i, t in USED_I.items()},
         'n': {str(i): [n] + (npcloc.get(i) or []) for i, n in USED_N.items()},
-        'zones': zdash, 'dungeons': dash, 'miles': [list(m) for m in MILESTONES], 'prof': [list(p) for p in PROF],
+        'zones': zdash, 'dungeons': dash, 'chains': cmeta, 'miles': [list(m) for m in MILESTONES], 'prof': [list(p) for p in PROF],
     }
     blob = json.dumps(data, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
     page = ('<title>Enano Chamán en WoW Forever</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n'
             '<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">\n'
             f'<style>\n{css}</style>\n{main}\n<script id="gd" type="application/json">{blob}</script>\n<script>\n{js}</script>\n')
+    ids = set(re.findall(r'\sid="([^"]+)"', main)) | {'inicio', 'zonas', 'mazmorras', 'cadenas', 'chaman', 'referencia'}
+    broken = sorted({h for h in re.findall(r'href="#([^"]+)"', main) if h not in ids})
+    if broken: print('ENLACES INTERNOS ROTOS:', ', '.join(broken))
     os.makedirs(os.path.join(ROOT, 'dist'), exist_ok=True)
     open(os.path.join(ROOT, 'dist', 'artifact.html'), 'w', encoding='utf-8').write(page)
     def wrap(p, cls):
@@ -706,7 +843,7 @@ def build():
     pr = re.sub(r'(<(?:section class="view"|article class="page [a-z]+")[^>]*?) hidden>', r'\1>', pr)
     open(os.path.join(ROOT, 'dist', 'print.html'), 'w', encoding='utf-8').write(wrap(pr, 'local print-all'))
     print(f'quests en caché {len(Q)} · fichas de quest {len(data["q"])} · objetos {len(data["i"])} · PNJ {len(data["n"])}')
-    print(f'enlaces en el texto: {STATS["linked"]} directos, {STATS["search"]} por búsqueda · zonas {len(zdash)} · mazmorras {len(dash)}')
+    print(f'enlaces en el texto: {STATS["linked"]} directos, {STATS["search"]} por búsqueda · zonas {len(zdash)} · mazmorras {len(dash)} · cadenas {len(cmeta)}')
     print(f'index.html {os.path.getsize(os.path.join(ROOT, "index.html")) // 1024} KB')
 
 def prefetch():
