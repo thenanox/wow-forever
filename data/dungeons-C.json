@@ -1,0 +1,1669 @@
+[
+  {
+    "key": "sunken-temple",
+    "name": "Sunken Temple",
+    "where": "Swamp of Sorrows: templo medio hundido bajo el gran lago (Pool of Tears). Nada hasta la entrada, en el centro del lago, y baja por pasillos inundados con élites 46-48 hasta el portal, en Hall of Bones.",
+    "route": "Alianza, a pie: cruzando Deadwind Pass desde Darkshire, o hacia el norte desde Nethergarde Keep (Blasted Lands). Dentro del templo: baja hasta el agua y cruza a nado Broken Hall; en Hall of Masks sal por la otra puerta del muro sur; izquierda en la bifurcación y pasa de largo la primera puerta hasta Den of the Caller; allí a la izquierda por la puerta de la máscara (no la de las tablillas); Hall of Ritual y escaleras abajo hasta Hall of Bones. El portal está en el nivel medio, en la puerta ancha frente a donde entras.",
+    "time": "",
+    "before": [
+      "Nivel 50-60: los seis minijefes troll son élite 50-52, Jammal’an the Prophet 54 y Shade of Eranikus 55.",
+      "Hay que nadar (o caminar sobre el agua) para llegar a la entrada, en el centro del lago.",
+      "Avatar of Hakkar solo se puede invocar con la cadena previa del Ancient Egg completada (empieza en Tanaris).",
+      "Apréndete el orden de los altares de Pit of Refuse para Atal’alarion: Sur, Norte, Suroeste, Sureste, Noroeste, Noreste."
+    ],
+    "bosses": [
+      {
+        "name": "Atal’alarion",
+        "optional": true,
+        "tip": "Se invoca pulsando los 6 altares de Pit of Refuse en orden: S, N, SO, SE, NO, NE (si falla, maldición). Sweeping Slam es frontal; lanza jugadores al aire y borra amenaza.",
+        "loot": []
+      },
+      {
+        "name": "Spawn of Hakkar",
+        "optional": false,
+        "tip": "Tanque y pegar. Quien reciba Acid of Hakkar necesita curas extra.",
+        "loot": []
+      },
+      {
+        "name": "Loro",
+        "optional": false,
+        "tip": "Minijefe troll (élite 50-52, poca vida, aturdible). Usa Shield Spike. Hay que matar a los seis trolls para poder llegar a Jammal’an.",
+        "loot": []
+      },
+      {
+        "name": "Hukku",
+        "optional": false,
+        "tip": "Minijefe troll tipo brujo: lanza Shadow Bolt e invoca Voidwalker, Imp y Succubus. Se le puede aturdir e interrumpir.",
+        "loot": []
+      },
+      {
+        "name": "Zul’lor",
+        "optional": false,
+        "tip": "Minijefe troll: reduce los atributos del grupo con Frailty. Poca vida; tanque y pegar.",
+        "loot": []
+      },
+      {
+        "name": "Zolo",
+        "optional": false,
+        "tip": "Minijefe troll tipo chamán: Chain Lightning y tótems que invocan esqueletos. Interrumpe sus lanzamientos.",
+        "loot": []
+      },
+      {
+        "name": "Mijan",
+        "optional": false,
+        "tip": "Minijefe troll: planta un tótem Healing Ward durante todo el combate. Tanque y pegar.",
+        "loot": []
+      },
+      {
+        "name": "Gasher",
+        "optional": false,
+        "tip": "Minijefe troll: Dual Wield y ataques cuerpo a cuerpo muy rápidos. Tanque y pegar.",
+        "loot": []
+      },
+      {
+        "name": "Jammal’an the Prophet",
+        "optional": false,
+        "tip": "Élite 54 con Ogom the Wretched (53): matad antes a Ogom. No os apiléis: Flamestrike y Hex of Jammal’an, que vuelve Berserker a un jugador contra el grupo.",
+        "loot": []
+      },
+      {
+        "name": "Weaver & Dreamscythe",
+        "optional": false,
+        "tip": "Dracos que aparecen en Pit of Sacrifice al morir Jammal’an y patrullan: tira de uno solo al pasillo. Contra la pared y nadie delante: cono frontal y empujón.",
+        "loot": []
+      },
+      {
+        "name": "Hazzas & Morphaz",
+        "optional": false,
+        "tip": "Aparecen al morir Weaver y Dreamscythe; no se pueden separar, van juntos. Misma táctica: al pasillo, contra la pared y nadie delante.",
+        "loot": []
+      },
+      {
+        "name": "Shade of Eranikus",
+        "optional": false,
+        "tip": "Élite 55, difícil y largo. Limpia antes TODOS los dragonkin o acuden. Deep Slumber duerme al de más amenaza; Corrosive Acid Breath frontal; War Stomp.",
+        "loot": []
+      },
+      {
+        "name": "Avatar of Hakkar",
+        "optional": true,
+        "tip": "Pide la cadena del Ancient Egg. Mata 4 Hakkari Bloodkeepers y apaga los 4 braseros con Hakkari Blood. Cause Insanity controla a un jugador: aturdidlo.",
+        "loot": [
+          "Hakkari Blood"
+        ]
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Hakkari Blood",
+        "from": "Avatar of Hakkar",
+        "kind": "otro",
+        "why": "Lo sueltan los Hakkari Bloodkeepers del evento; con él se apagan los 4 braseros que invocan a Avatar of Hakkar."
+      }
+    ],
+    "shaman": [
+      "Shade of Eranikus: la fuente dice que Grounding Totem anula Deep Slumber; al ser un sueño, planta también Tremor Totem.",
+      "Zolo y Hukku: sus hechizos se pueden interrumpir, así que Earth Shock a Chain Lightning (Zolo) y a Shadow Bolt (Hukku).",
+      "Avatar of Hakkar: Cause Insanity es control mental; ten Tremor Totem plantado junto al grupo.",
+      "Jammal’an the Prophet: Fire Resistance Totem por Flamestrike, pero sin que el grupo se apile alrededor."
+    ],
+    "tips": [
+      "Empieza por Atal’alarion: Pit of Refuse está al nivel de la entrada (a la derecha del portal). No saltes por el agujero de arriba: la caída mata.",
+      "Los seis minijefes troll están en plataformas del anillo superior (cuatro por escaleras exteriores, dos por interiores); sin matarlos no se llega a Jammal’an.",
+      "Antes de Shade of Eranikus limpia todos los dragonkin de la mazmorra: los que queden acuden al combate y suele ser wipe.",
+      "En Avatar of Hakkar, antes de apagar el último brasero pegaos todos a la pared: salís de combate y podéis beber, resucitar y rebufar."
+    ],
+    "src": [
+      "wt",
+      "wfi"
+    ]
+  },
+  {
+    "key": "blackrock-depths",
+    "name": "Blackrock Depths",
+    "where": "Dentro de Blackrock Mountain (entre Searing Gorge y Burning Steppes). Baja por la cadena a la estructura central, Forgewright’s Tomb, otra cadena, The Grinding Quarry (izquierda) y The Masonry: portal al fondo.",
+    "route": "A pie: entra en Blackrock Mountain por cualquiera de sus dos lados (Searing Gorge o Burning Steppes) y baja por la gran cadena al centro de la montaña.",
+    "time": "Varias horas si se hace completa.",
+    "before": [
+      "Nivel 52-60: los primeros jefes son élite 51-52 y Ambassador Flamelash ya es 57.",
+      "Shadowforge Key: quest Dark Iron Legacy (Franclorn Forgewright, Blackrock Mountain), que se completa dentro, en el Monument of Franclorn Forgewright (Shrine of Thaurissan). Abre las Shadowforge Gates (o Lockpicking 250), la East Garrison Door y The Shadowforge Lock.",
+      "Mata pronto a High Interrogator Gerstahn: su Prison Cell Key abre las celdas del Detention Block (Marshal Windsor, Kharan Mighthammer).",
+      "Minería: trae Dark Iron Ore. The Black Forge (The Molten Bridge) es el único sitio del juego donde fundirlo en Dark Iron Bars, con la habilidad de Minería necesaria; se puede ir directo con un «lava run».",
+      "Para abrir la Bar Door de The Grim Guzzler compra 6 Dark Iron Ale Mug a Plugger Spazzring y dáselas a Private Rocknot (3 entregas)."
+    ],
+    "bosses": [
+      {
+        "name": "High Interrogator Gerstahn",
+        "optional": false,
+        "tip": "Sacerdotisa élite 52, sala más al sur. Limpia el pasillo y sácala con línea de visión. Interrumpe Mana Burn; Psychic Scream da miedo; Shadow Word: Pain.",
+        "loot": [
+          "Prison Cell Key"
+        ]
+      },
+      {
+        "name": "Lord Roccor",
+        "optional": true,
+        "tip": "Elemental élite 51 que patrulla el anillo norte, alrededor del Ring of Law. Mucha armadura; Ground Tremor interrumpe y silencia 2 s.",
+        "loot": []
+      },
+      {
+        "name": "Houndmaster Grebmar",
+        "optional": true,
+        "tip": "Élite 52 en el punto más bajo del pasillo; patrulla entre dos grupos de perros: mátalos antes. Usa Bloodlust (ataca más rápido).",
+        "loot": []
+      },
+      {
+        "name": "Hedrum the Creeper",
+        "optional": false,
+        "tip": "Ring of Law (jefe aleatorio). Araña: Baneful Poison se debe limpiar y Web Explosion (frena el movimiento) se puede disipar.",
+        "loot": []
+      },
+      {
+        "name": "Gorosh the Dervish",
+        "optional": false,
+        "tip": "Ring of Law (jefe aleatorio), el más buscado por su botín. Mortal Strike reduce las curas al tanque; Bloodlust; Whirlwind al cuerpo a cuerpo.",
+        "loot": []
+      },
+      {
+        "name": "Anub’shiah",
+        "optional": false,
+        "tip": "Ring of Law (jefe aleatorio), élite 54. Habilidades de brujo: Curse of Tongues y Enveloping Web. Tanque y pegar en el centro.",
+        "loot": []
+      },
+      {
+        "name": "Ok’thor the Breaker",
+        "optional": false,
+        "tip": "Ring of Law (jefe aleatorio). Mago arcano: Arcane Explosion a quien esté cerca y Polymorph (se puede disipar).",
+        "loot": []
+      },
+      {
+        "name": "Grizzle",
+        "optional": false,
+        "tip": "Ring of Law (jefe aleatorio). Tipo berserker; Ground Tremor: sanador y jugadores a distancia, a rango máximo.",
+        "loot": []
+      },
+      {
+        "name": "Eviscerator",
+        "optional": false,
+        "tip": "Ring of Law (jefe aleatorio), huargen élite 54. Vicious Rend al tanque, Shadow Bolt Volley al grupo y Anti-Magic Shield (los lanzadores paran).",
+        "loot": []
+      },
+      {
+        "name": "Theldren",
+        "optional": true,
+        "tip": "Sustituye al jefe aleatorio si se coloca el Banner of Provocation. Llega con 4 gladiadores al azar: orden de muerte y control. Mortal Strike. Deja el cofre Arena Spoils.",
+        "loot": []
+      },
+      {
+        "name": "Pyromancer Loregrain",
+        "optional": true,
+        "tip": "Junto al Monument of Franclorn Forgewright (Shrine of Thaurissan). Daño de fuego: mata el Scorching Totem en cuanto lo plante. Tiene Fire Ward.",
+        "loot": []
+      },
+      {
+        "name": "Warder Stilgiss",
+        "optional": true,
+        "tip": "En The Black Vault con su sabueso Verek: primero Stilgiss. Interrumpe Frostbolt; Frost Nova inmoviliza; Frost Ward absorbe el daño de escarcha.",
+        "loot": []
+      },
+      {
+        "name": "Watchman Doomgrip",
+        "optional": true,
+        "tip": "Aparece al abrir las 12 Relic Coffer Doors de The Black Vault: primero cobran vida los Warbringer Constructs (mátalos de uno en uno) y luego entra él.",
+        "loot": []
+      },
+      {
+        "name": "Fineous Darkvire",
+        "optional": true,
+        "tip": "Patrulla la rampa del Hall of Crafting; limpia antes la zona. Pega fuerte al tanque e intenta curarse con Holy Light: interrúmpelo siempre.",
+        "loot": []
+      },
+      {
+        "name": "Lord Incendius",
+        "optional": true,
+        "tip": "Elemental de fuego élite 55 en The Black Anvil, sobre lava. Mighty Blow puede tirarte de la plataforma y no hay forma de volver. Curse of the Elemental Lord.",
+        "loot": []
+      },
+      {
+        "name": "Bael’Gar",
+        "optional": true,
+        "tip": "Gigante al extremo oeste de Dark Iron Highway, tras grupos de 4-5 enanos. Tanquéalo de cara a la pared (Magma Splash frontal) y mata primero los adds que invoca.",
+        "loot": []
+      },
+      {
+        "name": "General Angerforge",
+        "optional": true,
+        "tip": "West Garrison, escalera izquierda. Tira a distancia para subirlo solo a la plataforma. Sunder Armor acumulable; con poca vida invoca muchos adds débiles.",
+        "loot": []
+      },
+      {
+        "name": "Golem Lord Argelmach",
+        "optional": true,
+        "tip": "The Manufactory, con dos constructos: mátalos primero. Su Lightning Shield daña a los DPS. A su lado, en el suelo, está Schematic: Field Repair Bot 74A.",
+        "loot": []
+      },
+      {
+        "name": "Ribbly Screwspigot",
+        "optional": true,
+        "tip": "Opcional, en The Grim Guzzler. Amistoso hasta que lo amenazas por diálogo; pelea con tres compinches. Primero Ribbly, luego los adds.",
+        "loot": []
+      },
+      {
+        "name": "Hurley Blackbreath",
+        "optional": true,
+        "tip": "Opcional. Sale con 4 adds al romper los tres Thunderbrew Lager Kegs del almacén. Control a los adds; tanquéalo en una esquina, lejos de la puerta.",
+        "loot": []
+      },
+      {
+        "name": "Plugger Spazzring",
+        "optional": true,
+        "tip": "Opcional; vende Dark Iron Ale Mug. Atacarle vuelve hostil todo el bar. Sus hechizos de brujo no se interrumpen y es inmune a aturdir. Immolate y Curse of Tongues.",
+        "loot": []
+      },
+      {
+        "name": "Phalanx",
+        "optional": false,
+        "tip": "Se activa dando 6 Dark Iron Ale Mug a Private Rocknot (3 entregas) y rompe la Bar Door. Pelead en su esquina. Mighty Blow, Thunderclap y Fireball Volley.",
+        "loot": []
+      },
+      {
+        "name": "Ambassador Flamelash",
+        "optional": false,
+        "tip": "Obligatorio, élite 57, Chamber of Enchantment. Carrera de DPS: salen adds por las esquinas y, si llegan a él, le suben el daño. Matadlos antes.",
+        "loot": [
+          "Burst of Knowledge"
+        ]
+      },
+      {
+        "name": "Panzor the Invincible",
+        "optional": true,
+        "tip": "Raro, en Mold Foundry. Limpia antes los enemigos cercanos, que pegan fuerte. Con Spell Reflection activo los lanzadores deben parar.",
+        "loot": []
+      },
+      {
+        "name": "The Seven",
+        "optional": false,
+        "tip": "Summoners’ Tomb: habla con Doom’rel. Siete espíritus enanos, uno tras otro; es largo, cuida el maná. Doom’rel invoca demonios. Al final sale el Chest of the Seven.",
+        "loot": [
+          "Hammer of Grace"
+        ]
+      },
+      {
+        "name": "Magmus",
+        "optional": false,
+        "tip": "Gigante de fuego al fondo de The Iron Hall. Los Ironhand Guardians lanzan conos de fuego: tanque en la esquina derecha y grupo detrás del jefe. War Stomp aturde.",
+        "loot": []
+      },
+      {
+        "name": "Princess Moira Bronzebeard",
+        "optional": true,
+        "tip": "Opcional, junto al Emperor. Lo cura; si la matáis da botín propio, pero algunas quests exigen dejarla viva. Deja de atacar cuando muere el Emperor.",
+        "loot": []
+      },
+      {
+        "name": "Emperor Dagran Thaurissan",
+        "optional": false,
+        "tip": "Jefe final. O matáis antes a Princess Moira o la salváis: un DPS la aparta e interrumpe sus curas mientras cae el Emperor. Salvarla es más difícil.",
+        "loot": [
+          "Hand of Justice",
+          "Ironfoe"
+        ]
+      },
+      {
+        "name": "Botín general",
+        "optional": false,
+        "tip": "The Black Vault: abrir las 12 Relic Coffer Doors abre la Secret Safe (Heart of the Mountain y 1 de 4 objetos). El Dark Coffer se abre con la Dark Keeper Key.",
+        "loot": [
+          "Relic Coffer Key",
+          "Heart of the Mountain",
+          "Black Steel Bindings",
+          "Magma Forged Band",
+          "Mana Shaping Handwraps",
+          "Wand of Eternal Light",
+          "Dark Keeper Key",
+          "Burning Essence",
+          "Black Blood of the Tormented",
+          "Eye of Kajal",
+          "Schematic: Field Repair Bot 74A",
+          "Dark Iron Ale Mug",
+          "Shadowforge Torch",
+          "Core Fragment"
+        ]
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Shadowforge Key",
+        "from": "Dark Iron Legacy",
+        "kind": "llave",
+        "why": "Abre las Shadowforge Gates, la East Garrison Door y The Shadowforge Lock; sin ella no se llega a West Garrison."
+      },
+      {
+        "name": "Prison Cell Key",
+        "from": "High Interrogator Gerstahn",
+        "kind": "llave",
+        "why": "Abre las celdas del Detention Block; la Alianza la usa para hablar con Marshal Windsor (sintonización de Onyxia’s Lair)."
+      },
+      {
+        "name": "Core Fragment",
+        "from": "Attunement to the Core",
+        "kind": "llave",
+        "why": "Se recoge junto al portal de Molten Core; hecha la quest, Lothos Riftwaker te mete en la banda desde fuera."
+      },
+      {
+        "name": "Schematic: Field Repair Bot 74A",
+        "from": "Botín general",
+        "kind": "plano",
+        "why": "Ingeniería: está en el suelo junto a Golem Lord Argelmach (The Manufactory) y enseña Field Repair Bot 74A."
+      },
+      {
+        "name": "The Black Forge",
+        "from": "Botín general",
+        "kind": "profesion",
+        "why": "Minería: única forja del juego para fundir Dark Iron Ore en Dark Iron Bars; al final del puente metálico inferior."
+      },
+      {
+        "name": "Hammer of Grace",
+        "from": "The Seven",
+        "kind": "arma1m",
+        "why": "Maza de sanación, pre-raid BiS según la fuente (sin stats); sale del Chest of the Seven. Para el set de Restoration."
+      },
+      {
+        "name": "Hand of Justice",
+        "from": "Emperor Dagran Thaurissan",
+        "kind": "otro",
+        "why": "Los DPS físicos lo farmean en este jefe, así que interesa a Enhancement; la fuente no da tipo ni stats."
+      },
+      {
+        "name": "Ironfoe",
+        "from": "Emperor Dagran Thaurissan",
+        "kind": "otro",
+        "why": "Lo farmean aquí DPS físicos y guerreros tanque; la fuente no da tipo ni stats."
+      },
+      {
+        "name": "Burst of Knowledge",
+        "from": "Ambassador Flamelash",
+        "kind": "abalorio",
+        "why": "Abalorio potente para lanzadores según la fuente (sin stats); el jefe también da equipo de resistencia al fuego."
+      },
+      {
+        "name": "Dark Keeper Key",
+        "from": "Botín general",
+        "kind": "llave",
+        "why": "La suelta el Dark Keeper que invocas en el Dark Keeper Portrait; abre el Dark Coffer (materiales de encantamientos de hombros)."
+      },
+      {
+        "name": "Relic Coffer Key",
+        "from": "Botín general",
+        "kind": "llave",
+        "why": "Abren las 12 Relic Coffer Doors de The Black Vault; abrirlas todas activa a Watchman Doomgrip y la Secret Safe."
+      },
+      {
+        "name": "Shadowforge Torch",
+        "from": "Botín general",
+        "kind": "llave",
+        "why": "La sueltan 2 de los 4 Shadowforge Flame Keepers de The Lyceum; enciende los Shadowforge Braziers y abre The Iron Hall."
+      }
+    ],
+    "shaman": [
+      "High Interrogator Gerstahn: Tremor Totem contra Psychic Scream y Earth Shock para cortar Mana Burn.",
+      "Hedrum the Creeper (Ring of Law): Baneful Poison se debe limpiar; Poison Cleansing Totem o Cure Poison.",
+      "Earth Shock para interrumpir Holy Light de Fineous Darkvire, Frostbolt de Warder Stilgiss y las curas de Princess Moira Bronzebeard.",
+      "Fire Resistance Totem en Pyromancer Loregrain, Lord Incendius, Phalanx (Fireball Volley) y Magmus; Purge al Bloodlust de Houndmaster Grebmar y de Gorosh the Dervish."
+    ],
+    "tips": [
+      "Ring of Law: al entrar se cierra la verja; dos oleadas y un jefe al azar entre seis. Después, por la galería hacia Shrine of Thaurissan, ve pegado a la barandilla interior: los Arena Spectators agrean y arrastran a todo el grupo.",
+      "The Grim Guzzler: casi todos los clientes son neutrales; nada de daño en área ni atacar a Plugger Spazzring sin limpiar antes. Arriba, Lokhtos Darkbargainer vende recetas según tu reputación con Thorium Brotherhood.",
+      "The Lyceum: mata a los Shadowforge Flame Keepers (armadura roja, patrullan solos); solo dos de los cuatro sueltan antorcha. Encended los dos Shadowforge Braziers para abrir The Iron Hall.",
+      "Decidid antes del jefe final si matáis a Princess Moira Bronzebeard, y en Lord Incendius no os acerquéis al borde de la plataforma."
+    ],
+    "src": [
+      "wt",
+      "wfi"
+    ]
+  },
+  {
+    "key": "dire-maul-east",
+    "name": "Dire Maul East",
+    "where": "Feralas central. Entra por Eldreth Row (pasillo sur; fuera hay ogros élite 52-54). Portal en el muro este del patio interior, o por un pasillo del lado este de Eldreth Row. Sin llave.",
+    "route": "",
+    "time": "",
+    "before": [
+      "Nivel 54-60 (la página general de Dire Maul dice 55+).",
+      "Es la primera ala que hay que hacer: Pusillin suelta la Crescent Key, que abre Dire Maul West y North.",
+      "Las dos entradas normales no piden llave; la tercera, en Lariss Pavillion (algo al noreste de Camp Mojache), sí pide Crescent Key y da al otro extremo de la mazmorra.",
+      "Minería: deja hueco en las bolsas; siempre hay 2-3 Rich Thorium Veins detrás de Alzzin the Wildshaper.",
+      "El centro del patio, The Maul, es zona PvP: tenlo en cuenta al ir hacia los portales."
+    ],
+    "bosses": [
+      {
+        "name": "Pusillin",
+        "optional": false,
+        "tip": "Diablillo élite 56-57 al que persigues hablándole; al final pelea con 4 Wildspawn Imps. Interrumpe Fireball y Blast Wave. Con Spirit of Runn Tum refleja hechizos (50%).",
+        "loot": [
+          "Crescent Key"
+        ]
+      },
+      {
+        "name": "Lethtendris",
+        "optional": false,
+        "tip": "Bruja con su diablillo Plimgib: matad antes a Plimgib. Interrumpe por este orden Void Bolt, Shadow Bolt Volley e Immolate. Lanza Curse of Tongues y Curse of Thorns.",
+        "loot": []
+      },
+      {
+        "name": "Hydrospawn",
+        "optional": false,
+        "tip": "Elemental de agua que patrulla un estanque; limpia antes los alrededores. Invoca Hydrolings que pegan fuerte: acordad si se matan al salir o después del jefe.",
+        "loot": []
+      },
+      {
+        "name": "Zevrim Thornhoof",
+        "optional": false,
+        "tip": "Sátiro: con Sacrifice lleva a un jugador a su altar (cura fuerte). Intense Pain afecta a varios y no llega a distancia máxima. Tras matarlo, habla con Old Ironbark.",
+        "loot": []
+      },
+      {
+        "name": "Alzzin the Wildshaper",
+        "optional": false,
+        "tip": "Jefe final: alterna sátiro, Dire Wolf (cuando más pega) y Treant, y suelta la amenaza en cada cambio. Al 35% llegan adds: daño en área.",
+        "loot": []
+      },
+      {
+        "name": "Isalien",
+        "optional": true,
+        "tip": "Solo quest Tier 0.5: se invoca con Brazier of Beckoning donde cae Alzzin. Tanque y pegar; invoca un hipogrifo (mátalo primero) e intenta curarse: interrumpe.",
+        "loot": []
+      },
+      {
+        "name": "Botín general",
+        "optional": false,
+        "tip": "A Dusty Tome (libros de tapa roja en el suelo; también caen de enemigos) puede dar un libro de clase. Warpwood Pods, hierbas, vetas y sátiros dan el resto.",
+        "loot": [
+          "Codex of Defense",
+          "Frost Shock and You",
+          "Garona: A Study on Stealth and Treachery",
+          "Harnessing Shadows",
+          "Holy Bologna: What the Light Won’t Tell You",
+          "The Arcanist’s Cookbook",
+          "The Emerald Dream",
+          "The Greatest Race of Hunters",
+          "The Light and How to Swing It",
+          "Nostro’s Compendium of Dragon Slaying",
+          "Pocket Lint",
+          "A Thoroughly Read Copy of “Nat Pagle’s Extreme’ Anglin.”",
+          "Runn Tum Tuber",
+          "Thornling Seed",
+          "Dreamfoil",
+          "Ghost Mushroom",
+          "Gromsblood",
+          "Thorium Ore",
+          "Arcane Crystal",
+          "Dense Stone",
+          "Elemental Earth",
+          "Elemental Fire",
+          "Demonic Rune",
+          "Felcloth"
+        ]
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Crescent Key",
+        "from": "Pusillin",
+        "kind": "llave",
+        "why": "Abre las puertas de Dire Maul West y North y la entrada trasera de East en Lariss Pavillion."
+      },
+      {
+        "name": "Frost Shock and You",
+        "from": "Botín general",
+        "kind": "inicia-quest",
+        "why": "Libro de chamán (de A Dusty Tome o de enemigos): inicia una quest que da un abalorio de clase. Se puede comerciar."
+      },
+      {
+        "name": "Rich Thorium Vein",
+        "from": "Botín general",
+        "kind": "profesion",
+        "why": "Minería: 2-3 vetas fijas tras Alzzin; Thorium Ore, Arcane Crystal, Dense Stone, Elemental Earth, Elemental Fire o gemas."
+      },
+      {
+        "name": "Thornling Seed",
+        "from": "Botín general",
+        "kind": "otro",
+        "why": "Sale de los Warpwood Pods del suelo; objeto útil ligado al recogerlo, sobre todo para clases sin mascota."
+      }
+    ],
+    "shaman": [
+      "Pusillin: Earth Shock corta Fireball y Blast Wave, pero con Spirit of Runn Tum refleja la mitad de los hechizos; intenta quitárselo con Purge.",
+      "Lethtendris: guarda Earth Shock para Void Bolt (prioridad), luego Shadow Bolt Volley e Immolate.",
+      "Isalien: Earth Shock para cortar sus curas."
+    ],
+    "tips": [
+      "Para abrir la Conservatory Door y llegar a Alzzin hay que matar a Zevrim Thornhoof y hablar con Old Ironbark.",
+      "Limpia todos los Warpwood Crushers de la rampa antes de Alzzin: los que queden entran al combate.",
+      "No salgas sin entrar al túnel de detrás de Alzzin a minar las Rich Thorium Veins.",
+      "Los Librams que sueltan los enemigos se canjean, con otros materiales, por Arcanums (encantamientos de cabeza o piernas) ante Lorekeeper Lydros; antes hay que desbloquear The Athenaeum con Elven Legends."
+    ],
+    "src": [
+      "wt"
+    ]
+  },
+  {
+    "key": "dire-maul-west",
+    "name": "Dire Maul West",
+    "where": "Feralas central: muro oeste del patio interior de Dire Maul (se llega por Eldreth Row, al sur). Hay dos entradas muy juntas; la puerta pide Crescent Key.",
+    "route": "",
+    "time": "",
+    "before": [
+      "Crescent Key (la suelta Pusillin en Dire Maul East). Quien ya haya pasado puede abrir a los demás con la antorcha (Torch) de la pared interior.",
+      "Nivel 56-60 (la página general de Dire Maul dice 55+).",
+      "Prince Tortheldrin solo aparece si se desactivan los cinco cristales de West; entrando desde North sin hacerlo no estará."
+    ],
+    "bosses": [
+      {
+        "name": "Tendris Warpwood",
+        "optional": false,
+        "tip": "Primer jefe. Mata antes a todos los Ancients que patrullan el patio: los llama al empezar. Trample derriba a todo el cuerpo a cuerpo; Entangle no se puede disipar.",
+        "loot": []
+      },
+      {
+        "name": "Magister Kalendris",
+        "optional": false,
+        "tip": "Sacerdote de sombras fantasma. Interrumpe Mind Blast y Mind Flay. Dominate Mind controla a un jugador cada vez: usad control sobre él. Shadow Word: Pain.",
+        "loot": []
+      },
+      {
+        "name": "Tsu’zee",
+        "optional": true,
+        "tip": "Rara, al pie de las rampas junto a Kalendris. Pega fuerte: Backstab (tenla de frente), Gouge incapacita al tanque y cambia de objetivo, y Blind (disipable).",
+        "loot": []
+      },
+      {
+        "name": "Illyanna Ravenoak",
+        "optional": false,
+        "tip": "Sobre la zona de Tendris, por las rampas de Court of the Highborne, con su osa Ferra. Todos en cuerpo a cuerpo anulan sus ataques a distancia. Immolation Trap, Volley.",
+        "loot": []
+      },
+      {
+        "name": "Immol’thar",
+        "optional": false,
+        "tip": "Asigna un DPS a los Eyes que invoca. Teletransporta jugadores al centro y les borra la amenaza (si es el tanque, parad). Enrage al 50%. Infected Bite al tanque.",
+        "loot": []
+      },
+      {
+        "name": "Prince Tortheldrin",
+        "optional": false,
+        "tip": "Jefe final, esquina suroeste de The Athenaeum. Arcane Blast empuja y reinicia la amenaza; Whirlwind al cuerpo a cuerpo; Counterspell al sanador. Tanquéalo en una esquina.",
+        "loot": []
+      },
+      {
+        "name": "Lord Hel’nurath",
+        "optional": true,
+        "tip": "Solo quest de montura épica de brujo: ritual en la sala de Immol’thar con oleadas de demonios; luego Hel’nurath y, muerto él, el Xorothian Dreadsteed.",
+        "loot": []
+      },
+      {
+        "name": "Botín general",
+        "optional": false,
+        "tip": "A Dusty Tome (libros de tapa roja en el suelo; también caen de enemigos) puede dar un libro de clase, aunque lo normal es Pocket Lint. Los enemigos sueltan Librams.",
+        "loot": [
+          "Codex of Defense",
+          "Frost Shock and You",
+          "Garona: A Study on Stealth and Treachery",
+          "Harnessing Shadows",
+          "Holy Bologna: What the Light Won’t Tell You",
+          "The Arcanist’s Cookbook",
+          "The Emerald Dream",
+          "The Greatest Race of Hunters",
+          "The Light and How to Swing It",
+          "Nostro’s Compendium of Dragon Slaying",
+          "Pocket Lint",
+          "A Thoroughly Read Copy of “Nat Pagle’s Extreme’ Anglin.”"
+        ]
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Crescent Key",
+        "from": "Pusillin",
+        "kind": "llave",
+        "why": "Imprescindible para abrir la puerta de Dire Maul West; se consigue antes en Dire Maul East."
+      },
+      {
+        "name": "Frost Shock and You",
+        "from": "Botín general",
+        "kind": "inicia-quest",
+        "why": "Libro de chamán (de A Dusty Tome o de enemigos): inicia una quest que da un abalorio de clase. Se puede comerciar."
+      }
+    ],
+    "shaman": [
+      "Magister Kalendris: Earth Shock para cortar Mind Blast y Mind Flay, y Tremor Totem contra Dominate Mind (control mental).",
+      "Illyanna Ravenoak: Fire Resistance Totem por Immolation Trap; quédate en cuerpo a cuerpo aunque estés curando, para que no use sus ataques a distancia.",
+      "Prince Tortheldrin: curando puedes recibir Counterspell; como Enhancement, Whirlwind y Arcane Blast golpean a todo el cuerpo a cuerpo."
+    ],
+    "tips": [
+      "Hay cinco cristales que desactivar matando todos los Arcane Aberrations y Mana Remnants de alrededor: uno en Capital Gardens, dos arriba en Court of the Highborne y dos a la entrada de Prison of Immol’thar.",
+      "Antes de Tendris Warpwood limpia todos los Ancients que patrullan el patio.",
+      "West y North son la misma instancia, unidas por The Athenaeum: desde North se llega sin pelear, pero sin los cristales no aparece Prince Tortheldrin.",
+      "Los Librams que sueltan los enemigos se canjean por Arcanums (encantamientos de cabeza o piernas) ante Lorekeeper Lydros, en The Athenaeum."
+    ],
+    "src": [
+      "wt"
+    ]
+  },
+  {
+    "key": "dire-maul-north",
+    "name": "Dire Maul North",
+    "where": "Feralas central: muro norte del patio interior de Dire Maul. La puerta pide Crescent Key; entras al nivel superior de la sala de Guard Mol’dar y Stomper Kreeg.",
+    "route": "",
+    "time": "",
+    "before": [
+      "Crescent Key (la suelta Pusillin en Dire Maul East). Nivel 56-60.",
+      "Decidid antes de entrar: limpieza normal (botín de cada jefe) o Tribute Run (solo muere King Gordok; cofre Gordok Tribute, bufos y vendedor).",
+      "Tribute Run: lleva Frost Oil x1, Thorium Widget x1, Rugged Leather x8, Bolt of Runecloth x4 y Rune Thread x2 (la mitad de cuero, tela e hilo si alguien tiene Leatherworking o Tailoring).",
+      "Ingeniería (200 o más): un Powerful Seaforium Charge abre la Gordok Inner Door sin matar a Guard Mol’dar. Alternativas: Lockpicking 300 o una Truesilver Skeleton Key de Herrería."
+    ],
+    "bosses": [
+      {
+        "name": "Guard Mol’dar",
+        "optional": true,
+        "tip": "Suelta la Gordok Inner Door Key; en Tribute Run no se le toca. Si peleas: contra la pared por Knock Away, Shield Charge y Enrage. Amistoso da Mol’dar’s Moxie (aguante).",
+        "loot": [
+          "Gordok Inner Door Key"
+        ]
+      },
+      {
+        "name": "Stomper Kreeg",
+        "optional": true,
+        "tip": "Ogro borracho: se le esquiva esperando a que se duerma. Si peleas: Whirlwind, War Stomp, Enrage y Booze Spit (-75% a golpear). Tras el tributo es vendedor.",
+        "loot": []
+      },
+      {
+        "name": "Guard Fengus",
+        "optional": true,
+        "tip": "Patrulla junto a Fengus’s Chest: saquéalo cuando se aleje. Si peleas: Knock Away, Shield Charge y Enrage. Amistoso da Fengus’ Ferocity (poder de ataque).",
+        "loot": []
+      },
+      {
+        "name": "Guard Slip’kik",
+        "optional": true,
+        "tip": "Patrulla bajo las rampas. En Tribute Run repara la Broken Trap con Frost Oil y Thorium Widget y queda congelado. Amistoso da Slip’kik’s Savvy (crítico de hechizos).",
+        "loot": []
+      },
+      {
+        "name": "Captain Kromcrush",
+        "optional": true,
+        "tip": "Tribute: coge Ogre Tannin, Knot Thimblejack te da el Gordok Ogre Suit y le hablas disfrazado. Si peleas: Intimidating Shout, Mortal Cleave y Gordok Reavers al 50%.",
+        "loot": []
+      },
+      {
+        "name": "Cho’Rush the Observer",
+        "optional": true,
+        "tip": "Acompaña a King Gordok. En Tribute Run debe sobrevivir: alguien le interrumpe. En run normal se mata primero. Healing Wave, Mind Blast y Psychic Scream.",
+        "loot": []
+      },
+      {
+        "name": "King Gordok",
+        "optional": false,
+        "tip": "Jefe final. Pega fuerte al tanque y usa War Stomp; en Tribute Run es carrera de DPS. Al morir sale el cofre Gordok Tribute y Mizzle the Crafty da King of the Gordok.",
+        "loot": []
+      },
+      {
+        "name": "Botín general",
+        "optional": false,
+        "tip": "Fengus’s Chest da la Gordok Courtyard Key; las Ogre Tannin Baskets, el Ogre Tannin. Tras el tributo Stomper Kreeg vende Gordok Green Grog y Kreeg’s Stout Beatdown.",
+        "loot": [
+          "Gordok Courtyard Key",
+          "Ogre Tannin",
+          "Gordok Ogre Suit",
+          "Gordok Green Grog",
+          "Kreeg’s Stout Beatdown",
+          "Codex of Defense",
+          "Frost Shock and You",
+          "Garona: A Study on Stealth and Treachery",
+          "Harnessing Shadows",
+          "Holy Bologna: What the Light Won’t Tell You",
+          "The Arcanist’s Cookbook",
+          "The Emerald Dream",
+          "The Greatest Race of Hunters",
+          "The Light and How to Swing It",
+          "Nostro’s Compendium of Dragon Slaying",
+          "Pocket Lint",
+          "A Thoroughly Read Copy of “Nat Pagle’s Extreme’ Anglin.”"
+        ]
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Crescent Key",
+        "from": "Pusillin",
+        "kind": "llave",
+        "why": "Imprescindible para abrir la puerta de Dire Maul North; se consigue antes en Dire Maul East."
+      },
+      {
+        "name": "Gordok Courtyard Key",
+        "from": "Botín general",
+        "kind": "llave",
+        "why": "Está en Fengus’s Chest, en el centro de la sala de Guard Fengus; abre la Gordok Courtyard Door."
+      },
+      {
+        "name": "Gordok Inner Door Key",
+        "from": "Guard Mol’dar",
+        "kind": "llave",
+        "why": "Abre la Gordok Inner Door; en Tribute Run se sustituye por Seaforium, ganzúa o Truesilver Skeleton Key."
+      },
+      {
+        "name": "Powerful Seaforium Charge",
+        "from": "Ingeniería (fabricado)",
+        "kind": "profesion",
+        "why": "Ingeniería 200+: abre la Gordok Inner Door sin matar a Guard Mol’dar; con ella tú mismo habilitas el Tribute Run."
+      },
+      {
+        "name": "Gordok Ogre Suit",
+        "from": "The Gordok Ogre Suit",
+        "kind": "otro",
+        "why": "Disfraz para engañar a Captain Kromcrush en el Tribute Run; lo hace Knot Thimblejack con Ogre Tannin y tus materiales."
+      },
+      {
+        "name": "Frost Shock and You",
+        "from": "Botín general",
+        "kind": "inicia-quest",
+        "why": "Libro de chamán (de A Dusty Tome o de enemigos): inicia una quest que da un abalorio de clase. Se puede comerciar."
+      },
+      {
+        "name": "Gordok Green Grog",
+        "from": "Stomper Kreeg",
+        "kind": "otro",
+        "why": "Consumible ligado al recogerlo: pequeña mejora de atributos que se acumula con otros. Kreeg lo vende tras un Tribute Run."
+      },
+      {
+        "name": "Kreeg’s Stout Beatdown",
+        "from": "Stomper Kreeg",
+        "kind": "otro",
+        "why": "Consumible ligado al recogerlo: pequeña mejora de atributos que se acumula con otros. Kreeg lo vende tras un Tribute Run."
+      }
+    ],
+    "shaman": [
+      "King Gordok y Cho’Rush the Observer: Tremor Totem contra Psychic Scream (lo recomienda la fuente) y Earth Shock a Healing Wave antes que a Mind Blast.",
+      "Captain Kromcrush: Tremor Totem para romper el miedo de Intimidating Shout.",
+      "Bufos del tributo para este personaje: Fengus’ Ferocity (poder de ataque) para Enhancement y Slip’kik’s Savvy (crítico de hechizos) para Restoration; Mol’dar’s Moxie da aguante."
+    ],
+    "tips": [
+      "Tribute Run: no mates a ningún jefe salvo King Gordok. Con todos los guardias vivos el cofre Gordok Tribute trae el máximo de objetos raros; si matas guardias, solo poco comunes.",
+      "Puertas: la Gordok Courtyard Key está en Fengus’s Chest (Gordok Courtyard Door) y la Gordok Inner Door Key la lleva Guard Mol’dar (Gordok Inner Door).",
+      "Los tres bufos duran dos horas y se pierden al morir. Con el bufo King of the Gordok puedes traer a otros personajes hasta Mizzle the Crafty para que lo reciban.",
+      "North y West son la misma instancia: desde aquí se entra a The Athenaeum sin pelear si vas con cuidado (puerta del nivel inferior junto a Guard Mol’dar)."
+    ],
+    "src": [
+      "wt"
+    ]
+  },
+  {
+    "key": "lbrs",
+    "name": "Lower Blackrock Spire",
+    "where": "Blackrock Mountain, lado este. Por la puerta junto a la meeting stone de Blackrock Spire y hacia arriba (élites), o sube la cadena grande, sigue la pared y salta al balcón del gnomo Bodley, frente al portal.",
+    "route": "",
+    "time": "",
+    "before": [
+      "Nivel 55-60; los jefes principales son élite 59-60.",
+      "Al entrar no cruces la puerta de arriba a la izquierda: lleva a Upper Blackrock Spire.",
+      "Aquí dentro Vaelan da la quest Seal of Ascension, cuyo objeto abre Upper Blackrock Spire.",
+      "Urok Doomhowl solo se invoca con Omokk’s Head y Roughshod Pike en el Tribute Pile.",
+      "Guarda algún Immature Venom Sac de las arañas: cura el veneno Mother’s Milk."
+    ],
+    "bosses": [
+      {
+        "name": "Burning Felguard",
+        "optional": true,
+        "tip": "Raro: a veces sale del portal de los Scarshield Warlocks en lugar de un Imp. Tanque y pegar.",
+        "loot": []
+      },
+      {
+        "name": "Spirestone Butcher",
+        "optional": true,
+        "tip": "Raro, élite 57, en el grupo previo a Highlord Omokk: mátalo primero y controla al resto del grupo.",
+        "loot": []
+      },
+      {
+        "name": "Spirestone Battle Lord",
+        "optional": true,
+        "tip": "Raro: sustituye a un cuerpo a cuerpo de un grupo antes de la sala de Omokk. Controla a los lanzadores y céntrate en él.",
+        "loot": []
+      },
+      {
+        "name": "Spirestone Lord Magus",
+        "optional": true,
+        "tip": "Raro: sustituye a un enemigo normal antes de Omokk. Lanza Polymorph (disipable); interrumpe sus hechizos.",
+        "loot": []
+      },
+      {
+        "name": "Highlord Omokk",
+        "optional": false,
+        "tip": "Élite 59 con dos adds: controla uno o los dos. Tanquéalo contra la pared por Knock Away y no te pongas delante. Con Enrage pega muy fuerte.",
+        "loot": []
+      },
+      {
+        "name": "Shadow Hunter Vosh’gajin",
+        "optional": false,
+        "tip": "Troll élite 59 con dos Smolderthorn Shadow Priests: control a ambos. Hex puede afectar a varios jugadores a la vez; Curse of Blood hay que quitarla.",
+        "loot": []
+      },
+      {
+        "name": "War Master Voone",
+        "optional": false,
+        "tip": "Troll élite 59 al final del pasillo de trolls, sin adds y pega durísimo. Cleave frontal: no te pongas delante ni le quites la amenaza al tanque.",
+        "loot": []
+      },
+      {
+        "name": "Mor Grayhoof",
+        "optional": true,
+        "tip": "Solo quest Tier 0.5: se invoca en la sala de Voone con Brazier of Beckoning. Sal de Hurricane, interrumpe Healing Touch y quita Rejuvenation. Cambia de forma.",
+        "loot": []
+      },
+      {
+        "name": "Bannok Grimaxe",
+        "optional": true,
+        "tip": "Raro, en la sala previa a Mother Smolderweb, entre orcos y tiendas (puede estar sentado o dormido). Controla a los demás orcos. Tanque y pegar.",
+        "loot": [
+          "Plans: Arcanite Reaper"
+        ]
+      },
+      {
+        "name": "Mother Smolderweb",
+        "optional": false,
+        "tip": "Araña élite 59. Crystallize (frontal) y Mother’s Milk (de cerca) aturden: colócate detrás y a distancia máxima. Mother’s Milk es veneno.",
+        "loot": []
+      },
+      {
+        "name": "Crystal Fang",
+        "optional": true,
+        "tip": "Rara, justo después de Mother Smolderweb. Tanque y pegar; al morir salen 4 adds no élite.",
+        "loot": []
+      },
+      {
+        "name": "Urok Doomhowl",
+        "optional": true,
+        "tip": "Invocado con Omokk’s Head y Roughshod Pike en el Tribute Pile. Oleadas de ogros élite; cada 30 s el Roughshod Pike mata uno. Urok (60) da miedo con Intimidating Roar.",
+        "loot": []
+      },
+      {
+        "name": "Quartermaster Zigris",
+        "optional": false,
+        "tip": "Tras la sala de Urok. Tanque y pegar; separaos para que Stun Bomb no alcance a varios.",
+        "loot": []
+      },
+      {
+        "name": "Halycon",
+        "optional": false,
+        "tip": "Huargo gigante con Worg Pups: los DPS matan antes a las crías. Al morir entra enseguida Gizrul the Slavener: casi no hay pausa.",
+        "loot": []
+      },
+      {
+        "name": "Gizrul the Slavener",
+        "optional": false,
+        "tip": "Entra poco después de morir Halycon: comed y bebed rápido. Enrage e Infected Bite (daño en el tiempo sobre el tanque).",
+        "loot": []
+      },
+      {
+        "name": "Ghok Bashguud",
+        "optional": true,
+        "tip": "Orco raro tras la sala de Halycon, con dos adds élite 59: controla los adds y quema a Ghok.",
+        "loot": []
+      },
+      {
+        "name": "Overlord Wyrmthalak",
+        "optional": false,
+        "tip": "Jefe final. Tanquéalo contra la pared: Cleave frontal y Sweeping Slam (se evita a distancia máxima). Al 50% invoca adds que se pueden controlar.",
+        "loot": []
+      },
+      {
+        "name": "Botín general",
+        "optional": false,
+        "tip": "Las Spire Spiders y Spire Spiderlings de la zona de Mother Smolderweb sueltan Immature Venom Sac, que cura Mother’s Milk y otros venenos.",
+        "loot": [
+          "Immature Venom Sac"
+        ]
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Seal of Ascension",
+        "from": "Seal of Ascension",
+        "kind": "llave",
+        "why": "Abre la puerta a Upper Blackrock Spire (basta uno en el grupo). Equipado, en Rend invoca a Vaelstrasz, que cura al grupo."
+      },
+      {
+        "name": "Plans: Arcanite Reaper",
+        "from": "Bannok Grimaxe",
+        "kind": "plano",
+        "why": "Plano de Herrería (Master Axesmith) que puede soltar este raro; la fuente no da stats del arma."
+      },
+      {
+        "name": "Immature Venom Sac",
+        "from": "Botín general",
+        "kind": "otro",
+        "why": "De las arañas junto a Mother Smolderweb; cura el veneno Mother’s Milk y otros venenos del juego."
+      }
+    ],
+    "shaman": [
+      "Mother Smolderweb: Mother’s Milk es veneno; Poison Cleansing Totem o Cure Poison (también vale el Immature Venom Sac).",
+      "Urok Doomhowl: Tremor Totem contra el miedo de Intimidating Roar.",
+      "Mor Grayhoof: Purge a Rejuvenation y Earth Shock a Healing Touch; ojo en forma de Faerie Dragon, que tiene Reflection.",
+      "Spirestone Lord Magus: Earth Shock para cortarle los hechizos (lanza Polymorph)."
+    ],
+    "tips": [
+      "No cruces la puerta de arriba a la izquierda de la entrada: es Upper Blackrock Spire.",
+      "Halycon y Gizrul the Slavener van seguidos: llega con maná y bebe en cuanto caiga Halycon.",
+      "Varios jefes traen adds (Omokk, Vosh’gajin, Ghok Bashguud, Wyrmthalak al 50%): con control de masas son mucho más fáciles.",
+      "Los raros Spirestone salen sustituyendo a enemigos normales en los grupos previos a Omokk: mátalos primero."
+    ],
+    "src": [
+      "wt"
+    ]
+  },
+  {
+    "key": "ubrs",
+    "name": "Upper Blackrock Spire",
+    "where": "Mismo portal que Lower Blackrock Spire (Blackrock Mountain, lado este). Dentro, la puerta de arriba a la izquierda de la entrada lleva a Upper Blackrock Spire y pide Seal of Ascension.",
+    "route": "",
+    "time": "",
+    "before": [
+      "Seal of Ascension (quest dentro de Lower Blackrock Spire): basta con que la tenga un jugador para abrir la puerta a todos.",
+      "Es una instancia para 10 jugadores, nivel 59-60.",
+      "Lleva la Seal of Ascension equipada en Warchief Rend Blackhand: con clic derecho invoca a Vaelstrasz, que cura al grupo.",
+      "Para General Drakkisath hace falta alguien que lo pasee (normalmente un Hunter con Aspect of the Cheetah o un Mage con Blink) mientras mueren sus dos guardias."
+    ],
+    "bosses": [
+      {
+        "name": "Pyroguard Emberseer",
+        "optional": false,
+        "tip": "Obligatorio. Se invoca cuando 3 o más jugadores pulsan el Blackrock Altar; antes hay oleadas de Incarcerators (poca vida, daño en área). Fire Nova al cuerpo a cuerpo.",
+        "loot": []
+      },
+      {
+        "name": "Solakar Flamewreath",
+        "optional": true,
+        "tip": "Solo aparece en el evento Father Flame de la Rookery. Invoca adds que el tanque debe recoger; War Stomp cerca del jefe.",
+        "loot": []
+      },
+      {
+        "name": "Goraluk Anvilcrack",
+        "optional": true,
+        "tip": "Opcional y se suele saltar. Cuerpo a cuerpo simple; Backhand aturde al tanque principal y el secundario debe provocar.",
+        "loot": []
+      },
+      {
+        "name": "Jed Runewatcher",
+        "optional": true,
+        "tip": "Raro: patrulla la sala de Goraluk Anvilcrack. Tanque y pegar contra la pared. Hay grupos que hacen «Jed runs»: entran, miran si está y reinician.",
+        "loot": []
+      },
+      {
+        "name": "Warchief Rend Blackhand",
+        "optional": false,
+        "tip": "Oleadas de dracos y dragonkin; luego baja montado en Gyth. Al 20% se separan: primero Gyth (Corrosive Acid Breath, Flame Breath), luego Rend (Whirlwind, Thunderclap).",
+        "loot": []
+      },
+      {
+        "name": "The Beast",
+        "optional": false,
+        "tip": "En The Furnace; puede haber Blackhand Assassins en sigilo. Carga a jugadores al azar; Flamebreak (área con empujón) y Fear se evitan a distancia máxima.",
+        "loot": []
+      },
+      {
+        "name": "Lord Valthalak",
+        "optional": true,
+        "tip": "Solo quest Tier 0.5 (Brazier of Beckoning, sala de The Beast). Mata los adds al instante: su canalización mata. Desde el 40%, Shadow Bolt Volley; al 20% se refuerza.",
+        "loot": []
+      },
+      {
+        "name": "General Drakkisath",
+        "optional": false,
+        "tip": "Jefe final con dos Chromatic Elite Guard: alguien pasea a Drakkisath por la sala de The Beast mientras mueren. Flame Breath y Cleave frontales; Conflagration.",
+        "loot": []
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Seal of Ascension",
+        "from": "Seal of Ascension",
+        "kind": "llave",
+        "why": "Abre la puerta de Upper Blackrock Spire (basta uno en el grupo). Equipada, en Rend invoca a Vaelstrasz, que cura al grupo."
+      },
+      {
+        "name": "Pechera Tier 0",
+        "from": "General Drakkisath",
+        "kind": "armadura",
+        "why": "Drakkisath suelta las pecheras del set Tier 0 de todas las clases, chamán incluido; la fuente no da nombres ni stats."
+      }
+    ],
+    "shaman": [
+      "The Beast: Tremor Totem contra su Fear y Fire Resistance Totem por Flamebreak; si curas, quédate a distancia máxima.",
+      "Fire Resistance Totem también en Pyroguard Emberseer (Fire Nova), Gyth (Flame Breath) y General Drakkisath (Flame Breath, Conflagration).",
+      "General Drakkisath: no lances curas ni hechizos sobre quien lo pasea; generas amenaza y lo traes de vuelta a la sala.",
+      "Warchief Rend Blackhand: como Enhancement colócate detrás de Gyth y sal del Whirlwind de Rend."
+    ],
+    "tips": [
+      "Se entra por el portal de Lower Blackrock Spire: puerta de arriba a la izquierda, con Seal of Ascension.",
+      "Pyroguard Emberseer es obligatorio y necesita 3 o más jugadores pulsando el Blackrock Altar.",
+      "Limpia todo alrededor de The Beast antes de tirar; puede haber Blackhand Assassins en sigilo en la sala.",
+      "General Drakkisath suelta las pecheras Tier 0 y matarlo forma parte de las sintonizaciones de Onyxia y Blackwing Lair."
+    ],
+    "src": [
+      "wt"
+    ]
+  },
+  {
+    "key": "blackmaw-hold",
+    "name": "Blackmaw Hold",
+    "where": "Azshara: un túnel furbolg se abre en 38.7, 33.4; el portal está tan al fondo que ya cae en el mapa de Winterspring, en 66.6, 84.4. Sin sintonización.",
+    "route": "",
+    "time": "",
+    "before": [
+      "Nivel 55-60.",
+      "No pide sintonización ni llave.",
+      "Llevad interrupciones (Elder Shaman Bloodmane es lanzador) y control de masas (ritualistas de Bonesnout the Unbroken)."
+    ],
+    "bosses": [
+      {
+        "name": "Withermaw",
+        "optional": false,
+        "tip": "",
+        "loot": []
+      },
+      {
+        "name": "Impaan the Imprisoner",
+        "optional": false,
+        "tip": "",
+        "loot": []
+      },
+      {
+        "name": "Elder Shaman Bloodmane",
+        "optional": false,
+        "tip": "Es lanzador: llevad interrupciones.",
+        "loot": [
+          "Blackmaw Ritual Totem"
+        ]
+      },
+      {
+        "name": "Bonesnout the Unbroken",
+        "optional": false,
+        "tip": "Los ritualistas que lo rodean lo fortalecen: mátalos o contrólalos antes de tirar del jefe.",
+        "loot": []
+      },
+      {
+        "name": "Varrox Bleakhoof",
+        "optional": false,
+        "tip": "",
+        "loot": []
+      },
+      {
+        "name": "Blackmaw Behemoth",
+        "optional": false,
+        "tip": "",
+        "loot": []
+      },
+      {
+        "name": "Unbound Spirit",
+        "optional": false,
+        "tip": "",
+        "loot": []
+      },
+      {
+        "name": "Botín general",
+        "optional": false,
+        "tip": "Blackmaw Pouch es un dato de datamining: parece servir para ganar reputación con la tribu Blackmaw. Los Nordrassil Root Caps se recogen dentro.",
+        "loot": [
+          "Blackmaw Pouch",
+          "Nordrassil Root Cap"
+        ]
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Blackmaw Ritual Totem",
+        "from": "Elder Shaman Bloodmane",
+        "kind": "otro",
+        "why": "Objeto de quest (Blackmaw Magic, ambas facciones); pese al nombre, la fuente no dice que sea una reliquia de chamán."
+      },
+      {
+        "name": "Blackmaw Pouch",
+        "from": "Botín general",
+        "kind": "otro",
+        "why": "Dato de datamining: parece servir para ganar reputación con la tribu Blackmaw."
+      }
+    ],
+    "shaman": [
+      "Elder Shaman Bloodmane es lanzador: reserva Earth Shock para interrumpirle."
+    ],
+    "tips": [
+      "Bonesnout the Unbroken: mata o controla a los ritualistas antes de tirar del jefe.",
+      "Es una ciudad furbolg enorme, mayor que Blackrock Depths, y Blizzard dice que tiene más de una ruta: acordad el recorrido antes de empezar.",
+      "Una de las entradas de la banda Barrow Deeps está en Blackmaw Hold."
+    ],
+    "src": [
+      "wt",
+      "wfi"
+    ]
+  },
+  {
+    "key": "stratholme-live",
+    "name": "Stratholme Living (Main Gate)",
+    "where": "Esquina noroeste de Eastern Plaguelands, al otro lado de un largo puente de piedra: la entrada principal (Main Gate) da directamente al ala Living.",
+    "route": "",
+    "time": "",
+    "before": [
+      "Nivel 58-60.",
+      "The Scarlet Key (Doan’s Strongbox, en la sala final de Arcanist Doan de Scarlet Monastery Library): alguien del grupo debe llevarla para entrar a The Scarlet Bastion.",
+      "Si queréis a Postmaster Malown, buscad al Stratholme Courier (fantasma élite cerca de un Postbox): suelta 3 llaves de Postbox al azar."
+    ],
+    "bosses": [
+      {
+        "name": "Skul",
+        "optional": true,
+        "tip": "Raro, cerca de las puertas de la entrada principal (entrando por la lateral no se pasa por él). Tanque y pegar; interrumpe sus habilidades.",
+        "loot": []
+      },
+      {
+        "name": "The Unforgiven",
+        "optional": false,
+        "tip": "Espíritu no-muerto que invoca adds no élite al empezar: los DPS los matan primero y después es tanque y pegar.",
+        "loot": []
+      },
+      {
+        "name": "Hearthsinger Forresten",
+        "optional": true,
+        "tip": "Raro: calle abajo desde Fras Siabi o patrullando Market Row. Enchanting Lullaby duerme 8 s (también al tanque); separaos por Multi-Shot.",
+        "loot": []
+      },
+      {
+        "name": "Postmaster Malown",
+        "optional": true,
+        "tip": "Sale al abrir el tercer Postbox, con tres Undead Postman que apilan Wailing Dead; solo les afecta Turn Undead o Shackle Undead. Hay miedo y maldiciones.",
+        "loot": []
+      },
+      {
+        "name": "Timmy the Cruel",
+        "optional": false,
+        "tip": "Sale corriendo por la izquierda del patio al limpiar los enemigos apostados fuera de la zona Scarlet. Tanque y pegar; ojo al Enrage.",
+        "loot": []
+      },
+      {
+        "name": "Crimson Hammersmith",
+        "optional": true,
+        "tip": "Solo aparece si alguien pulsa el dibujo del suelo; suele salir por error en mitad de otro combate. Avisa al grupo si lo quieres matar.",
+        "loot": []
+      },
+      {
+        "name": "Cannon Master Willey",
+        "optional": false,
+        "tip": "En la armería. Invoca adds: control, o coge una bala y dispara uno de los cañones de la sala contra ellos. El sanador, lejos del jefe y detrás del cañón.",
+        "loot": []
+      },
+      {
+        "name": "Archivist Galford",
+        "optional": false,
+        "tip": "En su biblioteca, frente a la cámara final. Separaos: daño de fuego a varios jugadores. Burning Winds cae en cualquiera; si es el tanque, el jefe cambia de objetivo.",
+        "loot": []
+      },
+      {
+        "name": "Grand Crusader Dathrohan / Balnazzar",
+        "optional": false,
+        "tip": "Empieza fácil como Dathrohan y luego se vuelve el demonio Balnazzar. Tanque en el centro, grupo separado. Deep Sleep es disipable; Psychic Scream no llega a rango máximo.",
+        "loot": []
+      },
+      {
+        "name": "Jarien and Sothos",
+        "optional": true,
+        "tip": "Solo quest Tier 0.5: se invocan en la sala de Balnazzar con Brazier of Beckoning. Tanque y pegar; ojo a Mortal Strike.",
+        "loot": []
+      },
+      {
+        "name": "Botín general",
+        "optional": false,
+        "tip": "El Stratholme Courier suelta 3 llaves de Postbox al azar. Cada Postbox abierto da un Postbox Parcel (basura y cartas) e invoca tres Undead Postman élite.",
+        "loot": [
+          "King’s Square Postbox Key",
+          "Ezra Grimm’s Postbox Key",
+          "Market Row Postbox Key",
+          "Festival Lane Postbox Key",
+          "Crusaders’ Square Postbox Key",
+          "Elders’ Square Postbox Key",
+          "Postbox Parcel"
+        ]
+      }
+    ],
+    "key_items": [
+      {
+        "name": "The Scarlet Key",
+        "from": "Doan’s Strongbox (Scarlet Monastery Library)",
+        "kind": "llave",
+        "why": "Abre The Bastion Door, la Hoard Door y la puerta del Hall of High Command: media ala está en The Scarlet Bastion."
+      },
+      {
+        "name": "Key to the City",
+        "from": "Magistrate Barthilas",
+        "kind": "llave",
+        "why": "Abre la King’s Square Gate que une las dos alas y la entrada lateral; la suelta un jefe del ala Undead."
+      },
+      {
+        "name": "King’s Square Postbox Key",
+        "from": "Botín general",
+        "kind": "llave",
+        "why": "Abre el King’s Square Postbox, en King’s Square junto a la verja de Market Row. El tercer Postbox invoca a Malown."
+      },
+      {
+        "name": "Ezra Grimm’s Postbox Key",
+        "from": "Botín general",
+        "kind": "llave",
+        "why": "Abre el Ezra Grimm’s Postbox, frente a la tienda Ezra Grimm’s Premium Tobacco, en King’s Square."
+      },
+      {
+        "name": "Market Row Postbox Key",
+        "from": "Botín general",
+        "kind": "llave",
+        "why": "Abre el Market Row Postbox, en el extremo este de Market Row, antes de llegar a Balzaphon."
+      },
+      {
+        "name": "Festival Lane Postbox Key",
+        "from": "Botín general",
+        "kind": "llave",
+        "why": "Abre el Festival Lane Postbox, frente a la fuente de la plaza grande de Festival Lane."
+      },
+      {
+        "name": "Crusaders’ Square Postbox Key",
+        "from": "Botín general",
+        "kind": "llave",
+        "why": "Abre el Crusaders’ Square Postbox, pegado a la entrada de The Scarlet Bastion."
+      },
+      {
+        "name": "Elders’ Square Postbox Key",
+        "from": "Botín general",
+        "kind": "llave",
+        "why": "Abre el Elders’ Square Postbox, pegado a la Service Entrance Gate, en Elders’ Square."
+      }
+    ],
+    "shaman": [
+      "Grand Crusader Dathrohan / Balnazzar: Tremor Totem para Psychic Scream y Deep Sleep.",
+      "Hearthsinger Forresten: Tremor Totem contra Enchanting Lullaby (duerme 8 s). En Postmaster Malown, Tremor Totem por el miedo.",
+      "Archivist Galford: Fire Resistance Totem (Burning Winds y daño de fuego repartido por el grupo).",
+      "Skul: Earth Shock para interrumpir sus habilidades."
+    ],
+    "tips": [
+      "Sin The Scarlet Key no se entra a The Scarlet Bastion, donde está más o menos la mitad de los jefes y varios objetivos de quest.",
+      "No pulses el dibujo del suelo en mitad de un combate: invoca a Crimson Hammersmith.",
+      "Cada Postbox abierto invoca tres Undead Postman élite, y el tercero además a Postmaster Malown: ábrelos con el grupo preparado.",
+      "Las dos alas son la misma instancia: por la King’s Square Gate (con Key to the City) se pasa al ala Undead sin salir."
+    ],
+    "src": [
+      "wt",
+      "wfi"
+    ]
+  },
+  {
+    "key": "stratholme-dead",
+    "name": "Stratholme Undead (Service Gate)",
+    "where": "Noroeste de Eastern Plaguelands: puerta trasera (Eastwall Gate, la Service Gate) un poco al este de la entrada principal, marcada como cueva en el mapa. Pide Key to the City.",
+    "route": "",
+    "time": "",
+    "before": [
+      "Nivel 58-60.",
+      "Key to the City (la suelta Magistrate Barthilas): abre la Eastwall Gate, la Gauntlet Gate y otras verjas. Sin ella, entra por el ala Living y mátalo frente a Alonsus Chapel.",
+      "Abrir la Gauntlet Gate inicia The Baron’s Ultimatum: 45 minutos antes de que el Baron mate a su prisionero. Solo importa para la quest del set Tier 0.5."
+    ],
+    "bosses": [
+      {
+        "name": "Nerub’enkan",
+        "optional": false,
+        "tip": "En lo alto del primer zigurat, a la izquierda. Encasing Webs atrapa; invoca escarabajos de poca vida (daño en área). Después, mata los Thuzadin Acolytes de dentro.",
+        "loot": []
+      },
+      {
+        "name": "Stonespire",
+        "optional": true,
+        "tip": "Raro: patrulla entre los zigurats de Nerub’enkan y Baroness Anastari. Vicious Rend es un sangrado sobre el tanque.",
+        "loot": []
+      },
+      {
+        "name": "Black Guard Swordsmith",
+        "optional": true,
+        "tip": "Solo aparece si alguien pulsa el dibujo del suelo; suele salir por error en mitad de otro combate. Avisa al grupo si lo quieres matar.",
+        "loot": []
+      },
+      {
+        "name": "Baroness Anastari",
+        "optional": false,
+        "tip": "Banshee en el segundo zigurat. Possess controla a un jugador: bajadlo al 50% de vida para liberarlo. También Silence y Banshee Curse. Luego, los Thuzadin Acolytes.",
+        "loot": []
+      },
+      {
+        "name": "Maleki the Pallid",
+        "optional": false,
+        "tip": "Tercer zigurat. Pega fuerte; interrumpe Drain Life y Frostbolt. Ice Tomb encierra 6 s al de más amenaza y el jefe se va a por el segundo.",
+        "loot": []
+      },
+      {
+        "name": "Magistrate Barthilas",
+        "optional": false,
+        "tip": "Está junto a Alonsus Chapel o, si se abrió la Service Gate, antes del patio de Ramstein. Mighty Blow empuja: de cara a una pared. Crowd Pummel daña al grupo.",
+        "loot": [
+          "Key to the City"
+        ]
+      },
+      {
+        "name": "Ramstein the Gorger",
+        "optional": false,
+        "tip": "Sale en Slaughter Square al morir todas las abominaciones. Pega fuerte; Knockout le hace cambiar al segundo en amenaza. Después llega un grupo grande de Mindless Undead.",
+        "loot": []
+      },
+      {
+        "name": "Baron Rivendare",
+        "optional": false,
+        "tip": "Jefe final; la puerta se cierra al empezar. Mortal Strike reduce las curas al tanque, Unholy Aura daña a quien esté cerca y Cleave es frontal. Invoca esqueletos.",
+        "loot": [
+          "Deathcharger’s Reins"
+        ]
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Key to the City",
+        "from": "Magistrate Barthilas",
+        "kind": "llave",
+        "why": "Abre la Eastwall Gate (entrada lateral), la Gauntlet Gate y la King’s Square Gate que une las dos alas."
+      },
+      {
+        "name": "Perneras Tier 0",
+        "from": "Baron Rivendare",
+        "kind": "armadura",
+        "why": "El Baron suelta las perneras T0 de todas las clases y varios objetos pre-raid BiS; la fuente no da nombres ni stats."
+      },
+      {
+        "name": "Deathcharger’s Reins",
+        "from": "Baron Rivendare",
+        "kind": "otro",
+        "why": "El botín más célebre del Baron («infamous» según la fuente), que no explica qué es."
+      }
+    ],
+    "shaman": [
+      "Maleki the Pallid: Earth Shock para cortar Drain Life y Frostbolt, y Frost Resistance Totem por el daño de escarcha.",
+      "Baroness Anastari: Tremor Totem contra Possess (control mental); cuenta con que Silence te deje unos segundos sin lanzar.",
+      "Stonespire: Vicious Rend es un sangrado; si te alcanza a ti, Stoneform lo quita.",
+      "Baron Rivendare: curando, ponte a la izquierda con los de distancia, fuera de Unholy Aura; como Enhancement, detrás del jefe (Cleave) y a por los esqueletos."
+    ],
+    "tips": [
+      "Slaughter Square solo se abre tras limpiar los tres zigurats: mata a Baroness Anastari, Maleki the Pallid y Nerub’enkan y, dentro de cada torre, a todos los Thuzadin Acolytes (gritan que el Slaughterhouse queda desprotegido).",
+      "En Slaughter Square mata todos los Venom Belchers y Bile Spewers para que salga Ramstein; después vienen los Mindless Undead y 3 Black Guard Sentry antes del Baron.",
+      "Entrando por el ala Living, Magistrate Barthilas sigue frente a Alonsus Chapel; abrir la Service Gate es lo que le hace huir al fondo de la mazmorra.",
+      "En Baron Rivendare entrad todos a la vez con el tanque: la puerta se cierra al empezar el combate."
+    ],
+    "src": [
+      "wt",
+      "wfi"
+    ]
+  },
+  {
+    "key": "scholomance",
+    "name": "Scholomance",
+    "where": "Isla de Caer Darrow, en el sureste de Western Plaguelands. La puerta que cierra el paso al portal se abre con la Skeleton Key.",
+    "route": "Alianza: hacia el este desde Chillwind Camp.",
+    "time": "",
+    "before": [
+      "Nivel 58-60; los jefes son élite 58-61.",
+      "Skeleton Key para abrir la puerta: cadena larga en Western Plaguelands que empieza con The Key to Scholomance (Alchemist Arbington para la Alianza).",
+      "Para invocar a Kirtonos the Herald hace falta Blood of Innocents, del Blood Steward of Kirtonos.",
+      "Marduk Blackpool y Vectus solo se pueden atacar si alguien del grupo ha avanzado en la cadena de quests larga que pide matarlos."
+    ],
+    "bosses": [
+      {
+        "name": "Kirtonos the Herald",
+        "optional": true,
+        "tip": "Élite 60 invocado en el patio con Blood of Innocents. Alterna forma humana (maldiciones) y gárgola: Wing Flap empuja y Swoop aturde, no te pongas delante.",
+        "loot": []
+      },
+      {
+        "name": "Jandice Barov",
+        "optional": true,
+        "tip": "Opcional, élite 61, bajo la sala de Plagued Whelpling (antorcha del muro sur). Invoca ilusiones de sí misma: márcala. Dark Plague y Curse of Blood hay que quitarlas.",
+        "loot": []
+      },
+      {
+        "name": "Rattlegore",
+        "optional": false,
+        "tip": "Obligatorio, élite 61, sótano del Great Ossuary. Viene con un add: mátalo primero. Knock Away y War Stomp; pega muy fuerte a quien lleve poca armadura.",
+        "loot": [
+          "Viewing Room Key"
+        ]
+      },
+      {
+        "name": "Death Knight Darkreaver",
+        "optional": true,
+        "tip": "Solo quest de montura épica de paladín, en la sala de Rattlegore: oleadas de espíritus y después el jefe, que es tanque y pegar.",
+        "loot": []
+      },
+      {
+        "name": "Marduk Blackpool",
+        "optional": true,
+        "tip": "Élite 58, esquina NE de Viewing Room; solo atacable con su cadena de quests. Shadow Shield devuelve daño a quien le pega; Defiling Aura, Shadow Bolt Volley, Cleave.",
+        "loot": []
+      },
+      {
+        "name": "Vectus",
+        "optional": true,
+        "tip": "Neutral, élite 60, en Viewing Room; solo atacable con la cadena de quests. Flamestrike y fuego en el suelo: separaos. Blast Wave cerca del jefe.",
+        "loot": []
+      },
+      {
+        "name": "Ras Frostwhisper",
+        "optional": false,
+        "tip": "Lich élite 60 en el Alchemy Lab. Limpia antes la sala. Fear y Chill Nova (los de distancia, a rango máximo); montad una rotación de interrupciones.",
+        "loot": []
+      },
+      {
+        "name": "Kormok",
+        "optional": true,
+        "tip": "Solo quest Tier 0.5 (Brazier of Beckoning, sala de Ras). Invoca esqueletos: daño en área. Con Bone Shield el cuerpo a cuerpo debe parar, porque devuelve el daño.",
+        "loot": []
+      },
+      {
+        "name": "Lady Illucia Barov",
+        "optional": false,
+        "tip": "Ala inferior izquierda de la última sala. Sencilla; Dominate Mind controla a jugadores: avisad y usad control sobre ellos.",
+        "loot": []
+      },
+      {
+        "name": "Lord Alexei Barov",
+        "optional": false,
+        "tip": "Ala inferior central; de lo más duro. Unholy Aura (daño a todo el grupo y lanzamientos lentos), Veil of Shadow (maldición) y dos adds enlazados: control y Barov primero.",
+        "loot": []
+      },
+      {
+        "name": "The Ravenian",
+        "optional": false,
+        "tip": "Ala inferior derecha. Tanque y pegar; Knock Away puede lanzarte contra otros grupos si la sala no está limpia.",
+        "loot": []
+      },
+      {
+        "name": "Lorekeeper Polkelt",
+        "optional": false,
+        "tip": "Ala superior izquierda. Muy poca vida, pero casi siempre viene con varios zombis, que explotan al morir: aléjate de los cadáveres.",
+        "loot": []
+      },
+      {
+        "name": "Doctor Theolen Krastinov",
+        "optional": false,
+        "tip": "Ala superior central. Pega durísimo y al 50% entra en Enrage (ataca más rápido): quemadlo. El sanador, siempre lejos; puede matar de un golpe a los de tela.",
+        "loot": []
+      },
+      {
+        "name": "Instructor Malicia",
+        "optional": false,
+        "tip": "Ala superior derecha, tras unos adds molestos. Lanza muchos hechizos: interrumpidos casi no hace daño.",
+        "loot": []
+      },
+      {
+        "name": "Darkmaster Gandling",
+        "optional": false,
+        "tip": "Jefe final: aparece en el centro de la cámara al morir los 6 jefes de las alas y os ataca al salir. Teletransporta a un jugador a un ala con enemigos no élite.",
+        "loot": []
+      },
+      {
+        "name": "Botín general",
+        "optional": false,
+        "tip": "El Blood Steward of Kirtonos suelta Blood of Innocents, con la que se invoca a Kirtonos the Herald en el patio.",
+        "loot": [
+          "Blood of Innocents"
+        ]
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Skeleton Key",
+        "from": "The Key to Scholomance",
+        "kind": "llave",
+        "why": "Abre la puerta de Scholomance; cadena larga en Western Plaguelands que empieza con Alchemist Arbington (Alianza)."
+      },
+      {
+        "name": "Viewing Room Key",
+        "from": "Rattlegore",
+        "kind": "llave",
+        "why": "La única llave necesaria para avanzar dentro de la mazmorra; por eso Rattlegore es obligatorio."
+      },
+      {
+        "name": "Blood of Innocents",
+        "from": "Botín general",
+        "kind": "otro",
+        "why": "La suelta el Blood Steward of Kirtonos; se usa en el patio para invocar a Kirtonos the Herald."
+      }
+    ],
+    "shaman": [
+      "Ras Frostwhisper: Tremor Totem contra Fear, Frost Resistance Totem por Chill Nova y Earth Shock dentro de la rotación de interrupciones.",
+      "Instructor Malicia: Earth Shock a cada hechizo que puedas; interrumpida apenas hace daño.",
+      "Lady Illucia Barov: Tremor Totem contra Dominate Mind (control mental).",
+      "Como Enhancement deja de pegar con Shadow Shield (Marduk Blackpool) y Bone Shield (Kormok), que devuelven el daño; prueba Purge sobre el escudo."
+    ],
+    "tips": [
+      "Rattlegore es obligatorio: suelta la Viewing Room Key, la única llave necesaria dentro.",
+      "Darkmaster Gandling aparece en cuanto cae el último de los 6 jefes de las alas y os ataca al salir: recuperad vida y maná dentro del ala antes de asomaros.",
+      "En la sala de Jandice Barov pulsa la antorcha de la pared lateral: da acceso a botín secreto extra más adelante.",
+      "Lord Alexei Barov y Doctor Theolen Krastinov son los combates más peligrosos: control a los adds de Barov y quemar rápido a Krastinov."
+    ],
+    "src": [
+      "wt",
+      "wfi"
+    ]
+  },
+  {
+    "key": "shapers-terrace",
+    "name": "Shaper’s Terrace",
+    "where": "Un’Goro Crater: complejo titán en la colina que domina Marshal’s Refuge, en las colinas del norte del cráter (48.1, 6.1).",
+    "route": "",
+    "time": "",
+    "before": [
+      "Nivel 58-60.",
+      "Lleva Power Crystals recogidos por Un’Goro Crater (Blue, Green, Red y Yellow Power Crystal): se usan en consolas dentro de la mazmorra."
+    ],
+    "bosses": [
+      {
+        "name": "Titanosaur",
+        "optional": false,
+        "tip": "",
+        "loot": []
+      },
+      {
+        "name": "Ravasaur Hunters",
+        "optional": false,
+        "tip": "",
+        "loot": []
+      },
+      {
+        "name": "Thunderhoof",
+        "optional": false,
+        "tip": "",
+        "loot": []
+      },
+      {
+        "name": "Venomridge",
+        "optional": false,
+        "tip": "",
+        "loot": []
+      },
+      {
+        "name": "Direhorn Matriarch",
+        "optional": false,
+        "tip": "",
+        "loot": []
+      },
+      {
+        "name": "Cinder",
+        "optional": false,
+        "tip": "",
+        "loot": []
+      },
+      {
+        "name": "King Op",
+        "optional": false,
+        "tip": "",
+        "loot": []
+      },
+      {
+        "name": "Snowtalon",
+        "optional": false,
+        "tip": "",
+        "loot": []
+      },
+      {
+        "name": "Bolt",
+        "optional": false,
+        "tip": "",
+        "loot": []
+      },
+      {
+        "name": "Vitrix",
+        "optional": false,
+        "tip": "",
+        "loot": []
+      },
+      {
+        "name": "Nanaya",
+        "optional": false,
+        "tip": "",
+        "loot": []
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Blue Power Crystal",
+        "from": "Un’Goro Crater (recogido fuera)",
+        "kind": "otro",
+        "why": "Se recoge por Un’Goro Crater y se usa en las consolas de dentro; la fuente no dice qué hace cada color."
+      },
+      {
+        "name": "Green Power Crystal",
+        "from": "Un’Goro Crater (recogido fuera)",
+        "kind": "otro",
+        "why": "Se recoge por Un’Goro Crater y se usa en las consolas de dentro; la fuente no dice qué hace cada color."
+      },
+      {
+        "name": "Red Power Crystal",
+        "from": "Un’Goro Crater (recogido fuera)",
+        "kind": "otro",
+        "why": "Se recoge por Un’Goro Crater y se usa en las consolas de dentro; la fuente no dice qué hace cada color."
+      },
+      {
+        "name": "Yellow Power Crystal",
+        "from": "Un’Goro Crater (recogido fuera)",
+        "kind": "otro",
+        "why": "Se recoge por Un’Goro Crater y se usa en las consolas de dentro; la fuente no dice qué hace cada color."
+      }
+    ],
+    "shaman": [],
+    "tips": [
+      "Casi todo es una gran zona abierta: un camino cruza un pozo de brea hasta la estructura central, Pillar of Assimilation, y al este hay un túnel-cueva lleno de cristales.",
+      "Por el norte, un camino lleva a un edificio titán y a una zona de cascadas con un portal de banda desconocido tras una verja cerrada."
+    ],
+    "src": [
+      "wt",
+      "wfi"
+    ]
+  }
+]

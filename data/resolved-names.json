@@ -1,0 +1,2521 @@
+{
+"A Baying of Gnolls": {
+"type": "quest",
+"id": 124
+},
+"A Broken Trap": {
+"type": "quest",
+"id": 1193
+},
+"A Crew Under Fire": {
+"type": "quest",
+"id": 3382
+},
+"A Dark Threat Looms": {
+"type": "search"
+},
+"A Dynamite Plan": {
+"type": "quest",
+"id": 92749
+},
+"A Final Blow": {
+"type": "quest",
+"id": 5242
+},
+"A Fine Mess": {
+"type": "quest",
+"id": 79985
+},
+"A Green Sample": {
+"type": "quest",
+"id": 92456
+},
+"A Grim Task": {
+"type": "quest",
+"id": 304
+},
+"A Hero's Welcome": {
+"type": "quest",
+"id": 4266
+},
+"A Host of Evil": {
+"type": "quest",
+"id": 6626
+},
+"A Matter of Time": {
+"type": "quest",
+"id": 4971
+},
+"A Mysterious Message": {
+"type": "item",
+"id": 1381
+},
+"A New Threat": {
+"type": "quest",
+"id": 170
+},
+"A Pilot's Revenge": {
+"type": "quest",
+"id": 417
+},
+"A Sign of Hope": {
+"type": "quest",
+"id": 720
+},
+"A Small Favor": {
+"type": "quest",
+"id": 94907
+},
+"A Taste of Flame": {
+"type": "quest",
+"id": 4024
+},
+"A Visitor to Dun Morogh": {
+"type": "quest",
+"id": 96408
+},
+"A Watchful Eye": {
+"type": "quest",
+"id": 94
+},
+"A Yeti of Your Own": {
+"type": "quest",
+"id": 8798
+},
+"Abominable Creatures": {
+"type": "quest",
+"id": 95250
+},
+"Above and Beyond": {
+"type": "quest",
+"id": 5263
+},
+"Afadra Dunwall": {
+"type": "npc",
+"id": 264943
+},
+"Against the Hatecrest": {
+"type": "search"
+},
+"Agmond's Fate": {
+"type": "quest",
+"id": 704
+},
+"Air Totem": {
+"type": "item",
+"id": 5178
+},
+"Alba Fairmoon": {
+"type": "npc",
+"id": 253092
+},
+"Alchemist Arbington": {
+"type": "npc",
+"id": 11056
+},
+"All Along the Watchtowers": {
+"type": "quest",
+"id": 5097
+},
+"Alphonse Dumas": {
+"type": "npc",
+"id": 259250
+},
+"An Alarming Request": {
+"type": "quest",
+"id": 92432
+},
+"An Ambassador of Evil": {
+"type": "quest",
+"id": 762
+},
+"An Ancient Grudge": {
+"type": "quest",
+"id": 96395
+},
+"Anarchist's Workbench": {
+"type": "item",
+"id": 279989
+},
+"Ancient War Sword": {
+"type": "item",
+"id": 3209
+},
+"Angelas Moonbreeze": {
+"type": "none"
+},
+"Anything of Value": {
+"type": "quest",
+"id": 97328
+},
+"Apprentice's Duties": {
+"type": "quest",
+"id": 471
+},
+"Araj's Scarab": {
+"type": "quest",
+"id": 5803
+},
+"Arcane Runes": {
+"type": "quest",
+"id": 3449
+},
+"Archmage Tervosh": {
+"type": "npc",
+"id": 4967
+},
+"Arclight Spanner": {
+"type": "item",
+"id": 6219
+},
+"Are We There, Yeti?": {
+"type": "search"
+},
+"Ashe Amberhall": {
+"type": "npc",
+"id": 257591
+},
+"Assessing the Threat": {
+"type": "quest",
+"id": 246
+},
+"Attack on the Tower": {
+"type": "quest",
+"id": 696
+},
+"Attunement to the Core": {
+"type": "quest",
+"id": 7848
+},
+"Aurius' Reckoning": {
+"type": "quest",
+"id": 5125
+},
+"Azerothium Bar": {
+"type": "item",
+"id": 249726
+},
+"Azurite Fists": {
+"type": "item",
+"id": 20369
+},
+"Bad Medicine": {
+"type": "quest",
+"id": 204
+},
+"Badlands Reagent Run": {
+"type": "quest",
+"id": 2500
+},
+"Barov Family Fortune": {
+"type": "quest",
+"id": 5343
+},
+"Barreling Reaper": {
+"type": "item",
+"id": 6194
+},
+"Bartolo's Yeti Fur Cloak": {
+"type": "quest",
+"id": 565
+},
+"Bath'rah the Windwatcher": {
+"type": "npc",
+"id": 6176
+},
+"Beastsmasher": {
+"type": "item",
+"id": 11906
+},
+"Becoming a Parent": {
+"type": "quest",
+"id": 4298
+},
+"Beer Basted Boar Ribs": {
+"type": "quest",
+"id": 384
+},
+"Big Game Hunter": {
+"type": "quest",
+"id": 208
+},
+"Bigger Rock on Bigger Stick": {
+"type": "item",
+"id": 279480
+},
+"Bitter Rivals": {
+"type": "quest",
+"id": 310
+},
+"Blackfathom Villainy": {
+"type": "quest",
+"id": 78921
+},
+"Blackmaw Magic": {
+"type": "search"
+},
+"Blackrock Blockade": {
+"type": "quest",
+"id": 98387
+},
+"Blackrock Bounty": {
+"type": "quest",
+"id": 128
+},
+"Blackrock Menace": {
+"type": "quest",
+"id": 20
+},
+"Blazeroar": {
+"type": "none"
+},
+"Blisters on the Land": {
+"type": "quest",
+"id": 275
+},
+"Blood Tinged Skies": {
+"type": "quest",
+"id": 5543
+},
+"Bloodied Insignia": {
+"type": "quest",
+"id": 95195
+},
+"Blueleaf Tubers": {
+"type": "quest",
+"id": 1221
+},
+"Bookie Herod": {
+"type": "quest",
+"id": 200
+},
+"Bountiful Harvest": {
+"type": "spell",
+"id": 1225435
+},
+"Braldir Ashmantle": {
+"type": "npc",
+"id": 257808
+},
+"Bring Me His Head": {
+"type": "search"
+},
+"Bring the Light": {
+"type": "quest",
+"id": 3636
+},
+"Brock Stoneseeker": {
+"type": "npc",
+"id": 1681
+},
+"Bronze Framework": {
+"type": "item",
+"id": 4382
+},
+"Bronze Tube": {
+"type": "item",
+"id": 4371
+},
+"Bruegs Kindleborn": {
+"type": "npc",
+"id": 257597
+},
+"Buckler of the Seas": {
+"type": "item",
+"id": 1557
+},
+"Buliwyf Stonehand": {
+"type": "npc",
+"id": 11865
+},
+"Burned-Out Remains": {
+"type": "search"
+},
+"Buzzek Bracketswing": {
+"type": "npc",
+"id": 8736
+},
+"Caitlin Grassman": {
+"type": "npc",
+"id": 1480
+},
+"Call of Air": {
+"type": "quest",
+"id": 94789
+},
+"Call of Water": {
+"type": "search"
+},
+"Camping 101: Cooking": {
+"type": "quest",
+"id": 96629
+},
+"Captain Dreadrise": {
+"type": "npc",
+"id": 260042
+},
+"Captain Grayson": {
+"type": "npc",
+"id": 392
+},
+"Carrion Grubbage": {
+"type": "quest",
+"id": 5544
+},
+"Carved Figurine": {
+"type": "object",
+"id": 424007
+},
+"Centaur Bounty": {
+"type": "quest",
+"id": 1387
+},
+"Charlga Razorflank": {
+"type": "npc",
+"id": 4421
+},
+"Chasing A-Me 01": {
+"type": "search"
+},
+"Chausses of Westfall": {
+"type": "item",
+"id": 6087
+},
+"Clanking Cord": {
+"type": "item",
+"id": 280308
+},
+"Claws from the Deep": {
+"type": "quest",
+"id": 279
+},
+"Cleansing Felwood": {
+"type": "search"
+},
+"Clear the Way": {
+"type": "quest",
+"id": 5092
+},
+"Coarse Blasting Powder": {
+"type": "item",
+"id": 4364
+},
+"Coarse Dynamite": {
+"type": "item",
+"id": 4365
+},
+"Collecting Memories": {
+"type": "quest",
+"id": 168
+},
+"Colonel Kurzen": {
+"type": "quest",
+"id": 202
+},
+"Commander Ashlam Valorfist": {
+"type": "npc",
+"id": 10838
+},
+"Corpsemaker": {
+"type": "item",
+"id": 6687
+},
+"Corruption of Earth and Seed": {
+"type": "quest",
+"id": 7065
+},
+"Costly Menace": {
+"type": "quest",
+"id": 564
+},
+"Councilman Millstipe": {
+"type": "npc",
+"id": 270
+},
+"Courier Hammerfall": {
+"type": "npc",
+"id": 10877
+},
+"Cozy Sleeping Bag": {
+"type": "item",
+"id": 211527
+},
+"Crest of Lordaeron": {
+"type": "quest",
+"id": 95189
+},
+"Crime and Punishment": {
+"type": "quest",
+"id": 377
+},
+"Crushridge Bounty": {
+"type": "quest",
+"id": 500
+},
+"Crushridge Warmongers": {
+"type": "quest",
+"id": 504
+},
+"Crystals of Power": {
+"type": "quest",
+"id": 4284
+},
+"Culling the Competition": {
+"type": "none"
+},
+"Curios of Curiosity": {
+"type": "quest",
+"id": 94998
+},
+"Curious Trinkets": {
+"type": "quest",
+"id": 94881
+},
+"Da Voodoo": {
+"type": "quest",
+"id": 8413
+},
+"Dalaran Sewer Key": {
+"type": "item",
+"id": 277507
+},
+"Dark Council": {
+"type": "quest",
+"id": 537
+},
+"Dark Iron Legacy": {
+"type": "quest",
+"id": 3801
+},
+"Data Rescue": {
+"type": "quest",
+"id": 80143
+},
+"Dawn in the Mountains": {
+"type": "quest",
+"id": 99158
+},
+"Dawn's Gambit": {
+"type": "quest",
+"id": 4771
+},
+"Deep Sea Salvage": {
+"type": "quest",
+"id": 662
+},
+"Defeat Nek'rosh": {
+"type": "quest",
+"id": 474
+},
+"Deliver the Shipment": {
+"type": "none"
+},
+"Demar Brant": {
+"type": "npc",
+"id": 257558
+},
+"Demon Dogs": {
+"type": "quest",
+"id": 5542
+},
+"Dense Blasting Powder": {
+"type": "item",
+"id": 15992
+},
+"Destruction in Deadmines": {
+"type": "quest",
+"id": 92753
+},
+"Detonation at a Distance": {
+"type": "quest",
+"id": 92750
+},
+"Deviate Eradication": {
+"type": "quest",
+"id": 1487
+},
+"Deviate Hides": {
+"type": "quest",
+"id": 1486
+},
+"Digging Through the Ooze": {
+"type": "quest",
+"id": 470
+},
+"Disengagement Ring": {
+"type": "item",
+"id": 276202
+},
+"Distracting Jarven": {
+"type": "quest",
+"id": 308
+},
+"Divine Retribution": {
+"type": "quest",
+"id": 3441
+},
+"Divino-matic Rod": {
+"type": "quest",
+"id": 2768
+},
+"Doomrigger's Clasp": {
+"type": "quest",
+"id": 4764
+},
+"Dorin Songblade": {
+"type": "npc",
+"id": 956
+},
+"Down the Coast": {
+"type": "quest",
+"id": 536
+},
+"Down the Scarlet Path": {
+"type": "quest",
+"id": 261
+},
+"Downstream": {
+"type": "quest",
+"id": 91733
+},
+"Dragonkin Menace": {
+"type": "quest",
+"id": 4182
+},
+"Drowned Sorrows": {
+"type": "quest",
+"id": 664
+},
+"Duke Hydraxis": {
+"type": "none"
+},
+"Durgen Dirgehammer": {
+"type": "npc",
+"id": 261319
+},
+"Dwarven Outfitters": {
+"type": "quest",
+"id": 179
+},
+"EZ-Thro": {
+"type": "none"
+},
+"Earth Sapta": {
+"type": "quest",
+"id": 94472
+},
+"Earth Totem": {
+"type": "item",
+"id": 5175
+},
+"Earthseer Farsen": {
+"type": "npc",
+"id": 264936
+},
+"Egg Collection": {
+"type": "quest",
+"id": 4735
+},
+"Egg Freezing": {
+"type": "quest",
+"id": 4734
+},
+"Elder Shaman Bloodmane": {
+"type": "none"
+},
+"Eldrun Stormbreaker": {
+"type": "npc",
+"id": 258098
+},
+"Elemental Aid": {
+"type": "search"
+},
+"Elementalist's Guard": {
+"type": "item",
+"id": 280696
+},
+"Elven Legends": {
+"type": "quest",
+"id": 7482
+},
+"Emissary Jacques": {
+"type": "npc",
+"id": 247264
+},
+"Enamored Water Spirit": {
+"type": "item",
+"id": 20503
+},
+"Encroaching Gnolls": {
+"type": "quest",
+"id": 244
+},
+"Encroaching Wildlife": {
+"type": "quest",
+"id": 1396
+},
+"Encrypted Letter": {
+"type": "quest",
+"id": 511
+},
+"Eric Brighthammer": {
+"type": "npc",
+"id": 265813
+},
+"Essence of Eranikus": {
+"type": "item",
+"id": 10454
+},
+"Essential Artificials": {
+"type": "quest",
+"id": 80136
+},
+"Eva Sarkhoff": {
+"type": "none"
+},
+"Evershine": {
+"type": "quest",
+"id": 318
+},
+"Expanding Horizons": {
+"type": "quest",
+"id": 97914
+},
+"Expedition Salvation": {
+"type": "quest",
+"id": 3881
+},
+"Explore Azeroth": {
+"type": "none"
+},
+"Explosive Consultation": {
+"type": "quest",
+"id": 92752
+},
+"Explosive Sheep": {
+"type": "item",
+"id": 4384
+},
+"Extinguish the Firegut": {
+"type": "quest",
+"id": 3823
+},
+"Extinguishing the Idol": {
+"type": "quest",
+"id": 3525
+},
+"Eye of Mugg": {
+"type": "quest",
+"id": 94982
+},
+"Eye of the Emberseer": {
+"type": "quest",
+"id": 6821
+},
+"Eye of the Tempest": {
+"type": "item",
+"id": 212792
+},
+"Faldrim Anvilmar": {
+"type": "npc",
+"id": 261306
+},
+"Farren's Proof": {
+"type": "quest",
+"id": 559
+},
+"Feathers for Grazle": {
+"type": "quest",
+"id": 8466
+},
+"Filthy Paws": {
+"type": "quest",
+"id": 307
+},
+"Find Ranshalla": {
+"type": "quest",
+"id": 979
+},
+"Fire Plume Forged": {
+"type": "quest",
+"id": 5801
+},
+"Fire Sapta": {
+"type": "search"
+},
+"Fire Taboo": {
+"type": "quest",
+"id": 277
+},
+"Fire Tar": {
+"type": "item",
+"id": 5026
+},
+"Fire Totem": {
+"type": "item",
+"id": 5176
+},
+"Flintfire's Shipment": {
+"type": "quest",
+"id": 98321
+},
+"Food for Baby": {
+"type": "quest",
+"id": 4297
+},
+"Foreboding Plans": {
+"type": "quest",
+"id": 510
+},
+"Fradd Swiftgear": {
+"type": "npc",
+"id": 2682
+},
+"Fragments of the Past": {
+"type": "search"
+},
+"Franclorn Forgewright": {
+"type": "npc",
+"id": 8888
+},
+"Freedom for All Creatures": {
+"type": "quest",
+"id": 2969
+},
+"Frequent Flier": {
+"type": "spell",
+"id": 1225490
+},
+"Fritz Fizzle": {
+"type": "npc",
+"id": 256733
+},
+"Frostmane Hold": {
+"type": "quest",
+"id": 287
+},
+"Further Mysteries": {
+"type": "quest",
+"id": 525
+},
+"Gahz'rilla": {
+"type": "quest",
+"id": 2770
+},
+"Gaining Acceptance": {
+"type": "quest",
+"id": 7737
+},
+"Galen's Escape": {
+"type": "quest",
+"id": 1393
+},
+"Galen's Strongbox": {
+"type": "object",
+"id": 32569
+},
+"Gearcutter Cogspinner": {
+"type": "npc",
+"id": 5175
+},
+"Geofram Bouldertoe": {
+"type": "npc",
+"id": 4254
+},
+"Gerrig Bonegrip": {
+"type": "npc",
+"id": 2786
+},
+"Gershala Nightwhisper": {
+"type": "npc",
+"id": 8997
+},
+"Get to the Roots of It": {
+"type": "quest",
+"id": 92344
+},
+"Ghak Healtouch": {
+"type": "npc",
+"id": 1470
+},
+"Gizmo for Warug": {
+"type": "quest",
+"id": 1371
+},
+"Gleaming Crescent Necklace": {
+"type": "quest",
+"id": 98027
+},
+"Gloom'rel": {
+"type": "none"
+},
+"Gnoarn": {
+"type": "npc",
+"id": 6569
+},
+"Gnogaine": {
+"type": "quest",
+"id": 80139
+},
+"Gold Lion Shield": {
+"type": "item",
+"id": 2916
+},
+"Gor'tesh the Brute Lord": {
+"type": "quest",
+"id": 3824
+},
+"Goretusk Liver Pie": {
+"type": "quest",
+"id": 22
+},
+"Grayson's Torch": {
+"type": "item",
+"id": 1172
+},
+"Grenhild Darktalon": {
+"type": "npc",
+"id": 49808
+},
+"Grund and Gozwin": {
+"type": "quest",
+"id": 97277
+},
+"Grungle": {
+"type": "npc",
+"id": 255891
+},
+"Gryan Stoutmantle": {
+"type": "npc",
+"id": 234
+},
+"Gryphon Master Talonaxe": {
+"type": "quest",
+"id": 1450
+},
+"Gryphon Rider's Stormhammer": {
+"type": "item",
+"id": 9651
+},
+"Gryth Thurden": {
+"type": "quest",
+"id": 6388
+},
+"Guard Berton": {
+"type": "npc",
+"id": 859
+},
+"Gyrodrillmatic Excavationators": {
+"type": "quest",
+"id": 80181
+},
+"Gyromatic Micro-Adjustor": {
+"type": "item",
+"id": 10498
+},
+"Handful of Copper Bolts": {
+"type": "item",
+"id": 4359
+},
+"Harvesting the Harvesters": {
+"type": "search"
+},
+"Hastily Rolled-Up Satchel": {
+"type": "object",
+"id": 424006
+},
+"Haze of Evil": {
+"type": "quest",
+"id": 4143
+},
+"Heart of Disruption": {
+"type": "quest",
+"id": 96984
+},
+"Heed My Call": {
+"type": "search"
+},
+"Hervdana Saegrund": {
+"type": "npc",
+"id": 258203
+},
+"Hi-Explosive Bomb": {
+"type": "item",
+"id": 10562
+},
+"High Chief Winterfall": {
+"type": "quest",
+"id": 5121
+},
+"Highland Hides": {
+"type": "quest",
+"id": 98815
+},
+"Honor Students": {
+"type": "quest",
+"id": 6387
+},
+"Horrors in the Highland": {
+"type": "quest",
+"id": 95646
+},
+"Hurley Blackbreath": {
+"type": "quest",
+"id": 4126
+},
+"Iceclaw Bear Pendants": {
+"type": "none"
+},
+"Important Heirlooms": {
+"type": "quest",
+"id": 96403
+},
+"In Defense of the King's Lands": {
+"type": "search"
+},
+"In Dreams": {
+"type": "quest",
+"id": 5944
+},
+"In Search of Thaelrid": {
+"type": "quest",
+"id": 78924
+},
+"In Search of The Excavation Team": {
+"type": "search"
+},
+"In the Name of the Light": {
+"type": "quest",
+"id": 1053
+},
+"Incendius!": {
+"type": "quest",
+"id": 4263
+},
+"Ingrid Dunwald": {
+"type": "npc",
+"id": 258113
+},
+"Innkeeper Belm": {
+"type": "npc",
+"id": 1247
+},
+"Into The Temple of Atal'Hakkar": {
+"type": "quest",
+"id": 1475
+},
+"Ironband's Excavation": {
+"type": "quest",
+"id": 436
+},
+"Ironfel": {
+"type": "item",
+"id": 10999
+},
+"Ironforge Greathammer": {
+"type": "item",
+"id": 279895
+},
+"Ironwood Destroyer": {
+"type": "item",
+"id": 271667
+},
+"It's All Fun and Games Until...": {
+"type": "quest",
+"id": 98042
+},
+"J.D. Collie": {
+"type": "object",
+"id": 629508
+},
+"James Halloran": {
+"type": "npc",
+"id": 2094
+},
+"Jammal'an the Prophet": {
+"type": "quest",
+"id": 1446
+},
+"Jarl Needs Eyes": {
+"type": "quest",
+"id": 1206
+},
+"Jasper Fel": {
+"type": "search"
+},
+"Kalaran Windblade": {
+"type": "none"
+},
+"Keeper of the Flame": {
+"type": "quest",
+"id": 103
+},
+"Key Ingredients": {
+"type": "search"
+},
+"Kibler's Exotic Pets": {
+"type": "quest",
+"id": 4729
+},
+"Kim'jael Indeed!": {
+"type": "quest",
+"id": 3601
+},
+"Knowledge in the Deeps": {
+"type": "quest",
+"id": 78923
+},
+"Krazek": {
+"type": "npc",
+"id": 773
+},
+"Krinkle Goodsteel": {
+"type": "npc",
+"id": 5411
+},
+"Krol'dok Compound Key": {
+"type": "item",
+"id": 267089
+},
+"Krol'dok Moulding": {
+"type": "search"
+},
+"Krom Stoutarm": {
+"type": "npc",
+"id": 6294
+},
+"Kurzen's Mystery": {
+"type": "quest",
+"id": 207
+},
+"Land Ho!": {
+"type": "quest",
+"id": 663
+},
+"Legends of Maraudon": {
+"type": "quest",
+"id": 7044
+},
+"Lethtendris's Web": {
+"type": "quest",
+"id": 7488
+},
+"Letter to Stormpike": {
+"type": "quest",
+"id": 514
+},
+"Library Books": {
+"type": "none"
+},
+"Lightning's Grasp": {
+"type": "item",
+"id": 280607
+},
+"Lingering Essence": {
+"type": "quest",
+"id": 94997
+},
+"Llana": {
+"type": "npc",
+"id": 3970
+},
+"Lodestone": {
+"type": "item",
+"id": 279960
+},
+"Lonebrow's Journal": {
+"type": "quest",
+"id": 1100
+},
+"Look To The Stars": {
+"type": "quest",
+"id": 174
+},
+"Loot-A-Rang": {
+"type": "item",
+"id": 260812
+},
+"Loremaster Dibbs": {
+"type": "npc",
+"id": 2277
+},
+"Lorgus Jett": {
+"type": "npc",
+"id": 12902
+},
+"Lost": {
+"type": "none"
+},
+"Lost Relic Carry": {
+"type": "quest",
+"id": 95810
+},
+"Lost in the Thicket Things": {
+"type": "quest",
+"id": 95647
+},
+"Lothos Riftwaker": {
+"type": "npc",
+"id": 14387
+},
+"Magical Analysis": {
+"type": "quest",
+"id": 602
+},
+"Magics of the Drowned City": {
+"type": "quest",
+"id": 95788
+},
+"Magus Olvek": {
+"type": "npc",
+"id": 264265
+},
+"Marvon Rivetseeker": {
+"type": "npc",
+"id": 7771
+},
+"Mathias Shaw": {
+"type": "none"
+},
+"Mathrengyl Bearwalker": {
+"type": "npc",
+"id": 4217
+},
+"Matt Johnson": {
+"type": "npc",
+"id": 3137
+},
+"Maxwell's Mission": {
+"type": "quest",
+"id": 5081
+},
+"Menethil's Gift": {
+"type": "quest",
+"id": 5463
+},
+"Merchant's Favor": {
+"type": "none"
+},
+"Messenger Bag": {
+"type": "object",
+"id": 406918
+},
+"Messenger to Stormwind": {
+"type": "quest",
+"id": 121
+},
+"Mining for Dummies": {
+"type": "item",
+"id": 247840
+},
+"Mirages": {
+"type": "quest",
+"id": 718
+},
+"Misplaced Pantaloons": {
+"type": "item",
+"id": 276201
+},
+"Missing In Action": {
+"type": "quest",
+"id": 219
+},
+"Mission Accomplished!": {
+"type": "search"
+},
+"Mithril Casing": {
+"type": "item",
+"id": 10561
+},
+"Mithril Tube": {
+"type": "item",
+"id": 10559
+},
+"Mold Rhymes With...": {
+"type": "quest",
+"id": 5538
+},
+"Molten Foundry": {
+"type": "item",
+"id": 279952
+},
+"Moonbrook Espionage": {
+"type": "quest",
+"id": 92747
+},
+"Moonsight Rifle": {
+"type": "item",
+"id": 217314
+},
+"Morbent's Bane": {
+"type": "item",
+"id": 7297
+},
+"Mortality Wanes": {
+"type": "quest",
+"id": 1142
+},
+"Mother's Milk": {
+"type": "quest",
+"id": 4866
+},
+"Mound of Dirt": {
+"type": "search"
+},
+"Mr. Smite": {
+"type": "npc",
+"id": 646
+},
+"Muigin and Larion": {
+"type": "quest",
+"id": 4141
+},
+"Murloc Gills": {
+"type": "quest",
+"id": 92744
+},
+"Mutanus the Devourer": {
+"type": "npc",
+"id": 3654
+},
+"Mythology of the Titans": {
+"type": "quest",
+"id": 1050
+},
+"Nailed Plank": {
+"type": "search"
+},
+"Nar'gurk": {
+"type": "npc",
+"id": 258964
+},
+"Nekrum's Medallion": {
+"type": "quest",
+"id": 2991
+},
+"Nikova Raskol": {
+"type": "npc",
+"id": 1721
+},
+"Nip 'Em in the Bud": {
+"type": "quest",
+"id": 96390
+},
+"Nixx Sprocketspring": {
+"type": "npc",
+"id": 8126
+},
+"Noble Deaths": {
+"type": "quest",
+"id": 512
+},
+"Noggenfogger Elixir": {
+"type": "quest",
+"id": 2662
+},
+"Noggle's Last Hope": {
+"type": "quest",
+"id": 8278
+},
+"Norric Lochthane": {
+"type": "npc",
+"id": 258043
+},
+"Northfold Manor": {
+"type": "quest",
+"id": 681
+},
+"Noxious Lair Investigation": {
+"type": "quest",
+"id": 82
+},
+"Of Love and Family": {
+"type": "quest",
+"id": 5848
+},
+"Oh Brother\u2026": {
+"type": "quest",
+"id": 167
+},
+"Old Ironforge Incursion": {
+"type": "quest",
+"id": 96393
+},
+"Old Murk-Eye": {
+"type": "npc",
+"id": 391
+},
+"Operation Recombobulation": {
+"type": "quest",
+"id": 412
+},
+"Ormer's Revenge": {
+"type": "search"
+},
+"Overlord Kilgar": {
+"type": "npc",
+"id": 256881
+},
+"Overlord Ramtusk": {
+"type": "npc",
+"id": 4420
+},
+"Overmaster Pyron": {
+"type": "quest",
+"id": 4262
+},
+"Overseer Wrex": {
+"type": "none"
+},
+"Partial Mystical Notes": {
+"type": "quest",
+"id": 95384
+},
+"Passing the Burden": {
+"type": "quest",
+"id": 3448
+},
+"Past Due": {
+"type": "quest",
+"id": 96800
+},
+"Patrolling Westfall": {
+"type": "quest",
+"id": 102
+},
+"Petty Squabbles": {
+"type": "quest",
+"id": 2783
+},
+"Pirate Hats Ahoy!": {
+"type": "quest",
+"id": 8365
+},
+"Plagued Hatchlings": {
+"type": "quest",
+"id": 5529
+},
+"Plea To The Alliance": {
+"type": "quest",
+"id": 634
+},
+"Pocket Litter": {
+"type": "object",
+"id": 424005
+},
+"Poisoned Water": {
+"type": "quest",
+"id": 6804
+},
+"Poor Old Blanchy": {
+"type": "quest",
+"id": 151
+},
+"Powder to Ironband": {
+"type": "quest",
+"id": 302
+},
+"Power Overwhelming": {
+"type": "quest",
+"id": 92489
+},
+"Precision Bow": {
+"type": "item",
+"id": 217315
+},
+"Pridewings of Stonetalon": {
+"type": "quest",
+"id": 1134
+},
+"Prospector Stormpike": {
+"type": "npc",
+"id": 1356
+},
+"Protecting the Herd": {
+"type": "quest",
+"id": 314
+},
+"Protecting the Shipment": {
+"type": "quest",
+"id": 309
+},
+"Pusillin and the Elder Azj'Tordin": {
+"type": "quest",
+"id": 7441
+},
+"Put Her Down": {
+"type": "quest",
+"id": 4701
+},
+"Quell The Uprising": {
+"type": "quest",
+"id": 387
+},
+"Raene's Cleansing": {
+"type": "quest",
+"id": 1023
+},
+"Rage of the Storm": {
+"type": "item",
+"id": 280604
+},
+"Ragnar Thunderbrew": {
+"type": "quest",
+"id": 4128
+},
+"Ranath Nightstride": {
+"type": "npc",
+"id": 268425
+},
+"Raptor's End": {
+"type": "item",
+"id": 3493
+},
+"Rat Catching": {
+"type": "quest",
+"id": 416
+},
+"Ravaging Tempest": {
+"type": "npc",
+"id": 216474
+},
+"Raven Hill": {
+"type": "quest",
+"id": 163
+},
+"Reagent Bot": {
+"type": "item",
+"id": 279950
+},
+"Reagent Economy": {
+"type": "spell",
+"id": 1225503
+},
+"Reagent Pouch": {
+"type": "item",
+"id": 6652
+},
+"Reclaimed Treasures": {
+"type": "quest",
+"id": 1360
+},
+"Red Leather Bandanas": {
+"type": "quest",
+"id": 153
+},
+"Red Silk Bandanas": {
+"type": "quest",
+"id": 214
+},
+"Redridge Goulash": {
+"type": "quest",
+"id": 92
+},
+"Relic Blade": {
+"type": "item",
+"id": 5627
+},
+"Relic Guardian": {
+"type": "npc",
+"id": 260326
+},
+"Remember That I Love You": {
+"type": "quest",
+"id": 92415
+},
+"Repair Bot": {
+"type": "item",
+"id": 279949
+},
+"Report to Ironforge": {
+"type": "quest",
+"id": 301
+},
+"Report to Mountaineer Rockgar": {
+"type": "quest",
+"id": 468
+},
+"Rescue OOX-17/TN!": {
+"type": "quest",
+"id": 648
+},
+"Researching the Corruption": {
+"type": "quest",
+"id": 78926
+},
+"Rethiel the Greenwarden": {
+"type": "npc",
+"id": 1244
+},
+"Return the Statuette": {
+"type": "quest",
+"id": 286
+},
+"Returning to Port": {
+"type": "quest",
+"id": 97048
+},
+"Rhahk'Zor": {
+"type": "npc",
+"id": 644
+},
+"Ride to Ironforge": {
+"type": "quest",
+"id": 6391
+},
+"Rock Garden": {
+"type": "item",
+"id": 279948
+},
+"Rock on Stick": {
+"type": "item",
+"id": 279852
+},
+"Rockslicer": {
+"type": "item",
+"id": 872
+},
+"Rod of Sorrow": {
+"type": "item",
+"id": 5247
+},
+"Roll the Bones": {
+"type": "quest",
+"id": 3882
+},
+"Rough Blasting Powder": {
+"type": "item",
+"id": 4357
+},
+"Rough Copper Bomb": {
+"type": "item",
+"id": 4360
+},
+"Rough Quartz": {
+"type": "item",
+"id": 6656
+},
+"Royal Historian Archesonus": {
+"type": "npc",
+"id": 8879
+},
+"SAF-T": {
+"type": "none"
+},
+"Salve via Mining": {
+"type": "search"
+},
+"Save Techbot's Brain!": {
+"type": "quest",
+"id": 80137
+},
+"Saving Sharpbeak": {
+"type": "quest",
+"id": 2994
+},
+"Scalding Mornbrew Delivery": {
+"type": "quest",
+"id": 3364
+},
+"Scarab Shells": {
+"type": "quest",
+"id": 2865
+},
+"Scourge of the Downs": {
+"type": "quest",
+"id": 3523
+},
+"Scout Riell": {
+"type": "npc",
+"id": 820
+},
+"Scraps of Knowledge": {
+"type": "quest",
+"id": 94879
+},
+"Screecher Spirits": {
+"type": "quest",
+"id": 3520
+},
+"Seal of Ascension": {
+"type": "quest",
+"id": 4742
+},
+"Secure the Mountain": {
+"type": "quest",
+"id": 98322
+},
+"Securing the Supply Lines": {
+"type": "quest",
+"id": 8280
+},
+"Seeking Caitlin": {
+"type": "quest",
+"id": 95737
+},
+"Senir's Observations": {
+"type": "quest",
+"id": 420
+},
+"Sergeant Riftan": {
+"type": "npc",
+"id": 258023
+},
+"Set Them Ablaze!": {
+"type": "quest",
+"id": 3463
+},
+"Shadetooth": {
+"type": "npc",
+"id": 260325
+},
+"Shadow Magic": {
+"type": "quest",
+"id": 115
+},
+"Shadowshard Fragments": {
+"type": "quest",
+"id": 7070
+},
+"Shady Saltseers": {
+"type": "quest",
+"id": 95789
+},
+"Shard of Afrasa": {
+"type": "spell",
+"id": 12732
+},
+"Shard of Water": {
+"type": "item",
+"id": 7813
+},
+"Shards of the Felvine": {
+"type": "quest",
+"id": 5526
+},
+"Shimmer Stout": {
+"type": "quest",
+"id": 413
+},
+"Show Your Work": {
+"type": "search"
+},
+"Show of Force": {
+"type": "quest",
+"id": 98407
+},
+"Silver Contact": {
+"type": "item",
+"id": 4404
+},
+"Silver Star": {
+"type": "item",
+"id": 3463
+},
+"Silver of the Waves": {
+"type": "quest",
+"id": 86614
+},
+"Sirra Von'Indi": {
+"type": "npc",
+"id": 268
+},
+"Skullchipper": {
+"type": "item",
+"id": 5626
+},
+"Smart Drinks": {
+"type": "quest",
+"id": 1491
+},
+"Smite's Mighty Hammer": {
+"type": "item",
+"id": 7230
+},
+"Smith Argus": {
+"type": "npc",
+"id": 514
+},
+"Sneed": {
+"type": "npc",
+"id": 643
+},
+"Snowbound": {
+"type": "quest",
+"id": 86667
+},
+"Solid Blasting Powder": {
+"type": "item",
+"id": 10505
+},
+"Solomon's Law": {
+"type": "quest",
+"id": 91
+},
+"Solution to Doom": {
+"type": "quest",
+"id": 709
+},
+"Songblade Search": {
+"type": "quest",
+"id": 95772
+},
+"Soothing Turtle Bisque": {
+"type": "quest",
+"id": 555
+},
+"Southsea Shakedown": {
+"type": "quest",
+"id": 8366
+},
+"Spirit Totem": {
+"type": "quest",
+"id": 8412
+},
+"Springspindle Fizzlegear": {
+"type": "npc",
+"id": 5174
+},
+"Sprite Jumpsprocket": {
+"type": "npc",
+"id": 11026
+},
+"Staff": {
+"type": "none"
+},
+"Standard Scope": {
+"type": "item",
+"id": 4406
+},
+"Starving Arcane": {
+"type": "quest",
+"id": 92457
+},
+"Stepping Stones": {
+"type": "quest",
+"id": 79192
+},
+"Stick No Rock": {
+"type": "item",
+"id": 279853
+},
+"Stocking Jetsteam": {
+"type": "quest",
+"id": 317
+},
+"Storm, Earth, and Fire": {
+"type": "quest",
+"id": 79358
+},
+"Stormers and Rumblers": {
+"type": "quest",
+"id": 6805
+},
+"Stormwind Ho!": {
+"type": "quest",
+"id": 562
+},
+"Stout to Kadrell": {
+"type": "quest",
+"id": 414
+},
+"Stromgarde Badges": {
+"type": "quest",
+"id": 682
+},
+"Student Fodder": {
+"type": "item",
+"id": 216619
+},
+"Sunken Treasure": {
+"type": "search"
+},
+"Suntara Stones": {
+"type": "quest",
+"id": 3367
+},
+"Suspicious Hoofprints": {
+"type": "quest",
+"id": 1284
+},
+"Sven's Revenge": {
+"type": "quest",
+"id": 95
+},
+"Syndicate Assassins": {
+"type": "quest",
+"id": 505
+},
+"Tabetha": {
+"type": "npc",
+"id": 6546
+},
+"Take Two With Water": {
+"type": "quest",
+"id": 95787
+},
+"Taking Back Silithus": {
+"type": "search"
+},
+"Taking the Bait Back": {
+"type": "quest",
+"id": 93430
+},
+"Talented": {
+"type": "spell",
+"id": 1225474
+},
+"Talvash del Kissel": {
+"type": "npc",
+"id": 6826
+},
+"Tarnished Undermine Real": {
+"type": "item",
+"id": 226404
+},
+"Tattered Note": {
+"type": "search"
+},
+"Teo Hammerstorm": {
+"type": "npc",
+"id": 257446
+},
+"Testing the Wells": {
+"type": "quest",
+"id": 92742
+},
+"Thadius Grimshade": {
+"type": "quest",
+"id": 2990
+},
+"Tharil'zun": {
+"type": "quest",
+"id": 19
+},
+"The Absent Minded Prospector": {
+"type": "quest",
+"id": 731
+},
+"The Adventurer": {
+"type": "quest",
+"id": 96628
+},
+"The Algaz Gauntlet": {
+"type": "quest",
+"id": 455
+},
+"The Altar of Zul": {
+"type": "quest",
+"id": 2989
+},
+"The Archivist": {
+"type": "quest",
+"id": 5251
+},
+"The Coast Isn't Clear": {
+"type": "quest",
+"id": 152
+},
+"The Coastal Menace": {
+"type": "quest",
+"id": 104
+},
+"The Color of Blood": {
+"type": "quest",
+"id": 388
+},
+"The Corruption of the Jadefire": {
+"type": "quest",
+"id": 4421
+},
+"The Crone of the Kraul": {
+"type": "quest",
+"id": 1101
+},
+"The Cursed Crew": {
+"type": "quest",
+"id": 289
+},
+"The Dark Iron War": {
+"type": "quest",
+"id": 303
+},
+"The Day After": {
+"type": "quest",
+"id": 2927
+},
+"The Defias Brotherhood": {
+"type": "quest",
+"id": 166
+},
+"The Deserters": {
+"type": "search"
+},
+"The Divination": {
+"type": "quest",
+"id": 2992
+},
+"The Dragon's Journal": {
+"type": "quest",
+"id": 96772
+},
+"The Dunemaul Compound": {
+"type": "quest",
+"id": 5863
+},
+"The Everstill Bridge": {
+"type": "quest",
+"id": 89
+},
+"The Final Tablets": {
+"type": "quest",
+"id": 4788
+},
+"The Fury Runs Deep": {
+"type": "quest",
+"id": 378
+},
+"The Glowing Shard": {
+"type": "quest",
+"id": 6981
+},
+"The God Hakkar": {
+"type": "quest",
+"id": 3528
+},
+"The Good Stuff": {
+"type": "quest",
+"id": 4286
+},
+"The Gordok Ogre Suit": {
+"type": "quest",
+"id": 5518
+},
+"The Grand Betrayal": {
+"type": "quest",
+"id": 80180
+},
+"The Great Outdoors": {
+"type": "search"
+},
+"The Grizzled Den": {
+"type": "quest",
+"id": 313
+},
+"The Haunted Isle": {
+"type": "quest",
+"id": 616
+},
+"The Heart of the Mountain": {
+"type": "quest",
+"id": 4123
+},
+"The Hermit": {
+"type": "quest",
+"id": 165
+},
+"The Hidden Chamber": {
+"type": "quest",
+"id": 2240
+},
+"The High Wilderness": {
+"type": "quest",
+"id": 2982
+},
+"The Horn of the Beast": {
+"type": "quest",
+"id": 3181
+},
+"The Karnitol Shipwreck": {
+"type": "search"
+},
+"The Key to Freedom": {
+"type": "quest",
+"id": 4451
+},
+"The Key to Scholomance": {
+"type": "quest",
+"id": 5505
+},
+"The Legend of Stalvan": {
+"type": "quest",
+"id": 66
+},
+"The Lich, Ras Frostwhisper": {
+"type": "quest",
+"id": 5466
+},
+"The Lost Caravan": {
+"type": "quest",
+"id": 1421
+},
+"The Lost Dwarves": {
+"type": "quest",
+"id": 2398
+},
+"The Lost Pilot": {
+"type": "quest",
+"id": 419
+},
+"The Lost Tablets of Will": {
+"type": "quest",
+"id": 1139
+},
+"The Lost Tools": {
+"type": "quest",
+"id": 125
+},
+"The Love Potion": {
+"type": "quest",
+"id": 4201
+},
+"The Madness Within": {
+"type": "quest",
+"id": 7461
+},
+"The Medallion of Faith": {
+"type": "quest",
+"id": 5122
+},
+"The Mighty U'cha": {
+"type": "quest",
+"id": 4301
+},
+"The Missing Courier": {
+"type": "search"
+},
+"The Missing Diplomat": {
+"type": "quest",
+"id": 1241
+},
+"The Night Watch": {
+"type": "quest",
+"id": 56
+},
+"The Only Cure is More Green Glow": {
+"type": "quest",
+"id": 80182
+},
+"The Pariah's Instructions": {
+"type": "quest",
+"id": 7067
+},
+"The People's Militia": {
+"type": "quest",
+"id": 12
+},
+"The Perfect Stout": {
+"type": "quest",
+"id": 315
+},
+"The Platinum Discs": {
+"type": "quest",
+"id": 2278
+},
+"The Pledge of Secrecy": {
+"type": "search"
+},
+"The Powers Below": {
+"type": "quest",
+"id": 968
+},
+"The Price of Shoes": {
+"type": "quest",
+"id": 118
+},
+"The Prophecy of Mosh'aru": {
+"type": "quest",
+"id": 3527
+},
+"The Public Servant": {
+"type": "quest",
+"id": 433
+},
+"The Reports": {
+"type": "quest",
+"id": 291
+},
+"The Restless Dead": {
+"type": "quest",
+"id": 96394
+},
+"The Restless Souls": {
+"type": "quest",
+"id": 5282
+},
+"The Ruins of Kel'Theril": {
+"type": "quest",
+"id": 5244
+},
+"The Ruins of Solarsal": {
+"type": "quest",
+"id": 2866
+},
+"The Scourge Cauldrons": {
+"type": "search"
+},
+"The Second Rebellion": {
+"type": "quest",
+"id": 203
+},
+"The Shattered Necklace": {
+"type": "quest",
+"id": 2198
+},
+"The Spectral Chalice": {
+"type": "quest",
+"id": 4083
+},
+"The Spy Revealed!": {
+"type": "quest",
+"id": 329
+},
+"The State of the Mines": {
+"type": "quest",
+"id": 92745
+},
+"The Stockade Riots": {
+"type": "quest",
+"id": 391
+},
+"The Stolen Journal": {
+"type": "quest",
+"id": 218
+},
+"The Sunken Temple": {
+"type": "quest",
+"id": 3445
+},
+"The Tempest's Weapons": {
+"type": "search"
+},
+"The Thandol Span": {
+"type": "search"
+},
+"The Tower of Althalaxx": {
+"type": "search"
+},
+"The Treaty of Understanding": {
+"type": "quest",
+"id": 98423
+},
+"The Trogg Threat": {
+"type": "quest",
+"id": 267
+},
+"The Troll Cave": {
+"type": "quest",
+"id": 182
+},
+"The True Masters": {
+"type": "quest",
+"id": 4183
+},
+"The Truth Comes Crashing Down": {
+"type": "quest",
+"id": 5262
+},
+"The Twilight Lexicon": {
+"type": "quest",
+"id": 8279
+},
+"The Unsent Letter": {
+"type": "quest",
+"id": 373
+},
+"The Valor Family": {
+"type": "quest",
+"id": 96139
+},
+"The Zoram Strand": {
+"type": "quest",
+"id": 1008
+},
+"Theocritus": {
+"type": "npc",
+"id": 313
+},
+"They Call Him Smiling Jim": {
+"type": "quest",
+"id": 1282
+},
+"Thom Filch": {
+"type": "npc",
+"id": 265003
+},
+"Thor": {
+"type": "npc",
+"id": 523
+},
+"Thorium Tube": {
+"type": "item",
+"id": 16000
+},
+"Thorium Widget": {
+"type": "search"
+},
+"Those Blasted Troggs!": {
+"type": "quest",
+"id": 432
+},
+"Thunderbrew Lager": {
+"type": "none"
+},
+"Tiara of the Deep": {
+"type": "quest",
+"id": 2846
+},
+"Tidebringer's Claw": {
+"type": "item",
+"id": 280605
+},
+"Timbermaw Ally": {
+"type": "search"
+},
+"Tinkmaster Overspark": {
+"type": "quest",
+"id": 80138
+},
+"Tirion Fordring": {
+"type": "none"
+},
+"Tome of Twilight": {
+"type": "search"
+},
+"Tools for Steelgrill": {
+"type": "quest",
+"id": 400
+},
+"Tramping Paws": {
+"type": "quest",
+"id": 276
+},
+"Tremors of the Earth": {
+"type": "search"
+},
+"Troll Necklace Bounty": {
+"type": "search"
+},
+"Troll Temper": {
+"type": "quest",
+"id": 3042
+},
+"Trouble at the Docks": {
+"type": "quest",
+"id": 959
+},
+"Tundra MacGrann's Stolen Stash": {
+"type": "quest",
+"id": 312
+},
+"Tunic": {
+"type": "none"
+},
+"Twilight Falls": {
+"type": "quest",
+"id": 78925
+},
+"Twilight Maul": {
+"type": "item",
+"id": 273841
+},
+"Twilight Mementos": {
+"type": "quest",
+"id": 94983
+},
+"Twisted Evils": {
+"type": "quest",
+"id": 7028
+},
+"Twisted Totems": {
+"type": "none"
+},
+"Twisting the Knife": {
+"type": "quest",
+"id": 86758
+},
+"Uldaman Reagent Run": {
+"type": "quest",
+"id": 17
+},
+"Ultham Ironhorn": {
+"type": "npc",
+"id": 4772
+},
+"Uncovering the Past": {
+"type": "quest",
+"id": 299
+},
+"Underbelly Scales": {
+"type": "quest",
+"id": 122
+},
+"Underground Assault": {
+"type": "quest",
+"id": 2040
+},
+"Underground Map": {
+"type": "quest",
+"id": 96391
+},
+"Unstable Trigger": {
+"type": "item",
+"id": 10560
+},
+"Vaelan": {
+"type": "none"
+},
+"Vahlarriel's Vengeance": {
+"type": "quest",
+"id": 97284
+},
+"Var'Taka": {
+"type": "npc",
+"id": 258924
+},
+"Vengeance of the Highborne": {
+"type": "quest",
+"id": 96771
+},
+"Veron Amberstill": {
+"type": "npc",
+"id": 1261
+},
+"Veyric Thunderhame": {
+"type": "npc",
+"id": 259023
+},
+"Vyletongue Corruption": {
+"type": "quest",
+"id": 7041
+},
+"WANTED: Incinerator Gar'im": {
+"type": "quest",
+"id": 95999
+},
+"WANTED: Jai'vhanel": {
+"type": "quest",
+"id": 98025
+},
+"Wanted! Marez Cowl": {
+"type": "none"
+},
+"Wanted! Otto and Falconcrest": {
+"type": "none"
+},
+"War Rider Bracers": {
+"type": "item",
+"id": 4745
+},
+"Warden Thelwater": {
+"type": "npc",
+"id": 1719
+},
+"Wasteland": {
+"type": "quest",
+"id": 1124
+},
+"Wastewander Justice": {
+"type": "quest",
+"id": 1690
+},
+"Water Sapta": {
+"type": "search"
+},
+"Water Totem": {
+"type": "item",
+"id": 5177
+},
+"Waylaid Crates": {
+"type": "none"
+},
+"Welcome to the Jungle": {
+"type": "quest",
+"id": 583
+},
+"Well Rested": {
+"type": "spell",
+"id": 1225478
+},
+"Westfall Stew": {
+"type": "quest",
+"id": 36
+},
+"Wet Job": {
+"type": "quest",
+"id": 79974
+},
+"What Comes Around\u2026": {
+"type": "quest",
+"id": 386
+},
+"What the Flux?": {
+"type": "quest",
+"id": 7722
+},
+"Whirring Bronze Gizmo": {
+"type": "search"
+},
+"Wilder Thistlenettle": {
+"type": "npc",
+"id": 656
+},
+"Wildstaff": {
+"type": "item",
+"id": 20556
+},
+"Wiley the Black": {
+"type": "npc",
+"id": 266
+},
+"Willix the Importer": {
+"type": "quest",
+"id": 1144
+},
+"Winterfall Activity": {
+"type": "search"
+},
+"Witherbark Cages": {
+"type": "quest",
+"id": 2988
+},
+"Wolves at Our Heels": {
+"type": "quest",
+"id": 226
+},
+"Worgen in the Woods": {
+"type": "quest",
+"id": 173
+},
+"Working Overtime": {
+"type": "spell",
+"id": 1225451
+},
+"Worth Its Weight in Gold": {
+"type": "quest",
+"id": 691
+},
+"Xizzer Fizzbolt": {
+"type": "npc",
+"id": 11185
+},
+"Yeh'kinya": {
+"type": "npc",
+"id": 8579
+},
+"Young Crocolisk Skins": {
+"type": "quest",
+"id": 484
+},
+"Zimmix's Great Escape": {
+"type": "quest",
+"id": 97331
+},
+"Zul'Alai": {
+"type": "npc",
+"id": 258905
+},
+"skycutter": {
+"type": "none"
+}
+}

@@ -1,0 +1,1749 @@
+[
+  {
+    "key": "razorfen-kraul",
+    "name": "Razorfen Kraul",
+    "where": "Extremo sur de The Barrens, entre las zarzas al oeste, justo antes del Great Lift que baja a Thousand Needles. Entrada en torno a 42, 90 (Warcraft Tavern dice 43, 90, esquina suroeste).",
+    "route": "Barco de Booty Bay a Ratchet, o de Menethil Harbor a Theramore, y después al sur por The Barrens en dirección al Great Lift; gira al oeste antes del ascensor.",
+    "time": "",
+    "before": [
+      "Nivel aconsejado 29-38 (jefes de nivel 28-33).",
+      "Chamán: coge Elemental Aid antes de entrar (la da el espíritu de Call of Air, desde nivel 30). Pide la Tattered Note de Charlga Razorflank y cada chamán del grupo necesita la suya.",
+      "Si tanqueas, lleva poción o Healthstone para Agathelos the Raging: pega muy fuerte."
+    ],
+    "bosses": [
+      {
+        "name": "Roogug",
+        "optional": false,
+        "tip": "Chamán quilboar (nivel 28) con un Death's Head Seer y un Stone Rumbler. Marca objetivos: el Seer es el más peligroso y cae primero. El sanador espera antes de curar.",
+        "loot": [
+          "Roogug's Severed Head",
+          "Geomancer Headdress",
+          "Thornweaver Drape",
+          "Vial of Phlogiston"
+        ]
+      },
+      {
+        "name": "Aggem Thorncurse",
+        "optional": false,
+        "tip": "Invoca espíritus de jabalí con muy poca vida: los DPS los matan según salen. Si uno va a por ti, corre hacia el tanque y los melés.",
+        "loot": [
+          "Thornspike",
+          "Thorncursed Grips",
+          "Death Prophet Spine"
+        ]
+      },
+      {
+        "name": "Death Speaker Jargba",
+        "optional": false,
+        "tip": "Orden: Death's Head Acolyte, Razorfen Groundshaker (aturde en área) y Jargba. Dominate Mind controla a un jugador. Sin nadie en melé lanza Shadow Bolt sin parar.",
+        "loot": [
+          "Death Speaker Scepter",
+          "Death Speaker Mantle",
+          "Death Speaker Robes"
+        ]
+      },
+      {
+        "name": "Overlord Ramtusk",
+        "optional": false,
+        "tip": "Va con dos Razorfen Spearhides: cuando giran (Whirling Barrage) los melés se apartan. Contrólalos o mátalos primero, lejos del sanador y los casters.",
+        "loot": [
+          "Corpsemaker",
+          "Tusken Helm",
+          "Quillord Mail Leggings"
+        ]
+      },
+      {
+        "name": "Earthcaller Halmgar",
+        "optional": true,
+        "tip": "Raro, en una meseta pasado Ramtusk, con un Stone Rumbler. Rompe sus tótems al instante (Earthgrab Totem enraíza) y corta Lightning Bolt.",
+        "loot": []
+      },
+      {
+        "name": "Agathelos the Raging",
+        "optional": false,
+        "tip": "Mata antes al Death's Head Seer y los 2 Ward Guardians que lo sellan. Todos pegados a él (Rushing Charge). Si se hace el muerto, sigue pegando. Enfurece al final.",
+        "loot": [
+          "Swinetusk Shank",
+          "Ferine Leggings",
+          "Quilrager Throwing Axe"
+        ]
+      },
+      {
+        "name": "Blind Hunter",
+        "optional": true,
+        "tip": "Murciélago raro al final de las cuevas, tras Agathelos. Limpia antes los murciélagos cercanos. Sonic Burst daña y silencia en área: sanador y casters lejos.",
+        "loot": []
+      },
+      {
+        "name": "Charlga Razorflank",
+        "optional": false,
+        "tip": "Tanquéala en mitad de la rampa frente a su choza; a veces se teletransporta dentro. Separaos por Chain Bolt. Con Purity es inmune y borra todos sus debuffs.",
+        "loot": [
+          "Pronged Reaver",
+          "Agamaggan's Clutch",
+          "Heart of Agamaggan",
+          "Small Scroll",
+          "Razorflank's Medallion",
+          "Razorflank's Heart",
+          "Tattered Note"
+        ]
+      },
+      {
+        "name": "Botín general",
+        "optional": false,
+        "tip": "Los raros y los enemigos comunes de la mazmorra pueden soltar estos objetos.",
+        "loot": [
+          "Stygian Bone Amulet",
+          "Batwing Mantle",
+          "Nightstalker Bow",
+          "Whisperwind Headdress",
+          "Armor Piercer",
+          "Mantle of Thieves",
+          "Pugilist Bracers",
+          "Wolfclaw Gloves",
+          "Plains Ring",
+          "Slaghammer",
+          "Staff of the Shade",
+          "Wind Spirit Staff",
+          "Avenger's Armor",
+          "Sword of Decay",
+          "Vendetta",
+          "Pysan's Old Greatsword"
+        ]
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Corpsemaker",
+        "from": "Overlord Ramtusk",
+        "kind": "arma2m",
+        "why": "Hacha 2M lenta (3.80): 88-132 de daño, 28.95 dps, +15 Strength, +8 Stamina. Nivel 29. La mejor para Enhancement aquí."
+      },
+      {
+        "name": "Slaghammer",
+        "from": "Botín general",
+        "kind": "arma2m",
+        "why": "Maza 2M 53-80 (2.80), 23.75 dps, +11 Strength, +10 Stamina. Nivel 24, se liga al equipar."
+      },
+      {
+        "name": "Thorncursed Grips",
+        "from": "Aggem Thorncurse",
+        "kind": "armadura",
+        "why": "Guantes de cuero: +18 Attack Power; tus golpes cuerpo a cuerpo hacen 2 de daño Nature a ti y al objetivo."
+      },
+      {
+        "name": "Ferine Leggings",
+        "from": "Agathelos the Raging",
+        "kind": "armadura",
+        "why": "Pantalones de cuero: +26 Attack Power y +12 Intellect. Nivel 29."
+      },
+      {
+        "name": "Pronged Reaver",
+        "from": "Charlga Razorflank",
+        "kind": "arma1m",
+        "why": "Hacha de una mano 38-72 (2.40), +5 Strength, +5 Spirit. Para tanquear con escudo."
+      },
+      {
+        "name": "Heart of Agamaggan",
+        "from": "Charlga Razorflank",
+        "kind": "escudo",
+        "why": "Escudo 757 de armadura, 17 de bloqueo, +7 Stamina, +15 curación/+5 daño con hechizos. Sirve para tanquear y curar."
+      },
+      {
+        "name": "Marbled Buckler",
+        "from": "The Crone of the Kraul",
+        "kind": "escudo",
+        "why": "Recompensa a elegir: escudo 776 de armadura, 17 de bloqueo, +5 Strength, +5 Agility, +5 Stamina, +5 Spirit."
+      },
+      {
+        "name": "Death Speaker Scepter",
+        "from": "Death Speaker Jargba",
+        "kind": "arma1m",
+        "why": "Maza de mano principal: +68 a curación, +12 de vida cada 5 s (y +28 daño Shadow). Para el set de Restoration."
+      },
+      {
+        "name": "Wind Spirit Staff",
+        "from": "Botín general",
+        "kind": "arma2m",
+        "why": "Bastón 56-85 (3.30), +16 Spirit, +6 Stamina, +71 curación/+23 daño con hechizos. Nivel 29. Para curar."
+      },
+      {
+        "name": "Tattered Note",
+        "from": "Charlga Razorflank",
+        "kind": "otro",
+        "why": "Objeto de Elemental Aid (solo chamanes): abre la cadena de las armas de The Tempest's Weapons."
+      }
+    ],
+    "shaman": [
+      "Death Speaker Jargba: usa Purge sobre el compañero controlado por Dominate Mind (la fuente lo indica para chamanes) y deja puesto Tremor Totem; Earth Shock al Mana Burn del Death's Head Acolyte.",
+      "Earthcaller Halmgar: Earth Shock a Lightning Bolt y rompe sus tótems (Earthgrab Totem) en cuanto los plante.",
+      "Charlga Razorflank: Chain Bolt es daño Nature (152-172 a hasta 3 objetivos), pon Nature Resistance Totem; Purge a su Renew o Earth Shock mientras lo lanza.",
+      "Charlga Razorflank: no gastes Flame Shock ni otros debuffs, Purity los borra todos y la hace inmune unos 2 segundos."
+    ],
+    "tips": [
+      "Es un laberinto de zarzas con caminos que se cruzan por arriba y por abajo. Orden: Roogug, Aggem Thorncurse, Death Speaker Jargba, Overlord Ramtusk, Agathelos the Raging y Charlga Razorflank.",
+      "Agathelos the Raging es donde caen los grupos: guarda cooldowns y pociones para su último 30 % y no le quites la amenaza al tanque.",
+      "Antes de salir de la zona de Charlga resuelve lo que empieza allí (Willix en su tienda y Heralath Fallowbrook en el suelo): el camino de vuelta es largo.",
+      "Fuentes: la entrada está en 42, 90 según wowforeverinfo y en 43, 90 según Warcraft Tavern. La página de la mazmorra atribuye Swinetusk Shank a Agathelos; la guía de chamán de la misma web, a Earthcaller Halmgar."
+    ],
+    "src": [
+      "wt",
+      "wfi"
+    ]
+  },
+  {
+    "key": "gnomeregan",
+    "name": "Gnomeregan",
+    "where": "Montañas del oeste de Dun Morogh, al oeste de Kharanos y Brewnall Village, en torno a 24, 40. Un ascensor baja a los túneles exteriores, que hay que cruzar peleando hasta el portal.",
+    "route": "Desde Ironforge, cruza Dun Morogh hacia el oeste hasta 24, 40, baja en el ascensor a los túneles exteriores y ábrete paso entre troggs y leprosos hasta el portal.",
+    "time": "Larga: la fuente la describe como una mazmorra larga y extensa, sin dar minutos.",
+    "before": [
+      "Nivel aconsejado 29-38 (jefes de nivel 30-34).",
+      "La entrada principal no pide llave. La puerta trasera (norte de la zona exterior, junto al depósito de trenes) se abre con la Workshop Key de Electrocutioner 6000 o con un pícaro con Lockpicking 150.",
+      "Ingeniería: aquí caen 9 schematics (5 de jefes y 4 de botín general) que requieren Engineering entre 125 y 205.",
+      "Lleva una Silver Bar y un Moss Agate si quieres mejorar el Grime-Encrusted Ring (lo sueltan los Dark Iron Agents, nivel 28) después de limpiarlo en The Sparklematic 5200.",
+      "El trash envenena y debilita (Irradiated Pillagers, Corrosive Lurkers): el grupo necesita a alguien que cure venenos y enfermedades."
+    ],
+    "bosses": [
+      {
+        "name": "Techbot",
+        "optional": true,
+        "tip": "No es un jefe de la instancia: está en su propia sala de los túneles exteriores, antes del portal. La fuente no describe mecánicas.",
+        "loot": [
+          "Techbot CPU Shell"
+        ]
+      },
+      {
+        "name": "Grubbis",
+        "optional": false,
+        "tip": "Habla con Blastmaster Emi Shortfuse (túnel este) y protégela de las oleadas de troggs mientras pone cargas. Luego llega Grubbis con Chomper: mata primero a Chomper.",
+        "loot": [
+          "Grubbis Paws",
+          "Skullduggery Belt",
+          "Irradiated Shield"
+        ]
+      },
+      {
+        "name": "Viscous Fallout",
+        "optional": false,
+        "tip": "Moco radiactivo que patrulla la Clean Zone: cuidado con pullearlo sin querer. Su daño Nature ignora la armadura y no se bloquea; es inmune a Frost. Aturdidlo.",
+        "loot": [
+          "Acidic Walkers",
+          "Toxic Revenger",
+          "Hydrocane"
+        ]
+      },
+      {
+        "name": "Electrocutioner 6000",
+        "optional": false,
+        "tip": "Megavolt (cono frontal) y Chain Bolt (salta entre jugadores juntos) no se pueden cortar: separaos y los melés al borde de su alcance. Suelta la Workshop Key.",
+        "loot": [
+          "Electrocutioner Lagnut",
+          "Electrocutioner Leg",
+          "Spidertank Oilrag",
+          "Workshop Key"
+        ]
+      },
+      {
+        "name": "Crowd Pummeler 9-60",
+        "optional": false,
+        "tip": "Patrulla el nivel superior de los Engineering Labs. Tanque de espaldas a una pared, en un pasillo; Crowd Pummel empuja, lejos de los bordes. Casters a los lados.",
+        "loot": [
+          "Manual Crowd Pummeler",
+          "Gnomebot Operating Boots",
+          "Schematic: 9-60 Battery Pack",
+          "Thermaplugg Medal of Honor"
+        ]
+      },
+      {
+        "name": "Dark Iron Ambassador",
+        "optional": true,
+        "tip": "Raro cerca de Tinkers' Court; camina con otros Dark Iron, pulléalo solo. Mata los Burning Servants según salgan y corta Fireball. Fire Shield quema a los melés.",
+        "loot": [
+          "Emissary Cuffs",
+          "Glass Shooter",
+          "Royal Diplomatic Scepter"
+        ]
+      },
+      {
+        "name": "Mekgineer Thermaplugg",
+        "optional": false,
+        "tip": "Tanquéalo en el centro. Un ranged pulsa los botones de las columnas para parar las Walking Bombs (más al 50 % y al 20 %). Knock Away reinicia la amenaza.",
+        "loot": [
+          "Charged Gear",
+          "Thermaplugg's Central Core",
+          "Electromagnetic Gigaflux Reactivator",
+          "Thermaplugg's Left Arm",
+          "Schematic: Craftsman's Monocle",
+          "Schematic: Discombobulator Ray",
+          "Schematic: Flame Deflector",
+          "Schematic: Gnomish Cloaking Device"
+        ]
+      },
+      {
+        "name": "Botín general",
+        "optional": false,
+        "tip": "Cualquier enemigo de la mazmorra puede soltarlos. El Grime-Encrusted Ring lo sueltan los Dark Iron Agents.",
+        "loot": [
+          "Hotshot Pilot's Gloves",
+          "Caverndeep Trudgers",
+          "Mechbuilder's Overalls",
+          "Petrolspill Leggings",
+          "Oscillating Power Hammer",
+          "Supercharger Battle Axe",
+          "Hi-Tech Supergun",
+          "Vibroblade",
+          "Gizmotron Megachopper",
+          "Gyromatic Icemaker",
+          "Schematic: Lil' Smoky",
+          "Schematic: Flash Bomb",
+          "Schematic: Goblin Rocket Boots",
+          "Schematic: Gnomish Universal Remote",
+          "Grime-Encrusted Ring",
+          "Grime-Encrusted Object"
+        ]
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Thermaplugg's Left Arm",
+        "from": "Mekgineer Thermaplugg",
+        "kind": "arma2m",
+        "why": "Hacha 2M 67-102 (2.70), 31.30 dps, +17 Strength, +5 Stamina, +4 Intellect. Nivel 31."
+      },
+      {
+        "name": "Manual Crowd Pummeler",
+        "from": "Crowd Pummeler 9-60",
+        "kind": "arma2m",
+        "why": "Maza 2M rápida (2.00): 46-70, 29.00 dps, +16 Strength, +5 Agility. Uso: +50 % velocidad de ataque 30 s (3 cargas)."
+      },
+      {
+        "name": "Skullduggery Belt",
+        "from": "Grubbis",
+        "kind": "armadura",
+        "why": "Cinturón de cuero: +16 Attack Power y +7 Spirit. Nivel 29."
+      },
+      {
+        "name": "Thermaplugg's Central Core",
+        "from": "Mekgineer Thermaplugg",
+        "kind": "escudo",
+        "why": "Escudo 776 de armadura, 17 de bloqueo, +3 Spirit; 5 % al ser golpeado de hacer 65-121 de daño Nature al atacante."
+      },
+      {
+        "name": "Workshop Key",
+        "from": "Electrocutioner 6000",
+        "kind": "llave",
+        "why": "Abre la puerta trasera de Gnomeregan (norte de la zona exterior), que deja cerca de los Engineering Labs."
+      },
+      {
+        "name": "Schematic: Gnomish Cloaking Device",
+        "from": "Mekgineer Thermaplugg",
+        "kind": "plano",
+        "why": "Schematic de Ingeniería (200): enseña Gnomish Cloaking Device. Se liga al recogerlo."
+      },
+      {
+        "name": "Schematic: Craftsman's Monocle",
+        "from": "Mekgineer Thermaplugg",
+        "kind": "plano",
+        "why": "Schematic de Ingeniería (185): enseña Craftsman's Monocle."
+      },
+      {
+        "name": "Schematic: Discombobulator Ray",
+        "from": "Mekgineer Thermaplugg",
+        "kind": "plano",
+        "why": "Schematic de Ingeniería (160): enseña Discombobulator Ray."
+      },
+      {
+        "name": "Schematic: Flame Deflector",
+        "from": "Mekgineer Thermaplugg",
+        "kind": "plano",
+        "why": "Schematic de Ingeniería (125): enseña Flame Deflector."
+      },
+      {
+        "name": "Schematic: 9-60 Battery Pack",
+        "from": "Crowd Pummeler 9-60",
+        "kind": "plano",
+        "why": "Schematic de Ingeniería (125): enseña 9-60 Battery Pack. Se liga al recogerlo."
+      },
+      {
+        "name": "Thermaplugg Medal of Honor",
+        "from": "Crowd Pummeler 9-60",
+        "kind": "otro",
+        "why": "Collar: +10 Attack Power, +6 Stamina, +6 Spirit. Nivel 29."
+      },
+      {
+        "name": "Grime-Encrusted Ring",
+        "from": "Botín general",
+        "kind": "inicia-quest",
+        "why": "Inicia quest (nivel 28): se limpia en The Sparklematic 5200 y se mejora con una Silver Bar y un Moss Agate."
+      }
+    ],
+    "shaman": [
+      "Irradiated Pillagers (Radiation Bolt envenena) y Corrosive Lurkers (Corrosive Ooze): Poison Cleansing Totem o Cure Poison y Disease Cleansing Totem o Cure Disease.",
+      "Electrocutioner 6000 (Megavolt, Chain Bolt, Shock) y Viscous Fallout hacen daño Nature: Nature Resistance Totem. Megavolt y Chain Bolt no se pueden cortar con Earth Shock.",
+      "Dark Iron Ambassador: Earth Shock a Fireball, Fire Resistance Totem contra Fireball y los Burning Servants, y prueba Purge sobre su Fire Shield.",
+      "Mekgineer Thermaplugg: Earthbind Totem frena las Walking Bombs que hay que kitear y matar a distancia."
+    ],
+    "tips": [
+      "No saltes ni caigas a un nivel inferior salvo que vaya todo el grupo: los enemigos de abajo se pullean desde las pasarelas y dan toda la vuelta trayendo a más.",
+      "Mata nada más verlos a los Mobile Alert Systems (llaman refuerzos) y primero a los Irradiated Horrors (Chain Burn drena maná y vida). Los Arcane Nullifier X-21 reflejan hechizos: solo daño físico.",
+      "Los Dark Iron Agents dejan Dark Iron Land Mines: destrúyelas o apártate. Los sangrados no afectan a los enemigos mecánicos y los aturdimientos son lo mejor contra los jefes.",
+      "Schematics de botín general: Lil' Smoky (Engineering 205), Flash Bomb (185), Goblin Rocket Boots (130) y Gnomish Universal Remote (125). Cada Grime-Encrusted Object se cambia en The Sparklematic 5200 por una caja con gemas, mineral, hierbas o equipo."
+    ],
+    "src": [
+      "wt",
+      "wfi"
+    ]
+  },
+  {
+    "key": "sm-graveyard",
+    "name": "Scarlet Monastery: Graveyard",
+    "where": "Extremo este de Tirisfal Glades (aprox. 82.6, 33.8; Warcraft Tavern dice esquina noreste). Tras la puerta principal hay cuatro portales: el Graveyard es el primero por la izquierda y está abierto.",
+    "route": "Vuela a Southshore (Hillsbrad Foothills) y cabalga al norte por Alterac Mountains bordeando Lordamere Lake hasta Tirisfal Glades. Más adelante también se llega desde Chillwind Camp (Western Plaguelands), pasando The Bulwark. No hay invocación con la piedra: todos tienen que viajar.",
+    "time": "Corta: la fuente dice que cada ala es una carrera breve, sin dar minutos.",
+    "before": [
+      "Nivel aconsejado 30-38 (jefes de nivel 32-34). La puerta está abierta: no hace falta llave.",
+      "Orden recomendado de las alas: Graveyard, Library (da The Scarlet Key), Armory y Cathedral."
+    ],
+    "bosses": [
+      {
+        "name": "Interrogator Vishas",
+        "optional": false,
+        "tip": "En la Chamber of Atonement, rodeado de Crusaders: límpialos antes y marca objetivos. Solo es sencillo; pone Shadow Word: Pain a su objetivo.",
+        "loot": [
+          "Torturing Poker",
+          "Bloody Brass Knuckles",
+          "Painwalker Buckler"
+        ]
+      },
+      {
+        "name": "Ironspine",
+        "optional": true,
+        "tip": "Raro del cementerio. Deja Poison Cloud en el suelo: el tanque lo saca de la nube para que los melés sigan pegando. Quita Curse of Weakness si puedes.",
+        "loot": [
+          "Ironspine's Ribcage",
+          "Ironspine's Fist",
+          "Ironspine's Eye"
+        ]
+      },
+      {
+        "name": "Fallen Champion",
+        "optional": true,
+        "tip": "Raro del cementerio. Cleave frontal: tanquéalo de espaldas al grupo y todos detrás de él.",
+        "loot": [
+          "Embalmed Shroud",
+          "Ebon Vise",
+          "Morbid Dawn"
+        ]
+      },
+      {
+        "name": "Azshir the Sleepless",
+        "optional": true,
+        "tip": "Raro del cementerio. Limpia alrededor antes: da miedo y quien corre trae más. Corta Soul Siphon; Call of the Grave hace daño de sombra al expirar.",
+        "loot": [
+          "Blighted Leggings",
+          "Necrotic Wand",
+          "Ghostshard Talisman"
+        ]
+      },
+      {
+        "name": "Bloodmage Thalnos",
+        "optional": false,
+        "tip": "Al fondo de Honor's Tomb, tras limpiar toda la cripta. Flame Spike deja un pilar de fuego: sal de él. Ranged muy atrás. Según Warcraft Tavern no se le puede cortar.",
+        "loot": [
+          "Orb of the Forgotten Seer",
+          "Bloodmage Mantle",
+          "Polished Skullcap"
+        ]
+      },
+      {
+        "name": "Botín general",
+        "optional": false,
+        "tip": "Cualquier enemigo del Monastery (las cuatro alas) puede soltarlos; los Scarlet Crusaders sueltan además cinco piezas de malla de Chain of the Scarlet Crusade.",
+        "loot": [
+          "Harbinger Boots",
+          "Dreamslayer",
+          "Headsplitter",
+          "Cobalt Crusher",
+          "Sunblaze Coif",
+          "Watchman Pauldrons",
+          "Beguiler Robes",
+          "Mark of Kern",
+          "Resplendent Guardian",
+          "Chesterfall Musket",
+          "Steelclaw Reaver",
+          "The Butcher",
+          "Bloodspiller",
+          "Windweaver Staff",
+          "Flintrock Shoulders",
+          "Archon Chestpiece",
+          "Warchief Kilt",
+          "Swampchill Fetish",
+          "Sliverblade",
+          "Fight Club",
+          "Tainted Pierce",
+          "Scarlet Chestpiece",
+          "Scarlet Gauntlets",
+          "Scarlet Belt",
+          "Scarlet Wristguards",
+          "Scarlet Boots"
+        ]
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Cobalt Crusher",
+        "from": "Botín general",
+        "kind": "arma2m",
+        "why": "Maza 2M 74-111 (3.20), 28.91 dps; al golpear puede hacer 127-139 de daño Frost. Nivel 29, se liga al equipar."
+      },
+      {
+        "name": "Bloodspiller",
+        "from": "Botín general",
+        "kind": "arma2m",
+        "why": "Hacha 2M 57-87 (2.70), 26.67 dps; al golpear puede causar un sangrado de 250 en 10 s. Nivel 27."
+      },
+      {
+        "name": "Ghostshard Talisman",
+        "from": "Azshir the Sleepless",
+        "kind": "otro",
+        "why": "Collar: +14 Attack Power, +12 Attack Power contra no-muertos y +9 Stamina. Nivel 30. Solo lo suelta el raro."
+      },
+      {
+        "name": "Mark of Kern",
+        "from": "Botín general",
+        "kind": "otro",
+        "why": "Anillo: +20 Attack Power y +4 Stamina. Nivel 31, se liga al equipar."
+      },
+      {
+        "name": "Bloody Brass Knuckles",
+        "from": "Interrogator Vishas",
+        "kind": "arma1m",
+        "why": "Arma de puño 24-46 (1.60): +12 Attack Power y +15 Attack Power contra humanoides. Nivel 29."
+      },
+      {
+        "name": "Ironspine's Fist",
+        "from": "Ironspine",
+        "kind": "arma1m",
+        "why": "Maza de una mano 38-72 (2.40), +7 Strength. Nivel 30. Para tanquear con escudo."
+      },
+      {
+        "name": "Dreamslayer",
+        "from": "Botín general",
+        "kind": "arma1m",
+        "why": "Maza de mano principal 31-59 (2.10), +7 Strength, +3 Spirit. Nivel 28, se liga al equipar."
+      },
+      {
+        "name": "Painwalker Buckler",
+        "from": "Interrogator Vishas",
+        "kind": "escudo",
+        "why": "Escudo 738 de armadura, 16 de bloqueo, +6 Stamina, +13 curación/+5 daño; 17 % al ser golpeado de dar 12 maná/5 s 10 s."
+      },
+      {
+        "name": "Ebon Vise",
+        "from": "Fallen Champion",
+        "kind": "armadura",
+        "why": "Guantes de cuero: +4 Strength, +6 Agility, +8 Stamina. Nivel 30."
+      },
+      {
+        "name": "Ironspine's Eye",
+        "from": "Ironspine",
+        "kind": "otro",
+        "why": "Anillo: +4 Strength y +9 Agility. Nivel 30."
+      }
+    ],
+    "shaman": [
+      "Azshir the Sleepless: lanza miedo, deja Tremor Totem puesto antes del pull y usa Earth Shock para cortar Soul Siphon.",
+      "Ironspine: Poison Cloud envenena la zona; Poison Cleansing Totem o Cure Poison mientras el tanque lo saca de la nube.",
+      "Bloodmage Thalnos: Flame Spike y Flame Shock son daño Fire, pon Fire Resistance Totem. Warcraft Tavern dice que sus hechizos no se pueden interrumpir."
+    ],
+    "tips": [
+      "Los tres raros (Ironspine, Fallen Champion y Azshir the Sleepless) aparecen en el cementerio donde esperarías un no-muerto suelto: como mucho sale uno por run y muchas veces ninguno.",
+      "Sala de torturas: limpia a todos los Crusaders antes de tocar a Interrogator Vishas.",
+      "Scarlet Banner (objeto cosmético de campamento, nuevo en Forever): el Graveyard Echo se recoge aquí, en la tumba del rincón del fondo del cementerio abierto, junto al mausoleo sur.",
+      "Fuentes: Warcraft Tavern escribe 'Ironspire' en sus listas; wowforeverinfo usa Ironspine. Para la ruta de la Alianza, Warcraft Tavern habla de pasar por Silverpine Forest y wowforeverinfo de Alterac Mountains bordeando Lordamere Lake."
+    ],
+    "src": [
+      "wt",
+      "wfi"
+    ]
+  },
+  {
+    "key": "sm-library",
+    "name": "Scarlet Monastery: Library",
+    "where": "Extremo este de Tirisfal Glades (aprox. 82.6, 33.8; Warcraft Tavern dice esquina noreste). Tras la puerta principal hay cuatro portales: la Library es el último por la derecha y está abierta.",
+    "route": "Vuela a Southshore (Hillsbrad Foothills) y cabalga al norte por Alterac Mountains bordeando Lordamere Lake hasta Tirisfal Glades. Más adelante también se llega desde Chillwind Camp (Western Plaguelands), pasando The Bulwark. No hay invocación con la piedra: todos tienen que viajar.",
+    "time": "Corta: la fuente dice que cada ala es una carrera breve, sin dar minutos.",
+    "before": [
+      "Nivel aconsejado 33-41 (jefes de nivel 34-37). La puerta está abierta: no hace falta llave.",
+      "Saquea The Scarlet Key del cofre que hay detrás de Arcanist Doan: abre Armory y Cathedral. Cada jugador que la quiera tiene que abrir el cofre.",
+      "Scarlet Banner: trae ya los ecos de fuera. Arathi Echo (tumba tras el granero de Go'shek Farm, Arathi Highlands 62.2, 54.5), Theramore Echo (cementerio de Theramore, Dustwallow Marsh 63.7, 42.4), Swamp Echo (Splinterspear Junction, Swamp of Sorrows 16.8, 53.6) y Graveyard Echo (ala Graveyard)."
+    ],
+    "bosses": [
+      {
+        "name": "Houndmaster Loksey",
+        "optional": false,
+        "tip": "En el patio pequeño del sur, con tres Scarlet Tracking Hounds: mátalos primero. Bloodlust los acelera a todos: Purge. Pelea larga para el sanador.",
+        "loot": [
+          "Loksey's Training Stick",
+          "Dog Training Gloves",
+          "Dog Whistle",
+          "Houndmaster Boomerang"
+        ]
+      },
+      {
+        "name": "Arcanist Doan",
+        "optional": false,
+        "tip": "Silence en área y Polymorph (se evita a 30 yardas). Hacia media vida se pone Arcane Bubble y lanza Detonation: todos fuera de la sala, pegados a los muros.",
+        "loot": [
+          "Hypnotic Blade",
+          "Illusionary Rod",
+          "Robe of Doan",
+          "Mantle of Doan",
+          "Spellsever Crossbow",
+          "The Scarlet Key"
+        ]
+      },
+      {
+        "name": "Botín general",
+        "optional": false,
+        "tip": "Cualquier enemigo del Monastery (las cuatro alas) puede soltarlos; los Scarlet Crusaders sueltan además cinco piezas de malla de Chain of the Scarlet Crusade.",
+        "loot": [
+          "Harbinger Boots",
+          "Dreamslayer",
+          "Headsplitter",
+          "Cobalt Crusher",
+          "Sunblaze Coif",
+          "Watchman Pauldrons",
+          "Beguiler Robes",
+          "Mark of Kern",
+          "Resplendent Guardian",
+          "Chesterfall Musket",
+          "Steelclaw Reaver",
+          "The Butcher",
+          "Bloodspiller",
+          "Windweaver Staff",
+          "Flintrock Shoulders",
+          "Archon Chestpiece",
+          "Warchief Kilt",
+          "Swampchill Fetish",
+          "Sliverblade",
+          "Fight Club",
+          "Tainted Pierce",
+          "Scarlet Chestpiece",
+          "Scarlet Gauntlets",
+          "Scarlet Belt",
+          "Scarlet Wristguards",
+          "Scarlet Boots"
+        ]
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Loksey's Training Stick",
+        "from": "Houndmaster Loksey",
+        "kind": "arma2m",
+        "why": "Bastón 2M 77-117 (3.10), 31.29 dps, +28 Attack Power; al golpear puede hacer 91 de daño físico extra. Nivel 31."
+      },
+      {
+        "name": "Dog Training Gloves",
+        "from": "Houndmaster Loksey",
+        "kind": "armadura",
+        "why": "Guantes de cuero: +24 Attack Power y +21 Attack Power contra bestias. Nivel 31."
+      },
+      {
+        "name": "The Scarlet Key",
+        "from": "Arcanist Doan",
+        "kind": "llave",
+        "why": "Está en el cofre detrás de Doan. Abre las puertas de Armory y Cathedral."
+      },
+      {
+        "name": "Illusionary Rod",
+        "from": "Arcanist Doan",
+        "kind": "arma2m",
+        "why": "Bastón 70-105 (3.40), +10 Stamina, +6 Intellect, +7 Spirit, +1 % crítico, +44 daño y curación con hechizos."
+      },
+      {
+        "name": "Hypnotic Blade",
+        "from": "Arcanist Doan",
+        "kind": "arma1m",
+        "why": "Daga de mano principal: +8 Intellect, +3 Spirit, +44 daño y curación con hechizos. Para curar con escudo."
+      },
+      {
+        "name": "Warchief Kilt",
+        "from": "Botín general",
+        "kind": "armadura",
+        "why": "Pantalones de cuero: +5 Strength, +6 Intellect, +14 Spirit, +24 curación/+8 daño. Nivel 34, se liga al equipar."
+      },
+      {
+        "name": "Fight Club",
+        "from": "Botín general",
+        "kind": "arma1m",
+        "why": "Maza de una mano 41-76 (2.20), +5 Strength, +4 Stamina; al golpear puede silenciar 6 s. Nivel 34."
+      },
+      {
+        "name": "Flintrock Shoulders",
+        "from": "Botín general",
+        "kind": "armadura",
+        "why": "Hombreras de cuero: +5 Strength, +10 Agility, +10 Stamina. Nivel 33, se liga al equipar."
+      },
+      {
+        "name": "Dog Whistle",
+        "from": "Houndmaster Loksey",
+        "kind": "abalorio",
+        "why": "Abalorio: +5 Shadow Resistance; uso: invoca un perro rastreador que te protege 3 min (10 min de espera). Nivel 25."
+      },
+      {
+        "name": "The Scarlet Banner",
+        "from": "Puzle de los ecos (estatuas de la Library)",
+        "kind": "otro",
+        "why": "Objeto cosmético de campamento, sin beneficio: aparece en tus bolsas al usar los 4 ecos en las estatuas en orden."
+      }
+    ],
+    "shaman": [
+      "Houndmaster Loksey: Purge al Bloodlust del jefe y de sus tres Scarlet Tracking Hounds (las dos fuentes se lo piden expresamente al chamán).",
+      "Arcanist Doan: cura desde más de 30 yardas para evitar Polymorph y quedar fuera de Silence. Warcraft Tavern dice que sus hechizos no se pueden interrumpir, así que no cuentes con Earth Shock."
+    ],
+    "tips": [
+      "Haz la Library antes que Armory y Cathedral: sin The Scarlet Key necesitas cada vez a un pícaro con Lockpicking 175.",
+      "Detonation de Arcanist Doan es lo que mata a los grupos: en cuanto salga Arcane Bubble corre todo el mundo, tanque incluido, fuera de la sala.",
+      "Scarlet Banner: en el pasillo de las cuatro estatuas usa, en este orden, Swamp Echo con Blake Godwyn, Arathi Echo con Primwell Skye, Theramore Echo con Janet Kaitway y Graveyard Echo con Brother Paxwell. Si fallas el orden hay que reiniciar la mazmorra.",
+      "Fuentes: el resumen de Warcraft Tavern dice que las puertas cerradas son Armory y Library; sus páginas de cada ala y wowforeverinfo coinciden en que son Armory y Cathedral."
+    ],
+    "src": [
+      "wt",
+      "wfi"
+    ]
+  },
+  {
+    "key": "sm-armory",
+    "name": "Scarlet Monastery: Armory",
+    "where": "Extremo este de Tirisfal Glades (aprox. 82.6, 33.8). Tras la puerta principal, la Armory es el tercer portal desde la izquierda, detrás de la puerta cerrada de la derecha: se abre con The Scarlet Key.",
+    "route": "Vuela a Southshore (Hillsbrad Foothills) y cabalga al norte por Alterac Mountains bordeando Lordamere Lake hasta Tirisfal Glades. Más adelante también se llega desde Chillwind Camp (Western Plaguelands), pasando The Bulwark. No hay invocación con la piedra: todos tienen que viajar.",
+    "time": "Corta: la fuente dice que cada ala es una carrera breve, sin dar minutos.",
+    "before": [
+      "Nivel aconsejado 36-44 (Herod es nivel 40).",
+      "Hace falta The Scarlet Key (cofre detrás de Arcanist Doan, en la Library) o un pícaro con Lockpicking 175."
+    ],
+    "bosses": [
+      {
+        "name": "Herod",
+        "optional": false,
+        "tip": "En el Hall of Champions. Whirlwind pega fuerte en área: melés fuera mientras gira. Rushing Charge carga a un jugador. Al morir entra una multitud de Scarlet Trainees.",
+        "loot": [
+          "Raging Berserker's Helm",
+          "Scarlet Leggings",
+          "Ravager"
+        ]
+      },
+      {
+        "name": "Botín general",
+        "optional": false,
+        "tip": "Cualquier enemigo del Monastery (las cuatro alas) puede soltarlos; los Scarlet Crusaders sueltan además cinco piezas de malla de Chain of the Scarlet Crusade.",
+        "loot": [
+          "Harbinger Boots",
+          "Dreamslayer",
+          "Headsplitter",
+          "Cobalt Crusher",
+          "Sunblaze Coif",
+          "Watchman Pauldrons",
+          "Beguiler Robes",
+          "Mark of Kern",
+          "Resplendent Guardian",
+          "Chesterfall Musket",
+          "Steelclaw Reaver",
+          "The Butcher",
+          "Bloodspiller",
+          "Windweaver Staff",
+          "Flintrock Shoulders",
+          "Archon Chestpiece",
+          "Warchief Kilt",
+          "Swampchill Fetish",
+          "Sliverblade",
+          "Fight Club",
+          "Tainted Pierce",
+          "Scarlet Chestpiece",
+          "Scarlet Gauntlets",
+          "Scarlet Belt",
+          "Scarlet Wristguards",
+          "Scarlet Boots"
+        ]
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Ravager",
+        "from": "Herod",
+        "kind": "arma2m",
+        "why": "Hacha 2M lenta (3.50): 104-157, 37.29 dps; al golpear puede atacar en área 9 s y te frena un 80 %. Nivel 37."
+      },
+      {
+        "name": "Raging Berserker's Helm",
+        "from": "Herod",
+        "kind": "armadura",
+        "why": "Casco de malla: +13 Strength, +8 Stamina, +1 % de crítico. Nivel 37 (la malla se usa desde el 40)."
+      },
+      {
+        "name": "Scarlet Leggings",
+        "from": "Herod",
+        "kind": "armadura",
+        "why": "Pantalones de malla: +21 Strength, +10 Stamina. Nivel 39. Pieza de Chain of the Scarlet Crusade."
+      },
+      {
+        "name": "Scarlet Gauntlets",
+        "from": "Botín general",
+        "kind": "armadura",
+        "why": "Guantes de malla del set: +12 Strength, +10 Agility. Nivel 33, se ligan al equipar."
+      },
+      {
+        "name": "Scarlet Belt",
+        "from": "Botín general",
+        "kind": "armadura",
+        "why": "Cinturón de malla del set: +12 Strength, +10 Stamina. Nivel 32, se liga al equipar."
+      },
+      {
+        "name": "Scarlet Chestpiece",
+        "from": "Botín general",
+        "kind": "armadura",
+        "why": "Pechera de malla del set: +8 Strength, +19 Stamina. Nivel 34, se liga al equipar."
+      },
+      {
+        "name": "Archon Chestpiece",
+        "from": "Botín general",
+        "kind": "armadura",
+        "why": "Pechera de malla: +12 Strength, +12 Stamina, +9 daño y curación con hechizos. Nivel 33, se liga al equipar."
+      },
+      {
+        "name": "Sunblaze Coif",
+        "from": "Botín general",
+        "kind": "armadura",
+        "why": "Casco de malla para curar: +10 Stamina, +10 Fire Resistance, +22 curación/+8 daño. Nivel 28, se liga al equipar."
+      }
+    ],
+    "shaman": [
+      "Como Enhancement cuerpo a cuerpo, aléjate unos metros de Herod mientras gira con Whirlwind (según Warcraft Tavern es inmune al daño durante el giro).",
+      "Como sanador, cuando muera Herod deja que el tanque coja a los Scarlet Trainees en la puerta antes de lanzar curas."
+    ],
+    "tips": [
+      "Los pasillos entre los Training Grounds y el Hall of Champions están abarrotados de Crusaders: pulls con cuidado.",
+      "Al morir Herod irrumpe una multitud de Scarlet Trainees débiles: el tanque se coloca en la puerta y los coge en área; los demás esperan un momento antes de usar áreas.",
+      "Chain of the Scarlet Crusade (malla, 6 piezas): 2 piezas +10 Shadow Resistance; 3, +30 Attack Power contra no-muertos; 4, Enraging Light (20 de daño Holy extra en melé, triple contra no-muertos); 5, +1 % de golpe; 6, escudo de 480 al bajar del 20 % de vida. Cinco piezas caen de los Crusaders; Scarlet Leggings, de Herod y de Mograine.",
+      "Fuentes: Warcraft Tavern llama a los refuerzos Scarlet Monastery Acolytes o Scarlet Crusaders; wowforeverinfo, Scarlet Trainees."
+    ],
+    "src": [
+      "wt",
+      "wfi"
+    ]
+  },
+  {
+    "key": "sm-cathedral",
+    "name": "Scarlet Monastery: Cathedral",
+    "where": "Extremo este de Tirisfal Glades (aprox. 82.6, 33.8). Tras la puerta principal, la Cathedral es el segundo portal desde la izquierda, detrás de la puerta cerrada de la izquierda: se abre con The Scarlet Key.",
+    "route": "Vuela a Southshore (Hillsbrad Foothills) y cabalga al norte por Alterac Mountains bordeando Lordamere Lake hasta Tirisfal Glades. Más adelante también se llega desde Chillwind Camp (Western Plaguelands), pasando The Bulwark. No hay invocación con la piedra: todos tienen que viajar.",
+    "time": "Corta: la fuente dice que cada ala es una carrera breve, sin dar minutos.",
+    "before": [
+      "Nivel aconsejado 38-46 (jefes de nivel 40-42).",
+      "Hace falta The Scarlet Key (cofre detrás de Arcanist Doan, en la Library) o un pícaro con Lockpicking 175.",
+      "Cadena previa larga para In the Name of the Light (Alianza, desde nivel 34): Brother Crowley en Stormwind, Brother Anton en Nijel's Point (30 Undead Ravagers en Desolace) y Raleigh the Devout en Southshore. Su recompensa incluye el hacha Bonebiter."
+    ],
+    "bosses": [
+      {
+        "name": "High Inquisitor Fairbanks",
+        "optional": false,
+        "tip": "No-muerto en una sala oculta a la derecha de la catedral. Todos sus hechizos se cortan, sobre todo Heal. Duerme y da miedo, y quita buffs al tanque con Dispel Magic.",
+        "loot": [
+          "Inquisitor's Shawl",
+          "Branded Leather Bracers",
+          "Dusty Mail Boots"
+        ]
+      },
+      {
+        "name": "Scarlet Commander Mograine and High Inquisitor Whitemane",
+        "optional": false,
+        "tip": "Cae Mograine y sale Whitemane; a media vida duerme al grupo (Deep Sleep) y lo resucita: dos jefes a la vez. Corta Holy Smite y guarda maná.",
+        "loot": [
+          "Gauntlets of Divinity",
+          "Scarlet Leggings",
+          "Aegis of the Scarlet Commander",
+          "Mograine's Might",
+          "Hand of Righteousness"
+        ]
+      },
+      {
+        "name": "Botín general",
+        "optional": false,
+        "tip": "Cualquier enemigo del Monastery (las cuatro alas) puede soltarlos; los Scarlet Crusaders sueltan además cinco piezas de malla de Chain of the Scarlet Crusade.",
+        "loot": [
+          "Harbinger Boots",
+          "Dreamslayer",
+          "Headsplitter",
+          "Cobalt Crusher",
+          "Sunblaze Coif",
+          "Watchman Pauldrons",
+          "Beguiler Robes",
+          "Mark of Kern",
+          "Resplendent Guardian",
+          "Chesterfall Musket",
+          "Steelclaw Reaver",
+          "The Butcher",
+          "Bloodspiller",
+          "Windweaver Staff",
+          "Flintrock Shoulders",
+          "Archon Chestpiece",
+          "Warchief Kilt",
+          "Swampchill Fetish",
+          "Sliverblade",
+          "Fight Club",
+          "Tainted Pierce",
+          "Scarlet Chestpiece",
+          "Scarlet Gauntlets",
+          "Scarlet Belt",
+          "Scarlet Wristguards",
+          "Scarlet Boots"
+        ]
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Mograine's Might",
+        "from": "Scarlet Commander Mograine and High Inquisitor Whitemane",
+        "kind": "arma2m",
+        "why": "Maza 2M lenta (3.40): 105-159, 38.82 dps, +8 Strength, +14 Stamina, +16 Intellect. Nivel 39."
+      },
+      {
+        "name": "Bonebiter",
+        "from": "In the Name of the Light",
+        "kind": "arma2m",
+        "why": "Recompensa a elegir: hacha 2M 105-159 (3.40), 38.82 dps, +20 Strength, +10 Stamina."
+      },
+      {
+        "name": "Hand of Righteousness",
+        "from": "Scarlet Commander Mograine and High Inquisitor Whitemane",
+        "kind": "arma1m",
+        "why": "Maza de mano principal de Whitemane: +94 curación/+31 daño, +7 Stamina, +8 Spirit. Clave para Restoration."
+      },
+      {
+        "name": "Aegis of the Scarlet Commander",
+        "from": "Scarlet Commander Mograine and High Inquisitor Whitemane",
+        "kind": "escudo",
+        "why": "Escudo 1548 de armadura, 23 de bloqueo, +7 Strength, +8 Stamina; 13-15 de daño Holy cada vez que bloqueas."
+      },
+      {
+        "name": "Gauntlets of Divinity",
+        "from": "Scarlet Commander Mograine and High Inquisitor Whitemane",
+        "kind": "armadura",
+        "why": "Guantes de malla: +32 Attack Power y +7 Stamina. Nivel 39."
+      },
+      {
+        "name": "Scarlet Leggings",
+        "from": "Scarlet Commander Mograine and High Inquisitor Whitemane",
+        "kind": "armadura",
+        "why": "Pantalones de malla: +21 Strength, +10 Stamina. Nivel 39. Pieza de Chain of the Scarlet Crusade."
+      },
+      {
+        "name": "Branded Leather Bracers",
+        "from": "High Inquisitor Fairbanks",
+        "kind": "armadura",
+        "why": "Brazales de cuero: +20 Attack Power y +6 Stamina. Nivel 37."
+      }
+    ],
+    "shaman": [
+      "High Inquisitor Whitemane: Deep Sleep duerme a todos los cercanos cuando llega a media vida; deja Tremor Totem puesto antes y corta Holy Smite con Earth Shock.",
+      "High Inquisitor Fairbanks: Tremor Totem contra su Sleep y su Fear, y Earth Shock a Heal cuando esté bajo de vida (todos sus hechizos se pueden cortar).",
+      "Como sanador son dos combates seguidos: llega con maná y con el grupo a tope de vida cuando Whitemane se acerque a media vida."
+    ],
+    "tips": [
+      "En los Chapel Gardens limpia un lado hasta la puerta de la catedral vigilando los grupos extra de las pasarelas exteriores, y dentro limpia toda la nave antes de tocar a Mograine.",
+      "Cuando Whitemane resucita a Mograine, el tanque tiene que recoger rápido a los dos.",
+      "Mograine usa Divine Shield, Hammer of Justice (aturde a un jugador) y Lay on Hands (se cura por completo).",
+      "Fuentes: el resumen de Warcraft Tavern dice que las puertas cerradas son Armory y Library; su página de la Cathedral y wowforeverinfo dicen Armory y Cathedral. Wowforeverinfo precisa que Hand of Righteousness es de Whitemane."
+    ],
+    "src": [
+      "wt",
+      "wfi"
+    ]
+  },
+  {
+    "key": "drowned-city",
+    "name": "The Drowned City",
+    "where": "Frente a la costa de Stranglethorn Vale, al oeste de Grom'gol. Entrada submarina: una cueva con una gran tablilla al lado, pasado The Vile Reef (aprox. 21.4, 27.9). Sin attunement.",
+    "route": "Hay que bucear: nada pasado The Vile Reef hasta el Sunken Hollow, cerca de la isla de los elementales de agua. Las fuentes no detallan el viaje de la Alianza hasta esa costa.",
+    "time": "",
+    "before": [
+      "Nivel 35-40 según wowforeverinfo (Warcraft Tavern, con datos previos al lanzamiento, decía 35-42).",
+      "Sin attunement. La entrada está bajo el agua, pero la mazmorra en sí queda sobre el agua."
+    ],
+    "bosses": [
+      {
+        "name": "Zul'Alai",
+        "optional": false,
+        "tip": "Enfurece cerca de morir y golpea fuerte a todo el grupo: guarda los cooldowns para el final.",
+        "loot": []
+      },
+      {
+        "name": "Var'Taka",
+        "optional": false,
+        "tip": "Lo curan dos Brinescale Priestesses: mátalas o contrólalas primero.",
+        "loot": []
+      },
+      {
+        "name": "Captain Dreadrise",
+        "optional": false,
+        "tip": "",
+        "loot": []
+      },
+      {
+        "name": "Deathless Guardians",
+        "optional": false,
+        "tip": "",
+        "loot": []
+      },
+      {
+        "name": "Primeval Elemental",
+        "optional": false,
+        "tip": "La fuente solo dice que suelta el Ancient Gurubashi Idol, objeto de una quest de la Horda.",
+        "loot": [
+          "Ancient Gurubashi Idol"
+        ]
+      },
+      {
+        "name": "Min'loth the Serpent",
+        "optional": false,
+        "tip": "Último jefe. El tiempo pasa de niebla a tormenta completa antes del combate; la fuente no describe mecánicas.",
+        "loot": []
+      }
+    ],
+    "key_items": [],
+    "shaman": [
+      "Var'Taka: las dos Brinescale Priestesses lo curan; mientras caen, corta sus curas con Earth Shock."
+    ],
+    "tips": [
+      "Recorrido (Warcraft Tavern): entras por una caverna, subes una colina hasta las ruinas y llegas a una gran zona central con un estanque; a los lados hay secciones más pequeñas con más jefes.",
+      "Zul'Alai: no gastes los cooldowns al principio, su enrage llega cerca de la muerte.",
+      "Fuentes: wowforeverinfo (juego en vivo) da 6 encuentros y nivel 35-40; Warcraft Tavern, con datos de la demo de BlizzCon y la beta, da 35-42, solo lista 4 jefes y nombra a Zin'aka, que wowforeverinfo no recoge. Ninguna da botín."
+    ],
+    "src": [
+      "wt",
+      "wfi"
+    ]
+  },
+  {
+    "key": "razorfen-downs",
+    "name": "Razorfen Downs",
+    "where": "Extremo sur de The Barrens, al este de Razorfen Kraul, justo antes del Great Lift. Entrada en torno a 50, 93 (Warcraft Tavern dice 43, 95). El camino de zarzas hasta el portal está lleno de quilboar de élite.",
+    "route": "Barco de Booty Bay a Ratchet, o de Menethil Harbor a Theramore, y después al sur por The Barrens hacia el Great Lift; gira al este justo antes del ascensor y cruza las zarzas en grupo.",
+    "time": "",
+    "before": [
+      "Nivel aconsejado 37-46 (jefes de nivel 39-41).",
+      "El camino hasta el portal está lleno de quilboar de élite: crúzalo en grupo.",
+      "Viene bien poder quitar el Virulent Poison de Tuten'kash; su maldición solo la quitan magos y druidas.",
+      "Cocineros: con Cooking 175, Henry Stern (prisionero en los Murder Pens, cerca del inicio) enseña Goldthorn Tea; solo se aprende aquí."
+    ],
+    "bosses": [
+      {
+        "name": "Plaguemaw the Rotting",
+        "optional": true,
+        "tip": "Solo sale al final de la escolta de Belnistrasz (a quien no se puede curar); lo difícil son las oleadas previas. Putrid Stench impide lanzar hechizos: casters lejos.",
+        "loot": []
+      },
+      {
+        "name": "Tuten'kash",
+        "optional": false,
+        "tip": "Toca el gong tres veces: dos oleadas de arañas y a la tercera sale él. Web Spray enraíza 10 s en cono frontal: tanque de espaldas al grupo y todos detrás.",
+        "loot": [
+          "Carapace of Tuten'kash",
+          "Arachnid Gloves"
+        ]
+      },
+      {
+        "name": "Mordresh Fire Eye",
+        "optional": false,
+        "tip": "Sobre el montón de huesos del extremo este, entre esqueletos no élite: mátalos antes en área y el sanador espera. Corta Fireball por turnos; Fire Nova quema de cerca.",
+        "loot": [
+          "Deathmage Sash",
+          "Mordresh's Lifeless Skull"
+        ]
+      },
+      {
+        "name": "Ragglesnout",
+        "optional": true,
+        "tip": "Raro cerca del Spiral of Thorns. Corta primero Heal y luego Shadow Bolt. Dominate Mind controla a un jugador: contrólalo sin hacerle daño y que otro supla su papel.",
+        "loot": []
+      },
+      {
+        "name": "Glutton",
+        "optional": false,
+        "tip": "Abominación que patrulla bajo el Spiral of Thorns. De espaldas al grupo; Disease Cloud daña a quien esté cerca: ranged fuera. Luego enfurece: ojo al tanque.",
+        "loot": [
+          "Fleshhide Shoulders",
+          "Glutton's Cleaver"
+        ]
+      },
+      {
+        "name": "Amnennar the Coldbringer",
+        "optional": false,
+        "tip": "El tanque lo encara hacia su tienda; el resto apilado detrás para curar Frost Nova. Amnennar's Wrath empuja de frente. Evita los Frost Spectres: los matan los ranged.",
+        "loot": [
+          "Icemetal Barbute",
+          "Robes of the Lich",
+          "Deathchill Armor",
+          "Coldrage Dagger",
+          "Bonefingers"
+        ]
+      },
+      {
+        "name": "Botín general",
+        "optional": false,
+        "tip": "Los enemigos comunes de la mazmorra pueden soltar estos objetos.",
+        "loot": [
+          "Stormgale Fists",
+          "Thoughtcast Boots",
+          "Briar Tredders",
+          "Ebony Boneclub",
+          "Boneslasher"
+        ]
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Deathchill Armor",
+        "from": "Amnennar the Coldbringer",
+        "kind": "armadura",
+        "why": "Pechera de malla para curar: +15 Spirit, +9 Intellect, +3 Stamina, +20 curación/+7 daño. Nivel 39."
+      },
+      {
+        "name": "Bonefingers",
+        "from": "Amnennar the Coldbringer",
+        "kind": "armadura",
+        "why": "Guantes de cuero: +9 Stamina, +9 Intellect y +4 de maná cada 5 s. Nivel 38."
+      },
+      {
+        "name": "Stormgale Fists",
+        "from": "Botín general",
+        "kind": "armadura",
+        "why": "Guantes de malla: +10 Strength, +3 Stamina, +7 Spirit. Nivel 31, se ligan al equipar."
+      },
+      {
+        "name": "Fleshhide Shoulders",
+        "from": "Glutton",
+        "kind": "armadura",
+        "why": "Hombreras de cuero: +5 Strength, +6 Agility, +15 Stamina. Nivel 37."
+      },
+      {
+        "name": "Glutton's Cleaver",
+        "from": "Glutton",
+        "kind": "arma1m",
+        "why": "Hacha de una mano 40-75 (2.00), 28.75 dps; al golpear puede causar un sangrado de 70 en 7 s. Para tanquear."
+      },
+      {
+        "name": "Ebony Boneclub",
+        "from": "Botín general",
+        "kind": "arma1m",
+        "why": "Maza de una mano 31-59 (1.80), +6 Strength, +6 Shadow Resistance. Nivel 32, se liga al equipar."
+      },
+      {
+        "name": "Coldrage Dagger",
+        "from": "Amnennar the Coldbringer",
+        "kind": "arma1m",
+        "why": "Daga 30-57 (1.50); al golpear puede hacer 34-50 de daño Frost y frenar un 50 % durante 5 s. Nivel 38."
+      },
+      {
+        "name": "Amberglow Talisman",
+        "from": "Bring the Light",
+        "kind": "otro",
+        "why": "Collar: +10 Spirit, +7 Stamina, +1 Agility. Recompensa de la Alianza por matar a Amnennar."
+      },
+      {
+        "name": "Arachnid Gloves",
+        "from": "Tuten'kash",
+        "kind": "armadura",
+        "why": "Guantes de cuero con encantamiento aleatorio y +10 Nature Resistance. Nivel 37."
+      }
+    ],
+    "shaman": [
+      "Tuten'kash: Virulent Poison se puede quitar, usa Poison Cleansing Totem o Cure Poison (la Curse of Tuten'kash solo la quitan magos y druidas).",
+      "Mordresh Fire Eye: Earth Shock a Fireball, turnándote con el grupo, y Fire Resistance Totem contra Fireball y Fire Nova.",
+      "Ragglesnout: Earth Shock primero a Heal y después a Shadow Bolt; Tremor Totem contra Dominate Mind.",
+      "Amnennar the Coldbringer: Frost Resistance Totem contra Frost Nova y Frostbolt. Glutton: Disease Cloud es daño Nature, Nature Resistance Totem."
+    ],
+    "tips": [
+      "Haz la escolta de Belnistrasz nada más entrar, con la zona del ídolo todavía limpia: es lo más difícil de la mazmorra. No se le puede curar, así que el tanque coge cada oleada, se usa todo el control disponible y el sanador se mantiene apartado.",
+      "Tuten'kash: recoge cada oleada de arañas antes de que llegue al sanador; con áreas caen rápido.",
+      "Amnennar the Coldbringer está en lo alto del montículo: se sube por la espiral después de Glutton.",
+      "Fuentes: la entrada está en 50, 93 según wowforeverinfo y en 43, 95 (esquina sureste) según Warcraft Tavern. Warcraft Tavern anuncia 7 jefes pero nombra 6, los mismos que wowforeverinfo (4 fijos, el de la escolta y un raro)."
+    ],
+    "src": [
+      "wt",
+      "wfi"
+    ]
+  },
+  {
+    "key": "kroldok-stronghold",
+    "name": "Krol'dok Stronghold",
+    "where": "Fortaleza ogra en la colina sobre Sunnyglade, en el lado norte de Riverglades. Se entra por una cueva justo al oeste de las grandes puertas de la fortaleza (aprox. 37.5, 37.5). Sin attunement.",
+    "route": "Por tierra desde Redridge Mountains: toma el desvío hacia Burning Steppes y gira a la derecha antes de llegar; el camino sube al lado oeste de Riverglades. El vuelo más cercano de la Alianza es Lakeshire; Farholde Keep tiene grifo. Desde Kalimdor, barco de Steamwheedle Port (Tanaris) a Powderfuse Port.",
+    "time": "",
+    "before": [
+      "Nivel 40-45 según wowforeverinfo: Blizzard corrigió en septiembre el 40-55 que aún citan algunas webs (Warcraft Tavern dice 40-47).",
+      "Sin attunement ni llave de entrada.",
+      "Lleva encima la quest Eye of Mugg (Commander Demar Brant, Farholde Keep): da a elegir tres armas azules (Rock on Stick, Bigger Rock on Bigger Stick o Stick No Rock), la mejor recompensa de la zona según wowforeverinfo."
+    ],
+    "bosses": [
+      {
+        "name": "Slavecrusher Grox",
+        "optional": false,
+        "tip": "",
+        "loot": []
+      },
+      {
+        "name": "Twilight Commander Zarmok",
+        "optional": false,
+        "tip": "Pone un sangrado fuerte al tanque: quítalo si puedes. Su muerte abre la siguiente puerta.",
+        "loot": []
+      },
+      {
+        "name": "Handler Ashka",
+        "optional": false,
+        "tip": "",
+        "loot": []
+      },
+      {
+        "name": "Nar'gurk",
+        "optional": false,
+        "tip": "Toma el control de un jugador: ten preparado control de masas.",
+        "loot": []
+      },
+      {
+        "name": "Overseer Mugg",
+        "optional": false,
+        "tip": "Último jefe. Salta por la sala: separaos y matad primero a sus adds.",
+        "loot": []
+      },
+      {
+        "name": "Botín general",
+        "optional": false,
+        "tip": "La única caída que citan las fuentes: el Krol'dok Moulding, que cae dentro para todo el grupo.",
+        "loot": [
+          "Krol'dok Moulding"
+        ]
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Krol'dok Moulding",
+        "from": "Botín general",
+        "kind": "inicia-quest",
+        "why": "Cae dentro para todo el grupo. Llévalo al herrero Alphonse Dumas (Farholde Keep, 64.4, 82.0) para conseguir la llave."
+      },
+      {
+        "name": "Krol'dok Compound Key",
+        "from": "Key Ingredients",
+        "kind": "llave",
+        "why": "Se consigue con 4 Thick Leather y 12 Iron Bars tras entregar el Moulding; no se gasta. La fuente no dice qué abre."
+      }
+    ],
+    "shaman": [
+      "Twilight Commander Zarmok: pone un sangrado fuerte al tanque; si tanqueas tú, Stoneform (racial de enano) te lo quita.",
+      "Nar'gurk: toma el control de un jugador, deja Tremor Totem puesto durante el combate."
+    ],
+    "tips": [
+      "La muerte de Twilight Commander Zarmok abre la siguiente puerta, así que hay que matarlo para avanzar.",
+      "Recorrido (Warcraft Tavern): un camino sinuoso cuesta arriba entre edificios toscos que acaba cruzando un gran puente de madera hasta la cima, donde están los edificios mayores.",
+      "Fuentes: wowforeverinfo (juego en vivo) da 5 jefes y nivel 40-45. Warcraft Tavern (previo al lanzamiento) da 40-47, añade a Bossman Toof y usa los nombres War Handler Ashka y Overlord Mugg. Ninguna da botín de jefes.",
+      "Warcraft Tavern cita por datamining una segunda llave, Krol'dok Ogre Key, que wowforeverinfo no confirma."
+    ],
+    "src": [
+      "wt",
+      "wfi"
+    ]
+  },
+  {
+    "key": "uldaman",
+    "name": "Uldaman",
+    "where": "Norte de Badlands, en la excavación junto al camino que sube a Loch Modan (aprox. 44, 12). Hay que limpiar los túneles de la excavación hasta el portal. Puerta trasera en Dustwind Gulch (66, 43).",
+    "route": "Vuela a Thelsamar (Loch Modan) y baja hacia el sur por el paso: la Alianza no tiene punto de vuelo en Badlands.",
+    "time": "Larga: la fuente la describe como una mazmorra larga de túneles y salas, sin dar minutos.",
+    "before": [
+      "Nivel aconsejado 41-51 (jefes de nivel 40 a 47). No hace falta llave.",
+      "Antes de cruzar el portal, haz los objetivos de la excavación exterior: las urnas, los cofres, la Tablet of Ryun'eh, Magregan Deepshadow y la mayoría de las power stones.",
+      "Staff of Prehistoria: se monta con el Gni'kiv Medallion (cofre detrás de The Lost Dwarves) y The Shaft of Tsol (Revelosh). Sin él no despierta Ironaya ni se abre la cámara oculta.",
+      "Guarda cada Shattered Necklace que caiga (Shadowforge dwarves y Stonevault troggs): no se comparte, su cadena pide 5 Silver Bars y muchos la terminan en una segunda run.",
+      "Archaedas es un combate largo: lleva pociones y vendas."
+    ],
+    "bosses": [
+      {
+        "name": "Revelosh",
+        "optional": false,
+        "tip": "Chamán trogg con dos troggs no élite: mátalos rápido. Separaos por Chain Lightning y cortadla junto a Lightning Bolt. Suelta The Shaft of Tsol.",
+        "loot": [
+          "Revelosh's Spaulders",
+          "Revelosh's Armguards",
+          "Revelosh's Gloves",
+          "Revelosh's Boots",
+          "The Shaft of Tsol"
+        ]
+      },
+      {
+        "name": "The Lost Dwarves",
+        "optional": true,
+        "tip": "Baelog, Eric \"The Swift\" y Olaf son amistosos para la Alianza (solo pelea la Horda, que es quien recibe su botín). Abre el cofre de detrás: Gni'kiv Medallion.",
+        "loot": [
+          "Gni'kiv Medallion",
+          "Horned Viking Helmet",
+          "Nordic Longshank",
+          "Olaf's All Purpose Shield"
+        ]
+      },
+      {
+        "name": "Ironaya",
+        "optional": false,
+        "tip": "Despierta con el Staff of Prehistoria en la Map Chamber. Mucha armadura y vida, inmune a daño en el tiempo. Arcing Smash frontal, Knock Away al tanque y War Stomp.",
+        "loot": [
+          "Ironaya's Bracers",
+          "Stoneweaver Leggings"
+        ]
+      },
+      {
+        "name": "Obsidian Sentinel",
+        "optional": false,
+        "tip": "Inmune a daño en el tiempo. Al 66 % y al 33 % suelta Obsidian Shards: el tanque las coge y se matan antes de volver al jefe, sin dejar que se acumulen.",
+        "loot": [
+          "Rock Sentinel Slicer",
+          "Obsidian Power Source"
+        ]
+      },
+      {
+        "name": "Ancient Stone Keeper",
+        "optional": false,
+        "tip": "Mucha vida y armadura, inmune a daño en el tiempo. Sand Storms ralentiza y silencia a quien toca: sanador y casters a distancia máxima.",
+        "loot": [
+          "Rockshard Pauldrons",
+          "Cragfists"
+        ]
+      },
+      {
+        "name": "Galgann Firehammer",
+        "optional": false,
+        "tip": "Con dos Shadowforge Geologists: mátalos primero (otro jugador aguanta uno). Amplify Flames sube el daño Fire que recibe un jugador. Melés fuera en Fire Nova.",
+        "loot": [
+          "Galgann's Firehammer",
+          "Emberscale Cape",
+          "Flameseer Mantle"
+        ]
+      },
+      {
+        "name": "Grimlok",
+        "optional": false,
+        "tip": "Con Stonevault Geomancer, Stonevault Brawler y Jadespine Basilisk: contrólalos y mata a Grimlok; sin control, primero el basilisco (aturde). Chain Bolt: separaos.",
+        "loot": [
+          "Grimlok's Tribal Vestments",
+          "Grimlok's Charge",
+          "Oilskin Leggings"
+        ]
+      },
+      {
+        "name": "Archaedas",
+        "optional": false,
+        "tip": "Ground Tremor aturde 2 s a los cercanos. Despierta Earthen Guardians y, al bajar de vida, Vault Warders élite que mueren con él. Muchos lo llevan a la sala de columnas.",
+        "loot": [
+          "Archaedic Stone",
+          "The Rockpounder",
+          "Shattered Necklace Power Source"
+        ]
+      },
+      {
+        "name": "Botín general",
+        "optional": false,
+        "tip": "Los enemigos comunes de la mazmorra pueden soltar estos objetos; el Shattered Necklace cae de Shadowforge dwarves y Stonevault troggs.",
+        "loot": [
+          "Papal Fez",
+          "Adventurer's Pith Helmet",
+          "Energy Cloak",
+          "Spirewind Fetter",
+          "Unearthed Bands",
+          "Legguards of the Vault",
+          "Beacon of Hope",
+          "Earthen Rod",
+          "Monolithic Bow",
+          "Stonevault Shiv",
+          "Excavator's Brand",
+          "The Shoveler",
+          "Shattered Necklace"
+        ]
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Dwarven Charge",
+        "from": "The Hidden Chamber",
+        "kind": "arma2m",
+        "why": "Recompensa a elegir: hacha 2M 72-109 (2.90), 31.21 dps, +12 Strength, +11 Stamina."
+      },
+      {
+        "name": "Rock Sentinel Slicer",
+        "from": "Obsidian Sentinel",
+        "kind": "arma2m",
+        "why": "Nueva en Forever: hacha a dos manos con poder de curación. La fuente no da stats."
+      },
+      {
+        "name": "The Rockpounder",
+        "from": "Archaedas",
+        "kind": "otro",
+        "why": "La fuente lo cita como botín de Archaedas sin dar tipo ni stats; compruébalo en el juego."
+      },
+      {
+        "name": "Galgann's Firehammer",
+        "from": "Galgann Firehammer",
+        "kind": "arma1m",
+        "why": "En Forever es una maza de lanzador de hechizos (la fuente no da stats): candidata para el set de Restoration."
+      },
+      {
+        "name": "Rockshard Pauldrons",
+        "from": "Ancient Stone Keeper",
+        "kind": "armadura",
+        "why": "Hombreras de malla: +13 Intellect, +6 Spirit, +3 Strength, +12 daño y curación con hechizos. Nivel 41."
+      },
+      {
+        "name": "Legguards of the Vault",
+        "from": "Botín general",
+        "kind": "armadura",
+        "why": "Pantalones de malla: +13 Strength, +5 Agility, +13 Stamina, +5 Spirit. Nivel 34, se ligan al equipar."
+      },
+      {
+        "name": "Energy Cloak",
+        "from": "Botín general",
+        "kind": "otro",
+        "why": "Capa: +10 Spirit; uso: restaura 300-340 de maná (10 min de espera). Nivel 34. Útil para curar."
+      },
+      {
+        "name": "The Shaft of Tsol",
+        "from": "Revelosh",
+        "kind": "llave",
+        "why": "Mitad del Staff of Prehistoria, que despierta a Ironaya y abre la cámara oculta."
+      },
+      {
+        "name": "Gni'kiv Medallion",
+        "from": "The Lost Dwarves",
+        "kind": "llave",
+        "why": "La otra mitad del Staff of Prehistoria; está en el cofre detrás de los tres enanos."
+      },
+      {
+        "name": "Shattered Necklace",
+        "from": "Botín general",
+        "kind": "inicia-quest",
+        "why": "Inicia The Shattered Necklace (Alianza, nivel 37). No se comparte: cada uno saquea el suyo. La cadena pide 5 Silver Bars."
+      }
+    ],
+    "shaman": [
+      "Revelosh: Earth Shock a Chain Lightning y, cuando puedas, a Lightning Bolt.",
+      "Grimlok: Earth Shock a su Lightning Bolt inicial, Nature Resistance Totem contra Chain Bolt (161-182 de daño Nature) y Purge al Bloodlust que gana cuando muere el Jadespine Basilisk.",
+      "Galgann Firehammer: Fire Resistance Totem contra Fireball y Fire Nova; Amplify Flames aumenta el daño Fire que recibe un jugador.",
+      "Ironaya, Obsidian Sentinel y Ancient Stone Keeper son inmunes a daño en el tiempo: no gastes Flame Shock. En Archaedas, Earthbind Totem ayuda a kitear a los Earthen Guardians."
+    ],
+    "tips": [
+      "Monta el Staff of Prehistoria en cuanto tengáis las dos mitades y comprobad quién las lleva: sin él, Ironaya y la cámara oculta quedan cerradas.",
+      "Archaedas: los grupos fuertes lo queman cuando despiertan los Vault Warders; el resto mata antes uno o dos. Matad los Earthen Guardians según salgan y proteged al sanador.",
+      "La puerta trasera de Dustwind Gulch deja en la segunda mitad, cerca del Obsidian Sentinel. El pasillo de The Lost Dwarves es un callejón sin salida.",
+      "Fuentes: las dos coinciden en nivel (41-51) y jefes; Warcraft Tavern coloca a The Lost Dwarves antes de Revelosh y wowforeverinfo después. The Shoveler, la maza 2M del botín general, es solo para guerreros."
+    ],
+    "src": [
+      "wt",
+      "wfi"
+    ]
+  },
+  {
+    "key": "zulfarrak",
+    "name": "Zul'Farrak",
+    "where": "Esquina noroeste de Tanaris, en torno a 39, 20. Dentro, la ruta sigue un cañón sinuoso entre muros y estructuras trol.",
+    "route": "Gadgetzan, en el norte de Tanaris, tiene maestro de vuelo de la Alianza (Bera Stonehammer, 51.0, 29.3); desde allí al noroeste. Los trols Sandfury que rodean la puerta (36-43, 21-25) son élite.",
+    "time": "",
+    "before": [
+      "Nivel 44-54.",
+      "Para invocar a Gahz'rilla hace falta el Mallet of Zul'Farrak: saquea el Sacred Mallet de Qiaga the Keeper (élite 50, Altar of Zul, The Hinterlands) y úsalo en el altar de la cima de Jintha'Alor, al este.",
+      "Ojo: Warcraft Tavern basa esta guía en WoW Classic, porque la mazmorra no era accesible en la beta de Forever."
+    ],
+    "bosses": [
+      {
+        "name": "Zerillis",
+        "optional": true,
+        "tip": "Raro élite 46 que patrulla junto al altar de los Shadowpriests. Pulléalo con línea de visión a un sitio seguro (la colina junto a la puerta) o atacará a distancia.",
+        "loot": []
+      },
+      {
+        "name": "Antu'sul",
+        "optional": false,
+        "tip": "Basilisco en una cueva tras la grieta de la sala de Theka. Limpia las patrullas y pelea fuera. Invoca Sul'lithuz Broodling y Servant of Antu'sul; corta sus dos curas.",
+        "loot": []
+      },
+      {
+        "name": "Theka the Martyr",
+        "optional": false,
+        "tip": "Patrulla junto a las tumbas. Hacia el 25-30 % usa Theka Transform: inmune a daño físico y de sombra 30 s (aturdirlo al 30 % lo evita). Disipa Fevered Plague.",
+        "loot": []
+      },
+      {
+        "name": "Witch Doctor Zum'rah",
+        "optional": false,
+        "tip": "Neutral hasta que entras en su sala. Levanta zombis sin parar y pone tótems: mata tótems y adds primero y corta Shadow Bolt. Combate duro para el sanador.",
+        "loot": []
+      },
+      {
+        "name": "Dustwraith",
+        "optional": true,
+        "tip": "Raro élite cerca del estanque de Gahz'rilla, con algunos adds que se pueden controlar. Céntrate en él primero.",
+        "loot": []
+      },
+      {
+        "name": "Shadowpriest Sezz'ziz",
+        "optional": false,
+        "tip": "Última oleada del evento de las escaleras, junto a Nekrum Gutchewer: mata primero a Nekrum y corta las curas de Sezz'ziz. Psychic Scream: sanador a distancia máxima.",
+        "loot": []
+      },
+      {
+        "name": "Sergeant Bly",
+        "optional": false,
+        "tip": "Habla antes con Weegli Blastfuse para que ponga las cargas de la puerta. Orden: Murta Grimgut (sanadora), Oro Eyegouge (caster), Raven (melé) y Bly al final.",
+        "loot": []
+      },
+      {
+        "name": "Chief Ukorz Sandscalp",
+        "optional": false,
+        "tip": "Élite 48 tras la puerta que vuela Weegli, con Ruuzlu (élite 46): mata primero a Ruuzlu. Cleave: tanque de cara a la pared y melés nunca delante.",
+        "loot": []
+      },
+      {
+        "name": "Hydromancer Velratha",
+        "optional": false,
+        "tip": "En el patio del estanque, a la vuelta de la esquina de la entrada: es fácil pullearla sin querer con adds. Limpia alrededor, mata sus tótems y corta sus hechizos.",
+        "loot": []
+      },
+      {
+        "name": "Gahz'rilla",
+        "optional": true,
+        "tip": "Hidra élite 46: toca el gong con el Mallet of Zul'Farrak. Gahz'rilla Slam lanza por los aires: pelea en el agua o bajo la ruina a la izquierda de la entrada.",
+        "loot": []
+      },
+      {
+        "name": "Sandarr Dunereaver",
+        "optional": true,
+        "tip": "Raro de camino a la salida, después de Gahz'rilla. Sencillo si lo pulleas solo, sin adds.",
+        "loot": []
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Sacred Mallet",
+        "from": "Qiaga the Keeper",
+        "kind": "llave",
+        "why": "Lo suelta la élite 50 del Altar of Zul (The Hinterlands); se usa en el altar de la cima de Jintha'Alor."
+      },
+      {
+        "name": "Mallet of Zul'Farrak",
+        "from": "Altar de Jintha'Alor (con el Sacred Mallet)",
+        "kind": "llave",
+        "why": "Imprescindible para tocar el gong e invocar a Gahz'rilla: llévalo encima al entrar en la mazmorra."
+      }
+    ],
+    "shaman": [
+      "Shadowpriest Sezz'ziz: Psychic Scream da miedo, deja Tremor Totem puesto; Earth Shock a las curas que lanza sobre sí mismo o sobre Nekrum Gutchewer.",
+      "Antu'sul: Earth Shock a sus dos hechizos de curación y rompe sus tótems en cuanto los plante.",
+      "Witch Doctor Zum'rah y Hydromancer Velratha: Earth Shock a sus hechizos (Shadow Bolt en Zum'rah) y prioridad a destruir sus tótems.",
+      "Theka the Martyr: durante Theka Transform es inmune a daño físico y de sombra 30 s; pasa a Lightning Bolt y shocks en vez de pegar con el arma."
+    ],
+    "tips": [
+      "El evento de las escaleras empieza al liberar a Sergeant Bly y los suyos de las jaulas de ejecución; la última oleada trae a Shadowpriest Sezz'ziz y Nekrum Gutchewer.",
+      "Habla con Weegli Blastfuse para que ponga las cargas antes de hablar con Bly: si no, pelearás contra todo su grupo a la vez y te quedarás sin Chief Ukorz Sandscalp.",
+      "Antes de invocar a Gahz'rilla limpia el lado del estanque más cercano a la entrada para que no se sumen enemigos sueltos; todo el grupo recibe daño de caída.",
+      "Fuente única: Warcraft Tavern, basada en WoW Classic y sin botín; anuncia 14 jefes pero solo lista 11. Wowforeverinfo aún no tiene guía propia y solo confirma el nivel 44-54 y la ubicación."
+    ],
+    "src": [
+      "wt",
+      "wfi"
+    ]
+  },
+  {
+    "key": "maraudon",
+    "name": "Maraudon",
+    "where": "Valley of Spears, oeste de Desolace. Se entra por una Stone Door en el lado oeste del valle (aprox. 38, 58) a unas cavernas exteriores llenas de élites de nivel 40+, y desde ellas a uno de los portales.",
+    "route": "La base de la Alianza en Desolace es Nijel's Point, en el noreste, con hipogrifos (Baritanas Skyriver, 64.7, 10.5); desde allí hay que cruzar la zona hacia el suroeste hasta el Valley of Spears.",
+    "time": "Muy larga: la fuente la describe como una instancia enorme, sin dar minutos.",
+    "before": [
+      "Nivel 46-55.",
+      "Las cavernas exteriores, tras la Stone Door, están llenas de élites de nivel 40+: llega al portal en grupo.",
+      "Scepter of Celebras: se consigue con la quest The Scepter of Celebras tras derrotar a Celebras the Cursed; en runs posteriores te teletransporta a Earth Song Falls.",
+      "Ojo: Warcraft Tavern basa esta guía en WoW Classic, porque la mazmorra no era accesible en la beta de Forever."
+    ],
+    "bosses": [
+      {
+        "name": "Lord Vyletongue",
+        "optional": false,
+        "tip": "Primer jefe del lado morado (Shadowshard): demonio élite 47 con dos adds élite. Apilaos sobre el tanque para evitar Multi-Shot; si hace Blink, volved a juntaros.",
+        "loot": []
+      },
+      {
+        "name": "Noxxion",
+        "optional": false,
+        "tip": "Primer jefe del lado naranja (Ambershard): elemental élite 48. Sácalo del agua a tierra. Se divide en varias copias: matadlas de una en una y volved al jefe.",
+        "loot": [
+          "Heart of Noxxion"
+        ]
+      },
+      {
+        "name": "Razorlash",
+        "optional": false,
+        "tip": "Segundo jefe del lado naranja. De espaldas al grupo por Cleave. Puncture es un sangrado de 10 s: si cae en alguien que no sea el tanque, cúralo hasta que acabe.",
+        "loot": []
+      },
+      {
+        "name": "Meshlok the Harvester",
+        "optional": true,
+        "tip": "Raro élite 48 que patrulla lo alto de Poison Falls; se parece a los enemigos de la zona. War Stomp: los ranged separados y a distancia máxima.",
+        "loot": []
+      },
+      {
+        "name": "Celebras the Cursed",
+        "optional": false,
+        "tip": "Élite 49, último jefe de la parte frontal. No matéis sus adds: invoca otro. Cortadle los hechizos; Entangling Roots y Twisted Tranquility piden curas repartidas.",
+        "loot": []
+      },
+      {
+        "name": "Landslide",
+        "optional": false,
+        "tip": "Behemoth élite 50 en lo alto de una rampa en espiral (Earth Song Falls). Tanque con la espalda en la pared. Ignora los Theradrim Shardling: desaparecen al morir él.",
+        "loot": []
+      },
+      {
+        "name": "Tinkerer Gizlock",
+        "optional": false,
+        "tip": "Élite 50 al pie de la rampa, antes de Princess Theradras. Todos pegados a su espalda en melé para que no use Shoot; Goblin Dragon Gun de frente y Bomb al grupo.",
+        "loot": []
+      },
+      {
+        "name": "Rotgrip",
+        "optional": false,
+        "tip": "Crocolisco albino bajo la plataforma de Theradras; limpia antes las hidras. Pega muy fuerte y Fatal Bite deja un sangrado. Súbelo a la superficie y vigila la amenaza.",
+        "loot": []
+      },
+      {
+        "name": "Princess Theradras",
+        "optional": false,
+        "tip": "Jefa final. Tanquéala al fondo de su plataforma. Dust Field empuja y daña a los cercanos, lanza Boulder a distancia y Repulsive Gaze da miedo.",
+        "loot": []
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Scepter of Celebras",
+        "from": "The Scepter of Celebras",
+        "kind": "llave",
+        "why": "Teletransporta a Earth Song Falls desde la sala de los cuatro braseros, saltando el lado naranja, el morado y Poison Falls."
+      },
+      {
+        "name": "Heart of Noxxion",
+        "from": "Noxxion",
+        "kind": "abalorio",
+        "why": "Abalorio de resistencia a Nature: según la fuente, el motivo habitual para matar a Noxxion. No da stats."
+      }
+    ],
+    "shaman": [
+      "Princess Theradras: Repulsive Gaze da miedo, deja Tremor Totem puesto (la fuente lo recomienda expresamente).",
+      "Rotgrip: da Water Breathing al grupo para pelear bajo el agua sin vigilar el aire; si tanqueas tú, Stoneform te quita el sangrado de Fatal Bite.",
+      "Razorlash: Puncture es un sangrado de 10 s; si te cae a ti, Stoneform lo quita.",
+      "Celebras the Cursed: coordina Earth Shock con el tanque para cortarle los hechizos."
+    ],
+    "tips": [
+      "Tres accesos desde la bifurcación: a la derecha el camino de cristales naranjas, a la izquierda el de cristales morados (mantente siempre en el nivel superior, sin saltar ni bajar rampas) y en el centro la puerta hacia el punto del Scepter of Celebras.",
+      "El Scepter of Celebras se usa en la salita de los cuatro braseros que hay justo detrás de Spirit of Kolk, siguiendo el camino central entre las estatuas.",
+      "Celebras the Cursed: centra el daño y las interrupciones en él; cada add que matéis lo vuelve a invocar. En Landslide pasa lo contrario: sus adds desaparecen al morir.",
+      "Fuente única: Warcraft Tavern, basada en WoW Classic y sin botín. Su lista pone a Tinkerer Gizlock en el lado morado, pero su texto lo sitúa junto a Landslide, antes de Princess Theradras."
+    ],
+    "src": [
+      "wt",
+      "wfi"
+    ]
+  },
+  {
+    "key": "alcaz-prison",
+    "name": "Alcaz Prison",
+    "where": "Alcaz Island, frente a la costa de Dustwallow Marsh. Desde el muelle de la isla sube por el camino de la izquierda: el portal está en el sótano del edificio grande (aprox. 75, 15). Sin attunement.",
+    "route": "La base de la Alianza en Dustwallow Marsh es Theramore Isle, a la que se llega en barco desde Menethil Harbor. Las fuentes no explican cómo cruzar desde allí hasta Alcaz Island.",
+    "time": "",
+    "before": [
+      "Nivel 48-53 según wowforeverinfo (Warcraft Tavern, con datos previos al lanzamiento, decía 48-55).",
+      "Sin attunement. Dentro, el Overseer's Keyring de Overseer Wrex abre el piso inferior."
+    ],
+    "bosses": [
+      {
+        "name": "Overseer Wrex",
+        "optional": false,
+        "tip": "Llama a entre seis y ocho carceleros al pullearlo: peléalo en el pasillo. Suelta el Overseer's Keyring, que abre el piso inferior.",
+        "loot": [
+          "Overseer's Keyring"
+        ]
+      },
+      {
+        "name": "Tidemistress Ca'zass",
+        "optional": false,
+        "tip": "Sus ayudantes lanzan Polymorph: mátalos o interrúmpelos primero.",
+        "loot": []
+      },
+      {
+        "name": "Katerina the Cleaner",
+        "optional": false,
+        "tip": "Quema a todo el grupo. Deja en paz a los prisioneros encadenados durante el combate.",
+        "loot": []
+      },
+      {
+        "name": "The Questioner",
+        "optional": false,
+        "tip": "La fuente no describe mecánicas. Según Warcraft Tavern (previo al lanzamiento) suelta la Ornate Shackle Key.",
+        "loot": [
+          "Ornate Shackle Key"
+        ]
+      },
+      {
+        "name": "Blazeroar",
+        "optional": false,
+        "tip": "Último jefe: un dragón rojo que se hace pasar por la prisionera Zarla Ober. Los hechizos de Fire no le hacen nada. Suelta Zarla's Journal.",
+        "loot": [
+          "Zarla's Journal"
+        ]
+      }
+    ],
+    "key_items": [
+      {
+        "name": "Overseer's Keyring",
+        "from": "Overseer Wrex",
+        "kind": "llave",
+        "why": "Abre el piso inferior de la prisión (la Maximum Security Door, según Warcraft Tavern)."
+      },
+      {
+        "name": "Zarla's Journal",
+        "from": "Blazeroar",
+        "kind": "otro",
+        "why": "Objeto de la quest de la Alianza The Dragon's Journal (Warcraft Tavern dice que la quest se coge en Dalaran)."
+      },
+      {
+        "name": "Ornate Shackle Key",
+        "from": "The Questioner",
+        "kind": "llave",
+        "why": "Según Warcraft Tavern (previo al lanzamiento), la pide The Man in the Iron Chains, de Mason Connery, dentro."
+      }
+    ],
+    "shaman": [
+      "Tidemistress Ca'zass: sus ayudantes lanzan Polymorph; córtalo con Earth Shock mientras el grupo los mata primero.",
+      "Blazeroar: los hechizos de Fire no le hacen nada, así que nada de Flame Shock ni tótems de fuego; usa Earth Shock, Frost Shock y Lightning Bolt.",
+      "Katerina the Cleaner: quema a todo el grupo; la fuente no precisa el tipo de daño, pero si es Fire toca Fire Resistance Totem y curas en área."
+    ],
+    "tips": [
+      "Distribución parecida a The Stockade (Warcraft Tavern): pasillos estrechos con celdas llenas de enemigos que llevan a salas mayores donde esperan los jefes.",
+      "El piso inferior solo se abre con el Overseer's Keyring, así que Overseer Wrex es obligatorio: peléalo en el pasillo.",
+      "Katerina the Cleaner: no toques a los prisioneros encadenados durante el combate.",
+      "Fuentes: wowforeverinfo (juego en vivo) da 5 jefes y nivel 48-53. Warcraft Tavern (previo al lanzamiento) da 48-55, cuenta a Commander Folkar como jefe (en vivo es un PNJ de quest de la Horda) y pone a Tidemistress Ca'zass antes que Overseer Wrex. Ninguna da botín de equipo."
+    ],
+    "src": [
+      "wt",
+      "wfi"
+    ]
+  }
+]

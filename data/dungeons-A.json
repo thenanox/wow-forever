@@ -1,0 +1,454 @@
+[
+  {
+    "key": "ragefire-chasm",
+    "name": "Ragefire Chasm",
+    "where": "Orgrimmar (Durotar): la entrada está en el nivel más bajo de Cleft of Shadow, el cañón del centro de la ciudad, hacia 52.8, 49.6. Neeru Fireblade está justo fuera del portal.",
+    "route": "Las fuentes no dan ruta para la Alianza: dicen que llegar al centro de Orgrimmar a ese nivel es casi imposible y que su mazmorra equivalente es Hall of Thanes, bajo Ironforge.",
+    "time": "Bastante menos de una hora",
+    "before": [
+      "Nivel aconsejado 13-16 (rango 13-18; se puede entrar desde el 10 y el buscador la ofrece desde el 13). Los jefes son de nivel 16.",
+      "Para la Alianza no hay misiones aquí y llegar es casi imposible a ese nivel: la alternativa propia es Hall of Thanes.",
+      "Lleva forma de quitar venenos (Bazzalan) y de interrumpir (Jergosh the Invoker, Ragefire Shamans)."
+    ],
+    "bosses": [
+      {"name": "Oggleflint", "optional": false, "tip": "Jefe trogg con dos guardias y Cleave frontal: mata antes a los guardias, melee a su espalda y limpia los troggs de alrededor antes de tirar.", "loot": ["Trogg Scepter", "Bone Knuckles", "Barbaric Crossbow"]},
+      {"name": "Taragaman the Hungerer", "optional": false, "tip": "Uppercut lanza al tanque por los aires y Fire Nova quema a los cercanos: nunca lo tanquees junto al borde (lava). Sin guardias, pero puede entrar una patrulla.", "loot": ["Subterranean Cape", "Crystalline Cuffs", "Cursed Felblade"]},
+      {"name": "Jergosh the Invoker", "optional": false, "tip": "Immolate al tanque (interrumpe o disipa) y Curse of Weakness. Lleva dos adds; es el combate que vacía el maná del sanador: bebe antes de tirar.", "loot": ["Robe of Evocation", "Cavedweller Bracers", "Chanting Blade"]},
+      {"name": "Bazzalan", "optional": false, "tip": "Sátiro con dos adds, el más peligroso: Deadly Poison (daño de naturaleza en el tiempo) y Sinister Strike sobre el tanque. Cura el veneno.", "loot": ["Searing Dagger", "Chasm Walkers", "Satyrskin Cloak"]}
+    ],
+    "key_items": [
+      {"name": "Trogg Scepter", "from": "Oggleflint", "kind": "arma1m", "why": "Maza de mano principal con +33 curación/+11 daño de hechizos y +4 Spirit; nivel 13."},
+      {"name": "Bone Knuckles", "from": "Oggleflint", "kind": "arma1m", "why": "Arma de puño de mano principal (17-32, vel. 2.00) con +6 Attack Power (+6 más contra Beasts); nivel 13."},
+      {"name": "Subterranean Cape", "from": "Taragaman the Hungerer", "kind": "armadura", "why": "Capa con +3 Strength y +5 de vida cada 5 s; nivel 13."},
+      {"name": "Chasm Walkers", "from": "Bazzalan", "kind": "armadura", "why": "Botas de cuero con +4 Attack Power y +5 Spirit; nivel 13."}
+    ],
+    "shaman": [
+      "Bazzalan aplica Deadly Poison al tanque (daño de naturaleza en el tiempo): Poison Cleansing Totem o Cure Poison.",
+      "Earth Shock para cortar Immolate de Jergosh the Invoker y Healing Wave de los Ragefire Shamans.",
+      "Molten Elementals llevan Fire Shield, que quema a quien les pega: intenta quitarlo con Purge.",
+      "Daño de fuego de Taragaman the Hungerer (Fire Nova) y de Jergosh the Invoker (Immolate): Fire Resistance Totem."
+    ],
+    "tips": [
+      "Todos los enemigos son élite y los grupos están enlazados: un tirón descuidado trae dos. Tira de Ragefire Shamans y Searing Blade Warlocks tras una esquina.",
+      "Searing Blade Enforcers aturden 2 s al tanque con Shield Slam: tira de uno en uno o los aturdimientos se encadenan. Los Searing Blade Cultists ponen Curse of Agony.",
+      "Desacuerdo: Warcraft Tavern manda matar antes los adds de Jergosh y Bazzalan; wowforeverinfo (preferida) dice controlarlos y matar primero al jefe.",
+      "Las 5 misiones son solo de la Horda: un personaje de la Alianza no puede completar ninguna aquí."
+    ],
+    "src": ["wt", "wfi"]
+  },
+  {
+    "key": "hall-of-thanes",
+    "name": "The Hall of Thanes",
+    "where": "Bajo Ironforge (Dun Morogh). Desde Great Forge mira hacia The High Seat, donde está King Magni Bronzebeard; dentro del salón gira a la izquierda: pasadizo con telarañas en 43.5, 52.0 que baja a Old Ironforge.",
+    "route": "A pie dentro de Ironforge: desde Great Forge, por el pasadizo a la izquierda de The High Seat. Baja con cuidado: la ciudad está sobre lava y caer es mortal.",
+    "time": "",
+    "before": [
+      "Nivel 13-18 según wowforeverinfo (Warcraft Tavern dice 13-20); los cuatro jefes son de nivel 16.",
+      "Sin attunement: según wowforeverinfo, de las mazmorras nuevas solo City of Dalaran lo exige.",
+      "Cadena corta previa en Dun Morogh para la recompensa Ironforge Greathammer: Nip 'Em in the Bud (Earthseer Farsen, 64.8, 58.5) y el Dark Iron Map que suelta un Dark Iron Spy.",
+      "Simple Poultices (First Aid) o Stoneform para la enfermedad Infected Wounds de los Bloodhound Runts.",
+      "Conviene alguien con ataque a distancia para disparar los barriles de Seaforium Blasting Powder antes de tirar."
+    ],
+    "bosses": [
+      {"name": "Faldrim Anvilmar", "optional": false, "tip": "Mind Blast (interrumpible, poco peligroso) y Anvilmar's Curse: 10 min con -20% a velocidad de ataque y lanzamiento, pero inmuniza a venenos y sangrados.", "loot": ["Ephemeral Choker", "Aetherwisp Bracers", "Spiritwraith Drape"]},
+      {"name": "Magmatus", "optional": false, "tip": "Lucha junto a un Dark Iron Summoner (mátalo primero; otro patrulla cerca). Pulso de fuego alrededor, Combust (69 de Fire y quema 12 s) y Fiery Assistant.", "loot": ["Kindlegem Girdle", "Flamefist Grips", "Fang of Magmatus"]},
+      {"name": "Plunder", "optional": false, "tip": "Golem que patrulla: Knock Away, Charge a un jugador al azar (aturde 2 s) y debuff de armadura acumulable. Tanquéalo de espaldas a la pared en sala limpia.", "loot": ["Golemheart Stave", "Golemguard Chest", "Treads of the Protector Golem"]},
+      {"name": "Durgen Dirgehammer", "optional": false, "tip": "Fear en área 8 s y Rend al tanque (44 cada 3 s). Limpia la sala y mata antes a sus dos Lesser Stone Golems; un golem muerto sigue muerto tras un wipe.", "loot": ["Durgen's Crescent Axe", "Direhammer Leggings", "Robes of the Disgraced Thane"]}
+    ],
+    "key_items": [
+      {"name": "Ironforge Greathammer", "from": "Old Ironforge Incursion", "kind": "arma2m", "why": "Maza 2M (39-60, vel. 3.10, 15.97 dps); al golpear puede causar 42 de daño de Fire. Recompensa de misión."},
+      {"name": "Durgen's Crescent Axe", "from": "Durgen Dirgehammer", "kind": "arma1m", "why": "Hacha de mano principal (20-39, vel. 2.40) con +4 Strength; nivel 13. Para tanquear con escudo."},
+      {"name": "Golemheart Stave", "from": "Plunder", "kind": "arma2m", "why": "Bastón 2M lento (30-46, vel. 3.20) con +18 a daño y curación de hechizos y +9 Fire Resistance."},
+      {"name": "Fang of Magmatus", "from": "Magmatus", "kind": "arma1m", "why": "Daga de mano principal con +4 Intellect y +18 a daño y curación de hechizos; para curar con escudo."},
+      {"name": "Catacomb Cloak", "from": "An Ancient Grudge", "kind": "armadura", "why": "Capa con +2 Stamina, +3 Attack Power y +4 Attack Power más contra Humanoids. Recompensa de misión."},
+      {"name": "Flamefist Grips", "from": "Magmatus", "kind": "armadura", "why": "Guantes de cuero con +5 Agility y +5 Spirit; nivel 13."},
+      {"name": "Direhammer Leggings", "from": "Durgen Dirgehammer", "kind": "armadura", "why": "Pantalones de cuero con +4 Agility y +7 Stamina; nivel 13."}
+    ],
+    "shaman": [
+      "Durgen Dirgehammer lanza Fear en área (8 s): planta Tremor Totem antes de tirar; lo recomiendan las dos fuentes.",
+      "Stoneform (racial enano) cura la enfermedad Infected Wounds de los Bloodhound Runts, como dicen las fuentes, y quita el sangrado Rend de Durgen Dirgehammer.",
+      "Earth Shock para cortar la invocación de elementales de fuego de los Dark Iron Summoners y el Mind Blast de Faldrim Anvilmar.",
+      "Magmatus hace daño de fuego en área (pulso y Combust): Fire Resistance Totem. Los Dark Iron Looters usan dagas envenenadas: Poison Cleansing Totem."
+    ],
+    "tips": [
+      "Plunder causa más wipes que Durgen porque lanza al tanque contra otro grupo: dedica 30 segundos a llevarlo a una sala ya limpia.",
+      "Barriles de Seaforium Blasting Powder junto a varios grupos: dispárales a distancia antes de tirar. El grupo de cuatro del final tiene dos: dispara ambos a la vez.",
+      "Último grupo antes de Durgen: golem, Looter y Summoner; controla al Summoner y mata al Looter y al golem. Los Dark Iron Engineers lanzan dinamita en área: separaos.",
+      "Desacuerdo: Warcraft Tavern da nivel 13-20 y wowforeverinfo 13-18 (preferida). Algunos addons llaman Infurnus al combate de Magmatus."
+    ],
+    "src": ["wt", "wfi"]
+  },
+  {
+    "key": "ruins-of-lordaeron",
+    "name": "Ruins of Lordaeron",
+    "where": "Tirisfal Glades, en la ciudad en ruinas sobre Undercity: cruza la puerta principal y, antes de entrar en la fortaleza, mira a la izquierda; la entrada está subiendo unas escaleras, hacia 72.4, 11.6.",
+    "route": "Vuelo a Southshore (Hillsbrad Foothills) si lo tienes; si no, el barco Menethil Harbor-Auberdine para en Southshore. Desde allí al oeste hasta Silverpine Forest y al norte, pasando Pyrewood y Ambermill y rodeando The Sepulcher (pueblo de la Horda), hasta Tirisfal Glades. Los personajes Skyborne pueden usar el portal a Dalaran de la Mage Tower de Stormwind.",
+    "time": "",
+    "before": [
+      "Nivel 15-20 según wowforeverinfo (Warcraft Tavern dice 15-22); jefes de nivel 17 a 20.",
+      "Viaje largo por territorio de la Horda; en reino PvP espera problemas.",
+      "Entra en la mazmorra antes de nada: fuera hay pocos Spirit Healers y, una vez dentro, resucitas en su patio.",
+      "Forma de curar enfermedades (Ghoul Plague dura 30 minutos) y venenos.",
+      "Pociones y maná lleno para los dos eventos de oleadas (Viktor the Vile y The Abandoned)."
+    ],
+    "bosses": [
+      {"name": "Witherfang", "optional": false, "tip": "Araña gigante que patrulla con Broodlings y envenena al tanque (Poison). Limpia los grupos de arañas de alrededor y tira de ella a distancia.", "loot": ["Segmented Spider Leg", "Atrophic Girdle", "Witherbite Bracers"]},
+      {"name": "The Baron", "optional": false, "tip": "Knockout quita casi media vida al tanque, lo lanza, lo aturde y borra su amenaza; Cleave frontal. Tanquea de espaldas a una pared; los de distancia, separados.", "loot": ["Meathook Slicer", "Abomination Bones", "Leftover Abomination Skin"]},
+      {"name": "Viktor the Vile", "optional": true, "tip": "Oculto: pulsa Grim Campfire en la chimenea de la casa quemada. Cinco oleadas de no-muertos y luego Viktor, con el mismo Poison que Witherfang. Entra con maná lleno.", "loot": ["Vilewalkers", "Bloodied Chestwraps", "Vileblood Scimitar"]},
+      {"name": "The Abandoned", "optional": true, "tip": "Oculto: acércate a la estatua de ojos brillantes. Tres oleadas por ambos pasillos y luego el jefe: Frost Armor no disipable, Frost Nova y Drain Life (interrúmpelo).", "loot": ["Rotmender's Leggings", "Grip of Fear", "Scepter of the Abandoned"]},
+      {"name": "Bjork", "optional": false, "tip": "Abominación que patrulla: Anti-Magic Shield (burbuja verde que bloquea hechizos; ataca en físico o espera) y Knockback: espalda contra la pared.", "loot": ["Bonerust Leggings", "Corpse Chopper", "Tuskwrap Belt"]},
+      {"name": "Rath'mael", "optional": false, "tip": "Flamestrike bajo el tanque (interrumpe o aturde; si sale, fuera del fuego y mueve al jefe) y un Fire Shield que daña al melee cercano.", "loot": ["Mirror of Rath'mael", "Rotmender's Treads", "Coldspire Staff", "Blueprint: Fermenter"]},
+      {"name": "Lordaeron Captain", "optional": true, "tip": "Raro del lado oeste. Es amistoso con la Alianza: solo la Horda puede matarlo, así que un enano no verá su botín.", "loot": ["Haunting Blade", "Phantom Armor"]},
+      {"name": "Botín general", "optional": false, "tip": "Los no-muertos sueltan Bloodied Insignia; Crest of Lordaeron (escudo con dos espadas) aparece en uno de cinco sitios y hay que pulsarlo para cogerlo.", "loot": ["Bloodied Insignia", "Crest of Lordaeron"]}
+    ],
+    "key_items": [
+      {"name": "Corpse Chopper", "from": "Bjork", "kind": "arma2m", "why": "Hacha 2M muy lenta (52-79, vel. 3.60, 18.19 dps); Use: parte un cadáver Humanoid/Undead y da 150 Health y 150 Mana."},
+      {"name": "Segmented Spider Leg", "from": "Witherfang", "kind": "arma2m", "why": "Bastón 2M muy lento (50-76, vel. 3.60, 17.50 dps) con +9 Agility y +5 Spirit; nivel 15."},
+      {"name": "Mirror of Rath'mael", "from": "Rath'mael", "kind": "escudo", "why": "Escudo (547 armadura, 11 bloqueo) con +5 Strength y +1% a bloquear; nivel 19. Para tanquear."},
+      {"name": "Scepter of the Abandoned", "from": "The Abandoned", "kind": "arma1m", "why": "Maza de mano principal con +24 a daño y curación de hechizos y +5 Shadow Resistance; nivel 17."},
+      {"name": "Grave Shroud", "from": "Abominable Creatures", "kind": "armadura", "why": "Capa con +3 Strength y +3 Stamina; recompensa de la Alianza (Captain Truman, junto a la entrada)."},
+      {"name": "Bloodied Chestwraps", "from": "Viktor the Vile", "kind": "armadura", "why": "Pechera de cuero con +7 Agility y +9 Spirit; nivel 17. Jefe oculto."},
+      {"name": "Duty Bound Leggings", "from": "Bloodied Insignia", "kind": "armadura", "why": "Pantalones de cuero con +6 Agility y +4 Intellect; recompensa de la Alianza."},
+      {"name": "Bloodied Insignia", "from": "Botín general", "kind": "inicia-quest", "why": "La sueltan los no-muertos e inicia misión de la Alianza: 10 para General Marcus Jonathan, en Stormwind."},
+      {"name": "Crest of Lordaeron", "from": "Botín general", "kind": "inicia-quest", "why": "Oculto en uno de cinco sitios; inicia misión (Lady Dena Kennedy, Stormwind Keep) que da Small Sack of Gems."}
+    ],
+    "shaman": [
+      "Witherfang y Viktor the Vile envenenan al tanque (Poison), igual que las arañas del principio: Poison Cleansing Totem o Cure Poison.",
+      "Ghoul Plague, la enfermedad de 30 minutos de los no-muertos (-20% movimiento, -25 de daño): Cure Disease o Disease Cleansing Totem enseguida.",
+      "Skeletal Mages se ponen Frost Armor: quítaselo con Purge y mueren antes. El Frost Armor de The Abandoned no se puede disipar.",
+      "Earth Shock para cortar Drain Life de The Abandoned y Flamestrike de Rath'mael; contra el fuego de Rath'mael, Fire Resistance Totem."
+    ],
+    "tips": [
+      "Mata primero a las Shrieking Banshees: Deafening Shriek silencia 4 s y un sanador silenciado es el wipe más habitual aquí.",
+      "Stone Watchers (gárgolas que parecen estatuas): con Stone Slumber son inmunes al daño físico 15 s y se curan; pégales con hechizos en esa fase.",
+      "Atajos: salta por la ventana a la derecha de la verja con telarañas y, tras The Baron, por el pilar roto sobre el muro bajo. En los eventos deja vivo al último enemigo de cada oleada para beber.",
+      "Desacuerdos: nivel 15-20 (wowforeverinfo, preferida) frente a 15-22 (Warcraft Tavern); con Witherfang WFI dice matarla antes que a los Broodlings y WT al revés. Sal andando, sin Hearthstone: Captain Truman espera en la puerta."
+    ],
+    "src": ["wt", "wfi"]
+  },
+  {
+    "key": "wailing-caverns",
+    "name": "Wailing Caverns",
+    "where": "The Barrens, Lushwater Oasis (suroeste de The Crossroads): boca de la cueva en la colina con forma de calavera, hacia 46.0, 36.3. Baja por los túneles hasta la caverna con estanque, donde está el portal.",
+    "route": "Barco de Menethil Harbor a Theramore y subir por la costa hasta Ratchet, o barco de Booty Bay a Ratchet, y luego al oeste. También se llega por el sur desde Ashenvale. Coge el vuelo de Ratchet: después se puede volar allí desde Theramore.",
+    "time": "",
+    "before": [
+      "Nivel 15-24 (entrada mínima 10 según Warcraft Tavern); jefes de nivel 20 a 22.",
+      "Coge el punto de vuelo de Ratchet en el primer viaje.",
+      "La cueva exterior está llena de monstruos Deviate élite: cruzadla en grupo.",
+      "Interrupciones y Tremor Totem: casi todos los jefes duermen a alguien o se curan."
+    ],
+    "bosses": [
+      {"name": "Lady Anacondra", "optional": false, "tip": "Druid of the Fang: Lightning Bolt, Sleep y Healing Touch (lo más importante de interrumpir); Thorns Aura no se disipa. El peligro real es una patrulla.", "loot": ["Snake Eye Kaleidoscope", "Belt of the Fang", "Serpent's Shoulders", "Snakeskin Bag", "Blueprint: Field Guide"]},
+      {"name": "Lord Cobrahn", "optional": false, "tip": "Con tres Deviate Pythons no élite (área). Druid's Slumber duerme a un jugador, a menudo el sanador; bajo 50% entra en Cobrahn Serpent Form y pega mucho más.", "loot": ["Cobrahn's Grasp", "Leggings of the Fang", "Robe of the Moccasin"]},
+      {"name": "Kresh", "optional": false, "tip": "Tortuga gigante sin habilidades pero con armadura muy alta: hechizos y reducción de armadura la matan rápido. Oriéntala lejos del grupo.", "loot": ["Cloak of Hermitic Bliss", "Kresh's Back", "Worn Turtle Shell Shield"]},
+      {"name": "Lord Pythas", "optional": false, "tip": "Con un Druid of the Fang al lado, en un cruce con patrullas. Interrumpe Sleep y Healing Touch; Thunderclap hace daño de naturaleza a los cercanos.", "loot": ["Slither Cord", "Stinging Viper", "Armor of the Fang"]},
+      {"name": "Skum", "optional": false, "tip": "Chained Bolt salta entre jugadores juntos (hasta 3, 28-32 de Nature): separaos e interrumpe. Warcraft Tavern dice que es inmune al daño de naturaleza.", "loot": ["Skum's Bucket", "Glowing Lizardscale Cloak", "Tail Spike"]},
+      {"name": "Deviate Faerie Dragon", "optional": true, "tip": "Raro, no siempre aparece; suele tener cerca Druids of the Fang: mátalos primero y corta su Sleep. El dragón en sí es simple.", "loot": ["Feyscale Cloak", "Firebelcher"]},
+      {"name": "Lord Serpentis", "optional": false, "tip": "Líder de los Druids of the Fang, va solo: Sleep, Lightning Bolt y Healing Touch. Interrumpe sin parar y es fácil.", "loot": ["Venomstrike", "Serpent Gloves", "Footpads of the Fang", "Savage Trodders", "Blueprint: Journeyman Campfire"]},
+      {"name": "Verdan the Everliving", "optional": false, "tip": "Grasping Vines derriba y enraíza 10 s a los cercanos y no se interrumpe: sanador y distancia bien lejos. Al morir abre un salto atajo hacia el arroyo.", "loot": ["Seedcloud Buckler", "Living Root", "Sporid Cape"]},
+      {"name": "Mutanus the Devourer", "optional": false, "tip": "Escolta al Disciple of Naralex (si muere, fracasa). Tras dos oleadas sale Mutanus: Thundercrack (98-110 Nature, aturde 2,5 s), Terrify y Naralex's Nightmare.", "loot": ["Slime-encrusted Pads", "Mutant Scale Breastplate", "Deep Fathom Ring", "Glowing Shard"]},
+      {"name": "Botín general", "optional": false, "tip": "Gloves of the Fang es el drop raro de trash que completa el set de cuero Embrace of the Viper; las otras cuatro piezas caen de los líderes Fang.", "loot": ["Gloves of the Fang"]}
+    ],
+    "key_items": [
+      {"name": "Stinging Viper", "from": "Lord Pythas", "kind": "arma1m", "why": "Maza 1M lenta (30-57, vel. 2.80, 15.54 dps); al golpear envenena: 7 de Nature cada 3 s durante 12 s. Nivel 19."},
+      {"name": "Living Root", "from": "Verdan the Everliving", "kind": "arma2m", "why": "Bastón 2M con +45 curación/+15 daño de hechizos, +5 Spirit, +2 Stamina y +9 Nature Resistance; para curar."},
+      {"name": "Seedcloud Buckler", "from": "Verdan the Everliving", "kind": "escudo", "why": "Escudo (547 armadura, 11 bloqueo) con +5 Intellect y +5 a daño y curación de hechizos; para curar."},
+      {"name": "Kresh's Back", "from": "Kresh", "kind": "escudo", "why": "Escudo (528 armadura, 10 bloqueo) con Defense +5; nivel 18. Para tanquear."},
+      {"name": "Leggings of the Fang", "from": "Lord Cobrahn", "kind": "armadura", "why": "Cuero: +5 Strength, +9 Agility, +4 Stamina. Set Embrace of the Viper: 2 piezas +10 Intellect, 3 piezas +10 Attack Power."},
+      {"name": "Armor of the Fang", "from": "Lord Pythas", "kind": "armadura", "why": "Pechera de cuero: +3 Strength, +3 Intellect, +10 Spirit; pieza del set Embrace of the Viper."},
+      {"name": "Skum's Bucket", "from": "Skum", "kind": "otro", "why": "Mano secundaria: +10 curación, +3 Stamina; Use: restaura 835 de maná en 24 s sentado (10 min de reutilización)."},
+      {"name": "Glowing Shard", "from": "Mutanus the Devourer", "kind": "inicia-quest", "why": "Inicia The Glowing Shard (ambas facciones, nivel 15); no se comparte: cada jugador despoja la suya."},
+      {"name": "Snakeskin Bag", "from": "Lady Anacondra", "kind": "otro", "why": "Bolsa de 10 huecos (Unique)."},
+      {"name": "Blueprint: Journeyman Campfire", "from": "Lord Serpentis", "kind": "plano", "why": "Plano de Cooking (90): enseña a colocar un Journeyman Campfire en un campamento."}
+    ],
+    "shaman": [
+      "Sleep y Druid's Slumber (Lady Anacondra, Lord Cobrahn, Lord Pythas, Lord Serpentis y los Druids of the Fang) y Naralex's Nightmare de Mutanus the Devourer: Tremor Totem, y Earth Shock al lanzamiento.",
+      "Terrify (miedo) de los Deviate Dreadfangs y de Mutanus the Devourer: Tremor Totem.",
+      "Earth Shock a Healing Touch de los líderes Fang (lo que más importa) y a Wild Regeneration de los Deviate Shamblers.",
+      "Veneno de los Deviate Vipers (Localized Toxin) y de Lord Cobrahn en forma de serpiente: Poison Cleansing Totem o Cure Poison. Contra Lightning Bolt, Thunderclap de Lord Pythas y Thundercrack de Mutanus: Nature Resistance Totem."
+    ],
+    "tips": [
+      "Mata primero a los cuatro líderes Fang sin saltarte ninguno: el Disciple of Naralex no inicia la escolta hasta que mueren los cuatro, y volver por uno cuesta muchísimo.",
+      "Los Druids of the Fang se convierten en serpiente al borde de la muerte y pegan mucho más: remátalos rápido e interrumpe sus curas y su sueño.",
+      "Tras Verdan the Everliving, el salto que se abre detrás lleva directo al arroyo: úsalo de atajo para volver con el Disciple en la entrada.",
+      "Desacuerdo: Warcraft Tavern pone a Lord Serpentis antes de Skum y escribe una vez 'Lord Cobran'; aquí se sigue el orden y la grafía de wowforeverinfo."
+    ],
+    "src": ["wt", "wfi"]
+  },
+  {
+    "key": "deadmines",
+    "name": "The Deadmines",
+    "where": "Westfall, Moonbrook (sur): el Defias Hideout es el edificio grande del suroeste del pueblo, hacia 42, 72. Baja las escaleras y sigue los túneles hacia abajo; el portal está al fondo, tras unos guardias Defias.",
+    "route": "A caballo o a pie hasta Moonbrook, en el sur de Westfall; las fuentes no detallan vuelos ni barcos para la Alianza.",
+    "time": "",
+    "before": [
+      "Nivel 17-26; jefes de nivel 19 a 21.",
+      "Cadenas largas previas, empiézalas pronto: The Defias Brotherhood (Gryan Stoutmantle, hasta escoltar a The Defias Traitor) y la de Alba Fairmoon (11 misiones, empieza con Testing the Wells).",
+      "Ingeniería: la cadena de Alba Fairmoon pide 10 Coarse Dynamite (Coarse Blasting Powder de Coarse Stone más Linen Cloth), que puedes fabricar tú.",
+      "La mina encantada que se cruza antes del portal tiene no-muertos élite: pasadla en grupo.",
+      "No uses la piedra de hogar tras VanCleef: la salida trasera da a la costa de Westfall, donde espera Alba Fairmoon."
+    ],
+    "bosses": [
+      {"name": "Rhahk'Zor", "optional": false, "tip": "Ogro con dos Defias Watchmen a distancia: tira primero de ellos hacia el pasillo. Rhahk'Zor Slam hace 64-86 de daño y aturde 3 s al tanque.", "loot": ["Ogre Loincloth", "Rockslicer", "Rhahk'Zor's Hammer"]},
+      {"name": "Miner Johnson", "optional": true, "tip": "Raro: en el cruce a la izquierda tras la puerta de Rhahk'Zor, no siempre está. Mata primero a los mineros normales que lo rodean.", "loot": ["Gold-plated Buckler", "Miner's Cape"]},
+      {"name": "Sneed's Shredder", "optional": false, "tip": "Limpia antes la sala. Terrify asusta 4 s a un jugador y Distracting Pain baja 35% la velocidad de lanzamiento; al romperse sale Sneed (Disarm) con amenaza a cero.", "loot": ["Buzz Saw", "Buzzer Blade", "Dull Sawblade", "Bandsaw Wristbands", "Taskmaster Axe", "Gold-flecked Gloves", "Blueprint: Repair Bot"]},
+      {"name": "Gilnid", "optional": false, "tip": "Va con un Goblin Engineer (fabrica robots: contrólalo o mátalo primero) y un craftsman. Molten Metal quema 30 cada 3 s y ralentiza ataque 54% y movimiento 50%.", "loot": ["Goblin Hammer", "Lavishly Jeweled Ring", "Smelting Pants", "Blueprint: Anvil"]},
+      {"name": "Mr. Smite", "optional": false, "tip": "Dos Defias Blackguards en sigilo: mátalos primero. Smite Stomp (a 2/3 y 1/3 de vida) aturde a los cercanos y cambia de arma; con dos armas pega mucho más.", "loot": ["First Mate Band", "Smite's Mighty Hammer", "Thief's Blade", "Smite's Reaver"]},
+      {"name": "Captain Greenskin", "optional": false, "tip": "Patrulla con Defias Squallshaper (Frost Nova: mátalo primero), Defias Pirate y un loro. Cleave frontal y Poisoned Harpoon. Mátalo antes de acercarte a VanCleef.", "loot": ["Emberstone Staff", "Blackened Defias Belt", "Impaling Harpoon"]},
+      {"name": "Edwin VanCleef", "optional": false, "tip": "Dos Blackguards en sigilo primero. Thrash; al 50% VanCleef's Allies llama a otros dos: aturdirlo al 51-55% lo evita. Si salen, contrólalos o ignóralos.", "loot": ["Cape of the Brotherhood", "Corsair's Overshirt", "Blackened Defias Armor", "Cruel Barb", "An Unsent Letter"]},
+      {"name": "Cookie", "optional": true, "tip": "Opcional, en una cubierta baja de popa: interrumpe siempre Cookie's Cooking (se cura 111-129). Acid Splash hace daño de naturaleza. Apártalo del barco.", "loot": ["Lookie's Spyglass", "Cookie's Stirring Rod", "Cookie's Tenderizer", "Blueprint: Cookie's Feast"]},
+      {"name": "Botín general", "optional": false, "tip": "Cualquier Defias puede soltarlos. Las piezas Blackened Defias forman el set Defias Leather junto con la armadura de VanCleef y el cinturón de Greenskin.", "loot": ["Silk-threaded Trousers", "Stonemason Trousers", "Blackened Defias Gloves", "Blackened Defias Leggings", "Blackened Defias Boots", "Blackwater Cutlass", "Goblin Screwdriver", "Goblin Mail Leggings", "Stonemason Cloak", "Metalworking Gloves", "Woodworking Gloves", "Defias Rapier"]}
+    ],
+    "key_items": [
+      {"name": "Smite's Mighty Hammer", "from": "Mr. Smite", "kind": "arma2m", "why": "Maza 2M lenta (55-83, vel. 3.50, 19.71 dps) con +11 Strength y +4 Agility; nivel 18. La mejor para Mejora aquí."},
+      {"name": "Rockslicer", "from": "Rhahk'Zor", "kind": "arma2m", "why": "Hacha 2M (52-78, vel. 3.30) con +7 Strength; Use: extrae vetas de Copper, Tin, Silver o Iron sin Mining (30 cargas)."},
+      {"name": "Blueprint: Repair Bot", "from": "Sneed's Shredder", "kind": "plano", "why": "Plano de Engineering (140): enseña a colocar un Repair Bot en un campamento. El plano de tu profesión aquí."},
+      {"name": "Miner's Cape", "from": "Miner Johnson", "kind": "profesion", "why": "Capa con Mining +2, +4 Attack Power (+6 más contra Elementals) y +5 Stamina; nivel 17. Solo si sale el raro."},
+      {"name": "Smelting Pants", "from": "Gilnid", "kind": "profesion", "why": "Cuero: +7 Stamina, +5 Spirit y 25% menos de tiempo al fundir Copper, Tin, Bronze y Silver. Para Mining."},
+      {"name": "Blackened Defias Belt", "from": "Captain Greenskin", "kind": "armadura", "why": "Cinturón de cuero con +18 Attack Power; set Defias Leather (3 piezas: +15 Attack Power contra Humanoids)."},
+      {"name": "Blackened Defias Armor", "from": "Edwin VanCleef", "kind": "armadura", "why": "Pechera de cuero: +4 Strength, +3 Agility, +10 Stamina; pieza del set Defias Leather. Nivel 17."},
+      {"name": "Gold-plated Buckler", "from": "Miner Johnson", "kind": "escudo", "why": "Escudo (509 armadura, 10 bloqueo, +2 Agility, +5 Stamina); reduce en 15 el primer golpe físico del combate."},
+      {"name": "Smite's Reaver", "from": "Mr. Smite", "kind": "arma1m", "why": "Hacha 1M (18-35, vel. 1.90) con +3 Strength y +3 Spirit; nivel 17. Para tanquear con escudo."},
+      {"name": "An Unsent Letter", "from": "Edwin VanCleef", "kind": "inicia-quest", "why": "Inicia The Unsent Letter (Baros Alexston, Stormwind): cadena larga que lleva a The Stockade y más allá."}
+    ],
+    "shaman": [
+      "Sneed's Shredder lanza Terrify (miedo de 4 s) y puede mandar a alguien contra más goblins: Tremor Totem.",
+      "Captain Greenskin envenena al tanque con Poisoned Harpoon: Poison Cleansing Totem o Cure Poison.",
+      "Earth Shock para cortar Cookie's Cooking (la cura de Cookie) y el Flamestrike de los Defias Evokers.",
+      "Fuego: Molten Metal de Gilnid y Fire Blast de los Defias Squallshapers: Fire Resistance Totem."
+    ],
+    "tips": [
+      "Los guardaespaldas de Mr. Smite y de VanCleef son invisibles hasta que tiras: cuenta con tres enemigos en ambos combates y mata siempre primero a los guardias.",
+      "Mata a Captain Greenskin antes de acercarte a VanCleef: los dos a la vez suele ser wipe.",
+      "El cañón: pulsa Defias Gunpowder junto al Defias Cannon y dispara para abrir la puerta a Ironclad Cove. Limpia todos los Goblin Woodcarvers antes de Sneed.",
+      "Defias Taskmasters: Piercing Shot quita 580 de armadura al tanque 15 s, pero solo a distancia: tira de ellos tras una esquina. Las fuentes coinciden salvo en grafías (WT escribe Rhahk'zor)."
+    ],
+    "src": ["wt", "wfi"]
+  },
+  {
+    "key": "shadowfang-keep",
+    "name": "Shadowfang Keep",
+    "where": "Silverpine Forest, en la colina sobre Pyrewood Village (sur de la zona, cerca de Greymane Wall): sube la cuesta hasta la puerta de la fortaleza, hacia 44.5, 68.0; el portal está en la caseta de entrada.",
+    "route": "Barco de Menethil Harbor a Southshore (Hillsbrad Foothills) y luego al oeste hasta Silverpine Forest: viaje largo por territorio de la Horda. Warcraft Tavern añade que los personajes Skyborne llegan fácil desde Dalaran.",
+    "time": "",
+    "before": [
+      "Nivel 20-30; wowforeverinfo aconseja un grupo de 22-25. Jefes de nivel 20 a 26.",
+      "Viaje largo por territorio de la Horda (Hillsbrad Foothills y Silverpine Forest).",
+      "Tras Archmage Arugal coge el Black Tome de la mesa del fondo: es el primer paso hacia el jefe secreto de City of Dalaran.",
+      "Resistencia a las sombras para Archmage Arugal (lo recomienda Warcraft Tavern).",
+      "Forma de quitar venenos (Fenrus the Devourer) e interrupciones (Commander Springvale, Archmage Arugal)."
+    ],
+    "bosses": [
+      {"name": "Rethilgore", "optional": false, "tip": "Soul Drain inmoviliza 10 s y drena vida al tanque (interrúmpelo). Los worgs aplican Wavering Will (ataque, lanzamiento y movimiento más lentos): mátalos primero.", "loot": ["Sorcerer Collar", "Cell Keeper's Claws", "Rugged Spaulders"]},
+      {"name": "Fel Steed and Shadow Chargers", "optional": true, "tip": "Opcional, en los establos: tres caballos que atacan a la vez. Fel Stomp aturde 3 s a los cercanos, que reciben más daño físico. Controla uno.", "loot": ["Eerie Stable Lantern", "Fel Steed Saddlebags"]},
+      {"name": "Razorclaw the Butcher", "optional": false, "tip": "Cocinero worgen en sala estrecha: Butcher Drain roba vida al tanque una y otra vez (se cura a través). Comprueba que no pase patrulla antes de tirar.", "loot": ["Butcher's Cleaver", "Bloody Apron", "Butcher's Slicer", "Blueprint: Tanning Rack"]},
+      {"name": "Baron Silverlaine", "optional": false, "tip": "Veil of Shadow: maldición que reduce un 75% la curación recibida durante 15 s; interrúmpela o quítala rápido. Limpia antes la sala.", "loot": ["Blade of Silverlaine", "Silverlaine's Family Seal", "Baron's Scepter"]},
+      {"name": "Commander Springvale", "optional": false, "tip": "Con Haunted Servitor y Wailing Guardsman (Screams of the Past silencia 5 s: mátalo primero). Al 30% usa Divine Shield y Holy Light: interrumpe la cura.", "loot": ["Worgenbane Talisman", "Commander's Crest", "Arced War Axe", "Blueprint: Toxin Study"]},
+      {"name": "Odo the Blindwatcher", "optional": false, "tip": "Con Vile Bats que desarman y hacen cleave (apártalos del grupo). Howling Rage: pega más fuerte cuanta menos vida tiene; guarda los cooldowns para el final.", "loot": ["Blindwatcher's Sight", "Odo's Ley Staff", "Girdle of the Blindwatcher"]},
+      {"name": "Deathsworn Captain", "optional": true, "tip": "Raro, en el pasillo tras Odo, con dos fantasmas paladines. Cleave frontal: oriéntalo lejos del grupo y mata rápido a los paladines.", "loot": ["Phantom Armor", "Haunting Blade"]},
+      {"name": "Fenrus the Devourer", "optional": false, "tip": "Toxic Saliva: veneno de 17 de Nature cada 6 s que además drena 20 de maná, 2 min. Arugal invoca cerca cuatro Arugal's Voidwalkers a la vez.", "loot": ["Half-Eaten Boots", "Fenrus' Hide", "Black Wolf Bracers", "Rift Bracers"]},
+      {"name": "Wolf Master Nandos", "optional": false, "tip": "Guarda la puerta con worgs (tira de ellos antes por separado) y llama lobos no élite durante el combate: mátalos rápido antes de que lleguen al sanador.", "loot": ["Worgpelt Leggings", "Feline Mantle", "Wolfmaster Cape"]},
+      {"name": "Archmage Arugal", "optional": false, "tip": "Void Bolt (257-297 de Shadow), Shadow Port (se teletransporta y baja amenaza), Thundershock (aturde 5 s en área) y Arugal's Curse (control 10 s, no disipable).", "loot": ["Robes of Arugal", "Belt of Arugal", "Meteor Shard"]},
+      {"name": "Botín general", "optional": false, "tip": "Cualquier monstruo de la fortaleza puede soltarlos; varias de las armas lanzan un rayo de sombras al golpear.", "loot": ["Necrology Robes", "Mindthrust Bracers", "Gloomshroud Armor", "Face Smasher", "Guillotine Axe", "Shadowfang", "Assassin's Blade", "Duskbringer", "Black Malice", "Night Reaver", "Witching Stave", "Plans: Guard's Silvered Chain Helm"]}
+    ],
+    "key_items": [
+      {"name": "Arced War Axe", "from": "Commander Springvale", "kind": "arma2m", "why": "Hacha 2M (57-86, vel. 3.30, 21.67 dps) con +9 Strength y +9 Stamina; nivel 21. La mejor para Mejora aquí."},
+      {"name": "Night Reaver", "from": "Botín general", "kind": "arma2m", "why": "Hacha 2M (52-78, vel. 3.30, 19.70 dps); al golpear lanza un rayo de 67-101 de Shadow. Drop de trash, nivel 18."},
+      {"name": "Black Malice", "from": "Botín general", "kind": "arma2m", "why": "Maza 2M (48-73, vel. 3.30, 18.33 dps); al golpear lanza un rayo de 55-85 de Shadow. Drop de trash, nivel 16."},
+      {"name": "Commander's Crest", "from": "Commander Springvale", "kind": "escudo", "why": "Escudo (585 armadura, 12 bloqueo) con +5 Strength, +3 Stamina y +4 de vida cada 5 s; nivel 21."},
+      {"name": "Butcher's Cleaver", "from": "Razorclaw the Butcher", "kind": "arma1m", "why": "Hacha 1M rápida (19-36, vel. 1.70, 16.18 dps) con +5 Strength y +2 Agility; nivel 20."},
+      {"name": "Baron's Scepter", "from": "Baron Silverlaine", "kind": "arma1m", "why": "Maza de mano principal (28-52, vel. 2.40), +2 Strength, +3 Stamina; el grupo a 30 m regenera 4 de vida cada 5 s."},
+      {"name": "Wolfmaster Cape", "from": "Wolf Master Nandos", "kind": "armadura", "why": "Capa con +10 Attack Power (+9 más contra Beasts) y +3 Stamina; nivel 22."},
+      {"name": "Worgpelt Leggings", "from": "Wolf Master Nandos", "kind": "armadura", "why": "Pantalones de cuero: +5 Strength, +10 Agility, +7 Fire Resistance; nivel 21."},
+      {"name": "Silverlaine's Family Seal", "from": "Baron Silverlaine", "kind": "otro", "why": "Anillo con +5 Strength y +2 Stamina; +2% de velocidad en Tirisfal Glades, Silverpine Forest y Shadowfang Keep."},
+      {"name": "Black Tome", "from": "Archmage Arugal", "kind": "llave", "why": "En la mesa al fondo de su sala tras matarlo; en Ambermill Leyline Focus se convierte en Tome of Dalaran (jefe secreto)."}
+    ],
+    "shaman": [
+      "Earth Shock: corta Soul Drain de Rethilgore, Veil of Shadow de Baron Silverlaine, Holy Light de Commander Springvale (bajo Divine Shield, al 30%) y los Void Bolt de Archmage Arugal.",
+      "Fenrus the Devourer: Toxic Saliva es un veneno de 2 minutos que además drena maná: Poison Cleansing Totem o Cure Poison.",
+      "Archmage Arugal: Arugal's Curse controla a un jugador 10 s y la fuente dice que no se disipa; Tremor Totem es la herramienta de chamán contra Charm. Thundershock es daño de naturaleza: Nature Resistance Totem."
+    ],
+    "tips": [
+      "Limpia cada sala entera antes de cada jefe: son pequeñas y están pegadas, y un grupo extra a mitad de combate es lo que más wipes causa.",
+      "El silencio de los Wailing Guardsmen sobre el sanador causa más wipes que ningún jefe antes de Arugal: apártalos del grupo allí donde aparezcan.",
+      "Con Arugal usa paredes y esquinas: sin línea de visión tiene que caminar en vez de lanzar Void Bolt. Tras cada Shadow Port afloja el daño, y no mates al jugador maldito.",
+      "Desacuerdos: Warcraft Tavern dice que Void Bolt no se interrumpe y wowforeverinfo (preferida) que se corte todo lo posible; la ficha de WT pone 'The Barrens' por error (es Silverpine Forest) y no menciona los establos."
+    ],
+    "src": ["wt", "wfi"]
+  },
+  {
+    "key": "blackfathom-deeps",
+    "name": "Blackfathom Deeps",
+    "where": "Ashenvale, The Zoram Strand (extremo noroeste, en la costa): ruinas élficas hundidas hacia 14.5, 14.6. Zambúllete en el estanque del fondo y sigue el túnel estrecho, lleno de nagas élite, hasta el portal.",
+    "route": "Vuelo a Astranaar y cabalgar al noroeste, o barco de Stormwind Harbor (o de Rut'theran Village) a Auberdine, en Darkshore, y bajar hacia el sur.",
+    "time": "",
+    "before": [
+      "Nivel 24-32; jefes de nivel 25 a 28.",
+      "Respiración acuática: Water Breathing de chamán, Unending Breath de brujo o Elixirs of Water Breathing; se entra buceando y hay dos jefes bajo el agua.",
+      "Tras Gelihast pulsa Shrine of Gelihast: Blessing of Blackfathom permite respirar bajo el agua; resérvala para Old Serra'kis.",
+      "El túnel de acceso es estrecho y está lleno de nagas élite: entrad en grupo."
+    ],
+    "bosses": [
+      {"name": "Ghamoo-ra", "optional": false, "tip": "Tortuga gigante con armadura muy alta. Trample golpea a todos alrededor: si no eres melee, aléjate. Los hechizos le hacen daño completo; se le puede aturdir.", "loot": ["Spiked Shell Band", "Tortoise Armor", "Ghamoo-ra's Bind"]},
+      {"name": "Lady Sarevess", "optional": false, "tip": "Con dos guardias naga (controla uno, mata el otro). Forked Lightning en cono, Frost Nova a los cercanos (suele seguir a una interrupción) y Slow a quien huye.", "loot": ["Naga Battle Gloves", "Naga Heartpiercer", "Darkwater Talwar"]},
+      {"name": "Gelihast", "optional": true, "tip": "Sala llena de murlocs que huyen y traen más: tira hacia atrás por grupos. Net enraíza 10 s. Después pulsa Shrine of Gelihast (Blessing of Blackfathom).", "loot": ["Cursed Murloc Eye", "Algae Fists", "Reef Axe", "Murloc Skin Bag", "Blueprint: Fishing Rack"]},
+      {"name": "Lorgus Jett", "optional": true, "tip": "Chamán de Twilight's Hammer en uno de cuatro puntos entre Gelihast y Moonshrine Ruins. Lightning Shield daña al melee: Purge. Que no te lleve a más enemigos.", "loot": ["Treacherous Treads", "Fallenroot Longbow", "Twilight Maul"]},
+      {"name": "Baron Aquanis", "optional": true, "tip": "Elemental de agua que solo aparece si un jugador de la Horda pulsa Fathom Stone bajo el agua. Combate simple: mantener amenaza y vigilar el aire.", "loot": ["Strange Water Globe"]},
+      {"name": "Old Serra'kis", "optional": true, "tip": "Tiburón gigante bajo Moonshrine Sanctum, combate submarino: el único peligro es quedarse sin aire. Warcraft Tavern añade que se cura al atacar.", "loot": ["Glowing Thresher Cape", "Bands of Serra'kis", "Bite of Serra'kis"]},
+      {"name": "Twilight Lord Kelris", "optional": false, "tip": "Sleep duerme hasta 10 s a todos los cercanos, tanque incluido, y Mind Blast. Tira antes de sus seguidores desde detrás del muro de la entrada.", "loot": ["Twilight Lord Girdle", "Rod of the Sleepwalker", "Gaze Dreamer Pants"]},
+      {"name": "Aku'mai", "optional": false, "tip": "Poison Cloud: 50 de Nature cada 5 s durante 45 s a los cercanos, sal enseguida. Frenzied Rage: +75% velocidad de ataque 5 s; guarda cooldowns y aturdimientos.", "loot": ["Moss Cinch", "Leech Pants", "Strike of the Hydra"]},
+      {"name": "Botín general", "optional": false, "tip": "Drops de trash de la mazmorra, todos ligados al equipar.", "loot": ["Tree Bark Jacket", "Martyr's Chain", "Ring of Precision", "Axe of the Enforcer", "Grimclaw", "Doomspike", "Evocator's Blade", "Crested Scepter", "Staff of the Friar", "Staff of the Blessed Seer", "Onyx Claymore"]}
+    ],
+    "key_items": [
+      {"name": "Reef Axe", "from": "Gelihast", "kind": "arma2m", "why": "Hacha 2M (59-89, vel. 3.30, 22.42 dps) con +8 Strength y +24 curación/+8 daño de hechizos; nivel 22."},
+      {"name": "Twilight Maul", "from": "Lorgus Jett", "kind": "arma2m", "why": "Maza 2M (60-91, vel. 3.30, 22.88 dps), +12 a hechizos; al golpear causa 70 de daño de Nature. Nivel 23."},
+      {"name": "Bands of Serra'kis", "from": "Old Serra'kis", "kind": "armadura", "why": "Brazales de cuero con +6 Strength y +3 Stamina; nivel 22."},
+      {"name": "Naga Battle Gloves", "from": "Lady Sarevess", "kind": "armadura", "why": "Guantes de cuero: +4 Strength, +4 Stamina y +15 curación/+5 daño de hechizos; nivel 22."},
+      {"name": "Arctic Buckler", "from": "Blackfathom Villainy", "kind": "escudo", "why": "Escudo (642 armadura, 13 bloqueo, +8 Stamina, +3 Spirit); alternativa: Cultist's Armguards (cuero, +10 Attack Power)."},
+      {"name": "Axe of the Enforcer", "from": "Botín general", "kind": "arma1m", "why": "Hacha 1M (33-62, vel. 2.60, 18.27 dps) con +5 Strength y +4 Stamina; drop de trash, nivel 24."},
+      {"name": "Crested Scepter", "from": "Botín general", "kind": "arma1m", "why": "Maza de mano principal con +32 a daño y curación de hechizos, +6 Stamina y +2 Intellect; drop de trash."},
+      {"name": "Cursed Murloc Eye", "from": "Gelihast", "kind": "abalorio", "why": "Hechizos y ataques causan 2 de daño de Shadow (4 veces más a Murlocs); nivel 24."},
+      {"name": "Murloc Skin Bag", "from": "Gelihast", "kind": "otro", "why": "Bolsa de 10 huecos (Unique)."},
+      {"name": "Blueprint: Fishing Rack", "from": "Gelihast", "kind": "plano", "why": "Plano de Fishing (140): enseña a colocar un Fishing Rack en un campamento."}
+    ],
+    "shaman": [
+      "Twilight Lord Kelris duerme a todos los cercanos (Sleep, hasta 10 s) y los Twilight Shadowmages controlan a un jugador con Dominate Mind: Tremor Totem.",
+      "Lorgus Jett se pone Lightning Shield: Purge, como indica la propia fuente.",
+      "Earth Shock: Mana Burn de los Fallenroot Hellcallers, Heal de los Twilight Acolytes, los Twilight Elementalists y Mind Blast de Kelris.",
+      "Aku'mai: Poison Cloud es daño de naturaleza: Nature Resistance Totem (y salir de la nube). Water Breathing de chamán para los tramos y jefes submarinos."
+    ],
+    "tips": [
+      "Antes de Aku'mai enciende los cuatro fuegos pequeños que hay tras Kelris: cada uno llama una oleada, así que de uno en uno y acabando cada oleada.",
+      "Mata primero a los Twilight Shadowmages y tira de ellos tras una esquina. Blackfathom Myrmidons y Murkshallow Snapclaws desarman al tanque.",
+      "Lorgus Jett puede estar en cuatro sitios entre la guarida de Gelihast y Moonshrine Ruins: mira los pasillos laterales.",
+      "Desacuerdos: Warcraft Tavern dice que Lorgus Jett no suelta botín especial y wowforeverinfo (preferida) le atribuye Twilight Maul y dos piezas más; WT dice que Mind Blast de Kelris no se interrumpe y WFI que sí."
+    ],
+    "src": ["wt", "wfi"]
+  },
+  {
+    "key": "stockade",
+    "name": "The Stockade",
+    "where": "Stormwind City, en The Canals junto a The Mage Quarter: wowforeverinfo sitúa la entrada hacia 52.4, 70.0 (Warcraft Tavern dice 42, 58). Cruza la verja y baja las escaleras; Warden Thelwater está fuera.",
+    "route": "Desde Ironforge, Deeprun Tram hasta Stormwind. Los elfos de la noche, barco de Auberdine a Stormwind Harbor.",
+    "time": "Unos 15-25 minutos la limpieza completa",
+    "before": [
+      "Nivel 24-32 según wowforeverinfo (Warcraft Tavern dice 25-29); rinde más hacia 24-27. Jefes de nivel 24 a 29.",
+      "Sin llave ni attunement.",
+      "La cadena de An Unsent Letter (Edwin VanCleef, The Deadmines) continúa aquí: llévala antes a Baros Alexston, en Cathedral Square.",
+      "The Dark Iron War (misión de nivel 30 en Dun Modr, Wetlands) es requisito para la recompensa Headbasher: suele quedar para una visita posterior."
+    ],
+    "bosses": [
+      {"name": "Targorr the Dread", "optional": false, "tip": "Puede estar en varias celdas del primer pasillo, con 1-3 presos. Thrash (ataques extra) y Enrage al 20%: ataca 60% más rápido 2 min; guarda cooldowns.", "loot": ["Executioner Mantle", "Blackrock Harness", "Dark Horde Band"]},
+      {"name": "Kam Deepfury", "optional": false, "tip": "Shield Slam: daño y 2 s de aturdimiento al tanque. Improved Blocking: +75% a bloquear 6 s (reserva los golpes fuertes). Esperad un momento antes de pegar a tope.", "loot": ["Bridgebreaker Bindings", "Kam's Walking Stick", "Demolition Girdle"]},
+      {"name": "Hamhock", "optional": false, "tip": "Ogro mago con dos Defias (mátalos primero). Chain Lightning salta entre jugadores juntos: interrumpe y separaos. Bloodlust (+30% velocidad de ataque) se purga.", "loot": ["Hamhock's Cleaver", "Ogre Grips", "Repurposed Rack"]},
+      {"name": "Bazil Thredd", "optional": false, "tip": "Líder del motín, con dos armas. Smoke Bomb aturde 4 s a los cercanos y, con el tanque aturdido, va a por el siguiente: sanador y distancia fuera de su alcance.", "loot": ["Red Wool Cloak", "Concealed Hand Crossbow", "Defias Jailbreakers", "Debt Collector"]},
+      {"name": "Bruegal Ironknuckle", "optional": true, "tip": "Raro, a mitad del ala izquierda; no aparece siempre. No tiene nada especial: el peligro son los presos de alrededor.", "loot": ["Jimmied Handcuffs", "Prison Shank", "Iron Knuckles"]},
+      {"name": "Dextren Ward", "optional": false, "tip": "Intimidating Shout asusta a todo el grupo: limpia antes todas las celdas de alrededor, porque quien huye trae más presos. Tremor Totem lo detiene.", "loot": ["Boneslicer", "Nightskulker Ring", "Graverobber's Shovel"]},
+      {"name": "Botín general", "optional": false, "tip": "Único drop de trash que lista la fuente.", "loot": ["Defias Renegade Ring"]}
+    ],
+    "key_items": [
+      {"name": "Graverobber's Shovel", "from": "Dextren Ward", "kind": "arma2m", "why": "Maza 2M muy lenta (68-102, vel. 3.70, 22.97 dps): +10 Stamina, +12 Attack Power (doble contra Undead); nivel 23."},
+      {"name": "Headbasher", "from": "The Fury Runs Deep", "kind": "arma2m", "why": "Maza 2M (43-66, vel. 2.30, 23.70 dps) con +9 Strength, +5 Stamina, +10 Intellect; exige antes The Dark Iron War."},
+      {"name": "Ursine Hammer", "from": "What Comes Around…", "kind": "arma2m", "why": "Maza 2M (47-71, vel. 3.20, 18.44 dps) con +5 Agility, +5 Intellect y +5 Spirit. Recompensa de misión."},
+      {"name": "Hamhock's Cleaver", "from": "Hamhock", "kind": "arma1m", "why": "Hacha de mano principal (29-54, vel. 2.20), +4 Strength y +8 Attack Power (+9 más contra Humanoids); nivel 25."},
+      {"name": "Repurposed Rack", "from": "Hamhock", "kind": "escudo", "why": "Escudo (661 armadura, 14 bloqueo) con +6 Strength y +7 a daño y curación de hechizos; nivel 25."},
+      {"name": "Blackrock Harness", "from": "Targorr the Dread", "kind": "armadura", "why": "Pechera de cuero: +14 Attack Power, Defense +4 y +8 Stamina; nivel 21."},
+      {"name": "Executioner Mantle", "from": "Targorr the Dread", "kind": "armadura", "why": "Hombreras de cuero con +10 Attack Power y +9 Spirit; nivel 21."},
+      {"name": "Demolition Girdle", "from": "Kam Deepfury", "kind": "armadura", "why": "Cinturón de cuero con +8 Strength y +9 a daño de hechizos; nivel 24."},
+      {"name": "Iron Knuckles", "from": "Bruegal Ironknuckle", "kind": "arma1m", "why": "Arma de puño 1M (21-39, vel. 1.70); al golpear puede interrumpir 5 s el hechizo del objetivo. Jefe raro."}
+    ],
+    "shaman": [
+      "Dextren Ward lanza Intimidating Shout (miedo a todo el grupo): Tremor Totem, lo recomienda la propia fuente.",
+      "Hamhock se pone Bloodlust (+30% velocidad de ataque): Purge; y Earth Shock para cortar su Chain Lightning.",
+      "Los Defias Inmates aplican Rend (sangrado, que duele más con Infected Wound encima): Stoneform."
+    ],
+    "tips": [
+      "Mata primero a los Defias Captives: Infected Wound hace que el objetivo reciba más daño físico 5 minutos y se acumula en tirones largos.",
+      "Los presos van en grupos y los tirones suelen traer la celda siguiente: controla a los extras antes de tirar de un jefe. Targorr the Dread cambia de celda en el primer pasillo.",
+      "Las dos alas se limpian en cualquier orden; wowforeverinfo propone ala derecha (Kam Deepfury, Hamhock, Bazil Thredd) y luego izquierda (Dextren Ward).",
+      "Desacuerdos: nivel 24-32 (wowforeverinfo, preferida) frente a 25-29 (Warcraft Tavern), y coordenadas de entrada 52.4, 70.0 frente a 42, 58."
+    ],
+    "src": ["wt", "wfi"]
+  },
+  {
+    "key": "excavation-site",
+    "name": "Excavation Site: Wetlands",
+    "where": "Wetlands, colina al sureste de Whelgar's Excavation Site: el camino sube junto a Thelgen Rock desde la meeting stone (53.9, 65.4), entre arañas no élite. Entrada hacia 47.8, 56.3 (Warcraft Tavern: 48.1, 56.5).",
+    "route": "Vuelo a Menethil Harbor, el punto de vuelo más cercano para la Alianza, y seguir la carretera desde allí.",
+    "time": "Unos 20-35 minutos la limpieza completa",
+    "before": [
+      "Nivel: Blizzard la da para 24-29, pero el buscador la ofrece desde el 26 y el último jefe es nivel 31 (Warcraft Tavern dice 26-33): se hace dura por abajo.",
+      "Formas de curar enfermedades, venenos y sangrados: son el problema constante (Infected Wound, Muculent Rot, Highland Venom).",
+      "Cadena previa de Rethiel the Greenwarden (empieza con Tramping Paws) para la recompensa Ironwood Destroyer.",
+      "Combina bien con The Stockade: The Dark Iron War se hace en esta misma zona."
+    ],
+    "bosses": [
+      {"name": "Saltspine", "optional": false, "tip": "Patrulla el borde del lago: tira de él solo. Dust Storm: 35 de daño físico a 10 m y -25% de probabilidad de golpe; Fatal Bite y Tendon Rip (ralentiza) al tanque.", "loot": ["Supple Bellyskin Leggings", "Saltscale Girdle", "Glinteye Slippers"]},
+      {"name": "Shadetooth", "optional": false, "tip": "Con dos Thicket Hunters (Infected Wound). Terrifying Roar asusta en área, Rend de 77 cada 3 s al tanque y Enrage al 20%. Pelea junto a la guarida ya limpia.", "loot": ["Raptorclaw Greaves", "Raptor's Gaze", "Blueprint: Greenhouse", "Garb of Florid Feathers"]},
+      {"name": "Highland Horror", "optional": true, "tip": "Opcional: objetivo de misión de la Alianza, sin otro botín. Entangling Roots en área y Wild Regeneration (interrúmpela). No tires de los limos de alrededor.", "loot": ["Horrible Rootcore"]},
+      {"name": "Relic Guardian", "optional": false, "tip": "Se activa con Archival Panel, a su derecha. Arcing Smash en cono, Knock Away (baja amenaza), War Stomp y Thunderclap a 10 m; nivel 31: esquiva y para mucho.", "loot": ["Reliquary Mantle", "Golemsight Long Gun", "Ring of Power Regulation", "Blueprint: Rock Garden", "Titan Relic"]}
+    ],
+    "key_items": [
+      {"name": "Ironwood Destroyer", "from": "Horrors in the Highland", "kind": "arma2m", "why": "Maza 2M (60-91, vel. 3.40, 22.21 dps), +19 a daño de Nature; alternativa: Hornbeam Heft (hacha 1M, +6 Strength)."},
+      {"name": "Blueprint: Rock Garden", "from": "Relic Guardian", "kind": "plano", "why": "Plano de Mining (140): enseña a colocar un Rock Garden en un campamento. El plano de tu profesión aquí."},
+      {"name": "Titan Relic", "from": "Relic Guardian", "kind": "inicia-quest", "why": "Inicia Lost Relic Carry (Prospector Whelgar, 38.8, 52.3), que sigue con Prehistoric Prism en Ironforge."},
+      {"name": "Supple Bellyskin Leggings", "from": "Saltspine", "kind": "armadura", "why": "Pantalones de cuero con +6 Strength y +14 Stamina; nivel 26."},
+      {"name": "Garb of Florid Feathers", "from": "Shadetooth", "kind": "armadura", "why": "Pechera de cuero con +9 Agility y +15 Intellect; nivel 26. Buena para el set de curación."},
+      {"name": "Ring of Power Regulation", "from": "Relic Guardian", "kind": "otro", "why": "Anillo: +3 de maná cada 5 s y +6 a daño y curación de hechizos; nivel 28. Para Restauración."}
+    ],
+    "shaman": [
+      "Shadetooth: Terrifying Roar asusta a todos los cercanos: Tremor Totem, lo recomiendan las dos fuentes.",
+      "Sangrados fuertes: Rend de Shadetooth (77 cada 3 s) y Rend Flesh de Thicket Lurkers y Thicket Matriarchs: Stoneform.",
+      "Infected Wound (Thicket Hunters) y Muculent Rot (Marsh Skulkers): Cure Disease o Disease Cleansing Totem. Poison y Highland Venom de Highland Lurkers y Highland Spiders: Cure Poison o Poison Cleansing Totem (WT cuenta Highland Venom como enfermedad).",
+      "Relic Guardian se puede ralentizar: Earthbind Totem permite kitearlo si cae el tanque, como dice wowforeverinfo. Earth Shock a Wild Regeneration de Highland Horror."
+    ],
+    "tips": [
+      "La hierba alta es lo más peligroso: Thicket Lurkers y Stalkers se esconden en grupos de tres y las Thicket Matriarchs llaman más Lurkers con poca vida. Avanza despacio y mátalas rápido.",
+      "No te saltes raptores al limpiar la zona de Shadetooth: piden ayuda al ser atacados. Si alguien huye asustado hacia otro grupo, acaba mal.",
+      "Dragonmaw Warders: Mortal Strike reduce a la mitad la curación y Net enraíza 10 s; los Saboteurs lanzan bombas en área; de los Thaumaturgists mata primero al elemental de fuego.",
+      "Desacuerdos: nivel 24-29 según wowforeverinfo y Blizzard (Warcraft Tavern dice 26-33); entrada 47.8, 56.3 frente a 48.1, 56.5; WT cuenta Highland Horror como jefe y WFI como objetivo de misión aparte."
+    ],
+    "src": ["wt", "wfi"]
+  },
+  {
+    "key": "city-of-dalaran",
+    "name": "City of Dalaran",
+    "where": "Dalaran está en Alterac Mountains, pero se entra por las alcantarillas de la orilla de Lordamere Lake, en Silverpine Forest (69.3, 45.6), junto a Image of Archmage Modera (68.6, 45.1).",
+    "route": "A pie desde Southshore (Hillsbrad Foothills); antes pasa por Emissary Jacques en Southshore (48.3, 60.2), cuya misión te lleva hasta la entrada.",
+    "time": "",
+    "before": [
+      "Dalaran Sewer Key: basta con que la tenga un jugador del grupo. La Alianza llega a Image of Archmage Modera con An Alarming Request, de Emissary Jacques en Southshore.",
+      "Nivel 28-33 según wowforeverinfo (Warcraft Tavern dice 28-35).",
+      "Para el jefe secreto hace falta Tome of Dalaran: el Black Tome de Shadowfang Keep usado en Ambermill Leyline Focus (Ambermill, Silverpine Forest, 63.4, 64.3).",
+      "Formas de escapar de raíces y de romper control: Fel Ancient enraíza y Shade of the Archmage lanza Mass Polymorph."
+    ],
+    "bosses": [
+      {"name": "Atrexis the Grave Knight", "optional": false, "tip": "Nigromante en Underbelly: invoca Skeletons (para el tanque) y lanza Unholy Frenzy, que se puede purgar. Limpia los no-muertos de alrededor sin tirar de él.", "loot": []},
+      {"name": "Lyn the Ignored", "optional": true, "tip": "Secreto: usa Tome of Dalaran en el círculo de la sala cuadrada tras Atrexis. Invoca esqueletos, hace daño en área y pone Curse of Thorns al tanque.", "loot": []},
+      {"name": "Mana Devourer", "optional": false, "tip": "En Violet Hold: limpia la sala, lo que quede vivo se une. Drain Vitality (daño en el tiempo al tanque) y Debilitate (área que drena maná): prueba de curación.", "loot": []},
+      {"name": "Arcane Anomaly", "optional": false, "tip": "Focal Blast: rayo frontal que barre en círculo con mucho daño. Todo el grupo pegado al jefe para rodearlo; sal de su trayectoria en cuanto empiece.", "loot": []},
+      {"name": "Fel Ancient", "optional": false, "tip": "Tras una barrera: mata los Suffused Treants y habla con Magus Fansy Goodbringer. Entangle enraíza a jugadores al azar y Fel Timbers deja zonas dañinas bajo ellos.", "loot": []},
+      {"name": "Arcanic Enigma", "optional": false, "tip": "Con dos Mana Phantoms (Mana Burn: mátalos primero). Manamorph polimorfa a jugadores, silencia en área a su alrededor e invoca Arcane Manalings.", "loot": []},
+      {"name": "Unstable Sentinel", "optional": false, "tip": "Golem en Magus Commerce Exchange. Malfunction hace mucho daño en un área amplia a su alrededor: aléjate al verlo lanzar (salvo el tanque). Separaos.", "loot": []},
+      {"name": "Shade of the Archmage", "optional": false, "tip": "Archmage Modera abre el portal a Violet Chamber. Bounding Mana: proyectil lento que rebota; sin maná lanza Mass Polymorph y Evocation. Si sales de la sala, se cura.", "loot": []},
+      {"name": "Mana Wraith", "optional": true, "tip": "wowforeverinfo solo dice que Dalaran 'también tiene un Mana Wraith': las fuentes no dan posición, mecánicas ni botín, y su lugar en el orden es desconocido.", "loot": []}
+    ],
+    "key_items": [
+      {"name": "Dalaran Sewer Key", "from": "Heart of Disruption", "kind": "llave", "why": "Abre la entrada por las alcantarillas; basta con una por grupo. La entrega Image of Archmage Modera."},
+      {"name": "Tome of Dalaran", "from": "Archmage Arugal (Shadowfang Keep)", "kind": "llave", "why": "Invoca al jefe secreto Lyn the Ignored en el círculo tras Atrexis; sale del Black Tome de Shadowfang Keep."}
+    ],
+    "shaman": [
+      "Mindless Horrors lanzan miedo y provocan tirones en cadena en las alcantarillas: mantén Tremor Totem, como pide Warcraft Tavern.",
+      "Kirin Tor Necromancers y Atrexis the Grave Knight lanzan Unholy Frenzy: Purge, lo dicen las dos fuentes.",
+      "Earth Shock a Mana Burn de los Mana Phantoms, incluidos los dos que acompañan a Arcanic Enigma."
+    ],
+    "tips": [
+      "Orden que propone Warcraft Tavern tras las alcantarillas: Violet Hold (Mana Devourer), Arcane Anomaly, Runeweaver Square (Fel Ancient), Path of Renewal (Arcanic Enigma), Magus Commerce Exchange y Violet Citadel.",
+      "Al empezar, tras el puente, a la izquierda hay una puerta cerrada que sale junto a Violet Citadel: si alguien puede abrirla, se salta casi toda la mazmorra.",
+      "Saturated Remnants dejan al morir un campo Mana Leak (júntate si usas maná); los Mana Fiends explotan en área al morir (separaos).",
+      "Desacuerdos: nivel 28-33 (wowforeverinfo, preferida) frente a 28-35 (Warcraft Tavern); WT llama 'Unstable Sentry' al jefe que WFI llama Unstable Sentinel; solo WFI menciona un Mana Wraith. Ninguna fuente lista botín de esta mazmorra."
+    ],
+    "src": ["wt", "wfi"]
+  }
+]

@@ -1,0 +1,879 @@
+<div class="shell">
+<nav class="toc" aria-label="Índice">
+  <div class="brand">Enano Chamán<span>WOW FOREVER · 12 NOV 2026</span></div>
+  <div class="tools">
+    <label for="nivel">Tu nivel</label>
+    <div class="lvl-row"><input id="nivel" type="number" min="1" max="60" value="20" inputmode="numeric"><small>Resalta las zonas, mazmorras y tramos que te tocan</small></div>
+    <label for="buscar">Buscar</label>
+    <input id="buscar" type="search" placeholder="Quest, zona, NPC…" autocomplete="off">
+    <div id="search-count" aria-live="polite"></div>
+    <button id="imprimir" type="button">Imprimir o guardar PDF</button>
+    <label for="fichas">Abrir fichas en</label>
+    <select id="fichas">
+      <option value="wh">Wowhead</option>
+      <option value="whes">Wowhead en español</option>
+      <option value="wdb">Warcraft DB</option>
+    </select>
+    <div id="progreso" class="prog-box" aria-live="polite"></div>
+    <details class="sync"><summary>Copiar o pegar progreso</summary>
+      <p>Las casillas se guardan en este navegador. Para llevarlas a otro dispositivo, copia este código y pégalo allí.</p>
+      <textarea id="sync-code" rows="3" spellcheck="false" aria-label="Código de progreso"></textarea>
+      <div class="sync-btns"><button id="sync-copy" type="button">Copiar código</button><button id="sync-load" type="button">Cargar código</button></div>
+      <div id="sync-msg" aria-live="polite"></div>
+    </details>
+  </div>
+  <!--@TOC-->
+</nav>
+
+<main>
+<header class="hero">
+  <div class="eyebrow">Guía de campo · Alianza · Mejora · Ingeniería + Minería</div>
+  <h1>Enano Chamán en WoW Forever</h1>
+  <p class="lede">Todo lo que no debes dejarte del 1 al 60: las quests que de verdad aportan en cada zona, todas las mazmorras con sus quests, tus totems y tus profesiones. Para jugar con calma, explorar y conocer el mundo entero.</p>
+  <ul class="totems" aria-label="Totems del enano">
+    <li class="t-earth">Tierra · 4</li><li class="t-fire">Fuego · 10</li><li class="t-water">Agua · 20</li><li class="t-air">Aire · 30</li>
+  </ul>
+  <div class="meta"><span>Nivel máximo <b>60</b></span><span>Salida <b>4 nov 2026</b></span><span>Raids <b>9 dic 2026</b></span><span>Datos a <b>12 nov 2026</b></span></div>
+</header>
+
+<!--@NOW-->
+
+<!-- ================= PLAN DESDE 20 ================= -->
+<section id="plan-20">
+<h2><span class="n"></span>Tu plan desde nivel 20</h2>
+<p class="intro">Vienes de Dun Morogh, Loch Modan y casi todo Darkshore, y no has pisado Stormwind ni sus alrededores. Tienes intactas Westfall, Redridge y Duskwood, y las mazmorras de 17-26. Este orden encadena el Totem de Agua, la bolsa de dormir y las mazmorras para no repetir viajes; completa cada zona a tu ritmo.</p>
+<ol class="steps">
+<li><strong>Ironforge</strong><span class="lv">20</span>
+  <ul>
+    <li><b>Entrena</b> con Eldrun Stormbreaker (Forlorn Cavern, 47.3, 13.5): Ghost Wolf, Frost Shock, Lesser Healing Wave, Totemic Recall y Call of the Elements. Coge <em>Call of Water</em>.</li>
+    <li><b>Lleva</b> <em>Underground Assault</em> (Gnoarn, para Deadmines), <em>Knowledge in the Deeps</em> (Gerrig Bonegrip, para BFD; entrégale <em>The Powers Below</em> si lo cogiste en Darkshore) y <em>The Day After</em> (Gnoarn, abre Gnomeregan).</li>
+    <li><b>Profesiones:</b> con 125 en Ingeniería, Experto con Springspindle Fizzlegear (68, 44; 45 platas). Con 125 en Minería, Experto con Geofram Bouldertoe (50, 26).</li>
+    <li><b>Hall of Thanes</b> (13-20), debajo de Ironforge, si encuentras grupo: cuenta para el Legacy y <em>Old Ironforge Incursion</em> da el Ironforge Greathammer. Antes, <em>Nip 'Em in the Bud</em> (Earthseer Farsen, Dun Morogh 64.8, 58.5).</li>
+  </ul></li>
+<li><strong>Loch Modan y Wetlands</strong><span class="lv">20-21</span>
+  <ul>
+    <li>Norric Lochthane, junto a la presa (41.9, 19.0). Si te faltan, <em>Snowbound</em> y <em>A Dark Threat Looms</em>.</li>
+    <li>Baja por Algaz a Menethil Harbor y coge el vuelo. Quests fáciles: <em>Young Crocolisk Skins</em>, <em>Claws from the Deep</em>, <em>Digging Through the Ooze</em>, <em>In Search of The Excavation Team</em>.</li>
+    <li>Totem de Agua: en la cueva de Hervdana (65.7, 76.4) llenas el primer odre y te da el rojo.</li>
+    <li>Empieza la cadena de Rethiel (56.4, 40.4) con <em>Tramping Paws</em>.</li>
+  </ul></li>
+<li><strong>Stormwind</strong><span class="lv">21</span>
+  <ul>
+    <li>Tranvía desde Ironforge y vuelo de Stormwind.</li>
+    <li>Deadmines: <em>Collecting Memories</em> y <em>Oh Brother…</em> (Wilder Thistlenettle). Stockade, desde 22-25: <em>Quell The Uprising</em> (Warden Thelwater) y <em>The Color of Blood</em> (Nikova Raskol).</li>
+  </ul></li>
+<li><strong>Westfall</strong><span class="lv">21-23</span>
+  <ul>
+    <li>Vuelo de Sentinel Hill. Las quests de nivel 10-15 dan poca XP, pero hazlas si te apetece completar la zona.</li>
+    <li><em>The Defias Brotherhood</em> (Gryan → Wiley en Lakeshire → Mathias Shaw → mensajero → escolta del Traitor).</li>
+    <li>Cadena nueva de Alba Fairmoon: pide <b>10 Coarse Dynamite</b>, que fabricas tú con Ingeniería 90-100.</li>
+    <li>Bolsa de dormir: <em>Nailed Plank</em> en Alexston Farmstead (37, 50).</li>
+    <li><b>Deadmines</b> (17-26) con todas sus quests. <em>Smite's Mighty Hammer</em> es una buena maza de dos manos para ti.</li>
+  </ul></li>
+<li><strong>Redridge</strong><span class="lv">22-24</span>
+  <ul>
+    <li>Odre rojo en Stonewatch Falls (73.7, 61.6).</li>
+    <li><em>Blackrock Menace</em>, <em>Blackrock Blockade</em>, <em>The Everstill Bridge</em>, <em>A Baying of Gnolls</em> y <em>Shadow Magic</em>. Coge <em>What Comes Around…</em> para Stockade.</li>
+  </ul></li>
+<li><strong>Duskwood</strong><span class="lv">23-25</span>
+  <ul>
+    <li>Vuelo de Darkshire y cadenas largas: Night Watch, Jitters, Sven y Embalmer. Coge <em>Crime and Punishment</em>.</li>
+    <li>Con las cinco quests de Stockade, haz <b>Stockade</b> (25-29) en Stormwind.</li>
+  </ul></li>
+<li><strong>Viaje a Kalimdor</strong><span class="lv">24-26</span>
+  <ul>
+    <li>Vuela a Menethil, entrega el odre rojo y recibe el azul. Barco a Auberdine.</li>
+    <li>Ashenvale: odre azul en el lago de Astranaar (37.0, 51.6), vuelo y <em>Seeking Caitlin</em> (Llana, desde 24).</li>
+    <li><b>Blackfathom Deeps</b> (24-32) con sus quests.</li>
+    <li>Barrens: <em>Burned-Out Remains</em> (46, 74) para la bolsa de dormir y Wailing Caverns si hay grupo. Stonetalon: <em>Pocket Litter</em> y <em>Mound of Dirt</em> (cuidado, Sun Rock Retreat es de la Horda).</li>
+  </ul></li>
+<li><strong>Cierre del Totem de Agua</strong><span class="lv">26</span>
+  <ul>
+    <li>Hervdana → Norric → Stendel's Pond en Westfall (47.5, 60.4): mata la manifestación corrupta → Norric. Water Totem y Healing Stream Totem.</li>
+    <li>Bolsa de dormir: <em>Carved Figurine</em> en la presa de Loch Modan (49, 12).</li>
+  </ul></li>
+<li><strong>De 26 a 30</strong><span class="lv">26-30</span>
+  <ul>
+    <li>Termina Wetlands (Dun Modr, Rethiel, <em>The Fury Runs Deep</em>) y haz <b>Excavation Site</b> (26-33). Remata Duskwood.</li>
+    <li>Barco Menethil → Southshore: <em>An Alarming Request</em>. Viaje al oeste: City of Dalaran (28-35), Shadowfang Keep (Legacy) y Ruins of Lordaeron (ya gris, solo para el Legacy completo).</li>
+  </ul></li>
+<li><strong>Nivel 30</strong><span class="lv">30</span>
+  <ul><li><em>Call of Air</em> en Arathi y empieza <em>The Tempest's Weapons</em>. Necesitas Razorfen Kraul: junta grupo para RFK y Gnomeregan hacia 29-32.</li></ul></li>
+</ol>
+</section>
+
+<!-- ================= CHECKLIST ================= -->
+<section id="checklist">
+<h2><span class="n"></span>Imprescindibles por zona</h2>
+<p class="intro">Solo las quests que de verdad aportan algo, para que no se te escapen aunque juegues sin Questie. Marca las casillas: se guardan en este navegador. Cumplen al menos uno de estos criterios:</p>
+<ul class="crit">
+  <li><b>Desbloquean algo:</b> totem, llave, mazmorra, barco o cadena larga.</li>
+  <li><b>Equipo muy bueno para ti:</b> dos manos lentas, malla o Fuerza.</li>
+  <li><b>Alimentan una mazmorra:</b> quests de mazmorra que se cogen fuera.</li>
+  <li><b>Cadena entre zonas:</b> si saltas un paso, pierdes el final.</li>
+  <li><b>Beneficio permanente:</b> bolsa de dormir, cocina o reputación útil.</li>
+</ul>
+
+<details class="zona ck" data-lv="1-12"><summary><span class="zn">Dun Morogh e Ironforge</span><span class="lv">1-12</span><span class="tag done">hecho</span><span class="prog"></span></summary><div class="body"><ul class="chk">
+<li><label><input type="checkbox" data-k="dm1"><span><em>Nip 'Em in the Bud</em> → <em>Underground Map</em> → <em>Old Ironforge Incursion</em> (Earthseer Farsen, 64.8, 58.5): abre Hall of Thanes y da el Ironforge Greathammer.</span></label></li>
+<li><label><input type="checkbox" data-k="dm2"><span><em>Camping 101: Cooking</em> (Kharanos): sin Cocina no tienes el +5% de XP de la comida.</span></label></li>
+<li><label><input type="checkbox" data-k="dm3"><span><em>Mining for Dummies</em> (zona inicial), si no aprendiste Minería con un entrenador.</span></label></li>
+<li><label><input type="checkbox" data-k="dm4"><span>Ironforge, para más tarde: <em>The Day After</em> (Gnomeregan), <em>Knowledge in the Deeps</em> (BFD), <em>Mythology of the Titans</em> (SM, desde 28) y las cadenas de Uldaman del Hall of Explorers (30-35).</span></label></li>
+</ul></div></details>
+
+<details class="zona ck" data-lv="10-20"><summary><span class="zn">Loch Modan</span><span class="lv">10-20</span><span class="tag done">hecho</span><span class="prog"></span></summary><div class="body"><ul class="chk">
+<li><label><input type="checkbox" data-k="lm1"><span><em>A Dark Threat Looms</em> (Hinderweir, en la presa): va a Dun Modr y vuelve.</span></label></li>
+<li><label><input type="checkbox" data-k="lm2"><span><em>Report to Ironforge</em> → <em>Powder to Ironband</em>: empieza tu relación con Prospector Stormpike, que da las quests de Uldaman.</span></label></li>
+<li><label><input type="checkbox" data-k="lm3"><span>Bolsa de dormir: <em>Carved Figurine</em> en la presa (49, 12), cuando llegues a ese paso.</span></label></li>
+</ul></div></details>
+
+<details class="zona ck" data-lv="10-20"><summary><span class="zn">Darkshore</span><span class="lv">10-20</span><span class="tag done">casi hecho</span><span class="prog"></span></summary><div class="body"><ul class="chk">
+<li><label><input type="checkbox" data-k="ds1"><span><em>Researching the Corruption</em> (Gershala Nightwhisper): quest de BFD.</span></label></li>
+<li><label><input type="checkbox" data-k="ds2"><span>El libro <em>The Powers Below</em> (cultistas del Master's Glaive) para Gerrig Bonegrip.</span></label></li>
+<li><label><input type="checkbox" data-k="ds3"><span><em>The Absent Minded Prospector</em>, si la tienes: sigue en Darnassus y Menethil y da <em>Skullchipper</em> o <em>Relic Blade</em>.</span></label></li>
+</ul></div></details>
+
+<details class="zona ck" data-lv="1-10"><summary><span class="zn">Elwynn Forest</span><span class="lv">1-10</span><span class="tag">opcional</span><span class="prog"></span></summary><div class="body">
+<p>Zona de nivel 1-10: a tu nivel todo está en gris. Sin quests de clase, de mazmorra ni de la bolsa de dormir. Solo lo que pillas al cruzarla:</p>
+<ul class="chk">
+<li><label><input type="checkbox" data-k="ew1"><span><em>A Watchful Eye</em> (Theocritus, Tower of Azora, 65.2, 69.7, hacia 19-22): parte de la cadena de Redridge.</span></label></li>
+<li><label><input type="checkbox" data-k="ew2"><span>Smith Argus, Goldshire (41.7, 65.5): entrega de <em>The Price of Shoes</em>, que viene de Redridge.</span></label></li>
+<li><label><input type="checkbox" data-k="ew3"><span>Descubre sus zonas al cruzarla: XP de exploración y logro <em>Explore Azeroth</em>.</span></label></li>
+</ul></div></details>
+
+<details class="zona ck" data-lv="10-23"><summary><span class="zn">Westfall</span><span class="lv">10-20</span><span class="prog"></span></summary><div class="body"><ul class="chk">
+<li><label><input type="checkbox" data-k="wf1"><span><em>The Defias Brotherhood</em> (Gryan Stoutmantle): cadena de 6 que acaba en VanCleef.</span></label></li>
+<li><label><input type="checkbox" data-k="wf2"><span>Cadena de Alba Fairmoon <span class="tag new">nueva</span>: <em>Testing the Wells</em> → … → <em>A Dynamite Plan</em> (10 Coarse Dynamite) → <em>Destruction in Deadmines</em>.</span></label></li>
+<li><label><input type="checkbox" data-k="wf3"><span><em>Red Silk Bandanas</em> (Scout Riell): aparece tras la escolta del Traitor.</span></label></li>
+<li><label><input type="checkbox" data-k="wf4"><span><em>Red Leather Bandanas</em> (Scout Galiaan): Warcraft Tavern la da como inicio de <em>Red Silk Bandanas</em>. Los pañuelos caen de los Defias que matas igualmente.</span></label></li>
+<li><label><input type="checkbox" data-k="wf6"><span><em>Murloc Gills</em> (Alba Fairmoon): va junto a <em>Testing the Wells</em> en la misma cadena.</span></label></li>
+<li><label><input type="checkbox" data-k="wf5"><span>Bolsa de dormir: <em>Nailed Plank</em> (Alexston Farmstead, 37, 50). Inicia <em>... and that note you found</em>.</span></label></li>
+</ul><p class="src">Opcionales a tu nivel: <em>The People's Militia</em> (arma de una mano de nivel 17), <em>Patrolling Westfall</em>, <em>The Killing Fields</em>, <em>Keeper of the Flame</em>, <em>The Coast Isn't Clear</em>, <em>The Coastal Menace</em> (escudo <em>Buckler of the Seas</em>) y <em>Thunderbrew Lager</em>. Sáltate <em>Harvesting the Harvesters</em>: sus objetos caen muy poco.</p></div></details>
+
+<details class="zona ck" data-lv="15-25"><summary><span class="zn">Redridge</span><span class="lv">15-25</span><span class="prog"></span></summary><div class="body"><ul class="chk">
+<li><label><input type="checkbox" data-k="rr1"><span><em>What Comes Around…</em> (Guard Berton): Stockade.</span></label></li>
+<li><label><input type="checkbox" data-k="rr2"><span><em>Songblade Search</em> (Dorin Songblade, armero de Lakeshire, desde 24): Excavation Site.</span></label></li>
+<li><label><input type="checkbox" data-k="rr3"><span>Totem de Agua: odre rojo en Stonewatch Falls (73.7, 61.6).</span></label></li>
+<li><label><input type="checkbox" data-k="rr4"><span><em>Missing In Action</em> (escolta del Corporal Keeshan, 25).</span></label></li>
+</ul></div></details>
+
+<details class="zona ck" data-lv="18-30"><summary><span class="zn">Duskwood</span><span class="lv">18-30</span><span class="prog"></span></summary><div class="body"><ul class="chk">
+<li><label><input type="checkbox" data-k="dw1"><span><em>Crime and Punishment</em> (Councilman Millstipe): Stockade.</span></label></li>
+<li><label><input type="checkbox" data-k="dw2"><span><em>Look To The Stars</em> (Viktori): pide un <em>Bronze Tube</em> que fabricas tú.</span></label></li>
+<li><label><input type="checkbox" data-k="dw3"><span><em>The Valor Family</em> y los cuatro fantasmas <em>Lost</em> <span class="tag new">nuevo</span>, para Sirra.</span></label></li>
+<li><label><input type="checkbox" data-k="dw4"><span>Cadenas largas: Embalmer (acaba en Eliza, en grupo), <em>Morbent's Bane</em> y Mor'Ladim (recompensas mejoradas).</span></label></li>
+</ul></div></details>
+
+<details class="zona ck" data-lv="20-30"><summary><span class="zn">Wetlands</span><span class="lv">20-30</span><span class="prog"></span></summary><div class="body"><ul class="chk">
+<li><label><input type="checkbox" data-k="wl1"><span>Totem de Agua: Hervdana Saegrund (65.7, 76.4).</span></label></li>
+<li><label><input type="checkbox" data-k="wl2"><span>Cadena de Rethiel (<em>Tramping Paws</em> → <em>Fire Taboo</em> → <em>Blisters on the Land</em>) → <em>Horrors in the Highland</em>: da el <em>Ironwood Destroyer</em>, maza de dos manos.</span></label></li>
+<li><label><input type="checkbox" data-k="wl3"><span><em>Lost in the Thicket Things</em> (Caitlin Grassman) y <em>Highland Hides</em> (James Halloran): Excavation Site.</span></label></li>
+<li><label><input type="checkbox" data-k="wl4"><span><em>The Dark Iron War</em> → <em>The Fury Runs Deep</em>: Stockade.</span></label></li>
+<li><label><input type="checkbox" data-k="wl5"><span><em>The Thandol Span</em> → <em>Plea To The Alliance</em>: entrada a Arathi.</span></label></li>
+<li><label><input type="checkbox" data-k="wl6"><span><em>Defeat Nek'rosh</em> (en grupo): <em>Ancient War Sword</em> o <em>Barreling Reaper</em>.</span></label></li>
+</ul></div></details>
+
+<details class="zona ck" data-lv="18-30"><summary><span class="zn">Ashenvale</span><span class="lv">18-30</span><span class="prog"></span></summary><div class="body"><ul class="chk">
+<li><label><input type="checkbox" data-k="av1"><span>Totem de Agua: odre azul en el lago de Astranaar.</span></label></li>
+<li><label><input type="checkbox" data-k="av2"><span><em>Seeking Caitlin</em> (Llana, desde 24): XP extra en la quest de Excavation Site.</span></label></li>
+</ul></div></details>
+
+<details class="zona ck" data-lv="14-26"><summary><span class="zn">Barrens y Stonetalon</span><span class="lv">de paso</span><span class="prog"></span></summary><div class="body"><ul class="chk">
+<li><label><input type="checkbox" data-k="bs1"><span>Bolsa de dormir: <em>Burned-Out Remains</em> (Barrens 46, 74), <em>Pocket Litter</em> y <em>Mound of Dirt</em> (Stonetalon).</span></label></li>
+<li><label><input type="checkbox" data-k="bs2"><span>Wailing Caverns, si encuentras grupo antes de 24.</span></label></li>
+</ul></div></details>
+
+<details class="zona ck" data-lv="28-40"><summary><span class="zn">Hillsbrad y Alterac</span><span class="lv">28-40</span><span class="prog"></span></summary><div class="body"><ul class="chk">
+<li><label><input type="checkbox" data-k="hb1"><span><em>An Alarming Request</em> (Emissary Jacques, Southshore): sin ella faltan dos quests de City of Dalaran.</span></label></li>
+<li><label><input type="checkbox" data-k="hb2"><span><em>Encrypted Letter</em> → <em>Letter to Stormpike</em>: Loremaster Dibbs, que además da las quests de Drowned City.</span></label></li>
+<li><label><input type="checkbox" data-k="hb3"><span><em>Vengeance of the Highborne</em> (Ranath Nightstride, posada de Dalaran): para Krol'dok, con reputación Kirin Tor.</span></label></li>
+</ul></div></details>
+
+<details class="zona ck" data-lv="30-40"><summary><span class="zn">Arathi</span><span class="lv">30-40</span><span class="prog"></span></summary><div class="body"><ul class="chk">
+<li><label><input type="checkbox" data-k="ar1"><span><em>Call of Air</em> (Veyric, 59.8, 27.6): Totem de Aire.</span></label></li>
+<li><label><input type="checkbox" data-k="ar2"><span>Bolsa de dormir: final en Thoradin's Wall (22.5, 24.1).</span></label></li>
+<li><label><input type="checkbox" data-k="ar3"><span><em>Wanted! Otto and Falconcrest</em>: <em>Rod of Sorrow</em> o <em>War Rider Bracers</em>.</span></label></li>
+</ul></div></details>
+
+<details class="zona ck" data-lv="30-36"><summary><span class="zn">Cadena del arma de chamán</span><span class="lv">30-35</span><span class="prog"></span></summary><div class="body"><ul class="chk">
+<li><label><input type="checkbox" data-k="tw1"><span><em>Elemental Aid</em>: Charlga Razorflank, en Razorfen Kraul.</span></label></li>
+<li><label><input type="checkbox" data-k="tw2"><span><em>Storm, Earth, and Fire</em>: totems en Dustwallow, Desolace, Swamp of Sorrows y Badlands.</span></label></li>
+<li><label><input type="checkbox" data-k="tw3"><span><em>Heed My Call</em>: Thousand Needles.</span></label></li>
+<li><label><input type="checkbox" data-k="tw4"><span><em>The Tempest's Weapons</em>: Bath'rah (Alterac) te da <b>Rage of the Storm</b>.</span></label></li>
+</ul></div></details>
+
+<details class="zona ck" data-lv="30-45"><summary><span class="zn">Stranglethorn y Desolace</span><span class="lv">30-45</span><span class="prog"></span></summary><div class="body"><ul class="chk">
+<li><label><input type="checkbox" data-k="sd1"><span>Las cadenas de caza de Nesingwary (recompensas mejoradas en Forever).</span></label></li>
+<li><label><input type="checkbox" data-k="sd2"><span><em>Take Two With Water</em> y <em>Magics of the Drowned City</em> (Dibbs) y <em>Shady Saltseers</em> (Krazek): Drowned City.</span></label></li>
+<li><label><input type="checkbox" data-k="sd3"><span>Desolace: <em>Down the Scarlet Path</em> (SM), las de Maraudon (<em>Vyletongue Corruption</em>, <em>Legends of Maraudon</em>) y la cadena de Vahlarriel.</span></label></li>
+</ul></div></details>
+
+<details class="zona ck" data-lv="35-45"><summary><span class="zn">Riverglades</span><span class="lv">35-45</span><span class="tag new">nueva</span><span class="prog"></span></summary><div class="body"><ul class="chk">
+<li><label><input type="checkbox" data-k="rg1"><span><em>Eye of Mugg</em> (Demar Brant): la mejor recompensa de la zona.</span></label></li>
+<li><label><input type="checkbox" data-k="rg2"><span><em>A Small Favor</em> → <em>Tome of Twilight</em> (Ashe Amberhall).</span></label></li>
+<li><label><input type="checkbox" data-k="rg3"><span><em>Bring Me His Head</em> → <em>Twilight Mementos</em> → <em>Curios of Curiosity</em>.</span></label></li>
+<li><label><input type="checkbox" data-k="rg4"><span>Llave de Krol'dok: <em>Krol'dok Moulding</em> → Alphonse Dumas (12 Iron Bar + 4 Thick Leather). No se gasta.</span></label></li>
+<li><label><input type="checkbox" data-k="rg5"><span>Reputación Powderfuse: en Amistoso, equipo de nivel 40 como <em>Misplaced Pantaloons</em> (malla).</span></label></li>
+</ul></div></details>
+
+<details class="zona ck" data-lv="35-46"><summary><span class="zn">Badlands, Dustwallow y Swamp of Sorrows</span><span class="lv">35-45</span><span class="prog"></span></summary><div class="body"><ul class="chk">
+<li><label><input type="checkbox" data-k="bd1"><span><em>Uldaman Reagent Run</em> (Thelsamar) y la cadena de Hammertoe (<em>A Sign of Hope</em> → <em>The Lost Tablets of Will</em>): Uldaman.</span></label></li>
+<li><label><input type="checkbox" data-k="bd2"><span><em>Shadowshard Fragments</em> (Theramore): Maraudon. <em>Tiara of the Deep</em> (Tabetha): Zul'Farrak.</span></label></li>
+<li><label><input type="checkbox" data-k="bd3"><span><em>Galen's Escape</em> → <em>Galen's Strongbox</em>: botín fácil.</span></label></li>
+</ul></div></details>
+
+<details class="zona ck" data-lv="40-50"><summary><span class="zn">Feralas, Tanaris y Hinterlands</span><span class="lv">40-50</span><span class="prog"></span></summary><div class="body"><ul class="chk">
+<li><label><input type="checkbox" data-k="ft1"><span><em>Screecher Spirits</em> (Feralas) → cadena de Yeh'kinya: ZF, Sunken Temple y LBRS.</span></label></li>
+<li><label><input type="checkbox" data-k="ft2"><span>Gadgetzan: <em>Divino-matic Rod</em>, <em>Troll Temper</em> y <em>Scarab Shells</em> (ZF). Ingeniería Artesano con Buzzek Bracketswing.</span></label></li>
+<li><label><input type="checkbox" data-k="ft3"><span><em>Witherbark Cages</em> → <em>Nekrum's Medallion</em> (ZF) → <em>Saving Sharpbeak</em> (<em>Gryphon Rider's Stormhammer</em>).</span></label></li>
+<li><label><input type="checkbox" data-k="ft4"><span><em>Jammal'an the Prophet</em> (Hinterlands) y <em>The Sunken Temple</em> (Angelas Moonbreeze).</span></label></li>
+</ul></div></details>
+
+<details class="zona ck" data-lv="43-60"><summary><span class="zn">Searing Gorge, Burning Steppes y Blackrock</span><span class="lv">43-60</span><span class="prog"></span></summary><div class="body"><ul class="chk">
+<li><label><input type="checkbox" data-k="sg1"><span>Cadena de Kalaran Windblade (<em>Divine Retribution</em> … <em>A Taste of Flame</em>): acaba en BRD.</span></label></li>
+<li><label><input type="checkbox" data-k="sg2"><span>Cadena de Moira (Archesonus, Ironforge) y <em>Hurley Blackbreath</em> (Ragnar Thunderbrew, Kharanos).</span></label></li>
+<li><label><input type="checkbox" data-k="sg3"><span><em>Dark Iron Legacy</em> (Shadowforge Key) y <em>Attunement to the Core</em> (55).</span></label></li>
+<li><label><input type="checkbox" data-k="sg4"><span><em>Seal of Ascension</em> (dentro de LBRS): llave de UBRS.</span></label></li>
+</ul></div></details>
+
+<details class="zona ck" data-lv="45-60"><summary><span class="zn">Un'Goro, Felwood, Azshara y Blasted Lands</span><span class="lv">45-60</span><span class="prog"></span></summary><div class="body"><ul class="chk">
+<li><label><input type="checkbox" data-k="ug1"><span>Guarda cristales de poder de Un'Goro para Shaper's Terrace.</span></label></li>
+<li><label><input type="checkbox" data-k="ug2"><span><em>The Mighty U'cha</em> (<em>Beastsmasher</em>) y la cadena de Linken.</span></label></li>
+<li><label><input type="checkbox" data-k="ug3"><span>Reputación Timbermaw (Felwood): sin ella no cruzas el túnel a Winterspring.</span></label></li>
+<li><label><input type="checkbox" data-k="ug4"><span><em>Get to the Roots of It</em> (Darnassus): Blackmaw Hold.</span></label></li>
+<li><label><input type="checkbox" data-k="ug5"><span>Cadena de Duke Hydraxis (Azshara), si piensas hacer raids.</span></label></li>
+<li><label><input type="checkbox" data-k="ug6"><span>Pociones de los Bloodmages (Blasted Lands): buenas mejoras para mazmorras.</span></label></li>
+</ul></div></details>
+
+<details class="zona ck" data-lv="51-60"><summary><span class="zn">Plaguelands, Winterspring y Silithus</span><span class="lv">51-60</span><span class="prog"></span></summary><div class="body"><ul class="chk">
+<li><label><input type="checkbox" data-k="pl1"><span>Argent Dawn Commission: sin ella no caen las Scourgestones.</span></label></li>
+<li><label><input type="checkbox" data-k="pl2"><span><em>The Key to Scholomance</em> (Valorfist y Arbington; 15 oro + 2 Thorium Bar).</span></label></li>
+<li><label><input type="checkbox" data-k="pl3"><span><em>Spirit Totem</em> (Western Plaguelands) y <em>Da Voodoo</em> (Sunken Temple): tu quest de clase de 50.</span></label></li>
+<li><label><input type="checkbox" data-k="pl4"><span>Cadena de Tirion Fordring (Eastern Plaguelands), que pasa por Stratholme.</span></label></li>
+<li><label><input type="checkbox" data-k="pl5"><span>Esquema de <em>Thorium Tube</em> (Xizzer Fizzbolt, Everlook) para Ingeniería 285-300.</span></label></li>
+</ul></div></details>
+
+<h3>Lo que aporta si te gusta explorar</h3>
+<ul>
+<li><b>Exploración:</b> descubrir zonas da XP, y el logro <em>Explore Azeroth</em> da 1 punto de Legacy. Hay además una colección de libros (<em>Library Books</em>) repartidos por el mundo.</li>
+<li><b>Reputaciones que merecen la pena:</b> Ironforge (rebaja en carneros), Azeroth Commerce Authority (títulos de profesión y esquemas; se gana con <em>Waylaid Crates</em> y se gasta con Fritz Fizzle en Three Corners, Redridge 10, 73), Powderfuse (Riverglades), Kirin Tor (Dalaran), Timbermaw (túnel a Winterspring), Thorium Brotherhood (recetas altas) y Argent Dawn (Plaguelands).</li>
+</ul>
+</section>
+
+<!-- ================= ESTADO ================= -->
+<section id="estado">
+<h2><span class="n"></span>Estado del juego</h2>
+<p>WoW Forever salió el 4 de noviembre de 2026 con nivel máximo 60, todas las mazmorras de Classic más 9 nuevas, y las raids abren el 9 de diciembre (Onyxia de 40, Barrow Deeps de 10 y Hyjal Summit de 20). La curva de XP es la de Classic, con más de 1.000 quests nuevas y dos zonas nuevas en tu ruta: Riverglades (35-45) y Shen'dralas.</p>
+<h4>Cómo funcionan las mazmorras</h4>
+<ul>
+<li><b>Buscador manual:</b> no teletransporta y las piedras de encuentro no invocan; hay que ir andando o con un brujo.</li>
+<li><b>La XP sale sobre todo de las quests de mazmorra</b>, que solo dan XP la primera vez. Desde el 9 de noviembre los enemigos de mazmorra dan un 50% más de XP.</li>
+<li><b>Penalización por nivel:</b> alguien de nivel mucho más alto en el grupo te quita buena parte de la XP de los mobs.</li>
+<li><b>Botín:</b> todo lo que cae desbloquea su transfiguración para quien podía lootearlo, y cae la moneda <em>Tarnished Undermine Real</em>. Puedes reiniciar una mazmorra 5 veces por hora.</li>
+</ul>
+<h4>Lo que cambia tu plan</h4>
+<ul>
+<li><b>No guardes quests para el 60:</b> no hay conversión de XP en oro a nivel máximo, y desde el 10 de noviembre la mayoría de quests de nivel 48+ dan oro.</li>
+<li><b>Faltan sanadores:</b> con Restauración como segunda especialización tendrás grupo enseguida.</li>
+<li><b>Ajustes de clase los martes:</b> revisa el hilo de hotfixes antes de cambiar talentos.</li>
+</ul>
+<h4>Cambios recientes que te afectan</h4>
+<div class="tw"><table>
+<thead><tr><th>Fecha</th><th>Cambio</th><th>Qué significa para ti</th></tr></thead>
+<tbody>
+<tr><td class="lv">11 nov</td><td>Arreglado Flametongue Totem rango 2. Menos daño de Twilight Enforcer, Executioner Morg y Twilight Forgemaster</td><td>Riverglades es menos peligrosa en solitario</td></tr>
+<tr><td class="lv">10 nov</td><td>Stormstrike: 100% del daño del arma (antes 150%) y 8 s de reutilización (antes 6 s)</td><td>Stormstrike pesa menos en tu daño</td></tr>
+<tr><td class="lv">10 nov</td><td>Mental Dexterity convierte Intelecto en poder de ataque al 33/66/100% (antes 50/100/150%)</td><td>El Intelecto deja de ser tu mejor stat: busca Fuerza y poder de ataque</td></tr>
+<tr><td class="lv">10 nov</td><td>Maelstrom Weapon: 20% menos de lanzamiento y maná por carga; salta 6-10 veces por minuto según rango</td><td>Con un arma lenta salta más por golpe (60% con una de 3.6). Usa dos manos lentas</td></tr>
+<tr><td class="lv">10 nov</td><td>Imbuición de arma y totem de arma a la vez</td><td>Windfury Weapon y Windfury Totem ya se acumulan</td></tr>
+<tr><td class="lv">10 nov</td><td><em>Rage of the Storm</em> da 16 de Fuerza (antes Intelecto) y velocidad 3.6</td><td>Tu mejor arma de leveo hacia los 35</td></tr>
+<tr><td class="lv">10 nov</td><td>Arreglados los eventos finales de Call of Water</td><td>La quest del Totem de Agua ya se completa bien</td></tr>
+<tr><td class="lv">10 nov</td><td>La mayoría de quests de nivel 48+ dan oro</td><td>Haz las quests de nivel alto según subes</td></tr>
+<tr><td class="lv">9 nov</td><td>+50% de XP por matar enemigos en mazmorras</td><td>Repetir una mazmorra rinde más que antes</td></tr>
+<tr><td class="lv">2 nov</td><td>Se elimina Lava Burst (lo sustituye Call of Thunder); Riptide pierde su cura inicial</td><td>Las guías de la beta con Lava Burst están desfasadas</td></tr>
+</tbody></table></div>
+<p class="src">Fuente: <a href="https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-10-2026/2403040" target="_blank" rel="noopener">hilo oficial de hotfixes de Blizzard</a> (actualizado el 11 de noviembre).</p>
+</section>
+
+<!-- ================= SPEC ================= -->
+<section id="spec">
+<h2><span class="n"></span>Especialización, talentos y armas</h2>
+<p>Sube como <b>Mejora con un arma de dos manos lenta</b> y, a nivel 40, añade <b>Restauración como segunda especialización</b> para mazmorras. Tras el 10 de noviembre, Fuerza y poder de ataque vuelven a ser tus mejores stats y Windfury vuelve al centro de la especialización.</p>
+<h3>Build de leveo de Mejora (34/9/8)</h3>
+<p class="src">De wowforeverinfo (talentos del 5 de noviembre), anotada con los cambios del 10 de noviembre.</p>
+<div class="tw"><table>
+<thead><tr><th>Nivel</th><th>Talento</th><th>Para qué</th></tr></thead>
+<tbody>
+<tr><td class="lv">10-14</td><td>Thundering Strikes 5/5</td><td>+5% de crítico con hechizos y ataques</td></tr>
+<tr><td class="lv">15-17</td><td>Mental Dexterity 3/3</td><td>Intelecto a poder de ataque; desde el 10 nov al 100% (antes 150%)</td></tr>
+<tr><td class="lv">18-19</td><td>Ancestral Knowledge 2/5</td><td>Más Intelecto y maná</td></tr>
+<tr><td class="lv">20</td><td>Shamanistic Focus 1/1</td><td>Shocks y Lightning Shield un 45% más baratos</td></tr>
+<tr><td class="lv">21-23</td><td>Elemental Weapons 3/3</td><td>Rockbiter +20% de poder de ataque, Windfury +40%</td></tr>
+<tr><td class="lv">24</td><td>Ancestral Knowledge 3/5</td><td></td></tr>
+<tr><td class="lv">25</td><td><b>Stormstrike</b></td><td>100% del daño del arma, 8 s (desde el 10 nov)</td></tr>
+<tr><td class="lv">26-27</td><td><b>Improved Ghost Wolf</b> 2/2</td><td>Ghost Wolf instantáneo y en interiores</td></tr>
+<tr><td class="lv">28-29</td><td>Flurry 2/5</td><td>Velocidad de ataque tras un crítico</td></tr>
+<tr><td class="lv">30-31</td><td><b>Improved Stormstrike</b> 2/2</td><td>Regeneración de maná tras Stormstrike</td></tr>
+<tr><td class="lv">32-33</td><td>Mental Quickness 2/2</td><td>Parte del Intelecto a poder con hechizos</td></tr>
+<tr><td class="lv">34</td><td>Flurry 3/5</td><td></td></tr>
+<tr><td class="lv">35-39</td><td><b>Maelstrom Weapon</b> 5/5</td><td>Lightning Bolt más rápido y barato; salta más con armas lentas</td></tr>
+<tr><td class="lv">40</td><td><b>Rage of the Farseer</b></td><td>+30% de velocidad de ataque durante 25 s</td></tr>
+<tr><td class="lv">41-42</td><td>Flurry 5/5</td><td></td></tr>
+<tr><td class="lv">43</td><td>Spirit Weapons</td><td>Parada; +30% de amenaza con Rockbiter (para tanquear)</td></tr>
+<tr><td class="lv">44-48</td><td>Tidal Focus 5/5 (Resto)</td><td>+5% de golpe</td></tr>
+<tr><td class="lv">49-51</td><td>Mindfulness 3/3 (Resto)</td><td>Regeneras maná mientras lanzas</td></tr>
+<tr><td class="lv">52-60</td><td>Concussion, Elemental Devastation, Call of Flame</td><td>Más daño y crítico cuerpo a cuerpo</td></tr>
+</tbody></table></div>
+<p>Si a 35-39 te quedas sin maná, adelanta Mindfulness (hacia 38) y Water Shield (hacia 42). Con el talento Legacy <em>Talented</em> recibes talentos antes del nivel 10.</p>
+
+<h3>Rotación para questear</h3>
+<ol>
+<li><b>Antes del combate:</b> imbuye el arma (Rockbiter hasta 30, Windfury desde 30), Lightning Shield, y coloca Strength of Earth, un totem de fuego y Mana Spring.</li>
+<li><b>Para atraer:</b> Lightning Bolt de rango 1, que es barato.</li>
+<li><b>En combate:</b> Stormstrike cuando esté listo; Earth Shock, o Frost Shock si huye.</li>
+<li><b>Varios enemigos:</b> totem de fuego y Fire Nova.</li>
+<li><b>Poco maná:</b> solo golpes de arma y Healing Wave después del combate. La regeneración se para 5 s tras cada hechizo, totems incluidos.</li>
+<li><b>Al cambiar de zona:</b> Totemic Recall devuelve el 25% del maná de los totems.</li>
+</ol>
+<p><b>Prioridad de stats tras el 10 de noviembre:</b> daño del arma (dos manos de 3.3-3.8) &gt; Fuerza y poder de ataque &gt; golpe y pericia &gt; Intelecto &gt; crítico &gt; Agilidad. Blizzard: <em>"Enhancement Shaman players who are leveling up will want to collect Strength and Attack Power gear from now on."</em></p>
+
+<h3>Armas de dos manos mientras subes</h3>
+<div class="tw"><table>
+<thead><tr><th>Desde</th><th>Arma</th><th>Dónde</th></tr></thead>
+<tbody>
+<tr data-lv="13-20"><td class="lv">13</td><td>Ironforge Greathammer (maza, 3.10)</td><td><em>Old Ironforge Incursion</em>, Hall of Thanes</td></tr>
+<tr data-lv="18-24"><td class="lv">18</td><td>Smite's Mighty Hammer (maza, 3.50, +11 Fuerza)</td><td>Mr. Smite, Deadmines</td></tr>
+<tr data-lv="18-24"><td class="lv">18</td><td>Rockslicer (hacha, 3.30, +7 Fuerza; extrae vetas sin Minería, 30 cargas)</td><td>Rhahk'Zor, Deadmines</td></tr>
+<tr data-lv="23-29"><td class="lv">23</td><td>Twilight Maul (maza, 3.30)</td><td>Lorgus Jett, Blackfathom Deeps</td></tr>
+<tr data-lv="24-30"><td class="lv">24-29</td><td>Ironwood Destroyer (maza, 3.40)</td><td><em>Horrors in the Highland</em>, Excavation Site</td></tr>
+<tr data-lv="29-34"><td class="lv">29</td><td>Corpsemaker (hacha, 3.80, +15 Fuerza)</td><td>Overlord Ramtusk, Razorfen Kraul</td></tr>
+<tr data-lv="30-40"><td class="lv">30-35</td><td><b>Rage of the Storm</b> (maza, 3.6, 16 Fuerza, Stormstrike +10%)</td><td>Cadena <em>The Tempest's Weapons</em></td></tr>
+<tr data-lv="40-46"><td class="lv">40-45</td><td><em>Rock on Stick</em> o <em>Bigger Rock on Bigger Stick</em> (azules)</td><td><em>Eye of Mugg</em>, Krol'dok Stronghold</td></tr>
+</tbody></table></div>
+<p>Hachas y mazas de dos manos: Buliwyf Stonehand, en Ironforge. A nivel 40 puedes llevar malla.</p>
+
+<h3>En mazmorras</h3>
+<ul>
+<li><b>Sanador (Resto desde 40):</b> Water Shield, Healing Stream o Mana Spring, Healing Wave como cura principal y Lesser Healing Wave en emergencias.</li>
+<li><b>Tanque en mazmorras bajas:</b> una mano y escudo, Rockbiter y Earth Shock. La amenaza de Fire Nova va al chamán en Forever.</li>
+<li><b>Tremor Totem:</b> anula el Fear de Durgen Dirgehammer (Hall of Thanes), el rugido de Shadetooth (Excavation Site) y los Druids of the Fang (Wailing Caverns).</li>
+<li><b>Earth Shock</b> interrumpe (Mind Blast de Faldrim). <b>Stoneform</b> quita el sangrado de los Bloodhound Runts.</li>
+</ul>
+</section>
+
+<!-- ================= CLASE ================= -->
+<section id="clase">
+<h2><span class="n"></span>Quests de clase: totems y Da Voodoo</h2>
+<p>Los totems del enano tienen su propia cadena. Sin el objeto de cada elemento en la bolsa no puedes lanzar sus totems: haz cada quest al llegar al nivel.</p>
+<div class="tw"><table>
+<thead><tr><th>Nivel</th><th>Quest</th><th>Pasos</th><th>Recompensa</th></tr></thead>
+<tbody>
+<tr data-lv="4-9"><td class="lv t-earth">4</td><td><b>Call of Earth</b><br>Teo Hammerstorm, Anvilmar (28.8, 66.2)</td><td>2 <em>Iceclaw Bear Pendants</em> de Frostmane Troll Whelps (27.3, 79.6). Bebe la <em>Earth Sapta</em> en la Spirit Stone (25.0, 62.4; subida en 25.8, 69.3). Lleva el <em>Rough Quartz</em> a Teo.</td><td>Earth Totem, Stoneskin Totem</td></tr>
+<tr data-lv="10-16"><td class="lv t-fire">10</td><td><b>Call of Fire</b><br>Eldrun Stormbreaker (IF) o cualquier entrenador</td><td>Bruegs Kindleborn, cueva al este de Dun Morogh (87.6, 43.7; camino en 86.7, 47.0). Braldir Ashmantle, Loch Modan (32.0, 66.3). <em>Fire Tar</em> de Tunnel Rat Geomancers (35.6, 20.2) y <em>Reagent Pouch</em> de Stonesplinter Seers (31.0, 77.4). Bebe la <em>Fire Sapta</em> en la cima (31.9, 64.5), mata la manifestación, usa el brasero. Torch of Eternal Flame a Bruegs.</td><td>Fire Totem, Searing Totem</td></tr>
+<tr data-lv="20-27"><td class="lv t-water">20</td><td><b>Call of Water</b><br>Eldrun Stormbreaker (IF)</td><td>Norric Lochthane (Loch Modan, 41.9, 19.0). Hervdana Saegrund (Wetlands, 65.7, 76.4). Tres odres: cascada, Stonewatch Falls (Redridge, 73.7, 61.6), lago de Astranaar. <em>Water Sapta</em> en Stendel's Pond (Westfall, 47.5, 60.4): mata la manifestación corrupta, pon sus brazales, habla con el espíritu. <em>Shard of Water</em> a Norric.</td><td>Water Totem, Healing Stream Totem</td></tr>
+<tr data-lv="30-34"><td class="lv t-air">30</td><td><b>Call of Air</b><br>Eldrun Stormbreaker (IF)</td><td>Veyric en Arathi (59.8, 27.6): Thundervein en la quest, Thunderhame en el juego. Camino desde 60.5, 35.2, junto al Shard of Myzrael.</td><td><b>Solo el Air Totem</b></td></tr>
+<tr data-lv="30-37"><td class="lv t-air">30-35</td><td><b>The Tempest's Weapons</b><br>Veyric Thunderhame, tras Call of Air</td><td>1. <em>Elemental Aid</em>: <em>Tattered Note</em> de Charlga Razorflank (RFK). 2. <em>Storm, Earth, and Fire</em>: 5 <em>Twisted Totems</em> de cada tipo: agua de murlocs Mirefin (Dustwallow), aire de centauros Maraudine (Desolace), tierra de Lost Ones (Swamp of Sorrows), fuego de Dustbelcher y Stonevault (Badlands). 3. <em>Heed My Call</em>: pozas de vapor de Thousand Needles; oleadas, un quilboar élite y el élite <em>Ravaging Tempest</em> (2-3 jugadores). 4. <em>Eye of the Tempest</em> a Bath'rah (Alterac, 80.5, 66.9).</td><td><b>Rage of the Storm</b> (Mejora), <em>Lightning's Grasp</em> o <em>Tidebringer's Claw</em>, más el escudo <em>Elementalist's Guard</em></td></tr>
+<tr data-lv="50-55"><td class="lv">50</td><td><b>Elemental Mastery → Spirit Totem → Da Voodoo</b><br>Tu entrenador de chamán</td><td>Elemental Air, Fire, Earth y Water a Bath'rah (Alterac, 80.5, 66.9). <em>Spirit Totem</em>: Bloodshot Spider Eyes y Thick Black Claws de Western Plaguelands. <em>Da Voodoo</em>: una pluma de cada pareja de jefes trol de Sunken Temple (Gasher o Zul'Lor, Hukku o Mijan, Zolo o Loro).</td><td><em>Azurite Fists</em> (malla), <em>Enamored Water Spirit</em> (abalorio) o <em>Wildstaff</em></td></tr>
+<tr data-lv="45-52"><td class="lv">45-50</td><td><b>Odd Totems</b><br>Cadena nueva de Forever</td><td>Los datos del juego traen una cadena de chamán nueva: <em>Odd Totems</em> (investigar unos totems extraños en Tanaris), <em>Tainted Shrines</em>, <em>Challenge of the Desert Wolf</em>, <em>Bold Ogres</em> y <em>Lightning Rod</em>. Ninguna guía la documenta todavía: pregunta a tu entrenador al llegar a 45.</td><td>Sin datos</td></tr>
+<tr data-lv="58-60"><td class="lv">58-60</td><td><b>Material Assistance → The Darkreaver Menace</b><br>Eldrun Stormbreaker (IF)</td><td>Lleva a Eldrun un <em>Azerothian Diamond</em> y un <em>Pristine Black Diamond</em>. El diamante azerothiano sale de las vetas de torio, así que guarda uno. Sigue con <em>The Darkreaver Menace</em>, una quest de mazmorra.</td><td>Sin datos</td></tr>
+</tbody></table></div>
+<div class="callout"><p><b>El arma no la da Call of Air.</b> Los datos del juego lo confirman: <em>Call of Air</em> solo entrega el Air Totem. El arma sale de <em>The Tempest's Weapons</em>, cuya cadena empieza con <em>Elemental Aid</em>, que te da el propio Veyric Thunderhame a partir de nivel 30. Warcraft Tavern lo cuenta mal. La cadena está pensada para varios chamanes: si encuentras otro hacia 30-35, hacedla juntos. Razorfen Kraul está en territorio de la Horda (sur de Barrens).</p></div>
+<h4>Consejos</h4>
+<ul>
+<li><b>Fuego:</b> los Stonesplinter Seers atacan en grupo y a distancia; hazlo con 13-14 o acompañado.</li>
+<li><b>Agua:</b> unas dos horas de viaje. Con Ghost Wolf, coge los vuelos de Menethil, Auberdine, Astranaar y Sentinel Hill. El barco Menethil-Auberdine para en Southshore: no te bajes.</li>
+<li><b>Totems desaparecidos:</b> hay un hilo de jugadores con totems perdidos tras la caída de servidores; si te pasa, es un bug, abre un ticket.</li>
+</ul>
+</section>
+
+<!-- ================= PERSONAJE ================= -->
+<section id="personaje">
+<h2><span class="n"></span>Quests de personaje y raza</h2>
+<h3>Cozy Sleeping Bag (desde nivel 14)</h3>
+<p>Un +3% de XP que se mantiene aunque mueras, y descanso en cualquier sitio. Encaja con el viaje del Totem de Agua.</p>
+<ol>
+<li><b>Westfall:</b> <em>Nailed Plank</em> en Alexston Farmstead (37, 50).</li>
+<li><b>The Barrens:</b> <em>Burned-Out Remains</em> (46, 74) → <em>Stepping Stones</em>.</li>
+<li><b>Stonetalon:</b> <em>Pocket Litter</em> junto a Sun Rock Retreat (Mining Pick o Farmer's Shovel) y <em>Mound of Dirt</em> (3 Student Fodder y <em>Moonsight Rifle</em>, <em>Silver Star</em> o <em>Precision Bow</em>).</li>
+<li><b>Loch Modan:</b> <em>Carved Figurine</em> en la presa (49, 12), paso <em>Wet Job</em>.</li>
+<li><b>Thoradin's Wall</b> (22.5, 24.1 en el mapa de Arathi): sube por el carro a la <em>Messenger Bag</em>; debajo, el <em>Hastily Rolled-Up Satchel</em> con la <b>Cozy Sleeping Bag</b>.</li>
+</ol>
+<p>+1% de XP por minuto tumbado, hasta +3%. Cuenta como zona de descanso, incluso desconectado. Reutilización de 1 hora.</p>
+<h3>Cocina y campamentos</h3>
+<ul>
+<li>Aprende Cocina en Kharanos con <em>The Adventurer</em> → <em>The Great Outdoors</em> → <em>Camping 101: Cooking</em> (Eric Brighthammer, 46.7, 53.9).</li>
+<li>Casi toda la comida da +5% de XP por muerte durante 15 minutos. Comida, bolsa de dormir y campamento se suman.</li>
+</ul>
+<h3>Sistema Legacy (cuenta, tecla Y)</h3>
+<ul>
+<li>Primer punto a nivel 25 o con 150 en una profesión de fabricación. Máximo invertible esta temporada: 16 puntos.</li>
+<li><b>Por mazmorras</b> (1 punto por grupo completo): <b>Novice Spelunker</b> (Ragefire o Hall of Thanes, Ruins of Lordaeron, Wailing Caverns, Deadmines, Shadowfang Keep, Excavation Site), <b>Experienced Spelunker</b> (Dalaran, BFD, Gnomeregan, Drowned City, las cuatro de SM, RFK, Krol'dok) y <b>Master Spelunker</b> (todas las de 37 a 60).</li>
+<li><b>Talentos útiles:</b> <em>Talented</em>, <em>Well Rested</em>, <em>Frequent Flier</em> (vuelos al 50% y +20% de velocidad), <em>Working Overtime</em>, <em>Bountiful Harvest</em> y <em>Reagent Economy</em> (sin ankhs).</li>
+</ul>
+<h3>Raza</h3>
+<ul>
+<li><b>Ironforge:</b> con Honorable, 10% de descuento en carneros y en montar. Montura a nivel 40 en Amberstill Ranch (63.7, 50.3): Ultham Ironhorn y Veron Amberstill.</li>
+<li><b>Raciales:</b> Artisan's Precision (+1% golpe), Big Game Hunter (más daño a bestias), Stoneform y Find Treasure.</li>
+<li><b>Cadenas de enano en Ironforge:</b> Uldaman (Hall of Explorers), Moira (Royal Historian Archesonus) y <em>Hurley Blackbreath</em> (Kharanos).</li>
+</ul>
+</section>
+
+<!-- ================= PLAN MAESTRO ================= -->
+<section id="plan">
+<h2><span class="n"></span>Plan maestro por tramos</h2>
+<p class="intro">El resumen de toda la guía. La fila de tu nivel se resalta.</p>
+<div class="tw"><table class="lvt">
+<thead><tr><th>Nivel</th><th>Dónde questear</th><th>Clase y personaje</th><th>Mazmorras</th><th>Minería e Ingeniería</th></tr></thead>
+<tbody>
+<tr data-lv="1-12"><td class="lv">1-12</td><td>Dun Morogh</td><td>Totem de Tierra (4), Cocina (6), <em>Nip 'Em in the Bud</em> (9)</td><td>—</td><td><em>Mining for Dummies</em>; Ingeniería desde 5</td></tr>
+<tr data-lv="10-16"><td class="lv">10-16</td><td>Loch Modan</td><td>Totem de Fuego (10). Bolsa de dormir desde 14</td><td><b>Hall of Thanes</b> (13-20)</td><td>Cobre y estaño. Ingeniería hasta 100: guarda 10 Coarse Dynamite</td></tr>
+<tr data-lv="15-20"><td class="lv">15-20</td><td>Westfall, Redridge</td><td>Cadenas Defias y de Alba</td><td><b>Deadmines</b>, <b>Ruins of Lordaeron</b>, <b>Wailing Caverns</b></td><td>Bronce. Ingeniería 100-150</td></tr>
+<tr data-lv="20-25"><td class="lv">20-25</td><td>Wetlands, Duskwood</td><td><b>Totem de Agua (20)</b>, Ghost Wolf</td><td><b>Shadowfang Keep</b>, <b>Blackfathom Deeps</b></td><td>Experto desde 20</td></tr>
+<tr data-lv="25-30"><td class="lv">25-30</td><td>Wetlands, Duskwood, Hillsbrad</td><td><em>An Alarming Request</em></td><td><b>Stockade</b>, <b>Excavation Site</b>, <b>City of Dalaran</b></td><td>Ingeniería 150-175</td></tr>
+<tr data-lv="30-35"><td class="lv">30-35</td><td>Arathi, Alterac, Stranglethorn</td><td><b>Totem de Aire (30)</b> y <em>The Tempest's Weapons</em> → Rage of the Storm hacia 35</td><td><b>Gnomeregan</b>, <b>RFK</b>, <b>SM GY</b> y <b>Library</b></td><td>Hierro y oro. Artesano desde 35</td></tr>
+<tr data-lv="35-40"><td class="lv">35-40</td><td><b>Riverglades</b>, Badlands, Dustwallow, STV</td><td>Quests de Uldaman en Ironforge</td><td><b>Drowned City</b>, <b>SM Armory</b> y <b>Cathedral</b>, <b>RFD</b></td><td>Mitril. Especialización desde 200</td></tr>
+<tr data-lv="40-45"><td class="lv">40-45</td><td>Riverglades, Feralas, Tanaris, Hinterlands, Shen'dralas</td><td><b>Doble especialización y montura (40)</b></td><td><b>Krol'dok</b>, <b>Uldaman</b></td><td>Llave de Krol'dok: 12 Iron Bar</td></tr>
+<tr data-lv="45-50"><td class="lv">45-50</td><td>Searing Gorge, Azshara, Felwood, Blasted Lands, Un'Goro</td><td>Guarda los cristales de Un'Goro. Quests 48+ dan oro</td><td><b>Zul'Farrak</b>, <b>Maraudon</b>, <b>Alcaz Prison</b></td><td>Ingeniería 215-250</td></tr>
+<tr data-lv="50-55"><td class="lv">50-55</td><td>Burning Steppes, Plaguelands, Winterspring</td><td><b>Da Voodoo (50)</b></td><td><b>Sunken Temple</b>, <b>BRD</b>, <b>DM East</b></td><td>Dark Iron (230-245)</td></tr>
+<tr data-lv="55-59"><td class="lv">55-60</td><td>Silithus, Plaguelands, Winterspring</td><td><em>Attunement to the Core</em> (55)</td><td><b>LBRS</b>, <b>Blackmaw</b>, <b>DM W/N</b>, <b>Strat</b>, <b>Scholo</b>, <b>Shaper's</b>, <b>UBRS</b></td><td>Torio; Azerothium desde 275</td></tr>
+<tr data-lv="60-60"><td class="lv">60</td><td>Mount Hyjal</td><td>Legacy y reputaciones</td><td>Raids desde el 9 de diciembre</td><td>Heavy Thorium</td></tr>
+</tbody></table></div>
+</section>
+
+<!-- ================= TODAS LAS ZONAS ================= -->
+<section id="zonas">
+<h2><span class="n"></span>Todas las zonas de Forever</h2>
+<p class="intro">Para conocerlo entero, también lo que no es de tu nivel o facción. Las de la Horda, solo para explorar y con cuidado.</p>
+<div class="tw"><table class="lvt">
+<thead><tr><th>Zona</th><th>Niveles</th><th>Base Alianza</th><th>Qué te ofrece</th><th>Nuevo en Forever</th></tr></thead>
+<tbody>
+<tr data-lv="1-10"><td><b>Elwynn Forest</b></td><td class="lv">1-10</td><td>Goldshire</td><td>Gris a tu nivel; <em>A Watchful Eye</em>; exploración</td><td>Quests de campamento, <em>Downstream</em>, Elmpaw</td></tr>
+<tr data-lv="1-12"><td><b>Dun Morogh</b></td><td class="lv">1-12</td><td>Kharanos</td><td>Hecha. Cadena de Hall of Thanes</td><td><em>Grund and Gozwin</em>, <em>Secure the Mountain</em>, Earthseer Farsen</td></tr>
+<tr data-lv="1-12"><td><b>Teldrassil y Darnassus</b></td><td class="lv">1-12</td><td>Dolanaar</td><td>Quests de BFD y Blackmaw en Darnassus; puños y dagas</td><td>Quests en Shadowglen</td></tr>
+<tr data-lv="1-13"><td><b>Zephras Isle</b></td><td class="lv">1-13</td><td>Valanaar</td><td>Zona inicial Skyborne, solo exploración; <em>skycutter</em> a Dalaran</td><td>Toda la zona</td></tr>
+<tr data-lv="1-20"><td><b>Durotar, Mulgore, Tirisfal, Silverpine</b></td><td class="lv">1-20</td><td>Horda</td><td>Exploración. Ruins of Lordaeron y SM (Tirisfal), SFK y alcantarillas de Dalaran (Silverpine)</td><td>Ruins of Lordaeron</td></tr>
+<tr data-lv="10-20"><td><b>Loch Modan</b></td><td class="lv">10-20</td><td>Thelsamar</td><td>Hecha. Totems de Fuego y Agua, bolsa de dormir</td><td><em>Snowbound</em>, <em>Silver of the Waves</em>, <em>Twisting the Knife</em></td></tr>
+<tr data-lv="10-20"><td><b>Westfall</b></td><td class="lv">10-20</td><td>Sentinel Hill</td><td>Deadmines y bolsa de dormir</td><td>Cadena de Alba Fairmoon</td></tr>
+<tr data-lv="10-20"><td><b>Darkshore</b></td><td class="lv">10-20</td><td>Auberdine</td><td>Casi hecha. BFD</td><td><em>WANTED: Jai'vhanel</em> y dos más</td></tr>
+<tr data-lv="10-25"><td><b>The Barrens</b></td><td class="lv">10-25</td><td>Ratchet (neutral)</td><td>WC, RFK, RFD, bolsa de dormir</td><td>—</td></tr>
+<tr data-lv="15-25"><td><b>Redridge</b></td><td class="lv">15-25</td><td>Lakeshire</td><td>Stockade, Excavation Site, Totem de Agua, entrada a Riverglades</td><td><em>Assessing the Threat</em>, <em>Blackrock Blockade</em>, Gar'im</td></tr>
+<tr data-lv="15-27"><td><b>Stonetalon</b></td><td class="lv">15-27</td><td>Stonetalon Peak</td><td>Bolsa de dormir; <em>Pridewings of Stonetalon</em></td><td>Sin datos</td></tr>
+<tr data-lv="18-30"><td><b>Ashenvale</b></td><td class="lv">18-30</td><td>Astranaar</td><td>Totem de Agua, BFD, <em>Seeking Caitlin</em></td><td><em>Seeking Caitlin</em>, <em>Gleaming Crescent Necklace</em></td></tr>
+<tr data-lv="18-30"><td><b>Duskwood</b></td><td class="lv">18-30</td><td>Darkshire</td><td>Cadenas largas y Stockade</td><td><em>The Valor Family</em>, fantasmas <em>Lost</em></td></tr>
+<tr data-lv="20-30"><td><b>Wetlands</b></td><td class="lv">20-30</td><td>Menethil Harbor</td><td>Excavation Site, Totem de Agua</td><td>Zona ampliada, mazmorra y barco a Southshore</td></tr>
+<tr data-lv="25-35"><td><b>Thousand Needles</b></td><td class="lv">25-35</td><td>Shimmering Flats</td><td><em>Heed My Call</em>, <em>Lonebrow's Journal</em> (RFK), <em>Gahz'rilla</em> (ZF)</td><td>Sin datos</td></tr>
+<tr data-lv="28-35"><td><b>Hillsbrad</b></td><td class="lv">28-35</td><td>Southshore</td><td><em>An Alarming Request</em></td><td>Barco desde Menethil</td></tr>
+<tr data-lv="30-40"><td><b>Alterac y Dalaran</b></td><td class="lv">30-40</td><td>Southshore</td><td>City of Dalaran, Kirin Tor, <em>Past Due</em>, <em>Vengeance of the Highborne</em></td><td>Dalaran vuelve como ciudad con mazmorra</td></tr>
+<tr data-lv="30-40"><td><b>Arathi</b></td><td class="lv">30-40</td><td>Refuge Pointe</td><td><em>Call of Air</em>, final de la bolsa de dormir</td><td>Quests en Hammerfall (Horda)</td></tr>
+<tr data-lv="30-45"><td><b>Stranglethorn</b></td><td class="lv">30-45</td><td>Rebel Camp, Booty Bay</td><td>Nesingwary, Drowned City</td><td>Wendel Mathers, Zimmix</td></tr>
+<tr data-lv="30-40"><td><b>Desolace</b></td><td class="lv">30-40</td><td>Nijel's Point</td><td>Maraudon y centauros; entrada a Shen'dralas</td><td>Recompensas de facción, <em>Vahlarriel's Vengeance</em></td></tr>
+<tr data-lv="35-45"><td><b>Riverglades</b></td><td class="lv">35-45</td><td>Farholde Keep</td><td>Krol'dok, Powderfuse, mercado negro</td><td>Toda la zona (casi 200 quests)</td></tr>
+<tr data-lv="35-45"><td><b>Dustwallow</b></td><td class="lv">35-45</td><td>Theramore</td><td>Alcaz Prison, quests de Maraudon y ZF</td><td>Alcaz Prison</td></tr>
+<tr data-lv="35-45"><td><b>Badlands</b></td><td class="lv">35-45</td><td>— (vuelo a Thelsamar)</td><td>Uldaman, mitril</td><td>—</td></tr>
+<tr data-lv="35-45"><td><b>Swamp of Sorrows</b></td><td class="lv">35-45</td><td>Watcher Biggs</td><td>Sunken Temple</td><td><em>Taking the Bait Back</em></td></tr>
+<tr data-lv="40-55"><td><b>Shen'dralas</b></td><td class="lv">40-55?</td><td>Compartida</td><td>Centauros; quests de Dire Maul, Maraudon y RFD</td><td>Toda la zona</td></tr>
+<tr data-lv="40-50"><td><b>Feralas</b></td><td class="lv">40-50</td><td>Feathermoon</td><td>Dire Maul, Sunken Temple</td><td>—</td></tr>
+<tr data-lv="40-50"><td><b>Tanaris</b></td><td class="lv">40-50</td><td>Gadgetzan</td><td>Zul'Farrak; Ingeniería Artesano y Goblin</td><td>Barco a Riverglades</td></tr>
+<tr data-lv="40-50"><td><b>The Hinterlands</b></td><td class="lv">40-50</td><td>Aerie Peak</td><td>Sharpbeak, ZF y Sunken Temple, mitril</td><td>—</td></tr>
+<tr data-lv="43-50"><td><b>Searing Gorge</b></td><td class="lv">43-50</td><td>Thorium Point</td><td>Dark Iron, Thorium Brotherhood, BRD</td><td>—</td></tr>
+<tr data-lv="45-55"><td><b>Azshara</b></td><td class="lv">45-55</td><td>Talrendis Point</td><td>Blackmaw Hold, Duke Hydraxis</td><td>Blackmaw Hold</td></tr>
+<tr data-lv="45-55"><td><b>Blasted Lands</b></td><td class="lv">45-55</td><td>Nethergarde Keep</td><td>Pociones, Fallen Hero</td><td>—</td></tr>
+<tr data-lv="48-55"><td><b>Felwood</b></td><td class="lv">48-55</td><td>Talonbranch Glade</td><td>Timbermaw, Songflower</td><td>—</td></tr>
+<tr data-lv="48-55"><td><b>Un'Goro</b></td><td class="lv">48-55</td><td>Marshal's Refuge</td><td>Cristales de poder, Linken, Shaper's Terrace</td><td>Shaper's Terrace</td></tr>
+<tr data-lv="50-58"><td><b>Burning Steppes</b></td><td class="lv">50-58</td><td>Morgan's Vigil</td><td>BRD, LBRS, UBRS</td><td>—</td></tr>
+<tr data-lv="51-58"><td><b>Western Plaguelands</b></td><td class="lv">51-58</td><td>Chillwind Camp</td><td>Scholomance, <em>Spirit Totem</em>, Argent Dawn</td><td>—</td></tr>
+<tr data-lv="53-60"><td><b>Eastern Plaguelands</b></td><td class="lv">53-60</td><td>Light's Hope Chapel</td><td>Stratholme, Tirion Fordring</td><td>—</td></tr>
+<tr data-lv="54-60"><td><b>Winterspring</b></td><td class="lv">54-60</td><td>Everlook</td><td>Torio, <em>Thorium Tube</em></td><td>—</td></tr>
+<tr data-lv="55-60"><td><b>Silithus</b></td><td class="lv">55-60</td><td>Cenarion Hold</td><td>Contenido de 60, Ahn'Qiraj más adelante</td><td>—</td></tr>
+<tr data-lv="55-60"><td><b>Deadwind Pass</b></td><td class="lv">55+</td><td>—</td><td>Exploración (Karazhan por fuera)</td><td>—</td></tr>
+<tr data-lv="0-0"><td><b>Moonglade</b></td><td class="lv">—</td><td>Nighthaven</td><td><em>Shards of the Felvine</em>, <em>Wasteland</em></td><td>—</td></tr>
+<tr data-lv="60-60"><td><b>Mount Hyjal</b></td><td class="lv">60</td><td>—</td><td>Reputaciones nuevas, Heavy Thorium, raids</td><td>Toda la zona</td></tr>
+</tbody></table></div>
+<p>Forever añade el campo de batalla <b>Darkspear Islands</b> (15 contra 15). Exaltado con cualquier facción de campo de batalla da un punto de Legacy.</p>
+</section>
+
+<!-- ================= ZONAS 1-30 ================= -->
+<section id="zonas-1-30">
+<h2><span class="n"></span>Quests por zona: 1-30</h2>
+<p class="intro">Ruta natural del enano: Dun Morogh → Loch Modan → Westfall → Redridge → Wetlands y Duskwood → Hillsbrad y Arathi. Darkshore y Ashenvale las pisas por el Totem de Agua y BFD.</p>
+
+<details class="zona" data-lv="1-12"><summary><span class="zn">Dun Morogh</span><span class="lv">1-12</span><span class="base">base: Kharanos</span><span class="tag done">hecho</span></summary><div class="body">
+<p>Coldridge Valley (Anvilmar) → túnel a Kharanos hacia nivel 6 (piedra con Innkeeper Belm, 47.4, 52.5) → oeste (Brewnall y cuevas trol) → este (Amberstill Ranch y Gol'Bolar Quarry). Sin punto de vuelo: el más cercano es Gryth Thurden, en Ironforge.</p>
+<ul>
+<li><b>Coldridge:</b> <em>Dwarven Outfitters</em>, <em>A New Threat</em>, <em>The Troll Cave</em> → <em>The Stolen Journal</em> → <em>Senir's Observations</em>.</li>
+<li><b>Kharanos:</b> <em>Beer Basted Boar Ribs</em>, <em>Tools for Steelgrill</em>, <em>The Grizzled Den</em>, <em>Operation Recombobulation</em>, <em>Tundra MacGrann's Stolen Stash</em>.</li>
+<li><b>Cerveza:</b> <em>Stocking Jetsteam</em> → <em>Evershine</em> → <em>The Perfect Stout</em> → <em>Shimmer Stout</em> → <em>Stout to Kadrell</em>; <em>Bitter Rivals</em> → <em>Distracting Jarven</em>.</li>
+<li><b>Este:</b> <em>Frostmane Hold</em> → <em>The Reports</em>, <em>Protecting the Herd</em>, <em>Those Blasted Troggs!</em>, <em>The Public Servant</em>, <em>The Lost Pilot</em> → <em>A Pilot's Revenge</em>.</li>
+<li><b>Nuevo:</b> <em>Grund and Gozwin</em>; <em>The Adventurer</em> → <em>The Great Outdoors</em> → <em>Camping 101: Cooking</em>; <em>Secure the Mountain</em>; <em>Flintfire's Shipment</em>; <em>Dawn in the Mountains</em>; <em>A Visitor to Dun Morogh</em> → Earthseer Farsen → <em>Nip 'Em in the Bud</em>.</li>
+<li><b>Ojo:</b> <em>Scalding Mornbrew Delivery</em> tiene 5 minutos; Vagash solo cuenta si haces más de la mitad del daño.</li>
+</ul></div></details>
+
+<details class="zona" data-lv="10-20"><summary><span class="zn">Loch Modan</span><span class="lv">10-20</span><span class="base">base: Thelsamar</span><span class="tag done">hecho</span></summary><div class="body">
+<p>Totems de Fuego y Agua. Troggs del sur y Silver Stream Mine, luego excavación y Farstrider Lodge, y al final la presa y los ogros.</p>
+<ul>
+<li><b>Cadenas:</b> <em>In Defense of the King's Lands</em> (cuatro partes hasta Grawmug) y <em>The Trogg Threat</em>; <em>Stout to Kadrell</em> → <em>Rat Catching</em> → <em>Filthy Paws</em>; <em>Honor Students</em> → <em>Ride to Ironforge</em>; <em>Ironband's Excavation</em> → … → <em>Protecting the Shipment</em>; <em>A Dark Threat Looms</em>.</li>
+<li><b>Nuevo:</b> <em>Snowbound</em> (tarro de nieve a Norric en 10 min), <em>Silver of the Waves</em>, <em>Twisting the Knife</em>.</li>
+<li><b>Mazmorras:</b> <em>Uldaman Reagent Run</em> (Ghak Healtouch, nivel 36); <em>Report to Mountaineer Rockgar</em> → <em>The Algaz Gauntlet</em>.</li>
+<li><b>Minería:</b> Silver Stream Mine.</li>
+</ul></div></details>
+
+<details class="zona" data-lv="15-23"><summary><span class="zn">Westfall</span><span class="lv">10-20</span><span class="base">base: Sentinel Hill</span></summary><div class="body">
+<p>Llega por el tranvía y coge el vuelo de Sentinel Hill (Thor, 56.6, 52.6). Aquí están las dos cadenas que alimentan Deadmines.</p>
+<ul>
+<li><b>Cadenas:</b> <em>The People's Militia</em> (arma de la Milicia), <em>Patrolling Westfall</em>, <em>Red Leather Bandanas</em>, <em>Westfall Stew</em>, <em>Goretusk Liver Pie</em>, <em>Poor Old Blanchy</em>, <em>Thunderbrew Lager</em>. Faro (Captain Grayson): <em>Keeper of the Flame</em>, <em>The Coast Isn't Clear</em>, <em>The Coastal Menace</em>.</li>
+<li><b>The Defias Brotherhood:</b> Gryan → Wiley (Lakeshire) → Mathias Shaw → <em>A Mysterious Message</em> → escolta del Traitor → VanCleef.</li>
+<li><b>Nuevo, cadena de Alba Fairmoon</b> (52.5, 53.0): <em>Testing the Wells</em> y <em>Murloc Gills</em> → <em>The State of the Mines</em> → <em>Moonbrook Espionage</em> → <em>Explosive Consultation</em> → <b><em>A Dynamite Plan</em> (10 Coarse Dynamite)</b> → <em>Detonation at a Distance</em> → <em>Destruction in Deadmines</em>.</li>
+<li><b>Recompensas:</b> arma de la Milicia; <em>Buckler of the Seas</em> o <em>Grayson's Torch</em>; de VanCleef, <em>Tunic</em>, <em>Staff</em> o <em>Chausses of Westfall</em>.</li>
+<li><b>Ojo:</b> la escolta del Traitor arrastra Defias: hazla acompañado. Salta <em>Harvesting the Harvesters</em>.</li>
+</ul></div></details>
+
+<details class="zona" data-lv="15-25"><summary><span class="zn">Redridge Mountains</span><span class="lv">15-25</span><span class="base">base: Lakeshire</span></summary><div class="body">
+<p>Primera vuelta hacia 16-19, luego Duskwood, y vuelta a principios de los 20. A nivel 35 es la entrada a Riverglades.</p>
+<ul>
+<li><b>Cadenas:</b> <em>Encroaching Gnolls</em>, <em>Blackrock Menace</em>, <em>The Lost Tools</em> → <em>The Everstill Bridge</em>, <em>The Price of Shoes</em> → <em>A Baying of Gnolls</em> y <em>Underbelly Scales</em>, <em>Messenger to Stormwind</em>, <em>Redridge Goulash</em>, <em>Shadow Magic</em>, <em>Tharil'zun</em>, <em>Solomon's Law</em>, <em>Blackrock Bounty</em>, <em>Missing In Action</em>.</li>
+<li><b>Nuevo:</b> <em>Assessing the Threat</em> y <em>Show of Force</em> (Deputy Feldon), <em>Blackrock Blockade</em>, <em>WANTED: Incinerator Gar'im</em> (grupo).</li>
+<li><b>Mazmorras:</b> <em>What Comes Around…</em> (Stockade); <em>Songblade Search</em> (Excavation Site).</li>
+</ul></div></details>
+
+<details class="zona" data-lv="10-20"><summary><span class="zn">Darkshore</span><span class="lv">10-20</span><span class="base">base: Auberdine</span><span class="tag">opcional</span></summary><div class="body">
+<ul>
+<li><b>Mazmorras:</b> <em>Researching the Corruption</em> (BFD); el libro <em>The Powers Below</em> para Gerrig Bonegrip.</li>
+<li><b>Cadena larga:</b> <em>The Absent Minded Prospector</em> (Skullchipper o Relic Blade).</li>
+<li><b>Nuevo:</b> <em>WANTED: Jai'vhanel</em>, <em>Expanding Horizons</em>, <em>It's All Fun and Games Until...</em></li>
+</ul></div></details>
+
+<details class="zona" data-lv="18-30"><summary><span class="zn">Duskwood</span><span class="lv">18-30</span><span class="base">base: Darkshire</span></summary><div class="body">
+<p>Casi todo empieza en Darkshire. Coge las cadenas largas pronto y llévalas varios niveles.</p>
+<ul>
+<li><b>Cadenas:</b> <em>The Night Watch</em>, <em>Raven Hill</em> → Jitters, <em>Sven's Revenge</em>, <em>The Hermit</em> → Embalmer (Eliza, grupo), <em>Worgen in the Woods</em>, <em>Wolves at Our Heels</em>, <em>Morbent's Bane</em>, <em>The Legend of Stalvan</em>, Mor'Ladim.</li>
+<li><b>Nuevo:</b> <em>The Valor Family</em> (Sirra Von'Indi) y cuatro fantasmas <em>Lost</em>.</li>
+<li><b>Mazmorras:</b> <em>Crime and Punishment</em> (Stockade). <em>Remember That I Love You</em> (Ruins of Lordaeron) se entrega a Avette Fellwood según Questie.</li>
+<li><b>Ingeniería:</b> <em>Look To The Stars</em> pide un Bronze Tube.</li>
+</ul></div></details>
+
+<details class="zona" data-lv="20-30"><summary><span class="zn">Wetlands</span><span class="lv">20-30</span><span class="base">base: Menethil Harbor</span></summary><div class="body">
+<p>Zona ampliada con Excavation Site. Barcos a Auberdine, Theramore y, nuevo, Southshore.</p>
+<ul>
+<li><b>Cadenas:</b> <em>The Algaz Gauntlet</em>, <em>Young Crocolisk Skins</em> → <em>Apprentice's Duties</em>, <em>Claws from the Deep</em> → <em>Return the Statuette</em>, <em>Digging Through the Ooze</em>, <em>Ormer's Revenge</em>, <em>Uncovering the Past</em>. Dun Modr: <em>The Dark Iron War</em> → <em>The Fury Runs Deep</em>, <em>A Grim Task</em> (élite 34), <em>The Thandol Span</em>. <em>The Cursed Crew</em>, <em>Defeat Nek'rosh</em>.</li>
+<li><b>Nuevo:</b> <em>Highland Hides</em>, <em>Lost in the Thicket Things</em>, cadena de Rethiel → <em>Horrors in the Highland</em>, <em>Lost Relic Carry</em>.</li>
+<li><b>Ingeniería:</b> Fradd Swiftgear (26.4, 25.8) vende suministros.</li>
+<li><b>Recompensas:</b> <em>Gold Lion Shield</em>; <em>Ancient War Sword</em> o <em>Barreling Reaper</em>; <em>Raptor's End</em>.</li>
+</ul></div></details>
+
+<details class="zona" data-lv="18-30"><summary><span class="zn">Ashenvale</span><span class="lv">18-30</span><span class="base">base: Astranaar</span><span class="tag">opcional</span></summary><div class="body">
+<ul>
+<li><b>Nuevo:</b> <em>Seeking Caitlin</em> (Llana, desde 24); <em>Gleaming Crescent Necklace</em> (63.0, 71.6).</li>
+<li><b>Si te quedas:</b> <em>Raene's Cleansing</em>, <em>The Zoram Strand</em>, <em>The Tower of Althalaxx</em>.</li>
+</ul></div></details>
+
+<details class="zona" data-lv="28-35"><summary><span class="zn">Hillsbrad Foothills</span><span class="lv">28-35</span><span class="base">base: Southshore</span></summary><div class="body">
+<ul>
+<li><b>Nuevo:</b> <em>An Alarming Request</em> (Emissary Jacques, 48.3, 60.2).</li>
+<li><b>Cadenas:</b> <em>Down the Coast</em> → <em>Farren's Proof</em> → <em>Stormwind Ho!</em>; <em>Soothing Turtle Bisque</em>; <em>Costly Menace</em>; <em>Bartolo's Yeti Fur Cloak</em>; <em>Syndicate Assassins</em> → <em>Letter to Stormpike</em>.</li>
+<li><b>Ojo:</b> disputada con Tarren Mill.</li>
+</ul></div></details>
+
+<details class="zona" data-lv="30-40"><summary><span class="zn">Arathi Highlands</span><span class="lv">30-40</span><span class="base">base: Refuge Pointe</span></summary><div class="body">
+<ul>
+<li><b>Cadenas:</b> <em>Northfold Manor</em> → <em>Stromgarde Badges</em>; <em>Wanted! Marez Cowl</em>; <em>Wanted! Otto and Falconcrest</em>; Kryten (<em>Worth Its Weight in Gold</em>, <em>Attack on the Tower</em>); Myzrael; Faldir's Cove (<em>Land Ho!</em>, <em>Deep Sea Salvage</em>, <em>Drowned Sorrows</em>, <em>Sunken Treasure</em>).</li>
+<li><b>Tu clase:</b> <em>Call of Air</em> solo da el Totem de Aire; el arma llega con <em>The Tempest's Weapons</em>.</li>
+<li><b>Bolsa de dormir:</b> final en Thoradin's Wall (22.5, 24.1).</li>
+</ul></div></details>
+</section>
+
+<!-- ================= ZONAS 30-45 ================= -->
+<section id="zonas-30-45">
+<h2><span class="n"></span>Quests por zona: 30-45</h2>
+<p class="intro">La zona estrella es Riverglades. Alrededor, las cadenas de Maraudon, Uldaman, Zul'Farrak y del arma de chamán.</p>
+
+<details class="zona" data-lv="30-40"><summary><span class="zn">Alterac Mountains</span><span class="lv">30-40</span><span class="base">base: Southshore</span></summary><div class="body">
+<ul>
+<li><b>Syndicate:</b> <em>Syndicate Assassins</em> → <em>Foreboding Plans</em> → <em>Noble Deaths</em>; <em>Encrypted Letter</em> → <em>Letter to Stormpike</em> → <em>Further Mysteries</em> → <em>Dark Council</em>.</li>
+<li><b>Ogros:</b> <em>Crushridge Bounty</em> → <em>Crushridge Warmongers</em>.</li>
+<li><b>Nuevo:</b> City of Dalaran (alcantarillas en 68.6, 45.1 del mapa de Silverpine; alguien necesita la <em>Dalaran Sewer Key</em>); <em>Past Due</em> (Magus Olvek); <em>Vengeance of the Highborne</em> (Ranath Nightstride, 11.500 XP y Kirin Tor).</li>
+</ul></div></details>
+
+<details class="zona" data-lv="30-45"><summary><span class="zn">Stranglethorn Vale</span><span class="lv">30-45</span><span class="base">base: Rebel Camp, Booty Bay</span></summary><div class="body">
+<ul>
+<li><b>Nesingwary:</b> <em>Welcome to the Jungle</em> y las tres de caza (Sin'Dall, Bhag'thera, Tethis) → <em>Big Game Hunter</em>.</li>
+<li><b>Rebel Camp:</b> <em>Bookie Herod</em> → <em>The Spy Revealed!</em>, <em>The Second Rebellion</em>, <em>Bad Medicine</em> → <em>Colonel Kurzen</em>, <em>Kurzen's Mystery</em>.</li>
+<li><b>Krazek:</b> <em>The Haunted Isle</em> → <em>Magical Analysis</em>.</li>
+<li><b>Nuevo:</b> Wendel Mathers (<em>Returning to Port</em>), <em>Anything of Value</em>, <em>Partial Mystical Notes</em>, <em>Zimmix's Great Escape</em>.</li>
+<li><b>Drowned City:</b> <em>Take Two With Water</em> y <em>Magics of the Drowned City</em> (Dibbs), <em>Shady Saltseers</em> (Krazek).</li>
+</ul></div></details>
+
+<details class="zona" data-lv="30-40"><summary><span class="zn">Desolace</span><span class="lv">30-40</span><span class="base">base: Nijel's Point</span></summary><div class="body">
+<ul>
+<li><b>Cadenas:</b> <em>Centaur Bounty</em>; Reclaimers Inc. (→ <em>The Karnitol Shipwreck</em>); Vahlarriel (escolta); <em>Down the Scarlet Path</em>; elige Magram o Gelkis.</li>
+<li><b>Nuevo:</b> <em>Vahlarriel's Vengeance</em>; recompensas de facción con centauros.</li>
+<li><b>Maraudon:</b> <em>The Pariah's Instructions</em>, <em>Twisted Evils</em>, <em>Vyletongue Corruption</em>, <em>Legends of Maraudon</em>.</li>
+<li><b>Arma:</b> los centauros Maraudine sueltan los totems de aire.</li>
+</ul></div></details>
+
+<details class="zona" data-lv="35-45"><summary><span class="zn">The Riverglades</span><span class="lv">35-45</span><span class="base">base: Farholde Keep</span><span class="tag new">nueva</span></summary><div class="body">
+<p>Del tamaño de Stranglethorn, con casi 200 quests. Entra desde Redridge (desvío a Burning Steppes, a la derecha) o en barco de Steamwheedle Port a Powderfuse Port. Empieza por el sur y el oeste (36) y acaba en el lejano oeste (44).</p>
+<ul>
+<li><b>Bases:</b> Farholde Keep (grifos con Gretchen Mayberry; posada), Powderfuse Port (neutral), Farholde Lookouts (Sergeant Riftan), Sunnyglade, Twilight's Shroud.</li>
+<li><b>Cadenas:</b> <em>Eye of Mugg</em> (Demar Brant); Ashe Amberhall: <em>Scraps of Knowledge</em>, <em>Curious Trinkets</em> → <em>A Small Favor</em> → <em>Tome of Twilight</em>; Overlord Kilgar: <em>Bring Me His Head</em> → <em>Twilight Mementos</em> → <em>Lingering Essence</em> → <em>Curios of Curiosity</em>.</li>
+<li><b>Llave:</b> <em>Krol'dok Moulding</em> → Alphonse Dumas → <em>Key Ingredients</em> (12 Iron Bar + 4 Thick Leather) → <em>Krol'dok Compound Key</em>.</li>
+<li><b>Recompensas:</b> <em>Rock on Stick</em>, <em>Bigger Rock on Bigger Stick</em> o <em>Stick No Rock</em>; Powderfuse en Amistoso: <em>Misplaced Pantaloons</em>, <em>Disengagement Ring</em>.</li>
+<li><b>Ojo:</b> gnolls de la entrada (36-38); Twilight's Shroud es de 44; élites Ghostmaw y Scoutmaster Vargas.</li>
+</ul></div></details>
+
+<details class="zona" data-lv="35-45"><summary><span class="zn">Dustwallow Marsh</span><span class="lv">35-45</span><span class="base">base: Theramore</span></summary><div class="body">
+<ul>
+<li><b>Cadenas:</b> <em>The Missing Diplomat</em> → Jaina; <em>They Call Him Smiling Jim</em>; <em>Suspicious Hoofprints</em> → <em>The Deserters</em>; <em>Jarl Needs Eyes</em>.</li>
+<li><b>Mazmorras:</b> <em>Shadowshard Fragments</em> (Maraudon), <em>Tiara of the Deep</em> (ZF); Alcaz Prison en la isla del noreste.</li>
+<li><b>Arma:</b> los murlocs Mirefin sueltan los totems de agua.</li>
+</ul></div></details>
+
+<details class="zona" data-lv="35-45"><summary><span class="zn">Badlands</span><span class="lv">35-45</span><span class="base">vuelo a Thelsamar</span></summary><div class="body">
+<ul>
+<li><b>Cadenas:</b> <em>Badlands Reagent Run</em> → <em>Uldaman Reagent Run</em>; <em>A Sign of Hope</em> → <em>An Ambassador of Evil</em>; <em>Mirages</em> → <em>Tremors of the Earth</em>; <em>Solution to Doom</em>.</li>
+<li><b>Arma:</b> Dustbelcher y Stonevault sueltan los totems de fuego.</li>
+<li><b>Minería:</b> mucho mitril. Zona disputada.</li>
+</ul></div></details>
+
+<details class="zona" data-lv="35-45"><summary><span class="zn">Swamp of Sorrows</span><span class="lv">35-45</span><span class="base">base: Watcher Biggs</span></summary><div class="body">
+<ul>
+<li><b>Cadenas:</b> <em>Encroaching Wildlife</em> → <em>The Lost Caravan</em>; <em>Deliver the Shipment</em>; <em>Galen's Escape</em> → <em>Galen's Strongbox</em>.</li>
+<li><b>Nuevo:</b> <em>Taking the Bait Back</em> (Pelluk; comprueba si es de Alianza).</li>
+<li><b>Arma:</b> los Lost Ones sueltan los totems de tierra.</li>
+</ul></div></details>
+</section>
+
+<!-- ================= ZONAS 40-60 ================= -->
+<section id="zonas-40-60">
+<h2><span class="n"></span>Quests por zona: 40-60</h2>
+<p class="intro">Forever apenas añade quests nuevas en este tramo: lo nuevo son las mazmorras. Lo importante es recoger las quests de mazmorra al pasar.</p>
+
+<details class="zona" data-lv="40-50"><summary><span class="zn">Feralas</span><span class="lv">40-50</span><span class="base">base: Feathermoon</span></summary><div class="body"><ul>
+<li><em>The Ruins of Solarsal</em>, <em>Against the Hatecrest</em>; <em>The Missing Courier</em> → … → <em>A Hero's Welcome</em>; <em>The High Wilderness</em>; <em>Freedom for All Creatures</em> (6 min).</li>
+<li><b>Mazmorras:</b> Dire Maul; <em>The Sunken Temple</em> (Angelas Moonbreeze); <em>Screecher Spirits</em>.</li>
+</ul></div></details>
+
+<details class="zona" data-lv="40-50"><summary><span class="zn">Tanaris</span><span class="lv">40-50</span><span class="base">base: Gadgetzan</span></summary><div class="body"><ul>
+<li><em>Wastewander Justice</em>, <em>Southsea Shakedown</em>, <em>Pirate Hats Ahoy!</em>, <em>Noxious Lair Investigation</em>, <em>The Dunemaul Compound</em>, <em>Noggenfogger Elixir</em>.</li>
+<li><b>ZF:</b> <em>Divino-matic Rod</em>, <em>Troll Temper</em>, <em>Scarab Shells</em>; <em>Screecher Spirits</em> (Yeh'kinya). <b>Sunken Temple:</b> Marvon Rivetseeker.</li>
+<li><b>Ingeniería:</b> Buzzek Bracketswing, único entrenador Artesano (desde 35); Nixx Sprocketspring (Goblin).</li>
+<li><b>Recompensa:</b> <em>Rescue OOX-17/TN!</em></li>
+</ul></div></details>
+
+<details class="zona" data-lv="40-50"><summary><span class="zn">The Hinterlands</span><span class="lv">40-50</span><span class="base">base: Aerie Peak</span></summary><div class="body"><ul>
+<li><em>Witherbark Cages</em> → <em>The Altar of Zul</em> → Thadius Grimshade → <em>Saving Sharpbeak</em> (Jintha'alor, 53); <em>Troll Necklace Bounty</em>; <em>Food for Baby</em> → <em>Becoming a Parent</em> (mascota).</li>
+<li><b>Mazmorras:</b> <em>Nekrum's Medallion</em> (ZF), <em>Jammal'an the Prophet</em> (Sunken Temple).</li>
+</ul></div></details>
+
+<details class="zona" data-lv="43-50"><summary><span class="zn">Searing Gorge</span><span class="lv">43-50</span><span class="base">base: Thorium Point</span></summary><div class="body"><ul>
+<li>Kalaran Windblade: <em>Divine Retribution</em> → … → <em>Set Them Ablaze!</em>; <em>The Key to Freedom</em>; <em>Culling the Competition</em>; Alianza: <em>Suntara Stones</em>, <em>The Horn of the Beast</em>.</li>
+<li><b>Minería:</b> Dark Iron desde 230; Thorium Brotherhood (<em>What the Flux?</em>, <em>Gaining Acceptance</em>).</li>
+</ul></div></details>
+
+<details class="zona" data-lv="48-55"><summary><span class="zn">Un'Goro Crater</span><span class="lv">48-55</span><span class="base">base: Marshal's Refuge</span></summary><div class="body"><ul>
+<li><em>The Mighty U'cha</em> (<em>Beastsmasher</em>), <em>Expedition Salvation</em>, <em>Roll the Bones</em>, <em>Muigin and Larion</em> (→ Sunken Temple), <em>Chasing A-Me 01</em> (Mithril Casing), cadena de Linken.</li>
+<li><b>Cristales:</b> <em>Crystals of Power</em> (J.D. Collie); guarda sobrantes para Shaper's Terrace.</li>
+<li><b>Scholomance:</b> <em>Fire Plume Forged</em> (2 Thorium Bar).</li>
+</ul></div></details>
+
+<details class="zona" data-lv="48-55"><summary><span class="zn">Felwood</span><span class="lv">48-55</span><span class="base">vuelo: Talonbranch Glade</span></summary><div class="body"><ul>
+<li>Greta Mosshoof → <em>A Final Blow</em>; <em>The Corruption of the Jadefire</em>; <em>Timbermaw Ally</em> → <em>Feathers for Grazle</em>; <em>Cleansing Felwood</em>.</li>
+<li><b>Minería:</b> <em>Salve via Mining</em> (repetible). <b>Extra:</b> Songflower Serenade (1 h, +15 a todo).</li>
+</ul></div></details>
+
+<details class="zona" data-lv="45-60"><summary><span class="zn">Azshara</span><span class="lv">45-55</span><span class="base">vuelo: Talrendis Point</span></summary><div class="body"><ul>
+<li><em>Passing the Burden</em> → <em>Arcane Runes</em>; <em>Kim'jael Indeed!</em>; <em>A Crew Under Fire</em> (57); Duke Hydraxis (<em>Poisoned Water</em>, <em>Stormers and Rumblers</em>).</li>
+<li><b>Blackmaw Hold:</b> túnel en 38.7, 33.4; coge antes <em>Get to the Roots of It</em> en Darnassus.</li>
+</ul></div></details>
+
+<details class="zona" data-lv="45-55"><summary><span class="zn">Blasted Lands</span><span class="lv">45-55</span><span class="base">base: Nethergarde Keep</span></summary><div class="body"><ul>
+<li><em>Nekrum's Medallion</em> → <em>The Divination</em>; diez quests de pociones de los Bloodmages; <em>Petty Squabbles</em> → Fallen Hero (<em>Shard of Afrasa</em>).</li>
+</ul></div></details>
+
+<details class="zona" data-lv="51-58"><summary><span class="zn">Western Plaguelands</span><span class="lv">51-58</span><span class="base">base: Chillwind Camp</span></summary><div class="body"><ul>
+<li><em>Clear the Way</em> → <em>The Scourge Cauldrons</em> → <em>All Along the Watchtowers</em>; calderos hasta <em>Mission Accomplished!</em>; <em>A Matter of Time</em>.</li>
+<li><b>Tu clase:</b> <em>Spirit Totem</em>. <b>Scholomance:</b> Arbington → <em>Mold Rhymes With...</em> → <em>Fire Plume Forged</em> → <em>Araj's Scarab</em>; <em>Barov Family Fortune</em>.</li>
+<li><b>Ojo:</b> lleva la Argent Dawn Commission.</li>
+</ul></div></details>
+
+<details class="zona" data-lv="53-60"><summary><span class="zn">Eastern Plaguelands</span><span class="lv">53-60</span><span class="base">base: Light's Hope Chapel</span></summary><div class="body"><ul>
+<li>Tirion: <em>Demon Dogs</em>, <em>Blood Tinged Skies</em>, <em>Carrion Grubbage</em> → <em>Of Love and Family</em> → <em>In Dreams</em>; Darrowshire; <em>The Restless Souls</em>; Alianza: <em>Fragments of the Past</em> (Enchanted Thorium Bar).</li>
+</ul></div></details>
+
+<details class="zona" data-lv="50-58"><summary><span class="zn">Burning Steppes</span><span class="lv">50-58</span><span class="base">base: Morgan's Vigil</span></summary><div class="body"><ul>
+<li><em>Extinguish the Firegut</em>, <em>Gor'tesh the Brute Lord</em>, <em>Dragonkin Menace</em> → <em>The True Masters</em>; Archesonus → cadena de Moira.</li>
+<li><b>Mazmorras:</b> BRD (<em>Overmaster Pyron</em>, <em>Incendius!</em>, <em>The Good Stuff</em>, <em>The Heart of the Mountain</em>); LBRS (<em>Kibler's Exotic Pets</em>, <em>Mother's Milk</em>).</li>
+</ul></div></details>
+
+<details class="zona" data-lv="54-60"><summary><span class="zn">Winterspring</span><span class="lv">54-60</span><span class="base">base: Everlook</span></summary><div class="body"><ul>
+<li><em>Winterfall Activity</em>, <em>High Chief Winterfall</em>, <em>Are We There, Yeti?</em>, <em>The Ruins of Kel'Theril</em>, <em>Find Ranshalla</em>.</li>
+<li><b>Ingeniería:</b> Xizzer Fizzbolt (<em>Thorium Tube</em>); <em>A Yeti of Your Own</em>. <b>Minería:</b> torio rico.</li>
+</ul></div></details>
+
+<details class="zona" data-lv="55-60"><summary><span class="zn">Silithus</span><span class="lv">55-60</span><span class="base">base: Cenarion Hold</span></summary><div class="body"><ul>
+<li><em>Taking Back Silithus</em>, <em>Securing the Supply Lines</em>, <em>Noggle's Last Hope</em>, <em>The Twilight Lexicon</em> (grupo), <em>Stormers and Rumblers</em>.</li>
+</ul></div></details>
+
+<details class="zona" data-lv="60-60"><summary><span class="zn">Mount Hyjal</span><span class="lv">60</span><span class="tag new">nueva</span></summary><div class="body"><p>Desde Winterspring por Darkwhisper Gorge. Facciones nuevas y la raid Hyjal Summit (9 de diciembre).</p></div></details>
+</section>
+
+<!--@ZONES_EXTRA-->
+
+<!-- ================= MAZMORRAS ================= -->
+<section id="mazmorras">
+<h2><span class="n"></span>Mazmorras</h2>
+<p class="intro">Una ficha por mazmorra: cómo llegar, qué coger antes de entrar, jefes en orden, objetos clave para ti y todas sus quests. Marca las que hagas: cuentan para los tres logros de Legacy.</p>
+<!--@GANTT-->
+<!--@DUNGEONS-->
+</section>
+
+<!-- ================= CADENAS ================= -->
+<section id="cadenas">
+<h2><span class="n"></span>Cadenas entre mazmorras y llaves</h2>
+<ol>
+<li><b>Deadmines → Stockade:</b> <em>The Unsent Letter</em> → <em>The Stockade Riots</em>.</li>
+<li><b>Wetlands → Stockade:</b> <em>The Dark Iron War</em> → <em>The Fury Runs Deep</em>.</li>
+<li><b>Yeh'kinya:</b> <em>Screecher Spirits</em> → ZF → <em>The God Hakkar</em> (Sunken Temple) → <em>The Final Tablets</em> (LBRS).</li>
+<li><b>Hinterlands → ZF → Blasted Lands:</b> <em>Witherbark Cages</em> → <em>Nekrum's Medallion</em> → Thadius Grimshade.</li>
+<li><b>UBRS → Scholomance:</b> <em>Egg Freezing</em> → <em>Egg Collection</em> → … → <em>Dawn's Gambit</em>.</li>
+<li><b>Eva Sarkhoff:</b> Scholomance ×3 → <em>Menethil's Gift</em> (Strat Dead) → <em>The Lich, Ras Frostwhisper</em>.</li>
+<li><b>Stratholme Live → Dead:</b> <em>The Medallion of Faith</em> → <em>Aurius' Reckoning</em>.</li>
+<li><b>Zverenhoff:</b> <em>The Archivist</em> → <em>The Truth Comes Crashing Down</em> → <em>Above and Beyond</em>.</li>
+<li><b>Duke Hydraxis:</b> <em>Eye of the Emberseer</em> (UBRS) → Molten Core.</li>
+</ol>
+<div class="tw"><table>
+<thead><tr><th>Llave</th><th>Cómo se consigue</th><th>Estado</th></tr></thead>
+<tbody>
+<tr><td>Shadowforge Key (BRD)</td><td><em>Dark Iron Legacy</em>: Franclorn Forgewright como fantasma; <em>Ironfel</em> de Fineous Darkvire</td><td>Confirmada</td></tr>
+<tr><td>Seal of Ascension (UBRS)</td><td><em>Seal of Ascension</em> (Vaelan, LBRS)</td><td>Confirmada</td></tr>
+<tr><td>Llave de Scholomance</td><td>15 oro a Krinkle Goodsteel, 2 Thorium Bar, grupo para Araj</td><td>Confirmada</td></tr>
+<tr><td>Llave de Krol'dok</td><td><em>Krol'dok Moulding</em> + 12 Iron Bar + 4 Thick Leather (Alphonse Dumas). No se gasta</td><td>Confirmada</td></tr>
+<tr><td>Crescent Key (Dire Maul)</td><td>Mencionada en <em>Pusillin and the Elder Azj'Tordin</em></td><td>Sin detalle</td></tr>
+<tr><td>Attunement to the Core</td><td>Lothos Riftwaker (55): Core Fragment en BRD</td><td>Confirmada</td></tr>
+<tr><td>Key to the City (Stratholme)</td><td>Puerta de servicio</td><td>Mencionada</td></tr>
+<tr><td>Scarlet Key, Workshop Key</td><td>—</td><td>No aparecen en Forever</td></tr>
+<tr><td>Sintonización de Onyxia</td><td>—</td><td>TBA hasta el 9 de diciembre</td></tr>
+</tbody></table></div>
+</section>
+
+<!-- ================= PROFESIONES ================= -->
+<section id="profesiones">
+<h2><span class="n"></span>Minería e Ingeniería</h2>
+<div class="tw"><table>
+<thead><tr><th>Rango</th><th>Habilidad</th><th>Nivel de personaje</th><th>Se entrena desde</th></tr></thead>
+<tbody>
+<tr><td>Aprendiz</td><td class="lv">1-75</td><td>1 (Minería) · 5 (Ingeniería)</td><td>—</td></tr>
+<tr><td>Oficial</td><td class="lv">75-150</td><td>10</td><td>50</td></tr>
+<tr><td>Experto</td><td class="lv">150-225</td><td>20</td><td>125</td></tr>
+<tr><td>Artesano</td><td class="lv">225-300</td><td>35</td><td>200</td></tr>
+</tbody></table></div>
+
+<h3>Minería</h3>
+<div class="tw"><table>
+<thead><tr><th>Habilidad</th><th>Mineral</th><th>Dónde (Alianza)</th></tr></thead>
+<tbody>
+<tr><td class="lv">1-65</td><td>Cobre</td><td>Dun Morogh, Loch Modan, Westfall</td></tr>
+<tr><td class="lv">65-125</td><td>Estaño, algo de plata</td><td>Redridge, Duskwood, Wetlands. Funde Bronce</td></tr>
+<tr><td class="lv">125-175</td><td>Hierro, algo de oro</td><td>Arathi, Stranglethorn, Dustwallow. Acero desde 165</td></tr>
+<tr><td class="lv">175-245</td><td>Mitril, truesilver; Dark Iron desde 230</td><td>Badlands, Hinterlands, Searing Gorge, Burning Steppes</td></tr>
+<tr><td class="lv">245-300</td><td>Torio; rico desde 275</td><td>Burning Steppes, Hinterlands, Blasted Lands, Eastern Plaguelands, Winterspring</td></tr>
+</tbody></table></div>
+<ul>
+<li><b>Entrenadores:</b> Geofram Bouldertoe (Ironforge, 50, 26), Brock Stoneseeker (Thelsamar), Matt Johnson (Darkshire), Grungle (Powderfuse Port).</li>
+<li><b>Novedades:</b> respawn más rápido con más gente; rastreo de minerales y hierbas a la vez; materiales escasos (Pyrite, Bauxite, Pitchblende); Azerothium Bar desde 275; Heavy Thorium solo en Hyjal (300).</li>
+<li><b>Dark Iron:</b> Gloom'rel (BRD), <em>The Spectral Chalice</em>: Minería 230, 20 Gold Bar, 10 Truesilver Bar, 2 Star Ruby. Habla con él antes que con Doom'rel. Se funde en la Black Forge.</li>
+<li><b>Campamento:</b> <em>Lodestone</em> (20), <em>Rock Garden</em> (140, plano del Relic Guardian de Excavation Site), <em>Molten Foundry</em> (300).</li>
+</ul>
+
+<h3>Ingeniería</h3>
+<p class="src">Ruta de Wowhead (3 de noviembre). Guarda todas las piezas.</p>
+<div class="tw"><table>
+<thead><tr><th>Habilidad</th><th>Fabrica</th><th>Nota</th></tr></thead>
+<tbody>
+<tr><td class="lv">1-30</td><td>Rough Blasting Powder</td><td></td></tr>
+<tr><td class="lv">30-50</td><td>Handful of Copper Bolts</td><td></td></tr>
+<tr><td class="lv">50-51</td><td>Arclight Spanner</td><td>Herramienta</td></tr>
+<tr><td class="lv">51-75</td><td>Rough Copper Bomb</td><td></td></tr>
+<tr><td class="lv">75-90</td><td>Coarse Blasting Powder</td><td></td></tr>
+<tr><td class="lv">90-100</td><td><b>Coarse Dynamite</b></td><td>Guarda 10 para <em>A Dynamite Plan</em></td></tr>
+<tr><td class="lv">100-105</td><td>Silver Contact</td><td></td></tr>
+<tr><td class="lv">105-125</td><td>Bronze Tube</td><td>Guarda uno para <em>Look To The Stars</em></td></tr>
+<tr><td class="lv">125-135</td><td>Standard Scope</td><td></td></tr>
+<tr><td class="lv">135-150</td><td>Whirring Bronze Gizmo</td><td></td></tr>
+<tr><td class="lv">150-160</td><td>Bronze Framework</td><td></td></tr>
+<tr><td class="lv">160-175</td><td>Explosive Sheep</td><td></td></tr>
+<tr><td class="lv">175-194</td><td>Solid Blasting Powder</td><td></td></tr>
+<tr><td class="lv">194-195</td><td>Gyromatic Micro-Adjustor</td><td>Herramienta</td></tr>
+<tr><td class="lv">195-200</td><td>Mithril Tube</td><td>Guarda 6 si vas a Gnómica</td></tr>
+<tr><td class="lv">200-215</td><td>Unstable Trigger</td><td></td></tr>
+<tr><td class="lv">215-238</td><td>Mithril Casing</td><td>Guarda uno para <em>Chasing A-Me 01</em></td></tr>
+<tr><td class="lv">238-250</td><td>Hi-Explosive Bomb</td><td></td></tr>
+<tr><td class="lv">250-260</td><td>Dense Blasting Powder</td><td></td></tr>
+<tr><td class="lv">260-285</td><td>Thorium Widget</td><td>Esquema: Gearcutter Cogspinner (IF). Guarda uno para <em>A Broken Trap</em></td></tr>
+<tr><td class="lv">285-300</td><td>Thorium Tube</td><td>Esquema: Xizzer Fizzbolt (Everlook)</td></tr>
+</tbody></table></div>
+<ul>
+<li><b>Entrenadores:</b> Experto, Springspindle Fizzlegear (Ironforge, 68, 44; 45 platas). Artesano, <b>solo</b> Buzzek Bracketswing (Gadgetzan, 52, 28; desde 35; 4,5 oro).</li>
+<li><b>Especialización (200 y nivel 30):</b> <em>The Pledge of Secrecy</em> y <em>Show Your Work</em>. Gnómica (Tinkmaster Overspark, IF): 6 Mithril Tube, 1 Accurate Scope, 2 Advanced Target Dummy; control y teletransporte a Gadgetzan. Goblin (Nixx Sprocketspring, Gadgetzan): 20 Big Iron Bomb, 20 Solid Dynamite, 5 Explosive Sheep; daño (Sapper Charge, The Big One).</li>
+<li><b>Novedades:</b> más de 75 recetas (<em>SAF-T</em>, <em>EZ-Thro</em>, <em>Clanking Cord</em>, <em>Loot-A-Rang</em>, transportador a Hyjal). Según Warcraft Tavern, los ingenieros pueden fabricar totems de reliquia.</li>
+<li><b>Esquemas nuevos:</b> con <em>Merchant's Favor</em> a Fritz Fizzle (Three Corners, Redridge, 10, 73), ganado con <em>Waylaid Crates</em>.</li>
+<li><b>Campamento:</b> <em>Reagent Bot</em> (20), <em>Repair Bot</em> (140, plano de Sneed en Deadmines), <em>Anarchist's Workbench</em> (300).</li>
+</ul>
+<h3>Quests que piden tus materiales</h3>
+<div class="tw"><table>
+<thead><tr><th>Quest</th><th>Dónde</th><th>Te piden</th></tr></thead>
+<tbody>
+<tr data-lv="16-23"><td><em>A Dynamite Plan</em></td><td>Westfall → Stormwind</td><td>10 Coarse Dynamite</td></tr>
+<tr data-lv="25-30"><td><em>Look To The Stars</em></td><td>Duskwood</td><td>1 Bronze Tube</td></tr>
+<tr data-lv="30-40"><td><em>Gizmo for Warug</em></td><td>Desolace</td><td>1 Advanced Target Dummy</td></tr>
+<tr data-lv="37-45"><td><em>The Shattered Necklace</em></td><td>Ironforge (Uldaman)</td><td>5 Silver Bar</td></tr>
+<tr data-lv="40-45"><td><em>Key Ingredients</em></td><td>Riverglades</td><td>12 Iron Bar, 4 Thick Leather</td></tr>
+<tr data-lv="48-55"><td><em>Chasing A-Me 01</em></td><td>Un'Goro</td><td>1 Mithril Casing</td></tr>
+<tr data-lv="55-60"><td><em>The Key to Scholomance</em></td><td>Western Plaguelands</td><td>2 Thorium Bar, 15 oro</td></tr>
+<tr data-lv="56-60"><td><em>A Broken Trap</em></td><td>Dire Maul North</td><td>Thorium Widget, Frost Oil</td></tr>
+<tr data-lv="53-60"><td><em>Fragments of the Past</em></td><td>Eastern Plaguelands</td><td>Enchanted Thorium Bar</td></tr>
+<tr data-lv="50-60"><td><em>The Spectral Chalice</em></td><td>BRD</td><td>20 Gold Bar, 10 Truesilver Bar, 2 Star Ruby</td></tr>
+</tbody></table></div>
+</section>
+
+<!-- ================= PENDIENTE ================= -->
+<section id="pendiente">
+<h2><span class="n"></span>Lo que falta por confirmar</h2>
+<p class="intro">El juego tiene ocho días. Si el juego dice otra cosa, fíate del juego.</p>
+<ul>
+<li><b>Arma del Totem de Aire:</b> Warcraft Tavern dice Call of Air; wowforeverinfo (Questie) dice la cadena <em>The Tempest's Weapons</em>. Esta guía sigue a wowforeverinfo.</li>
+<li><b>Rangos:</b> Hall of Thanes 13-20 o 13-18; Excavation Site 26-33 o 24-29; Alcaz 48-55 o 48-53; Shen'dralas sin confirmar.</li>
+<li><b><em>Remember That I Love You</em>:</b> Avette Fellwood (Darkshire, Questie) u Orphan Matron Nightingale (Stormwind, Warcraft Tavern).</li>
+<li><b>Sin guía fiable:</b> Stonetalon, Thousand Needles y Shen'dralas; pocas quests documentadas en Shaper's Terrace y Alcaz.</li>
+<li><b>Llaves:</b> Scarlet Key y Workshop Key no aparecen; Onyxia TBA.</li>
+<li><b>Precios:</b> doble especialización (¿50 oro?) y montura de 40 sin precio oficial.</li>
+<li><b>Totems de Ingeniería:</b> sin detalle de cuáles ni dónde.</li>
+<li><b>Totems desaparecidos:</b> hilo de jugadores sin respuesta oficial.</li>
+</ul>
+</section>
+
+<!-- ================= FUENTES ================= -->
+<section id="fuentes">
+<h2><span class="n"></span>Fuentes y Wowhead</h2>
+<h3>Wowhead para abrir en el navegador</h3>
+<p>Sus guías de Forever cargan con JavaScript y solo pude leer la de Ingeniería.</p>
+<ul>
+<li><a href="https://www.wowhead.com/forever/guide/dungeons-overview-locations-details" target="_blank" rel="noopener">Mazmorras: ubicación y detalles</a> (11 nov)</li>
+<li><a href="https://www.wowhead.com/forever/guide/zones-maps-locations-rewards" target="_blank" rel="noopener">Zonas, mapas y recompensas</a></li>
+<li><a href="https://www.wowhead.com/forever/guide/new-race-class-combinations" target="_blank" rel="noopener">Combinaciones nuevas de raza y clase</a></li>
+<li><a href="https://www.wowhead.com/forever/guide/professions/engineering-overview-trainer-locations-recipes" target="_blank" rel="noopener">Ingeniería: entrenadores y recetas</a> (7 nov)</li>
+<li><a href="https://www.wowhead.com/forever/profession-leveling-guides/engineering" target="_blank" rel="noopener">Ruta de Ingeniería 1-300</a> (3 nov)</li>
+<li><a href="https://www.wowhead.com/forever/talent-calc/shaman" target="_blank" rel="noopener">Calculadora de talentos de chamán</a></li>
+</ul>
+<h3>Fuentes usadas</h3>
+<ul>
+<li><a href="https://us.forums.blizzard.com/en/wow/t/wow-forever-hotfixes-november-10-2026/2403040" target="_blank" rel="noopener">Hilo oficial de hotfixes de Blizzard</a> (6-11 nov).</li>
+<li><a href="https://wowforeverinfo.com/guides/leveling-alliance/" target="_blank" rel="noopener">wowforeverinfo: leveo de Alianza</a> y sus guías por zona, <a href="https://wowforeverinfo.com/guides/dungeons/" target="_blank" rel="noopener">mazmorras</a> y <a href="https://wowforeverinfo.com/guides/shaman-leveling/" target="_blank" rel="noopener">chamán</a> (9 nov, datos de Questie).</li>
+<li>Warcraft Tavern: <a href="https://www.warcrafttavern.com/forever/guides/dwarf-shaman-totem-quests/" target="_blank" rel="noopener">totems del enano</a>, <a href="https://www.warcrafttavern.com/forever/guides/dungeons/" target="_blank" rel="noopener">mazmorras</a>, <a href="https://www.warcrafttavern.com/forever/guides/shaman/" target="_blank" rel="noopener">chamán</a>, <a href="https://www.warcrafttavern.com/forever/guides/cozy-sleeping-bag/" target="_blank" rel="noopener">Cozy Sleeping Bag</a>, <a href="https://www.warcrafttavern.com/forever/guides/legacy/" target="_blank" rel="noopener">Legacy</a>, <a href="https://www.warcrafttavern.com/forever/guides/mining/" target="_blank" rel="noopener">Minería</a> e <a href="https://www.warcrafttavern.com/forever/guides/engineering/" target="_blank" rel="noopener">Ingeniería</a>.</li>
+<li><a href="https://gamewave.fr/world-of-warcraft-forever/wow-forever-entree-et-quetes-du-donjon-du-bastion-krol-dok-krol-dok-stronghold/" target="_blank" rel="noopener">Gamewave: Krol'dok Stronghold</a> (9 nov).</li>
+</ul>
+<p class="src">Icy Veins y Mobalytics bloquean la lectura automática y no se han podido consultar.</p>
+</section>
+
+<footer>Guía preparada el 12 de noviembre de 2026 para un enano chamán de nivel 20 que juega con calma. Los datos de Forever cambian cada semana: revisa los hotfixes de los martes.</footer>
+</main>
+</div>
