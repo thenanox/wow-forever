@@ -109,7 +109,7 @@ EXTRA_ZONES = [
 
 MILESTONES = [
  (4, 'Totem de Tierra (Call of Earth) y Earth Shock'), (6, 'Earthbind Totem. Cocina con Camping 101'), (8, 'Lightning Shield y Stoneclaw Totem'),
- (10, 'Totem de Fuego (Call of Fire), Flame Shock, primer talento y Oficial en profesiones'), (12, 'Fire Nova, Purge y Ancestral Spirit'),
+ (10, 'Totem de Fuego (Call of Fire), Flame Shock, primer talento y Oficial en profesiones. Entrena mazas y hachas de dos manos en Ironforge'), (12, 'Fire Nova, Purge y Ancestral Spirit'),
  (13, 'Primera mazmorra: Hall of Thanes'), (14, 'Empieza la cadena de la Cozy Sleeping Bag'), (16, 'Cure Poison'), (18, 'Tremor Totem'),
  (20, 'Totem de Agua (Call of Water), Ghost Wolf, Frost Shock, Call of the Elements y Experto en profesiones'),
  (22, 'Cure Disease, Poison Cleansing Totem y Totemic Projection'), (25, 'Stormstrike (talento) y primer punto de Legacy'),
@@ -665,7 +665,7 @@ def build():
 {dungeons}
 </section>
 <section class="view" id="v-chaman" hidden>
-{sec('clase')}{sec('spec')}{sec('personaje')}{sec('profesiones')}
+{sec('compras')}{sec('clase')}{sec('spec')}{sec('personaje')}{sec('profesiones')}
 </section>
 <section class="view" id="v-referencia" hidden>
 {sec('plan')}{sec('zonas', 'tabla-zonas')}{sec('cadenas')}{sec('estado')}
