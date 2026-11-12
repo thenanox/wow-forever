@@ -868,6 +868,9 @@ DEP_MAP = {k: [_tok(i) for i in v] for k, v in {
     'ds1': [1275], 'bd3': [1393], 'rg4': [94980], 'ar3': [685], 'sg3': [3801, 3802, 7848], 'sg2': [4363, 4126], 'dm4': [(2926, 2927), 971, 1050],
     'rt5a': [65], 'bs2': ['dg-wailing-caverns'], 'sd1': [208], 'rt12a': [3962], 'pl4': [5944], 'pl1': [(5401, 5405, 5503)],
     'rt13a': [(5401, 5405, 5503), 5505], 'rt11e': [(4022, 4023)],
+    # casillas de las páginas de profesiones
+    'pfc1': [96608, 96629], 'pfc2': [], 'pfc3': [], 'pfc4': [6610], 'pfp1': [], 'pfp2': [96050], 'pfp3': [], 'pfp4': [6607],
+    'pfa1': [], 'pfa2': [96047], 'pfa3': [], 'pfa4': [6624], 'pfm1': [96046], 'pfe1': [96058],
     'rt1a': [233, 234], 'dm3': [233, 234], 'rt1f': [], 'rt2a': [], 'rt2b': [], 'rt2c': [], 'rt3b': [], 'rt3d': [], 'rt4a': [], 'rt6a': [], 'ew3': [],
 }.items()}
 NAME_IDS = defaultdict(list)
@@ -972,6 +975,10 @@ def build():
     prefetch()
     body = linkify(body)
     body = re.sub(r'\[\[cad:([a-z]+)(?:\|([^\]]+))?\]\]', lambda m: f'<a class="cgo" href="#cad-{m.group(1)}">{m.group(2) or "ver los pasos"}</a>', body)
+    # casillas de las páginas de profesiones: dependen de su quest o se marcan a mano
+    body = re.sub(r'<li>(<label><input type="checkbox" data-k="(pf[a-z0-9]+)")(><span>)(.*?)(</span></label></li>)',
+                  lambda m: ('<li>' if deps_for(m.group(2), m.group(4)) else '<li class="man">') + m.group(1) + dep_attr(m.group(2), m.group(4)) + m.group(3) + m.group(4) + m.group(5),
+                  body, flags=re.S)
     hero = re.search(r'<header class="hero">.*?</header>', body, re.S).group(0)
     secs = {m.group(1): m.group(2).replace('<span class="n"></span>', '')
             for m in re.finditer(r'<section id="([^"]+)">(.*?)</section>', body, re.S)}
@@ -1139,10 +1146,13 @@ def build():
     ('compras', 'Lo que hay que pagar o ir a aprender: armas, hechizos, montura.'),
     ('personaje', 'Bolsa de dormir, cocina, campamentos y ventajas de enano.'),
     ('legacy', 'El sistema de puntos de cuenta y qué talentos convienen.')])}
-{hub('profesiones', 'Profesiones', 'Minería e Ingeniería: qué rango toca a cada nivel, qué buscar, qué fabricar y qué guardar para quests.', [
+{hub('profesiones', 'Profesiones', 'Minería e Ingeniería, y las tres secundarias que no ocupan hueco: qué rango toca a cada nivel, qué fabricar y qué hay que ir a buscar.', [
     ('prof-plan', 'Rangos, entrenadores, precios y la habilidad que conviene llevar a cada nivel.'),
     ('mineria', 'Qué mineral buscar en cada tramo y en qué zonas.'),
     ('ingenieria', 'Qué fabricar para subir de 1 a 300, especialización y qué guardar.'),
+    ('cocina', 'Secundaria. La comida da experiencia y el cocinero enciende la hoguera del campamento.'),
+    ('pesca', 'Secundaria. Dónde pescar, cebos y el Fish Bowl, que da un 8% a todo.'),
+    ('auxilios', 'Secundaria. Vendas con tu tela y, en Forever, las pociones de curación.'),
     ('prof-quests', 'Quests que piden barras o inventos tuyos: guárdalos al fabricarlos.')])}
 {hub('referencia', 'Referencia', 'Material de consulta: vocabulario, tablas, llaves, estado del juego y fuentes.', [
     ('vocabulario', 'Las palabras del juego que usa la guía.'),
