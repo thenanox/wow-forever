@@ -1,13 +1,24 @@
 (function(){
   var D = JSON.parse(document.getElementById('gd').textContent);
   var LOCAL = document.body.classList.contains('local');
+  var PRINT_ALL = document.body.classList.contains('print-all');
   var $ = function(s, r){ return (r || document).querySelector(s); };
   var $$ = function(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var store = {
     get: function(k){ try { return window.localStorage.getItem(k); } catch(e){ return null; } },
     set: function(k, v){ try { window.localStorage.setItem(k, v); } catch(e){} }
   };
-  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  var VIEWS = ['inicio', 'zonas', 'mazmorras', 'chaman', 'referencia'];
+  var cur = { view: 'inicio', page: null };
+
+  // grupos de mazmorra (una entrada por mazmorra, con sus alas)
+  var DG = [], dgBy = {};
+  D.dungeons.forEach(function(d){
+    var g = dgBy[d.g];
+    if (!g){ g = dgBy[d.g] = { g: d.g, n: d.gn, a: d.a, b: d.b, loc: d.loc, isNew: d['new'], wings: [] }; DG.push(g); }
+    g.a = Math.min(g.a, d.a); g.b = Math.max(g.b, d.b); g.wings.push(d.k);
+  });
 
   // ---------------------------------------------------------------- destino de los enlaces
   var BASE = { wh: 'https://www.wowhead.com/forever/', whes: 'https://www.wowhead.com/forever/es/', wdb: 'https://forever.warcraftdb.com/' };
@@ -17,67 +28,51 @@
     if (t === 'search') return (mode === 'whes' ? BASE.whes : BASE.wh) + 'search?q=' + encodeURIComponent(id);
     return mode === 'wdb' ? BASE.wdb + 'data/' + t + '/' + id : BASE[mode] + t + '=' + id;
   }
-  function applyLinks(){
-    $$('a.x').forEach(function(a){ a.href = url(a.dataset.t, a.dataset.t === 'search' ? a.dataset.q : a.dataset.id); });
-  }
+  function applyLinks(){ $$('a.x').forEach(function(a){ a.href = url(a.dataset.t, a.dataset.t === 'search' ? a.dataset.q : a.dataset.id); }); }
   var sel = $('#fichas');
-  if (sel){
-    sel.value = mode;
-    sel.addEventListener('change', function(){ mode = sel.value; store.set('fichas', mode); applyLinks(); });
-  }
+  if (sel){ sel.value = mode; sel.addEventListener('change', function(){ mode = sel.value; store.set('fichas', mode); applyLinks(); }); }
   if (mode !== 'wh') applyLinks();
 
   // ---------------------------------------------------------------- casillas y progreso
   var boxes = $$('input[type=checkbox][data-k]');
   function countIn(el, q){
+    if (!el) return [0, 0];
     var all = $$(q || 'input[type=checkbox][data-k]', el);
-    var on = all.filter(function(b){ return b.checked; }).length;
-    return [on, all.length];
+    return [all.filter(function(b){ return b.checked; }).length, all.length];
   }
-  function updateContainer(d){
-    var p = $(':scope > summary .prog', d);
-    if (!p) return;
-    var c = countIn(d, d.classList.contains('dg') ? '.ql input[type=checkbox]' : null);
-    p.textContent = c[1] ? c[0] + '/' + c[1] : '';
+  function uniq(q){
+    var seen = {}, on = 0, n = 0;
+    $$(q).forEach(function(b){ if (seen[b.dataset.k]) return; seen[b.dataset.k] = 1; n++; if (b.checked) on++; });
+    return [on, n];
   }
-  function dungeonState(){
-    var done = 0, total = 0;
+  function updateBlocks(root){
+    $$('.blk', root || document).forEach(function(b){
+      var p = $('.prog', b); if (!p) return;
+      var c = countIn(b); p.textContent = c[1] ? c[0] + '/' + c[1] : '';
+    });
+  }
+  function isDone(k){ var b = $('input[data-dg="' + k + '"]'); return !!(b && b.checked); }
+  function zoneDone(id){ var b = $('input[data-zdone="' + id + '"]'); return !!(b && b.checked); }
+  function refresh(){
     $$('input[data-dg]').forEach(function(b){
-      total++; if (b.checked) done++;
-      var row = $('.gr[data-dg="' + b.dataset.dg + '"]');
-      if (row) row.classList.toggle('done', b.checked);
+      var row = $('.gr[data-dg="' + b.dataset.dg + '"]'); if (row) row.classList.toggle('done', b.checked);
     });
-    $$('details.dg').forEach(function(d){
-      var c = countIn(d, 'input[data-dg]');
-      var t = $(':scope > summary .okk', d);
-      if (t) t.hidden = !(c[1] && c[0] === c[1]);
-    });
-    return [done, total];
-  }
-  function updateGlobal(){
-    var dg = dungeonState();
-    var ck = countIn($('#checklist'));
-    var ql = countIn(document, '.allq input[type=checkbox]');
+    var dg = countIn(document, 'input[data-dg]'), im = uniq('.blk.imp input[data-k]'), ql = countIn(document, '.allq input[data-k]');
     var box = $('#progreso');
-    if (box) box.innerHTML = '<span>Mazmorras <b>' + dg[0] + '/' + dg[1] + '</b></span>' +
-      '<span>Imprescindibles <b>' + ck[0] + '/' + ck[1] + '</b></span>' +
-      '<span>Quests de zona <b>' + ql[0] + '/' + ql[1] + '</b></span>';
-    if (typeof renderNow === 'function') renderNow();
+    if (box) box.innerHTML = '<span>Mazmorras <b>' + dg[0] + '/' + dg[1] + '</b></span><span>Imprescindibles <b>' + im[0] + '/' + im[1] +
+      '</b></span><span>Quests de zona <b>' + ql[0] + '/' + ql[1] + '</b></span>';
+    renderCards(); renderSide(); renderNow();
   }
   function restore(){
-    boxes.forEach(function(b){ b.checked = store.get('chk-' + b.dataset.k) === '1'; });
-    $$('details.ck, details.allq, details.dg').forEach(updateContainer);
-    updateGlobal();
+    boxes.forEach(function(b){ var v = store.get('chk-' + b.dataset.k); b.checked = v === null ? b.defaultChecked : v === '1'; });
+    updateBlocks(); refresh();
   }
   document.addEventListener('change', function(e){
     var b = e.target;
     if (!b.matches || !b.matches('input[type=checkbox][data-k]')) return;
     store.set('chk-' + b.dataset.k, b.checked ? '1' : '0');
-    // la misma quest puede aparecer en su zona y en su mazmorra
     $$('input[data-k="' + b.dataset.k + '"]').forEach(function(o){ o.checked = b.checked; });
-    var d = b.closest('details');
-    while (d){ updateContainer(d); d = d.parentElement ? d.parentElement.closest('details') : null; }
-    updateGlobal();
+    updateBlocks(b.closest('.page') || document); refresh();
   });
 
   // ---------------------------------------------------------------- nivel
@@ -85,42 +80,91 @@
   var saved = parseInt(store.get('nivel'), 10);
   if (saved >= 1 && saved <= 60) lvl.value = saved;
   function L(){ var v = parseInt(lvl.value, 10); return v >= 1 && v <= 60 ? v : 0; }
+  function inRange(v, a, b){ return v > 0 && a != null && v >= a && v <= b; }
   function applyLevel(){
     var v = L();
-    $$('[data-lv]').forEach(function(el){
-      var p = el.dataset.lv.split('-'), a = +p[0], b = +p[1];
-      el.classList.toggle('at-level', v > 0 && a > 0 && v >= a && v <= b);
-    });
+    $$('[data-lv]').forEach(function(el){ var p = el.dataset.lv.split('-'); el.classList.toggle('at-level', inRange(v, +p[0], +p[1])); });
     var now = $('.g-now');
-    if (now){
-      now.hidden = !(v >= 10);
-      now.style.setProperty('--p', (Math.max(10, Math.min(60, v)) - 10) / 50);
-      now.dataset.l = v;
-    }
-    renderNow();
+    if (now){ now.hidden = !(v >= 10); now.style.setProperty('--p', (Math.max(10, Math.min(60, v)) - 10) / 50); now.dataset.l = v; }
+    renderCards(); renderSide(); renderNow();
   }
   lvl.addEventListener('input', function(){ store.set('nivel', lvl.value); applyLevel(); });
 
-  // ---------------------------------------------------------------- panel "ahora"
-  function chip(href, name, lv, cls){
-    return '<li><a class="chip' + (cls ? ' ' + cls : '') + '" href="#' + href + '">' + esc(name) + ' <span class="lv">' + lv + '</span></a></li>';
+  // ---------------------------------------------------------------- tarjetas de zonas y mazmorras
+  function bar(done, total){ return '<span class="bar"><i style="width:' + (total ? Math.round(done / total * 100) : 0) + '%"></i></span>'; }
+  function renderCards(){
+    var v = L(), host = $('#zcards');
+    if (host){
+      var groups = [], by = {};
+      D.zones.forEach(function(z){
+        if (!by[z.grp]){ by[z.grp] = []; groups.push(z.grp); }
+        var pg = document.getElementById(z.id), im = countIn(pg, '.imp input'), q = countIn(pg, '.allq input'), done = zoneDone(z.id);
+        by[z.grp].push('<a class="card' + (inRange(v, z.a, z.b) && !done ? ' at-level' : '') + (done ? ' done' : '') + '" href="#' + z.id + '">' +
+          '<span class="c-h"><b>' + esc(z.n) + '</b><span class="lv">' + esc(z.lv) + '</span></span>' +
+          '<span class="c-s">' + esc(z.base) + (z['new'] ? ' · nueva en Forever' : '') + '</span>' + bar(im[0] + q[0], im[1] + q[1]) +
+          '<span class="c-f">' + (im[1] ? 'Imprescindibles ' + im[0] + '/' + im[1] + ' · ' : '') + 'Quests ' + q[0] + '/' + q[1] + '</span></a>');
+      });
+      host.innerHTML = groups.map(function(g){ return '<h4 class="cg">' + esc(g) + '</h4><div class="cards">' + by[g].join('') + '</div>'; }).join('');
+    }
+    host = $('#dcards');
+    if (host){
+      host.innerHTML = '<div class="cards">' + DG.map(function(g){
+        var pg = document.getElementById('dg-' + g.g), q = countIn(pg, '.dq input');
+        var wd = g.wings.filter(isDone).length, done = wd === g.wings.length;
+        return '<a class="card' + (inRange(v, g.a, g.b) && !done ? ' at-level' : '') + (done ? ' done' : '') + '" href="#dg-' + g.g + '">' +
+          '<span class="c-h"><b>' + esc(g.n) + '</b><span class="lv">' + g.a + '-' + g.b + '</span></span>' +
+          '<span class="c-s">' + esc(g.loc) + (g.isNew ? ' · nueva en Forever' : '') + '</span>' + bar(q[0], q[1]) +
+          '<span class="c-f">' + (g.wings.length > 1 ? 'Alas ' + wd + '/' + g.wings.length + ' · ' : '') + 'Quests ' + q[0] + '/' + q[1] + '</span></a>';
+      }).join('') + '</div>';
+    }
   }
-  function isDone(k){ var b = $('input[data-dg="' + k + '"]'); return !!(b && b.checked); }
+
+  // ---------------------------------------------------------------- menú lateral según la sección
+  function renderSide(){
+    var side = $('#side'), shell = $('.shell'), v = L(), h = '';
+    if (!side) return;
+    var pid = cur.page ? cur.page.id : '';
+    if (cur.view === 'zonas'){
+      h = '<a class="s-all' + (pid ? '' : ' on') + '" href="#zonas">Todas las zonas</a>';
+      var last = '';
+      D.zones.forEach(function(z){
+        if (z.grp !== last){ h += '<h4>' + esc(z.grp) + '</h4>'; last = z.grp; }
+        h += '<a href="#' + z.id + '" class="' + (z.id === pid ? 'on ' : '') + (inRange(v, z.a, z.b) ? 'at-level ' : '') + (zoneDone(z.id) ? 'done' : '') +
+          '"><span>' + esc(z.n) + '</span><span class="lv">' + esc(z.lv) + '</span></a>';
+      });
+    } else if (cur.view === 'mazmorras'){
+      h = '<a class="s-all' + (pid ? '' : ' on') + '" href="#mazmorras">Todas las mazmorras</a><h4>Por nivel</h4>';
+      DG.forEach(function(g){
+        var done = g.wings.filter(isDone).length === g.wings.length;
+        h += '<a href="#dg-' + g.g + '" class="' + ('dg-' + g.g === pid ? 'on ' : '') + (inRange(v, g.a, g.b) ? 'at-level ' : '') + (done ? 'done' : '') +
+          '"><span>' + esc(g.n) + '</span><span class="lv">' + g.a + '-' + g.b + '</span></a>';
+      });
+    } else if (cur.view === 'chaman' || cur.view === 'referencia'){
+      h = '<h4>En esta sección</h4>';
+      $$('#v-' + cur.view + ' > section.sec').forEach(function(s){
+        var t = $('h2', s); if (t && s.id) h += '<a href="#' + s.id + '"><span>' + esc(t.textContent.trim()) + '</span></a>';
+      });
+    }
+    side.innerHTML = h;
+    shell.classList.toggle('noside', !h);
+    var on = $('a.on', side); if (on && on.scrollIntoView && !PRINT_ALL) on.scrollIntoView({ block: 'nearest' });
+  }
+
+  // ---------------------------------------------------------------- inicio: panel por nivel y pendientes
+  function chip(href, name, lv, cls){ return '<li><a class="chip' + (cls ? ' ' + cls : '') + '" href="#' + href + '">' + esc(name) + ' <span class="lv">' + esc(lv) + '</span></a></li>'; }
   function renderNow(){
     var host = $('#now'); if (!host) return;
     var v = L(); $('#now-lvl').textContent = v || '?';
-    if (!v){ host.innerHTML = '<div class="tile"><p>Escribe tu nivel en el panel lateral.</p></div>'; return; }
-    var zs = D.zones.filter(function(z){ return v >= z.a && v <= z.b; }).sort(function(x, y){ return x.a - y.a; });
+    if (!v){ host.innerHTML = '<div class="tile"><p>Escribe tu nivel arriba.</p></div>'; return; }
+    var zs = D.zones.filter(function(z){ return inRange(v, z.a, z.b); });
     var zn = D.zones.filter(function(z){ return z.a > v && z.a <= v + 3; });
-    var ds = D.dungeons.filter(function(d){ return v >= d.a && v <= d.b; });
+    var ds = D.dungeons.filter(function(d){ return inRange(v, d.a, d.b); });
     var dn = D.dungeons.filter(function(d){ return d.a > v && d.a <= v + 4; });
-    var past = D.miles.filter(function(m){ return m[0] <= v; }).slice(-2);
-    var next = D.miles.filter(function(m){ return m[0] > v; }).slice(0, 3);
+    var past = D.miles.filter(function(m){ return m[0] <= v; }).slice(-2), next = D.miles.filter(function(m){ return m[0] > v; }).slice(0, 3);
     var pr = D.prof.filter(function(p){ return v <= p[0]; })[0] || D.prof[D.prof.length - 1];
-    var h = '';
-    h += '<div class="tile"><h4>Zonas de tu nivel</h4><ul class="chips">' +
-      (zs.map(function(z){ return chip(z.id, z.n, z.a + '-' + z.b); }).join('') || '<li><small>Ninguna en la guía.</small></li>') + '</ul>' +
-      (zn.length ? '<small>Pronto:</small><ul class="chips">' + zn.map(function(z){ return chip(z.id, z.n, z.a + '-' + z.b, 'soon'); }).join('') + '</ul>' : '') + '</div>';
+    var h = '<div class="tile"><h4>Zonas de tu nivel</h4><ul class="chips">' +
+      (zs.map(function(z){ return chip(z.id, z.n, z.lv, zoneDone(z.id) ? 'done' : ''); }).join('') || '<li><small>Ninguna.</small></li>') + '</ul>' +
+      (zn.length ? '<small>Pronto:</small><ul class="chips">' + zn.map(function(z){ return chip(z.id, z.n, z.lv, 'soon'); }).join('') + '</ul>' : '') + '</div>';
     h += '<div class="tile"><h4>Mazmorras en rango</h4><ul class="chips">' +
       (ds.map(function(d){ return chip('dg-' + d.g, d.n, d.a + '-' + d.b, isDone(d.k) ? 'done' : ''); }).join('') || '<li><small>Ninguna todavía: la primera es a nivel 13.</small></li>') + '</ul>' +
       (dn.length ? '<small>Pronto:</small><ul class="chips">' + dn.map(function(d){ return chip('dg-' + d.g, d.n, d.a + '-' + d.b, 'soon'); }).join('') + '</ul>' : '') + '</div>';
@@ -129,29 +173,93 @@
       next.map(function(m){ return '<li><span class="lv">' + m[0] + '</span><span>' + esc(m[1]) + '</span></li>'; }).join('') + '</ul></div>';
     h += '<div class="tile"><h4>Profesiones a este nivel</h4><p>' + esc(pr[1]) + '</p><p>' + esc(pr[2]) + '</p><small><a href="#profesiones">Ver rutas y materiales que guardar</a></small></div>';
     host.innerHTML = h;
+    var pend = $('#pend');
+    if (pend){
+      var seen = {}, items = [];
+      zs.forEach(function(z){
+        if (zoneDone(z.id)) return;
+        $$('#' + z.id + ' .blk.imp input[data-k]').forEach(function(b){
+          if (b.checked || seen[b.dataset.k]) return; seen[b.dataset.k] = 1;
+          var c = b.parentNode.cloneNode(true); $$('.tag', c).forEach(function(x){ x.remove(); });
+          var t = c.textContent.replace(/\s+/g, ' ').trim(); if (t.length > 150) t = t.slice(0, 147) + '…';
+          items.push('<li><a href="#' + z.id + '"><b>' + esc(z.n) + '</b>' + esc(t) + '</a></li>');
+        });
+      });
+      pend.innerHTML = items.length ? '<ul class="pend">' + items.join('') + '</ul>' : '<p class="src">Nada pendiente en las zonas de tu nivel.</p>';
+    }
   }
 
-  // ---------------------------------------------------------------- enlaces internos: abrir la sección plegada
-  function reveal(id){
-    var t = document.getElementById(id); if (!t) return;
-    var d = t.tagName === 'DETAILS' ? t : t.closest('details');
-    while (d){ d.open = true; d = d.parentElement ? d.parentElement.closest('details') : null; }
-    t.scrollIntoView({ block: 'start' });
+  // ---------------------------------------------------------------- navegación entre secciones y páginas
+  var pending = null;
+  function pageOrder(page){
+    if (page.classList.contains('zpage')) return D.zones.map(function(z){ return { id: z.id, n: z.n }; });
+    return DG.map(function(g){ return { id: 'dg-' + g.g, n: g.n }; });
   }
+  function addPrevNext(page){
+    if ($('.pn', page)) return;
+    var list = pageOrder(page), i = -1;
+    list.forEach(function(x, k){ if (x.id === page.id) i = k; });
+    var p = list[i - 1], n = list[i + 1], nav = document.createElement('nav');
+    nav.className = 'pn';
+    nav.innerHTML = (p ? '<a href="#' + p.id + '">← ' + esc(p.n) + '</a>' : '<span></span>') + (n ? '<a href="#' + n.id + '">' + esc(n.n) + ' →</a>' : '<span></span>');
+    page.appendChild(nav);
+  }
+  function route(id){
+    if (PRINT_ALL) return;
+    id = (id != null ? id : (location.hash || '')).replace(/^#/, '');
+    try { id = decodeURIComponent(id); } catch(e){}
+    var view = 'inicio', page = null, target = null;
+    if (VIEWS.indexOf(id) >= 0) view = id;
+    else if (id){
+      var el = document.getElementById(id);
+      if (el){
+        var v = el.closest('.view'); if (v) view = v.id.slice(2);
+        page = el.classList.contains('page') ? el : el.closest('.page');
+        if (el !== page) target = el;
+      }
+    }
+    cur = { view: view, page: page };
+    $$('.view').forEach(function(v){ v.hidden = v.id !== 'v-' + view; });
+    $$('.tabs a').forEach(function(a){ a.classList.toggle('on', a.dataset.view === view); });
+    var vEl = $('#v-' + view), pages = $$('.page', vEl), ov = $('.overview', vEl);
+    pages.forEach(function(p){ p.hidden = p !== page; });
+    if (ov) ov.hidden = !!page;
+    if (page) addPrevNext(page);
+    renderSide();
+    var go = pending || target; pending = null;
+    if (go){
+      go.scrollIntoView({ block: go === target ? 'start' : 'center' });
+      if (go !== target){ go.classList.add('flash'); setTimeout(function(){ go.classList.remove('flash'); }, 1700); }
+    } else window.scrollTo(0, 0);
+  }
+  function navigate(id){
+    if (('#' + id) === location.hash) { route(id); return; }
+    try { location.hash = id; } catch(e){ route(id); }
+  }
+  window.addEventListener('hashchange', function(){ route(); });
   document.addEventListener('click', function(e){
     var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
-    if (!a) return;
+    if (!a || a.classList.contains('res')) return;
     var id = a.getAttribute('href').slice(1);
-    if (id && document.getElementById(id)){ e.preventDefault(); reveal(id); if (window.history && history.replaceState) { try { history.replaceState(null, '', '#' + id); } catch(err){} } }
-    var toc = $('nav.toc details.toc-list');
-    if (toc && a.closest('nav.toc') && window.matchMedia('(max-width: 900px)').matches) toc.open = false;
+    if (!id) return;
+    e.preventDefault(); navigate(id);
+    var cfg = $('details.cfg'); if (cfg) cfg.open = false;
+  });
+
+  // filtros de la lista de quests
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.filters button') : null; if (!b) return;
+    var box = b.closest('.allq');
+    $$('.filters button', box).forEach(function(o){ o.classList.toggle('on', o === b); });
+    box.classList.remove('f-pend', 'f-new', 'f-star');
+    if (b.dataset.f) box.classList.add('f-' + b.dataset.f);
   });
 
   // ---------------------------------------------------------------- fichas emergentes
   var pop = document.createElement('div'); pop.id = 'pop'; pop.hidden = true; pop.setAttribute('role', 'tooltip');
   document.body.appendChild(pop);
   var touch = window.matchMedia('(hover: none)').matches;
-  var cur = null, hideT = null;
+  var curA = null, hideT = null;
   function money(c){ var g = Math.floor(c / 10000), s = Math.floor(c % 10000 / 100), k = c % 100; return (g ? g + ' o ' : '') + (s ? s + ' p ' : '') + (k && !g ? k + ' c' : ''); }
   function coord(c){ return c ? (c[2] ? esc(c[2]) + ' ' : '') + '(' + c[0] + ', ' + c[1] + ')' : ''; }
   function items(list){ return list.map(function(i){ return '<span class="q' + i[2] + '">' + esc(i[1]) + '</span>'; }).join(', '); }
@@ -178,8 +286,7 @@
     if (q.p) h += '<dt>Reputación</dt><dd>' + q.p.map(function(p){ return '+' + p[1] + ' ' + esc(p[0]); }).join(', ') + '</dd>';
     if (q.k){
       var prev = q.k[3] && D.q[q.k[3]] ? D.q[q.k[3]].n : '', nxt = q.k[4] && D.q[q.k[4]] ? D.q[q.k[4]].n : '';
-      h += '<dt>Cadena</dt><dd>' + esc(q.k[0]) + ', paso ' + q.k[1] + ' de ' + q.k[2] +
-        (prev ? '<br>Antes: ' + esc(prev) : '') + (nxt ? '<br>Después: ' + esc(nxt) : '') + '</dd>';
+      h += '<dt>Cadena</dt><dd>' + esc(q.k[0]) + ', paso ' + q.k[1] + ' de ' + q.k[2] + (prev ? '<br>Antes: ' + esc(prev) : '') + (nxt ? '<br>Después: ' + esc(nxt) : '') + '</dd>';
     }
     return h + '</dl>';
   }
@@ -202,72 +309,95 @@
   }
   function show(a){
     var h = content(a); if (!h) return false;
-    clearTimeout(hideT); cur = a; pop.innerHTML = h; pop.hidden = false;
+    clearTimeout(hideT); curA = a; pop.innerHTML = h; pop.hidden = false;
     var r = a.getBoundingClientRect(), pw = pop.offsetWidth, ph = pop.offsetHeight;
-    var x = Math.max(12, Math.min(r.left, window.innerWidth - pw - 12));
-    var y = r.bottom + 8;
+    var x = Math.max(12, Math.min(r.left, window.innerWidth - pw - 12)), y = r.bottom + 8;
     if (y + ph > window.innerHeight - 8) y = Math.max(8, r.top - ph - 8);
     pop.style.left = x + 'px'; pop.style.top = y + 'px';
     return true;
   }
-  function hide(){ pop.hidden = true; cur = null; }
+  function hide(){ pop.hidden = true; curA = null; }
   function target(e){ return e.target.closest ? e.target.closest('a.x[data-t], .gr[data-tip]') : null; }
   if (!touch){
-    document.addEventListener('mouseover', function(e){ var a = target(e); if (a && a !== cur) show(a); else if (e.target.closest && e.target.closest('#pop')) clearTimeout(hideT); });
+    document.addEventListener('mouseover', function(e){ var a = target(e); if (a && a !== curA) show(a); else if (e.target.closest && e.target.closest('#pop')) clearTimeout(hideT); });
     document.addEventListener('mouseout', function(e){ if (target(e) || (e.target.closest && e.target.closest('#pop'))){ clearTimeout(hideT); hideT = setTimeout(hide, 140); } });
     document.addEventListener('focusin', function(e){ var a = target(e); if (a) show(a); });
     document.addEventListener('focusout', function(){ hide(); });
   } else {
     document.addEventListener('click', function(e){
       var a = target(e);
-      if (a && a !== cur && !a.classList.contains('gr')){ if (show(a)) e.preventDefault(); }
+      if (a && a !== curA && !a.classList.contains('gr')){ if (show(a)) e.preventDefault(); }
       else if (!(e.target.closest && e.target.closest('#pop'))) hide();
-    });
+    }, true);
   }
-  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') hide(); });
   window.addEventListener('scroll', function(){ if (!pop.hidden && !touch) hide(); }, { passive: true });
 
-  // ---------------------------------------------------------------- búsqueda
-  var q = $('#buscar'), count = $('#search-count');
-  var units = null, textCache = new Map(), openState = new Map(), timer = null;
+  // ---------------------------------------------------------------- buscador que lleva al sitio
+  var q = $('#buscar'), results = $('#results'), idx = null, found = [], timer = null;
+  function pageName(el){ var p = el.closest('.page'); return p ? p.dataset.name : ''; }
+  function buildIndex(){
+    idx = [];
+    var seen = {};
+    function add(t, n, c, ref){ n = (n || '').trim(); if (!n) return; var k = t + '|' + n + '|' + c; if (seen[k]) return; seen[k] = 1; idx.push({ t: t, n: n, c: c, s: n.toLowerCase(), ref: ref }); }
+    D.zones.forEach(function(z){ add('Zona', z.n, 'niveles ' + z.lv, z.id); });
+    DG.forEach(function(g){ add('Mazmorra', g.n, 'niveles ' + g.a + '-' + g.b + ' · ' + g.loc, 'dg-' + g.g); });
+    $$('.view > section.sec').forEach(function(s){ var h = $('h2', s); if (h && s.id) add('Sección', h.textContent, '', s.id); });
+    $$('ul.ql > li').forEach(function(li){ var a = $('a.x-quest', li); if (a) add('Quest', a.textContent, pageName(li), li); });
+    $$('.blk.imp li').forEach(function(li){ var a = $('a.x', li); if (a) add('Quest', a.textContent, pageName(li) + ' · imprescindible', li); });
+    $$('.bosses > li > b').forEach(function(b){ add('Jefe', b.textContent, pageName(b), b.parentNode); });
+    $$('.keyitems > li, .loot a.x').forEach(function(el){ var a = el.matches('a') ? el : $('a.x', el); if (a) add('Objeto', a.textContent, pageName(el), el); });
+  }
+  var ORDER = { Zona: 0, Mazmorra: 1, 'Sección': 2, Quest: 3, Jefe: 4, Objeto: 5 };
   function runSearch(){
     var term = q.value.trim().toLowerCase();
-    if (!units) units = $$('details.zona, details.allq, .tw tbody tr, ol.steps > li, ul.ql > li, .keyitems > li, .bosses > li');
-    var hits = 0;
-    units.forEach(function(u){
-      var isD = u.tagName === 'DETAILS';
-      if (!term){
-        u.classList.remove('hidden-by-search');
-        if (isD && openState.has(u)) u.open = openState.get(u);
-        return;
-      }
-      if (isD && !openState.has(u)) openState.set(u, u.open);
-      var txt = textCache.get(u);
-      if (txt === undefined){ txt = u.textContent.toLowerCase(); textCache.set(u, txt); }
-      var m = txt.indexOf(term) !== -1;
-      u.classList.toggle('hidden-by-search', !m);
-      if (m){ if (isD) u.open = true; else hits++; }
-    });
-    if (!term){ openState.clear(); count.textContent = ''; }
-    else count.textContent = hits ? hits + ' resultados' : 'Sin resultados para «' + q.value.trim() + '»';
+    if (term.length < 2){ results.hidden = true; return; }
+    if (!idx) buildIndex();
+    found = idx.filter(function(e){ return e.s.indexOf(term) !== -1; });
+    found.sort(function(a, b){ return (a.s.indexOf(term) === 0 ? 0 : 1) - (b.s.indexOf(term) === 0 ? 0 : 1) || ORDER[a.t] - ORDER[b.t] || a.s.localeCompare(b.s); });
+    var total = found.length; found = found.slice(0, 40);
+    results.innerHTML = found.length ? found.map(function(e, i){
+      return '<a class="res' + (i ? '' : ' sel') + '" href="#" data-i="' + i + '"><span class="rt">' + e.t + '</span><span class="rn">' + esc(e.n) + '</span>' +
+        (e.c ? '<span class="rc">' + esc(e.c) + '</span>' : '') + '</a>';
+    }).join('') + (total > 40 ? '<div class="res-empty">Y ' + (total - 40) + ' más: escribe algo más concreto.</div>' : '')
+      : '<div class="res-empty">Sin resultados para «' + esc(q.value.trim()) + '»</div>';
+    results.hidden = false;
   }
-  q.addEventListener('input', function(){ clearTimeout(timer); timer = setTimeout(runSearch, 180); });
+  function pick(e){
+    results.hidden = true; q.blur();
+    if (typeof e.ref === 'string'){ navigate(e.ref); return; }
+    var p = e.ref.closest('.page'), v = e.ref.closest('.view');
+    pending = e.ref;
+    var id = p ? p.id : v.id.slice(2);
+    if (('#' + id) === location.hash) route(id); else navigate(id);
+  }
+  q.addEventListener('input', function(){ clearTimeout(timer); timer = setTimeout(runSearch, 140); });
+  q.addEventListener('focus', function(){ if (q.value.trim().length >= 2) runSearch(); });
+  q.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' && found.length && !results.hidden){ e.preventDefault(); pick(found[0]); }
+    if (e.key === 'Escape'){ results.hidden = true; q.blur(); }
+  });
+  results.addEventListener('click', function(e){
+    var a = e.target.closest('.res'); if (!a) return;
+    e.preventDefault(); pick(found[+a.dataset.i]);
+  });
+  document.addEventListener('click', function(e){ if (!(e.target.closest && e.target.closest('.search'))) results.hidden = true; });
   document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') hide();
     if (e.key === '/' && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)){ e.preventDefault(); q.focus(); }
   });
 
   // ---------------------------------------------------------------- copiar y cargar progreso
   var code = $('#sync-code'), msg = $('#sync-msg');
   function exportCode(){
-    var on = {};
-    boxes.forEach(function(b){ if (b.checked) on[b.dataset.k] = 1; });
-    return btoa(unescape(encodeURIComponent(JSON.stringify({ v: 1, nivel: lvl.value, fichas: mode, on: Object.keys(on) }))));
+    var on = {}, off = {};
+    boxes.forEach(function(b){ if (b.checked) on[b.dataset.k] = 1; else if (b.defaultChecked) off[b.dataset.k] = 1; });
+    return btoa(unescape(encodeURIComponent(JSON.stringify({ v: 2, nivel: lvl.value, on: Object.keys(on), off: Object.keys(off) }))));
   }
   var bc = $('#sync-copy'), bl = $('#sync-load');
   if (bc) bc.addEventListener('click', function(){
     code.value = exportCode(); code.select();
-    var done = function(){ msg.textContent = 'Código copiado.'; }, sel = function(){ msg.textContent = 'Código listo: cópialo del cuadro.'; };
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.value).then(done, sel); else sel();
+    var ok = function(){ msg.textContent = 'Código copiado.'; }, manual = function(){ msg.textContent = 'Código listo: cópialo del cuadro.'; };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code.value).then(ok, manual); else manual();
   });
   if (bl) bl.addEventListener('click', function(){
     try {
@@ -281,20 +411,17 @@
   });
 
   // ---------------------------------------------------------------- arranque
-  var tocList = $('nav.toc details.toc-list');
-  if (tocList && window.matchMedia('(max-width: 900px)').matches) tocList.open = false;
   restore();
   applyLevel();
-  if (location.hash.length > 1) reveal(location.hash.slice(1));
+  route();
 
-  // Versión local: imprimir con todo desplegado y restaurar después
-  if (LOCAL){
-    var prevOpen = [];
+  // Versión local: al imprimir se muestran todas las secciones y páginas
+  if (LOCAL && !PRINT_ALL){
     window.addEventListener('beforeprint', function(){
-      prevOpen = [];
-      $$('details.zona, details.sync').forEach(function(d){ prevOpen.push([d, d.open]); d.open = !d.classList.contains('sync'); });
+      document.body.classList.add('printing');
+      $$('.view, .page, .overview').forEach(function(el){ el.hidden = false; });
     });
-    window.addEventListener('afterprint', function(){ prevOpen.forEach(function(p){ p[0].open = p[1]; }); });
+    window.addEventListener('afterprint', function(){ document.body.classList.remove('printing'); route(); });
     var pb = $('#imprimir');
     if (pb) pb.addEventListener('click', function(){ window.print(); });
   }

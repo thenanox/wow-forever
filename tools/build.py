@@ -313,7 +313,8 @@ def zone_list(title, dbzones, slug):
         first = g[0]
         USED_Q.add(first['id'])
         tags = ''
-        if any(G.is_new(q) for q in g): tags += '<span class="tag new">nueva</span>'
+        isnew = any(G.is_new(q) for q in g)
+        if isnew: tags += '<span class="tag new">nueva</span>'
         t = first.get('type')
         if t in ('Elite', 'Dungeon', 'Raid', 'PvP'):
             tags += f'<span class="tag ty">{ {"Elite": "élite", "Dungeon": "mazmorra", "Raid": "raid", "PvP": "JcJ"}[t] }</span>'
@@ -325,13 +326,16 @@ def zone_list(title, dbzones, slug):
         xp = sum(q.get('xp') or 0 for q in g)
         lo = min((q.get('min') or q['level']) for q in g)
         out.append(
-            f'<li data-lv="{lo}-{lvl + 2}"><label><input type="checkbox" data-k="q{first["id"]}"><span>'
+            f'<li data-lv="{lo}-{lvl + 2}"{" data-new" if isnew else ""}{" data-star" if star else ""}><label><input type="checkbox" data-k="q{first["id"]}"><span>'
             f'<span class="lv">{lvl}</span> {star}{A("quest", first["id"], esc(n))}{tags}'
             f'<span class="qm">{meta}{chain}{f" · {xp} XP" if xp else ""}</span></span></label></li>')
     note = ('Datos del juego (Warcraft DB). Puede incluir alguna quest de otra clase o retirada. '
             + ('★ = aparece en la guía paso a paso.' if ally_txt else ''))
-    htmlout = (f'<details class="allq" data-total="{len(out)}"><summary>Todas las quests de {esc(title)} '
-               f'<span class="prog"></span></summary><p class="src">{note}</p><ul class="chk ql">{"".join(out)}</ul></details>')
+    chips = ('<button type="button" data-f="" class="on">Todas</button><button type="button" data-f="pend">Pendientes</button>'
+             '<button type="button" data-f="new">Nuevas en Forever</button>'
+             + ('<button type="button" data-f="star">★ En la guía</button>' if ally_txt else ''))
+    htmlout = (f'<section class="blk allq" data-total="{len(out)}"><div class="blk-h"><h3>Todas las quests <span class="prog"></span></h3>'
+               f'<div class="filters">{chips}</div></div><p class="src">{note}</p><ul class="chk ql">{"".join(out)}</ul></section><!--/allq-->')
     return htmlout, len(out)
 
 
@@ -437,7 +441,8 @@ def render_dungeons():
         qrows, qn = dungeon_quest_rows(dbzone, wtq)
         tiers = sorted({TIER[w[4]] for w in wings if w[4]})
         for w in wings:
-            dash.append({'k': w[0], 'g': gkey, 'n': name + (f' · {w[1]}' if w[1] else ''), 'a': w[2], 'b': w[3], 'new': 1 if new else 0, 'loc': loc, 'q': qn})
+            dash.append({'k': w[0], 'g': gkey, 'gn': name, 'n': name + (f' · {w[1]}' if w[1] else ''), 'a': w[2], 'b': w[3],
+                         'new': 1 if new else 0, 'loc': loc, 'q': qn})
         done = ''.join(f'<label class="done"><input type="checkbox" data-k="dg-{w[0]}" data-dg="{w[0]}"> Hecha{f": {esc(w[1])}" if w[1] else ""}</label>' for w in wings)
         how = ''
         if first.get('where'): how += f'<p>{linkify(esc(first["where"]))}</p>'
@@ -455,32 +460,35 @@ def render_dungeons():
             bosses += boss_block(c)
         links = [f'<a href="https://www.warcrafttavern.com/forever/guides/{wt}/" target="_blank" rel="noopener">Guía de Warcraft Tavern</a>']
         if wfi: links.append(f'<a href="https://wowforeverinfo.com/guides/{wfi}/" target="_blank" rel="noopener">Guía de wowforeverinfo</a>')
-        for s in wtq: links.append(f'<a href="https://www.warcrafttavern.com/forever/guides/{s}-quests/" target="_blank" rel="noopener">Quests en Warcraft Tavern</a>')
+        for sl in wtq: links.append(f'<a href="https://www.warcrafttavern.com/forever/guides/{sl}-quests/" target="_blank" rel="noopener">Quests en Warcraft Tavern</a>')
         ki = key_items_block(cards)
         classic = ('<p class="src">Jefes y consejos según Classic: Warcraft Tavern no pudo probar esta mazmorra en la beta de Forever. '
                    'Las quests sí salen de los datos de Forever.</p>') if any(w[0] in CLASSIC_BASED for w in wings) else ''
+        legacy = ('Legacy: ' + ', '.join(tiers)) if tiers else 'No cuenta para el Legacy'
+        blk = lambda title, inner, cls='': f'<section class="blk{cls}"><h3>{title}</h3>{inner}</section>' if inner else ''
         out.append(f'''
-<details class="zona dg" id="dg-{gkey}" data-lv="{lo}-{hi}" data-wings="{" ".join(w[0] for w in wings)}">
-<summary><span class="zn">{esc(name)}</span><span class="lv">{lo}-{hi}</span><span class="base">{esc(loc)}</span>{'<span class="tag new">nueva</span>' if new else ''}<span class="tag okk" hidden>hecha</span><span class="prog"></span></summary>
-<div class="body">
-<div class="dg-top"><span class="src">{("Legacy: " + ", ".join(tiers)) if tiers else "No cuenta para el Legacy"}</span><span class="dones">{done}</span></div>
-<div class="dg-grid">
+<article class="page dpage" id="dg-{gkey}" data-name="{esc(name)}" data-lv="{lo}-{hi}" hidden>
+<header class="ph">
+<div class="crumb"><a href="#mazmorras">Mazmorras</a><span>›</span>{esc(name)}</div>
+<h2>{esc(name)}</h2>
+<div class="ph-meta"><span class="lv">{lo}-{hi}</span><span>{esc(loc)}</span>{'<span class="tag new">nueva</span>' if new else ''}<span>{legacy}</span></div>
+<div class="dones">{done}</div>
+</header>
+<div class="cols">
 <div>
-{f"<h4>Cómo llegar</h4>{how}" if how else ""}
-{f"<h4>Antes de entrar</h4>{li_list(before[:7])}" if before else ""}
-<h4>Quests ({qn})</h4>
-{qrows or '<p class="src">Sin quests de Alianza documentadas.</p>'}
+{blk('Cómo llegar', how)}
+{blk('Antes de entrar', li_list(before[:7]))}
+<section class="blk dq"><h3>Quests <span class="prog"></span></h3>{qrows or '<p class="src">Sin quests de Alianza documentadas.</p>'}</section>
 </div>
 <div>
-<h4>Jefes en orden</h4>
-{classic}{bosses}
-{f"<h4>Objetos clave para ti</h4>{ki}" if ki else ""}
-{f"<h4>Consejos de chamán</h4>{li_list(shaman[:6])}" if shaman else ""}
-{f"<h4>Consejos</h4>{li_list(tips[:6])}" if tips else ""}
+{blk('Jefes en orden', classic + bosses)}
+{blk('Objetos clave para ti', ki)}
+{blk('Consejos de chamán', li_list(shaman[:6]))}
+{blk('Consejos', li_list(tips[:6]))}
 </div>
 </div>
 <p class="src">{" · ".join(links)}</p>
-</div></details>''')
+</article>''')
     return ''.join(out), dash
 
 def render_gantt(dash):
@@ -506,86 +514,167 @@ def render_gantt(dash):
 def slug(s):
     return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
 
-def add_zone_lists(body):
-    """Añade a cada zona su enlace a la guía paso a paso y el listado completo de quests."""
-    zdash = []
-    def repl(m):
-        head, rest = m.group(1), m.group(2)
-        zn = html.unescape(re.search(r'<span class="zn">(.*?)</span>', head).group(1))
-        lv = re.search(r'data-lv="([\d-]+)"', head)
-        if zn not in ZONES: return m.group(0)
-        dbz, wslug = ZONES[zn]
-        lst, n = zone_list(zn, dbz, wslug)
-        link = (f'<p class="src"><a href="https://wowforeverinfo.com/guides/{wslug}/" target="_blank" rel="noopener">'
-                f'Guía paso a paso de {esc(zn)} en wowforeverinfo</a></p>') if wslug else ''
-        zid = 'z-' + slug(zn)
-        if lv:
-            a, b = lv.group(1).split('-'); zdash.append({'n': zn, 'a': int(a), 'b': int(b), 'id': zid, 'q': n})
-        head = head.replace('<details class="zona"', f'<details class="zona" id="{zid}"', 1)
-        return head + rest + link + lst + '</div></details>'
-    body = re.sub(r'(<details class="zona" data-lv="[^"]*"><summary><span class="zn">.*?</summary><div class="body">)(.*?)</div></details>', repl, body, flags=re.S)
-    return body, zdash
+# casilla de la checklist -> zonas en cuya página aparece
+IMP_MAP = {}
+def _imp(keys, *zones):
+    for k in keys.split(): IMP_MAP[k] = list(zones)
+_imp('dm1 dm2 dm3', 'Dun Morogh'); _imp('dm4', 'Ironforge'); _imp('lm1 lm2 lm3', 'Loch Modan'); _imp('ds1 ds2 ds3', 'Darkshore')
+_imp('ew1 ew2 ew3', 'Elwynn Forest'); _imp('wf1 wf2 wf3 wf4 wf5 wf6', 'Westfall'); _imp('rr1 rr2 rr3 rr4', 'Redridge Mountains')
+_imp('dw1 dw2 dw3 dw4', 'Duskwood'); _imp('wl1 wl2 wl3 wl4 wl5 wl6', 'Wetlands'); _imp('av1 av2', 'Ashenvale')
+_imp('bs1', 'The Barrens', 'Stonetalon Mountains'); _imp('bs2', 'The Barrens')
+_imp('hb1', 'Hillsbrad Foothills'); _imp('hb2', 'Hillsbrad Foothills', 'Alterac Mountains'); _imp('hb3', 'Alterac Mountains')
+_imp('ar1 ar2 ar3', 'Arathi Highlands'); _imp('tw1', 'Arathi Highlands', 'The Barrens')
+_imp('tw2', 'Dustwallow Marsh', 'Desolace', 'Swamp of Sorrows', 'Badlands'); _imp('tw3', 'Thousand Needles'); _imp('tw4', 'Alterac Mountains')
+_imp('sd1', 'Stranglethorn Vale'); _imp('sd2', 'Stranglethorn Vale', 'Hillsbrad Foothills'); _imp('sd3', 'Desolace')
+_imp('rg1 rg2 rg3 rg4 rg5', 'The Riverglades'); _imp('bd1', 'Badlands'); _imp('bd2', 'Dustwallow Marsh'); _imp('bd3', 'Swamp of Sorrows')
+_imp('ft1', 'Feralas', 'Tanaris'); _imp('ft2', 'Tanaris'); _imp('ft3', 'The Hinterlands'); _imp('ft4', 'The Hinterlands', 'Feralas')
+_imp('sg1', 'Searing Gorge'); _imp('sg2', 'Burning Steppes', 'Ironforge'); _imp('sg3 sg4', 'Burning Steppes')
+_imp('ug1 ug2', "Un'Goro Crater"); _imp('ug3', 'Felwood'); _imp('ug4', 'Azshara', 'Teldrassil y Darnassus'); _imp('ug5', 'Azshara'); _imp('ug6', 'Blasted Lands')
+_imp('pl1', 'Western Plaguelands', 'Eastern Plaguelands'); _imp('pl2 pl3', 'Western Plaguelands'); _imp('pl4', 'Eastern Plaguelands'); _imp('pl5', 'Winterspring')
+DONE_DEFAULT = {'Dun Morogh', 'Loch Modan'}
 
-def extra_zones():
-    out = ['<section id="zonas-otras">\n<h2><span class="n"></span>Ciudades y otras zonas</h2>\n'
-           '<p class="intro">Zonas que no tienen ruta propia en esta guía, con todas sus quests según los datos del juego.</p>']
-    zdash = []
-    for name, lv, base, dbz, wslug, text in EXTRA_ZONES:
-        lst, n = zone_list(name, dbz, wslug)
-        if not n: continue
-        link = (f'<p class="src"><a href="https://wowforeverinfo.com/guides/{wslug}/" target="_blank" rel="noopener">'
-                f'Guía paso a paso en wowforeverinfo</a></p>') if wslug else ''
-        dl = f' data-lv="{lv}"' if re.fullmatch(r'\d+-\d+', lv) else ''
-        zid = 'z-' + slug(name)
-        if dl: a, b = lv.split('-'); zdash.append({'n': name, 'a': int(a), 'b': int(b), 'id': zid, 'q': n})
-        out.append(f'<details class="zona" id="{zid}"{dl}><summary><span class="zn">{esc(name)}</span><span class="lv">{esc(lv)}</span>'
-                   f'<span class="base">{esc(base)}</span></summary><div class="body"><p>{linkify(esc(text))}</p>{link}{lst}</div></details>')
-    out.append('</section>')
-    return '\n'.join(out), zdash
+ZD = re.compile(r'<details class="zona" data-lv="([^"]*)"><summary><span class="zn">(.*?)</span><span class="lv">(.*?)</span>(.*?)</summary><div class="body">(.*?)</div></details>', re.S)
+CKG = re.compile(r'<details class="zona ck"[^>]*><summary><span class="zn">(.*?)</span>.*?</summary><div class="body">(.*?)</div></details>', re.S)
+CKI = re.compile(r'<li><label><input type="checkbox" data-k="([a-z0-9]+)"><span>(.*?)</span></label></li>', re.S)
 
-ORDER = ['ahora', 'plan-20', 'checklist', 'mazmorras', 'cadenas', 'plan', 'zonas', 'zonas-1-30', 'zonas-30-45', 'zonas-40-60', 'zonas-otras',
-         'clase', 'personaje', 'spec', 'profesiones', 'estado', 'pendiente', 'fuentes']
-SUB = {'zonas-1-30', 'zonas-30-45', 'zonas-40-60', 'zonas-otras', 'cadenas'}
+def lv_nums(txt):
+    nums = [int(x) for x in re.findall(r'\d+', txt)]
+    return (nums[0], nums[-1]) if nums else (None, None)
 
-def reorder(body):
-    start = body.index('<section id=')
-    end = body.rindex('</section>') + len('</section>')
-    head, mid, tail = body[:start], body[start:end], body[end:]
-    secs = {m.group(1): m.group(0) for m in re.finditer(r'<section id="([^"]+)">.*?</section>', mid, re.S)}
-    missing = [k for k in secs if k not in ORDER]
-    ordered = [secs[k] for k in ORDER if k in secs] + [secs[k] for k in missing]
-    n = [0]
-    def num(m): n[0] += 1; return f'<span class="n">{n[0]:02d}</span>'
-    mid = '\n\n'.join(ordered)
-    mid = re.sub(r'<span class="n"></span>', num, mid)
-    toc = []
-    for m in re.finditer(r'<section id="([^"]+)">\s*<h2><span class="n">\d+</span>(.*?)</h2>', mid, re.S):
-        cls = ' class="sub"' if m.group(1) in SUB else ''
-        toc.append(f'<li{cls}><a href="#{m.group(1)}">{re.sub(r"<[^>]+>", "", m.group(2)).strip()}</a></li>')
-    toc_html = '<details class="toc-list" open><summary>Índice</summary><ol>' + ''.join(toc) + '</ol></details>'
-    return (head + mid + tail).replace('<!--@TOC-->', toc_html)
+def bracket(a):
+    if a is None: return 'Ciudades y otras zonas'
+    return 'Niveles 1-20' if a < 20 else 'Niveles 20-35' if a < 35 else 'Niveles 35-50' if a < 50 else 'Niveles 50-60'
 
-NOW_HTML = '''<section id="ahora">
-<h2><span class="n"></span>Ahora, con nivel <span id="now-lvl">20</span></h2>
-<p class="intro">Cambia tu nivel en el panel lateral y esta sección se actualiza: qué zonas y mazmorras te tocan, qué acabas de desbloquear y qué viene después.</p>
+TOP = '''<header class="top"><div class="top-in">
+<a class="brand" href="#inicio">Enano Chamán<span>WoW Forever</span></a>
+<nav class="tabs" aria-label="Secciones">
+<a href="#inicio" data-view="inicio">Inicio</a><a href="#zonas" data-view="zonas">Zonas</a><a href="#mazmorras" data-view="mazmorras">Mazmorras</a><a href="#chaman" data-view="chaman">Tu chamán</a><a href="#referencia" data-view="referencia">Referencia</a>
+</nav>
+<div class="top-tools">
+<label class="lvl" for="nivel">Nivel<input id="nivel" type="number" min="1" max="60" value="20" inputmode="numeric"></label>
+<div class="search"><input id="buscar" type="search" placeholder="Buscar quest, zona, jefe, objeto…" autocomplete="off" aria-label="Buscar en la guía"><div id="results" hidden></div></div>
+<details class="cfg"><summary>Ajustes</summary><div class="cfg-body">
+<label for="fichas">Abrir fichas en</label>
+<select id="fichas"><option value="wh">Wowhead</option><option value="whes">Wowhead en español</option><option value="wdb">Warcraft DB</option></select>
+<div id="progreso" class="prog-box" aria-live="polite"></div>
+<button id="imprimir" type="button">Imprimir o guardar PDF</button>
+<p>Las casillas se guardan en este navegador. Para llevarlas a otro dispositivo, copia este código y cárgalo allí.</p>
+<textarea id="sync-code" rows="3" spellcheck="false" aria-label="Código de progreso"></textarea>
+<div class="sync-btns"><button id="sync-copy" type="button">Copiar código</button><button id="sync-load" type="button">Cargar código</button></div>
+<div id="sync-msg" aria-live="polite"></div>
+</div></details>
+</div></div></header>'''
+
+NOW_HTML = '''<section id="ahora" class="sec">
+<h2>Ahora, con nivel <span id="now-lvl">20</span></h2>
 <div class="now" id="now"></div>
+</section>
+<section id="tus-pendientes" class="sec">
+<h2>Imprescindibles pendientes a tu nivel</h2>
+<p class="intro">Lo que aún no has marcado en las zonas de tu nivel. Toca una para ir a su zona.</p>
+<div id="pend"></div>
 </section>'''
 
 def build():
     body = open(os.path.join(ROOT, 'src', 'guia.html'), encoding='utf-8').read()
     css = open(os.path.join(ROOT, 'src', 'style.css'), encoding='utf-8').read()
     js = open(os.path.join(ROOT, 'src', 'app.js'), encoding='utf-8').read()
-
     prefetch()
     body = linkify(body)
-    body, zdash = add_zone_lists(body)
-    xz, zdash2 = extra_zones()
-    dungeons, dash = render_dungeons()
-    body = (body.replace('<!--@NOW-->', NOW_HTML).replace('<!--@GANTT-->', render_gantt(dash))
-                .replace('<!--@DUNGEONS-->', dungeons).replace('<!--@ZONES_EXTRA-->', xz))
-    body = reorder(body)
+    hero = re.search(r'<header class="hero">.*?</header>', body, re.S).group(0)
+    secs = {m.group(1): m.group(2).replace('<span class="n"></span>', '')
+            for m in re.finditer(r'<section id="([^"]+)">(.*?)</section>', body, re.S)}
 
-    # fichas emergentes: quests usadas y sus vecinas de cadena
+    # imprescindibles repartidos por zona
+    imp, paras = defaultdict(list), {}
+    ck = secs.get('checklist', '')
+    for _, gbody in CKG.findall(ck):
+        zs = set()
+        for k, inner in CKI.findall(gbody):
+            for z in IMP_MAP.get(k, []):
+                imp[z].append((k, inner)); zs.add(z)
+        ps = re.findall(r'<p[^>]*>.*?</p>', gbody, re.S)
+        if ps and len(zs) == 1: paras[next(iter(zs))] = ''.join(ps)
+    mark = '<h3>Lo que aporta si te gusta explorar</h3>'
+    explore = ck[ck.index(mark) + len(mark):] if mark in ck else ''
+
+    zones = []
+    for sid in ('zonas-1-30', 'zonas-30-45', 'zonas-40-60'):
+        for datalv, zn, lvtxt, rest, zbody in ZD.findall(secs.get(sid, '')):
+            base = re.search(r'<span class="base">(.*?)</span>', rest)
+            zones.append({'name': html.unescape(zn), 'lv': lvtxt, 'datalv': datalv, 'base': base.group(1) if base else '',
+                          'new': 'tag new' in rest, 'body': zbody})
+    for name, lv, base, dbz, wslug, text in EXTRA_ZONES:
+        zones.append({'name': name, 'lv': lv, 'datalv': lv if re.fullmatch(r'\d+-\d+', lv) else '', 'base': esc(base),
+                      'new': name == "Shen'dralas", 'body': f'<p>{linkify(esc(text))}</p>', 'extra': (dbz, wslug)})
+    def zkey(z):
+        a, _ = lv_nums(z['lv'])
+        return (0 if a is not None else 1, a or 0, z['name'])
+    zones.sort(key=zkey)
+
+    zpages, zdash = [], []
+    for z in zones:
+        name = z['name']
+        dbz, wslug = z.get('extra') or ZONES[name]
+        lst, n = zone_list(name, dbz, wslug)
+        zid, a, b = 'z-' + slug(name), *lv_nums(z['lv'])
+        items = imp.get(name, [])
+        imp_html = ''
+        if items:
+            lis = ''.join(f'<li><label><input type="checkbox" data-k="{k}"><span>{inner}</span></label></li>' for k, inner in items)
+            imp_html = (f'<section class="blk imp"><h3>Imprescindibles <span class="prog"></span></h3>'
+                        f'<ul class="chk">{lis}</ul>{paras.get(name, "")}</section>')
+        guide = (f'<a href="https://wowforeverinfo.com/guides/{wslug}/" target="_blank" rel="noopener">Guía paso a paso</a>') if wslug else ''
+        dl = f' data-lv="{z["datalv"]}"' if z['datalv'] else ''
+        chk = ' checked' if name in DONE_DEFAULT else ''
+        title = 'Qué hay aquí' if 'extra' in z else 'Ruta y cadenas'
+        zpages.append(f'''
+<article class="page zpage" id="{zid}" data-name="{esc(name)}"{dl} hidden>
+<header class="ph">
+<div class="crumb"><a href="#zonas">Zonas</a><span>›</span>{esc(name)}</div>
+<h2>{esc(name)}</h2>
+<div class="ph-meta"><span class="lv">{esc(z["lv"])}</span><span>{z["base"]}</span>{'<span class="tag new">nueva</span>' if z["new"] else ''}{guide}</div>
+<div class="dones"><label class="done"><input type="checkbox" data-k="zdone-{slug(name)}" data-zdone="{zid}"{chk}> Zona completada</label></div>
+</header>
+{imp_html}
+<section class="blk ruta"><h3>{title}</h3>{z["body"]}</section>
+{lst}
+</article>''')
+        zdash.append({'id': zid, 'n': name, 'lv': z['lv'], 'a': a, 'b': b, 'base': html.unescape(re.sub(r'<[^>]+>', '', z['base'])),
+                      'grp': bracket(a), 'new': 1 if z['new'] else 0, 'imp': len(items), 'q': n})
+
+    dungeons, dash = render_dungeons()
+    sec = lambda sid, newid=None: f'<section id="{newid or sid}" class="sec">{secs[sid]}</section>' if secs.get(sid) else ''
+    views = f'''
+<section class="view" id="v-inicio">
+{hero}
+{NOW_HTML}
+{sec('plan-20')}
+</section>
+<section class="view" id="v-zonas" hidden>
+<div class="overview"><h2 class="vh">Zonas</h2>
+<p class="intro">Una página por zona con sus imprescindibles, su ruta y todas sus quests. Las de tu nivel van resaltadas.</p>
+<div id="zcards"></div></div>
+{"".join(zpages)}
+</section>
+<section class="view" id="v-mazmorras" hidden>
+<div class="overview"><h2 class="vh">Mazmorras</h2>
+<p class="intro">Una página por mazmorra: cómo llegar, qué coger antes, jefes, objetos clave y quests. Marca las que hagas: cuentan para los logros de Legacy.</p>
+{render_gantt(dash)}
+<div id="dcards"></div></div>
+{dungeons}
+</section>
+<section class="view" id="v-chaman" hidden>
+{sec('clase')}{sec('spec')}{sec('personaje')}{sec('profesiones')}
+</section>
+<section class="view" id="v-referencia" hidden>
+{sec('plan')}{sec('zonas', 'tabla-zonas')}{sec('cadenas')}{sec('estado')}
+{f'<section id="explorar" class="sec"><h2>Exploración y reputaciones</h2>{explore}</section>' if explore else ''}
+{sec('pendiente')}{sec('fuentes')}
+</section>'''
+    foot = re.search(r'<footer>.*?</footer>', body, re.S)
+    main = f'{TOP}\n<div class="shell"><aside class="side" id="side" aria-label="En esta sección"></aside>\n<main>{views}\n{foot.group(0) if foot else ""}</main></div>'
+
     for i in list(USED_Q):
         k = chain_info(Q[i]) if i in Q else None
         if k:
@@ -599,25 +688,25 @@ def build():
         'q': {str(i): qd(Q[i]) for i in sorted(USED_Q) if i in Q},
         'i': {str(i): t for i, t in USED_I.items()},
         'n': {str(i): [n] + (npcloc.get(i) or []) for i, n in USED_N.items()},
-        'zones': zdash + zdash2, 'dungeons': dash,
-        'miles': [list(m) for m in MILESTONES], 'prof': [list(p) for p in PROF],
+        'zones': zdash, 'dungeons': dash, 'miles': [list(m) for m in MILESTONES], 'prof': [list(p) for p in PROF],
     }
     blob = json.dumps(data, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
-    page = (f'<title>Enano Chamán en WoW Forever</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n'
+    page = ('<title>Enano Chamán en WoW Forever</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n'
             '<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">\n'
-            f'<style>\n{css}</style>\n{body}\n<script id="gd" type="application/json">{blob}</script>\n<script>\n{js}</script>\n')
+            f'<style>\n{css}</style>\n{main}\n<script id="gd" type="application/json">{blob}</script>\n<script>\n{js}</script>\n')
     os.makedirs(os.path.join(ROOT, 'dist'), exist_ok=True)
     open(os.path.join(ROOT, 'dist', 'artifact.html'), 'w', encoding='utf-8').write(page)
-    wrap = lambda p, extra='': ('<!doctype html>\n<html lang="es"><head><meta charset="utf-8">'
-                               '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
-                               + p.replace('</style>', extra + '</style></head><body class="local">', 1) + '\n</body></html>\n')
-    open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write(wrap(page))
-    pr = page.replace('<details class="zona', '<details open class="zona')
-    pr = re.sub(r'<details class="allq".*?</details>', '', pr, flags=re.S)
-    open(os.path.join(ROOT, 'dist', 'print.html'), 'w', encoding='utf-8').write(wrap(pr))
+    def wrap(p, cls):
+        return ('<!doctype html>\n<html lang="es"><head><meta charset="utf-8">'
+                '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
+                + p.replace('</style>', f'</style></head><body class="{cls}">', 1) + '\n</body></html>\n')
+    open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write(wrap(page, 'local'))
+    pr = re.sub(r'<section class="blk allq".*?<!--/allq-->', '', page, flags=re.S)
+    pr = re.sub(r'(<(?:section class="view"|article class="page [a-z]+")[^>]*?) hidden>', r'\1>', pr)
+    open(os.path.join(ROOT, 'dist', 'print.html'), 'w', encoding='utf-8').write(wrap(pr, 'local print-all'))
     print(f'quests en caché {len(Q)} · fichas de quest {len(data["q"])} · objetos {len(data["i"])} · PNJ {len(data["n"])}')
-    print(f'enlaces en el texto: {STATS["linked"]} directos, {STATS["search"]} por búsqueda · zonas {len(data["zones"])} · mazmorras {len(dash)}')
+    print(f'enlaces en el texto: {STATS["linked"]} directos, {STATS["search"]} por búsqueda · zonas {len(zdash)} · mazmorras {len(dash)}')
     print(f'index.html {os.path.getsize(os.path.join(ROOT, "index.html")) // 1024} KB')
 
 def prefetch():
