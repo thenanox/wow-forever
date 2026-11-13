@@ -4,7 +4,7 @@
   python3 tools/build.py            usa la caché y consulta lo que falte
   python3 tools/build.py --offline  solo caché
 """
-import os, re, sys, json, html, glob, urllib.parse
+import os, re, sys, json, html, glob, difflib, urllib.parse
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 
@@ -282,6 +282,12 @@ def qd(q):
     ex = sorted(EXCL.get(q['id'], ()))
     if ex: d['ex'] = ex
     if q['id'] in BREAD: d['bc'] = 1
+    pq = G.parent(q['id'])
+    if pq and pq in Q and in_guide(pq): d['pq'] = pq
+    gn = closes(q['id'])
+    if gn: d['gn'] = gn
+    rq = extra_reqs(q['id'])
+    if rq: d['rq'] = rq
     if q['id'] in AKA: d['aka'] = sorted(AKA[q['id']])
     if q['id'] in QCHAIN: d['ch'] = list(QCHAIN[q['id']][:2])
     return d
@@ -623,7 +629,42 @@ for _i in Q:
     if not in_guide(_i): continue
     for _e in (G.QS.get(_i) or {}).get('excl', []):
         if _e != _i and in_guide(_e): EXCL[_i].add(_e); EXCL[_e].add(_i)
-BREAD = {i for i in Q if in_guide(i) and (G.QS.get(i) or {}).get('bfor')}      # recados que solo llevan a otra quest
+# recados que solo llevan a otra quest: Questie lo apunta en el recado (breadcrumbForQuestId) o en el destino (breadcrumbs)
+BFOR = {}
+for _i in Q:
+    if not in_guide(_i): continue
+    _s = G.QS.get(_i) or {}
+    if _s.get('bfor'): BFOR[_i] = _s['bfor']
+    for _b in _s.get('bread', []):
+        if in_guide(_b): BFOR.setdefault(_b, _i)
+BREAD = set(BFOR)
+
+REP_ES = [(42000, 'Exaltado'), (21000, 'Reverenciado'), (9000, 'Honorable'), (3000, 'Amistoso'), (0, 'Neutral'), (-3000, 'Antipático'), (-6000, 'Hostil')]
+def standing(v):
+    return next((n for t, n in REP_ES if v >= t), 'Odiado')
+
+def faction_name(fid):
+    n = (G.QV.get('factions') or {}).get(str(fid))
+    return ' '.join(w.capitalize() if w not in ('OF', 'THE') or k == 0 else w.lower() for k, w in enumerate(n.split('_'))) if n else f'facción {fid}'
+
+def closes(i):
+    """Quests de la guía que, una vez hechas, dejan esta sin poder cogerse (así lo comprueba Questie):
+    la siguiente de su cadena, el destino de un recado, la que la retira y su quest madre."""
+    s_ = G.QS.get(i) or {}
+    out = [s_.get('next'), BFOR.get(i), s_.get('until'), s_.get('parent')]
+    return sorted({x for x in out if x and x != i and x in Q and in_guide(x)})
+
+def extra_reqs(i):
+    """Requisitos que no son otra quest: profesión, especialización y reputación."""
+    s_ = G.QS.get(i) or {}
+    out = []
+    sk = s_.get('skill')
+    if sk and sk[1] > 1: out.append(f'{G.SKILL_ES.get(sk[0], sk[0])} {sk[1]}')
+    elif sk: out.append(f'tener {G.SKILL_ES.get(sk[0], sk[0])}')
+    if s_.get('spec') in (20219, 20222): out.append('Ingeniería ' + ('gnómica' if s_['spec'] == 20219 else 'goblin'))
+    if s_.get('rep') and s_['rep'][1] > 0: out.append(f'{standing(s_["rep"][1])} con {faction_name(s_["rep"][0])}')
+    if s_.get('maxrep'): out.append(f'no pasar de {standing(s_["maxrep"][1])} con {faction_name(s_["maxrep"][0])}')
+    return out
 DGZ = {d[2]: d[0] for d in DG}
 
 def linked(a, b):
@@ -669,12 +710,82 @@ for _i, _q in Q.items():
 for _i, _q in Q.items():
     if in_guide(_i) or not _q.get('name'): continue
     _s = G.QS.get(_i)
-    if _s is not None and not _s.get('hid'): continue
+    if _s is not None and _s.get('hid') != 1: continue
     _t = _twin.get((G.norm(_q['name']), _q.get('zone')))
     if _t and len(_t) == 1: ALIAS[_i] = _t[0]; AKA[_t[0]].append(_i)
 
 # En Forever vale el número clásico (comprobado en el juego con Researching the Corruption, 1275):
 # el otro número solo sirve para reconocer la quest al importar.
+
+# Variantes de otra raza, clase o facción. El juego las da por completadas cuando haces la tuya (un enano tiene
+# marcadas las Call of Earth de orcos y tauren), así que al importar cuentan como la quest equivalente de la guía.
+ALIAS_WHY = {}
+def _variants():
+    hand = {s_['q'] for ch in CHAINS for s_ in ch['s'] if 'q' in s_}
+    name = lambda i: G.norm(G.QS[i]['n'])
+    obj = lambda i: (G.QS[i].get('obj') or '').lower()
+    sim = lambda a, b: difflib.SequenceMatcher(None, obj(a), obj(b)).ratio() if obj(a) and obj(b) else 0
+    fam, mine = defaultdict(list), defaultdict(list)
+    for i in G.QS:
+        fam[name(i)].append(i)
+        if in_guide(i): mine[name(i)].append(i)
+    def pick(i, cands):
+        """De varias variantes de la guía: la de una cadena escrita a mano, la que pide lo mismo o, si no, la más antigua."""
+        c = [x for x in cands if x in hand] or sorted(cands)
+        sc = sorted(((sim(i, x), -x) for x in c), reverse=True)
+        if len(sc) > 1 and sc[0][0] - sc[1][0] >= 0.15: return -sc[0][1]
+        return c[0]
+    # 1) Questie dice qué quests se excluyen entre sí. Con el mismo nombre son la misma quest contada por otro PNJ...
+    grp = defaultdict(set)
+    for i, d in G.QS.items():
+        for e in d.get('excl') or []:
+            if e in G.QS and e != i: grp[i].add(e); grp[e].add(i)
+    for i in G.QS:
+        if i in ALIAS or in_guide(i): continue
+        c = [e for e in grp[i] if in_guide(e) and name(e) == name(i)]
+        if not c: continue
+        t = pick(i, c)
+        # ...salvo cuando lo que se excluye es la elección contraria (ingeniería gnómica o goblin): ahí manda el objetivo
+        if len(c) == len(mine[name(i)]) or sim(i, t) >= 0.5: ALIAS[i] = t; ALIAS_WHY[i] = 'excl'
+    # 2) mismo nombre y mismo puesto en su cadena. El recado que lleva al primer paso cuenta como puesto anterior.
+    pos, lead = {}, {}
+    for ch in CHAINS:
+        qs = [s_ for s_ in ch['s'] if 'q' in s_]
+        for x, y in zip(qs, qs[1:]):
+            if x.get('bc'): lead[x['q']] = y['q']
+    for ids in fam.values():
+        fs, pred = set(ids), defaultdict(set)
+        for a in ids:
+            d = G.QS[a]
+            for nx in (d.get('next'), d.get('bfor'), lead.get(a)):
+                if nx in fs and nx != a: pred[nx].add(a)
+            for p_ in d['pres'] + d['preg']:
+                if p_ in fs: pred[a].add(p_)
+        def depth(x, guard=()):
+            if x not in pos:
+                pos[x] = 1 + max((depth(y, guard + (x,)) for y in pred[x] if y not in guard), default=-1)
+            return pos[x]
+        for i in ids: depth(i)
+    first = lambda i: obj(i).split(' ')[0]
+    for i, d in G.QS.items():
+        if i in ALIAS or in_guide(i) or d.get('hid') == 1 or G.playable(i): continue
+        same = [c for c in mine[name(i)] if pos.get(c) == pos.get(i)]
+        if len(same) > 1 and not all(c in EXCL[same[0]] for c in same[1:]):       # varias que se excluyen son la misma
+            same = [c for c in same if first(c) == first(i)]
+        if same and all(c in EXCL[same[0]] for c in same[1:]): ALIAS[i] = pick(i, same); ALIAS_WHY[i] = 'pos'
+_variants()
+if os.environ.get('ALIAS_DEBUG'):
+    json.dump({str(k): [v, ALIAS_WHY.get(k, 'twin')] for k, v in ALIAS.items()}, open(os.environ['ALIAS_DEBUG'], 'w'))
+
+def unknown_names():
+    """Nombre y motivo de las quests de Questie que la guía no usa, para explicar las que salen al importar."""
+    out = {}
+    for i, d in G.QS.items():
+        if in_guide(i) or i in ALIAS: continue
+        why = ('O' if d.get('hid') == 1 else 'H' if d['side'] == 'H' else 'R' if not d['dwarf'] else 'C' if not d['shaman']
+               else 'P' if G.other_skill(i) else 'T' if d['flags'] & 1 else 'Z' if d['lv'] > 0 else 'X')
+        out[str(i)] = d['n'] + '|' + why
+    return out
 
 def repeatable(i):
     f = (G.QS.get(i) or {}).get('flags', 0)
@@ -763,7 +874,7 @@ def render_chains():
         ids = [s['q'] for s in ch['s'] if 'q' in s and s['q'] in Q]
         CHAIN_IDS[ch['k']] = ids
         for s in ch['s']:                                    # recado que solo lleva al paso siguiente: no es obligatorio
-            if 'q' in s and (G.QS.get(s['q']) or {}).get('bfor') in ids: s['bc'] = 1
+            if 'q' in s and BFOR.get(s['q']) in ids: s['bc'] = 1
         CHAIN_REQ[ch['k']] = [s['q'] for s in ch['s'] if 'q' in s and s['q'] in Q and not s.get('opt') and not s.get('bc')]
         for n, s in enumerate(ch['s'], 1):
             if 'q' in s: QCHAIN.setdefault(s['q'], (ch['k'], n, ch['t']))
@@ -858,7 +969,7 @@ IMP_MAP = {}
 def _imp(keys, *zones):
     for k in keys.split(): IMP_MAP[k] = list(zones)
 _imp('dm1 dm2 dm3 dm5', 'Dun Morogh'); _imp('dm4 dm6', 'Ironforge'); _imp('lm1 lm2 lm3 lm4 lm5', 'Loch Modan'); _imp('ds1 ds2 ds3', 'Darkshore')
-_imp('ew1 ew2 ew3', 'Elwynn Forest'); _imp('wf1 wf2 wf3 wf4 wf5 wf6', 'Westfall'); _imp('rr1 rr2 rr3 rr4', 'Redridge Mountains')
+_imp('ew1 ew2', 'Elwynn Forest'); _imp('wf1 wf2 wf3 wf4 wf5 wf6', 'Westfall'); _imp('rr1 rr2 rr3 rr4', 'Redridge Mountains')
 _imp('dw1 dw2 dw3 dw4', 'Duskwood'); _imp('wl1 wl2 wl3 wl4 wl5 wl6', 'Wetlands'); _imp('av1 av2', 'Ashenvale')
 _imp('bs1', 'The Barrens', 'Stonetalon Mountains'); _imp('bs2', 'The Barrens')
 _imp('hb1', 'Hillsbrad Foothills'); _imp('hb2', 'Hillsbrad Foothills', 'Alterac Mountains'); _imp('hb3', 'Alterac Mountains')
@@ -871,6 +982,15 @@ _imp('sg1', 'Searing Gorge'); _imp('sg2', 'Burning Steppes', 'Ironforge'); _imp(
 _imp('ug1 ug2', "Un'Goro Crater"); _imp('ug3', 'Felwood'); _imp('ug4', 'Azshara', 'Teldrassil y Darnassus'); _imp('ug5', 'Azshara'); _imp('ug6', 'Blasted Lands')
 _imp('pl1', 'Western Plaguelands', 'Eastern Plaguelands'); _imp('pl2 pl3', 'Western Plaguelands'); _imp('pl4', 'Eastern Plaguelands'); _imp('pl5', 'Winterspring')
 DONE_DEFAULT = set()
+
+# explorar: el mismo punto en todas las zonas con mapa
+EXPLORE = ('<li class="man"><label><input type="checkbox" data-k="{k}"><span><b>Exploración</b>: descubre todas las subzonas del mapa de {name}.</span></label>'
+           '<div class="imp-d"><p class="imp-s" aria-live="polite"></p><dl class="imp-g">'
+           '<dt>Por qué</dt><dd>Cada subzona que pisas por primera vez da experiencia. Y descubrir el mapa entero del mundo con un mismo personaje es uno de los retos de Legacy, '
+           '«Explore the world», que vale 1 punto de cuenta. Cuentan todas las zonas: con una sola a medias no hay punto. '
+           'El recuento de todas está en <a href="#legacy">Sistema Legacy</a>.</dd>'
+           '<dt>Cómo</dt><dd>Abre el mapa con la tecla M: lo que no has pisado sale tapado. Al entrar en una subzona nueva aparece su nombre en pantalla y recibes la experiencia. '
+           'Suele quedar algún rincón lejos de los caminos y de las quests: repasa el mapa antes de dar la zona por terminada.</dd></dl></div></li>')
 
 # casilla -> de qué depende, cuando no se deduce bien del texto ([] = manual)
 _tok = lambda x: x if isinstance(x, str) else '|'.join(f'q{i}' for i in x) if isinstance(x, tuple) else f'q{x}'
@@ -1073,9 +1193,11 @@ IMPORT_HTML = '''<section id="importar" class="sec">
 <textarea id="imp-ids" rows="2" spellcheck="false" placeholder="65, 132, 135, 141…" aria-label="Lista de números de quest"></textarea>
 <div class="sync-btns"><button id="imp-go" type="button">Marcar las quests completadas</button></div>
 <div id="imp-msg" aria-live="polite"></div>
-<details id="imp-unk-box" hidden><summary><span id="imp-unk-n"></span> quests completadas que la guía no conoce</summary>
-<p class="src">Suelen ser de otra raza o clase, de eventos o repetibles. Si crees que falta alguna de verdad, copia estos números: con ellos se puede comprobar una a una.</p>
-<textarea id="imp-unk" rows="3" readonly spellcheck="false" aria-label="Números de quest que la guía no conoce"></textarea></details>
+<details id="imp-unk-box" hidden><summary><span id="imp-unk-n"></span> quests completadas que la guía no usa</summary>
+<p class="src"><b id="imp-unk-sum"></b></p>
+<p class="src">Cada una va con su nombre y el motivo. El juego da por hechas las versiones de otras razas de las quests que completas, y la guía ya las cuenta como la tuya: aquí quedan solo las que no sabe emparejar, además de eventos, repetibles y quests retiradas. La lista se guarda en este navegador. Si alguna te parece que debería estar, cópiala y pásala para revisarla.</p>
+<textarea id="imp-unk" rows="6" readonly spellcheck="false" aria-label="Quests completadas que la guía no usa"></textarea>
+<div class="sync-btns"><button id="imp-unk-copy" type="button">Copiar la lista</button></div></details>
 </div>
 <p class="src">Solo añade marcas, nunca quita. Marca las quests de las listas de cada zona y los pasos de las cadenas. Los imprescindibles y la ruta del inicio no son quests sueltas: esos se marcan a mano. El formato del archivo es el de Questie para Classic; si el de Forever cambia y no reconoce tu archivo, el mensaje lo dirá.</p>
 </section>'''
@@ -1145,12 +1267,14 @@ def build():
         zid, a, b = 'z-' + slug(name), *lv_nums(z['lv'])
         items = imp.get(name, [])
         imp_html = ''
-        if items:
-            now, later = [], []
-            for k, inner in items:
-                det, mn = imp_detail(k, deps_for(k, inner), (a, b))
-                row = f'<li{"" if deps_for(k, inner) else " class=man"}><label><input type="checkbox" data-k="{k}"{dep_attr(k, inner)}><span>{inner}</span></label>{det}</li>'
-                (later if mn and b and mn > b + 2 else now).append(row)
+        now, later = [], []
+        for k, inner in items:
+            det, mn = imp_detail(k, deps_for(k, inner), (a, b))
+            row = f'<li{"" if deps_for(k, inner) else " class=man"}><label><input type="checkbox" data-k="{k}"{dep_attr(k, inner)}><span>{inner}</span></label>{det}</li>'
+            (later if mn and b and mn > b + 2 else now).append(row)
+        if 'ciudad' not in z['lv']:                          # explorar el mapa cuenta en todas las zonas, no solo en una
+            now.append(EXPLORE.format(k='xpl-' + slug(name), name=esc(name)))
+        if now or later:
             lis = ''.join(now) + (f'<li class="imp-later">Para más adelante: se cogen aquí, pero piden más nivel del que tiene la zona</li>' + ''.join(later) if later else '')
             imp_html = (f'<section class="blk imp"><h3>Imprescindibles <span class="prog"></span></h3>'
                         f'<ul class="chk">{lis}</ul>{paras.get(name, "")}</section>')
@@ -1311,7 +1435,9 @@ def build():
         'q': {str(i): dict(qd(Q[i]), **({'im': 1} if i in IMQ else {}), **({'u': 1} if in_guide(i) else {})) for i in sorted(USED_Q) if i in Q},
         'i': {str(i): t for i, t in USED_I.items()},
         'n': {str(i): [n] + (npcloc.get(i) or []) for i, n in USED_N.items()},
-        'zones': zdash, 'dungeons': dash, 'chains': cmeta, 'alias': {str(k): v for k, v in sorted(ALIAS.items())}, 'miles': [list(m) for m in MILESTONES], 'prof': [list(p) for p in PROF],
+        'zones': zdash, 'dungeons': dash, 'chains': cmeta, 'alias': {str(k): v for k, v in sorted(ALIAS.items())}, 'names': unknown_names(),
+        'legacy': dict({t: [w[0] for d in DG for w in d[8] if w[4] == t] for t in 'NEM'}, val=8995,
+                       xh=['Durotar', 'Mulgore', 'Tirisfal Glades', 'Silverpine Forest']), 'miles': [list(m) for m in MILESTONES], 'prof': [list(p) for p in PROF],
     }
     blob = json.dumps(data, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
     page = ('<title>Enano Chamán en WoW Forever</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n'

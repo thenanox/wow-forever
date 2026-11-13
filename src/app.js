@@ -72,10 +72,16 @@
       if (sp){ if (b.indeterminate) sp.dataset.part = n + ' de ' + ks.length; else sp.removeAttribute('data-part'); }
     });
   }
+  // una quest que ya no se puede coger no queda pendiente: cuenta como resuelta
   function countIn(el, q){
     if (!el) return [0, 0];
     var all = $$(q || 'input[type=checkbox][data-k]', el);
-    return [all.filter(function(b){ return b.checked; }).length, all.length];
+    return [all.filter(function(b){ return b.checked || (b.parentNode.parentNode.classList && b.parentNode.parentNode.classList.contains('gone')); }).length, all.length];
+  }
+  function whyText(st){
+    var n = D.q[st.need] ? D.q[st.need].n : '';
+    return st.s === 'gone' ? 'ya no se puede coger: hiciste ' + n : st.s === 'lv' ? 'desde nivel ' + st.need
+      : st.how === 'pq' ? 'sale mientras tienes cogida ' + n : 'antes hay que hacer ' + n;
   }
   function uniq(q){
     var seen = {}, on = 0, n = 0;
@@ -99,7 +105,7 @@
     var box = $('#progreso');
     if (box) box.innerHTML = '<span>Mazmorras <b>' + dg[0] + '/' + dg[1] + '</b></span><span>Imprescindibles <b>' + im[0] + '/' + im[1] +
       '</b></span><span>Quests <b>' + ql[0] + '/' + ql[1] + '</b></span><span>Ruta <b>' + rt[0] + '/' + rt[1] + '</b></span>';
-    updateChains(); markAvail(); renderCards(); renderSide(); renderNow(); updateRoute(); questStats(); updateTotems(); updateWall();
+    updateChains(); markAvail(); renderLegacy(); renderCards(); renderSide(); renderNow(); updateRoute(); questStats(); updateTotems(); updateWall();
   }
   function restore(){
     // una marca antigua puesta a mano en una vista pasa a sus quests
@@ -129,9 +135,14 @@
 
   // ---------------------------------------------------------------- qué se puede coger ahora
   // Estado de una quest para este personaje: hecha, disponible, bloqueada por un requisito o por nivel.
+  // Estado de una quest con las reglas de Questie: hecha, ya no se puede coger (gone), falta algo antes (pre),
+  // falta nivel (lv) o disponible (ok). `how: 'pq'` es una quest que solo sale mientras tienes cogida otra.
   function questState(id){
     var q = D.q[id]; if (!q) return { s: 'x' };
     if (isQ(id)) return { s: 'done' };
+    var shut = (q.gn || []).filter(isQ)[0];
+    if (shut) return { s: 'gone', need: shut };
+    if (q.pq && D.q[q.pq] && questState(q.pq).s !== 'ok') return { s: 'pre', need: q.pq, how: 'pq' };
     var miss = (q.pa || []).filter(function(p){ return D.q[p] && !isQ(p); });
     if (!miss.length && q.po && q.po.length && !q.po.some(function(p){ return !D.q[p] || isQ(p); })) miss = [q.po[0]];
     if (miss.length) return { s: 'pre', need: miss[0] };
@@ -152,9 +163,11 @@
     $$('.allq li, .dq li').forEach(function(li){
       var box = $('input', li), st = box && rowState(box), qm = $('.qm', li); if (!st) return;
       li.classList.toggle('avail', st.s === 'ok'); li.classList.toggle('blocked', st.s === 'pre'); li.classList.toggle('low', st.s === 'lv');
+      li.classList.toggle('gone', st.s === 'gone');
       if (!qm) return;
-      if (st.s === 'pre') qm.dataset.why = 'antes hay que hacer ' + D.q[st.need].n;
-      else if (st.s === 'lv') qm.dataset.why = 'desde nivel ' + st.need;
+      var one = /^q\d+$/.test(box.dataset.k) && !box.dataset.dep ? D.q[+box.dataset.k.slice(1)] : null;
+      if (st.s === 'pre' || st.s === 'lv' || st.s === 'gone') qm.dataset.why = whyText(st);
+      else if (st.s === 'ok' && one && one.pq && D.q[one.pq]) qm.dataset.why = 'sale mientras tienes cogida ' + D.q[one.pq].n;
       else qm.removeAttribute('data-why');
     });
     // estado de cada imprescindible: hecho, se puede hacer ya, falta nivel o falta algo antes
@@ -169,6 +182,8 @@
         else {
           var id = +left[0].split('|')[0].slice(1), st = questState(id), q = D.q[id] || {}, prog = toks.length > 1 ? ' Llevas ' + (toks.length - left.length) + ' de ' + toks.length + '.' : '';
           if (st.s === 'lv'){ cls = 'st-lv'; txt = 'Todavía no: pide nivel ' + st.need + (lvNow ? ' y tienes ' + lvNow : '') + '.' + prog; }
+          else if (st.s === 'gone'){ cls = 'st-done'; txt = 'Ya no hace falta: hiciste ' + D.q[st.need].n + ', y con eso esta deja de ofrecerse.' + prog; }
+          else if (st.s === 'pre' && st.how === 'pq'){ cls = 'st-pre'; txt = 'Sale mientras tienes cogida ' + D.q[st.need].n + ', sin entregarla.' + prog; }
           else if (st.s === 'pre'){ var nq = D.q[st.need]; cls = 'st-pre'; txt = 'Todavía no: antes hay que hacer ' + nq.n + (nq.g ? ', que da ' + nq.g[2] + (nq.gc && nq.gc[2] ? ' en ' + nq.gc[2] : '') : '') + '.' + prog; }
           else { cls = 'st-ok'; txt = 'Puedes hacerla ya' + (toks.length > 1 ? ': te toca ' + (q.n || '') : '') + (q.g ? ', con ' + q.g[2] + (q.gc ? ' (' + (q.gc[2] ? q.gc[2] + ' ' : '') + q.gc[0] + ', ' + q.gc[1] + ')' : '') : '') + '.' + prog; }
         }
@@ -178,12 +193,57 @@
     });
     $$('.dpage').forEach(function(pg){
       var blk = $('.dq', pg); if (!blk) return;
-      var n = $$('li', blk).length, ok = $$('li.avail', blk).length, pre = $$('li.blocked', blk).length, lv = $$('li.low', blk).length, done = n - ok - pre - lv;
+      var n = $$('li', blk).length, ok = $$('li.avail', blk).length, pre = $$('li.blocked', blk).length, lv = $$('li.low', blk).length, done = n - ok - pre - lv - $$('li.gone', blk).length;
       if (!n) return;
       var el = $('.dq-ready', blk);
       if (!el){ el = document.createElement('p'); el.className = 'dq-ready'; var h = $('h3', blk); if (h) h.parentNode.insertBefore(el, h.nextSibling); else blk.insertBefore(el, blk.firstChild); }
       el.innerHTML = '<b>' + ok + '</b> ' + (ok === 1 ? 'puedes cogerla' : 'puedes cogerlas') + ' ya' + (pre ? ' · <b>' + pre + '</b> con algo que hacer antes' : '') + (lv ? ' · <b>' + lv + '</b> piden más nivel' : '') + (done ? ' · <b>' + done + '</b> hechas' : '');
     });
+  }
+
+  // ---------------------------------------------------------------- retos de Legacy al alcance de este personaje
+  var LG = { pts: 0, max: 14, zd: 0, zn: 0 };
+  function kBox(k){ return '<input type="checkbox" data-k="' + k + '"' + (KS[k] ? ' checked' : '') + '>'; }
+  function renderLegacy(){
+    var G = D.legacy; if (!G) return;
+    var v = L(), rows = [], pts = 0, wing = {};
+    D.dungeons.forEach(function(d){ wing[d.k] = d; });
+    function row(done, title, body){ if (done) pts++; rows.push('<li' + (done ? ' class="done"' : '') + '><span class="lg-m">' + (done ? '✓' : '') + '</span><div><b>' + title + '</b>' + body + '</div></li>'); }
+    [[25, 'Novice'], [45, 'Experienced'], [60, 'Master']].forEach(function(x){
+      row(v >= x[0], x[1] + ' Shaman', '<p>Llegar a nivel ' + x[0] + '.' + (v && v < x[0] ? ' Te faltan ' + (x[0] - v) + ' niveles.' : '') + '</p>');
+    });
+    [[150, 'Journeyman'], [225, 'Expert'], [300, 'Artisan']].forEach(function(x){
+      var k = 'lg-eng' + x[0];
+      row(!!KS[k], x[1] + ' Engineering', '<p><label class="done">' + kBox(k) + ' Ingeniería a ' + x[0] + ' de habilidad</label></p>');
+    });
+    [['N', 'Novice Spelunker', '15-25'], ['E', 'Experienced Spelunker', '26-45'], ['M', 'Master Spelunker', '46-60']].forEach(function(x){
+      var slots = [], thanes = false;
+      G[x[0]].forEach(function(w){
+        if (w === 'hall-of-thanes' || w === 'ragefire-chasm'){      // cuenta una de las dos: la tuya es Hall of Thanes
+          if (!thanes){ thanes = true; slots.push({ g: 'hall-of-thanes', n: 'Hall of Thanes', d: isDone('hall-of-thanes') || isDone('ragefire-chasm') }); }
+        } else if (wing[w]) slots.push({ g: wing[w].g, n: wing[w].n, d: isDone(w) });
+      });
+      var d = slots.filter(function(s){ return s.d; }).length;
+      row(d === slots.length, x[1], '<p>Matar al jefe final de todas las mazmorras de nivel ' + x[2] + ': llevas ' + d + ' de ' + slots.length + '.</p><ul class="chips">' +
+        slots.map(function(s){ return chip('dg-' + s.g, s.n, '', s.d ? 'done' : ''); }).join('') + '</ul>');
+    });
+    var zs = D.zones.filter(function(z){ return z.lv !== 'ciudad'; }).map(function(z){ return { k: 'xpl-' + z.id.slice(2), n: z.n, id: z.id }; });
+    var hs = (G.xh || []).map(function(n){ return { k: 'xpl-' + n.toLowerCase().replace(/[^a-z0-9]+/g, '-'), n: n }; });
+    var zd = zs.concat(hs).filter(function(z){ return KS[z.k]; }).length, zn = zs.length + hs.length;
+    row(zd === zn, 'Explore the world', '<p>Descubrir el mapa entero del mundo con este personaje: llevas ' + zd + ' de ' + zn + ' zonas. Cada zona se marca en su página; las de la Horda que no tienen página, aquí.</p><ul class="chips">' +
+      zs.map(function(z){ return chip(z.id, z.n, '', KS[z.k] ? 'done' : ''); }).join('') +
+      hs.map(function(z){ return '<li><label class="chip">' + kBox(z.k) + ' ' + esc(z.n) + '</label></li>'; }).join('') + '</ul>' +
+      '<p class="src">Las cuatro últimas son zonas iniciales de la Horda: para un enano son peligrosas, pero el mapa cuenta igual. Si el juego te marca alguna zona más, como la isla inicial de los Skyborne, fíate del juego.</p>');
+    if (G.val && D.q[G.val]){
+      var vs = chainOf(G.val).concat([G.val]), vd = vs.filter(isQ).length;
+      row(vd === vs.length, 'Lord Valthalak', '<p>La cadena del conjunto de mazmorra, que pasa por varias de nivel 55-60: llevas ' + vd + ' de ' + vs.length + ' pasos. <a href="#q-' + G.val + '">Ver la cadena</a></p>');
+    }
+    [['lg-raid1', "Conqueror of the Lair", 'Matar a Onyxia'], ['lg-raid2', 'Conqueror of the Deeps', 'Los 8 jefes de Barrow Deeps'], ['lg-raid3', 'Conqueror of the Wilds', 'Los 13 jefes de Hyjal Summit']].forEach(function(x){
+      row(!!KS[x[0]], x[1], '<p><label class="done">' + kBox(x[0]) + ' ' + x[2] + ' (raid, desde el 9 de diciembre)</label></p>');
+    });
+    LG = { pts: pts, max: rows.length, zd: zd, zn: zn };
+    var host = $('#legacy-track');
+    if (host) host.innerHTML = '<p class="lg-t">Llevas <b>' + pts + '</b> de ' + rows.length + ' retos al alcance de este personaje. Cada uno es 1 punto, y puedes gastar hasta 16.</p><ul class="lgl">' + rows.join('') + '</ul>';
   }
 
   // los cuatro totems de la portada se encienden al entregar la quest que da cada uno
@@ -274,7 +334,7 @@
     var now = $('.g-now');
     if (now){ now.hidden = !(v >= 10); now.style.setProperty('--p', (Math.max(10, Math.min(60, v)) - 10) / 50); now.dataset.l = v; }
     var rail = $('.rail'); if (rail) rail.style.setProperty('--lv', v || 1);
-    updateTotems(); updateWall(); markAvail();
+    updateTotems(); updateWall(); markAvail(); renderLegacy();
     var tnow = $('#tl-now');
     if (tnow){
       var curT = null, nextT = null, tname = function(li){ return $('b', li).textContent; };
@@ -413,6 +473,7 @@
     h += '<div class="tile"><h4>Lo que tienes y lo que viene</h4><ul class="ms">' +
       past.map(function(m){ return '<li class="past"><span class="lv">' + m[0] + '</span><span>' + esc(m[1]) + '</span></li>'; }).join('') +
       next.map(function(m){ return '<li><span class="lv">' + m[0] + '</span><span>' + esc(m[1]) + '</span></li>'; }).join('') + '</ul>' +
+      '<small><a href="#legacy">Legacy: ' + LG.pts + ' de ' + LG.max + ' retos de este personaje · mapa ' + LG.zd + '/' + LG.zn + ' zonas</a></small>' +
       '<h4 class="t2">Profesiones a este nivel</h4><p>' + esc(pr[1]) + '</p><p>' + esc(pr[2]) + '</p><small><a href="#profesiones">Ver el plan de profesiones</a></small></div>';
     host.innerHTML = h;
     var pend = $('#pend');
@@ -421,7 +482,7 @@
       zs.forEach(function(z){
         if (zoneDone(z.id)) return;
         $$('#' + z.id + ' .blk.imp input[data-k]').forEach(function(b){
-          if (b.checked || seen[b.dataset.k]) return;
+          if (b.checked || seen[b.dataset.k] || /^xpl-/.test(b.dataset.k)) return;   // la exploración va en su propio recuento
           var bl = b.closest('li'); if (bl && (bl.classList.contains('st-lv') || bl.classList.contains('st-pre'))) return;   // aún no se puede hacer
           seen[b.dataset.k] = 1;
           var c = b.parentNode.cloneNode(true); $$('.tag', c).forEach(function(x){ x.remove(); });
@@ -692,12 +753,39 @@
       if (!D.q[id]){ unk.push(id); return; }
       known++; if (!KS['q' + id]){ setKey('q' + id, true); fresh++; }
     });
-    var ub = $('#imp-unk-box'), ut = $('#imp-unk');
-    if (ub){ ub.hidden = !unk.length; ut.value = unk.join(', '); $('#imp-unk-n').textContent = unk.length; }
+    unk = unk.filter(function(id, n){ return unk.indexOf(id) === n; }).sort(function(a, b){ return a - b; });
+    store.set('imp-unk', unk.join(' '));
+    showUnk(unk);
     restore(); applyLevel();
     if (cur.view === 'quests' && !cur.page) renderQuests();
     return [fresh, known];
   }
+  // las que la guía no usa, con nombre y motivo. Se guardan para poder copiarlas más tarde sin volver a importar
+  function showUnk(unk){
+    var ub = $('#imp-unk-box'); if (!ub) return;
+    var WHY = { O: 'evento, duplicada o retirada', H: 'de la Horda', R: 'de otra raza', C: 'de otra clase', P: 'de una profesión que no tienes',
+                T: 'repetible', Z: 'de una zona, raid o campo de batalla que la guía no cubre', X: 'sin datos' }, by = {};
+    var lines = unk.map(function(id){
+      var n = (D.names && D.names[id] || '').split('|'), w = n[0] ? (WHY[n[1]] || 'sin datos') : 'no está en ninguna base de datos';
+      by[w] = (by[w] || 0) + 1;
+      return id + (n[0] ? ' ' + n[0] : '') + ' (' + w + ')';
+    });
+    ub.hidden = !unk.length; $('#imp-unk-n').textContent = unk.length;
+    $('#imp-unk').value = lines.join('\n');
+    var sum = $('#imp-unk-sum');
+    if (sum) sum.textContent = Object.keys(by).sort(function(a, b){ return by[b] - by[a]; }).map(function(w){ return by[w] + ' ' + w; }).join(' · ');
+  }
+  // al abrir la guía se repasan las guardadas: si una versión nueva ya sabe emparejarlas, se marcan solas
+  setTimeout(function(){
+    var old = (store.get('imp-unk') || '').match(/\d+/g);
+    if (old) markDone(old.map(Number));
+  }, 0);
+  var unkCopy = $('#imp-unk-copy');
+  if (unkCopy) unkCopy.addEventListener('click', function(){
+    var t = $('#imp-unk'); t.select();
+    var done = function(){ impMsg.textContent = 'Lista copiada.'; }, manual = function(){ impMsg.textContent = 'Lista seleccionada: cópiala con Ctrl+C.'; };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t.value).then(done, manual); else manual();
+  });
   if (impFile) impFile.addEventListener('change', function(){
     var f = impFile.files && impFile.files[0]; impData = null; impChar.hidden = true;
     if (!f) return;
@@ -754,9 +842,11 @@
     else if (q.pa || q.po || q.nx) meta.push('<a class="qc" href="#q-' + id + '">cadena</a>');
     else meta.push('<a class="qc" href="#q-' + id + '">ficha</a>');
     var qs = questState(id);
-    if (qs.s === 'pre') meta.push('<span class="why">antes: <a class="qc" href="#q-' + qs.need + '">' + esc(D.q[qs.need].n) + '</a></span>');
+    if (q.rq) meta.push('<span class="why">pide ' + esc(q.rq.join(' y ')) + '</span>');
+    if (qs.s === 'pre') meta.push('<span class="why">' + (qs.how === 'pq' ? 'mientras tienes: ' : 'antes: ') + '<a class="qc" href="#q-' + qs.need + '">' + esc(D.q[qs.need].n) + '</a></span>');
     else if (qs.s === 'lv') meta.push('<span class="why">desde nivel ' + qs.need + '</span>');
-    return '<li><label>' + qBox(id) + '<span><span class="lv">' + (q.l || '?') + '</span> ' + qLink(id) + qTags(q) + (!KS['q' + id] && exDone(id) ? '<span class="tag okk">hecha en otra variante</span>' : '') + '<span class="qm">' + meta.join(' · ') + '</span></span></label></li>';
+    else if (qs.s === 'gone') meta.push('<span class="why">ya no se puede coger: hiciste <a class="qc" href="#q-' + qs.need + '">' + esc(D.q[qs.need].n) + '</a></span>');
+    return '<li' + (qs.s === 'gone' ? ' class="gone"' : '') + '><label>' + qBox(id) + '<span><span class="lv">' + (q.l || '?') + '</span> ' + qLink(id) + qTags(q) + (!KS['q' + id] && exDone(id) ? '<span class="tag okk">hecha en otra variante</span>' : '') + '<span class="qm">' + meta.join(' · ') + '</span></span></label></li>';
   }
   var qf = { text: $('#qf-text'), zone: $('#qf-zone'), state: $('#qf-state'), kind: $('#qf-kind'), level: $('#qf-level') }, qshown = 150;
   if (qf.zone){
@@ -770,7 +860,7 @@
       var q = D.q[id];
       if (t && q.n.toLowerCase().indexOf(t) < 0 && !(q.g && q.g[2].toLowerCase().indexOf(t) >= 0)) return false;
       if (z && qHome(q) !== z) return false;
-      if (st === 'a' ? questState(id).s !== 'ok' : st && (st === 'd') !== isQ(id)) return false;
+      if (st === 'a' ? questState(id).s !== 'ok' : st === 'd' ? !isQ(id) : st && (isQ(id) || questState(id).s === 'gone')) return false;
       if (k === 'im' && !q.im || k === 'dg' && !q.dg || k === 'cl' && !q.cl || k === 'nw' && !q.nw) return false;
       if (k === 'ch' && !(q.ch || q.pa || q.po || q.nx) || k === 'el' && !(q.t === 'Elite' || q.gr)) return false;
       if (lv && !((q.m || q.l || 0) <= lv && (q.l || 0) >= lv - 4)) return false;
@@ -780,8 +870,8 @@
   function questStats(ids){
     var el = $('#qstats'); if (!el || !qf.text) return;
     ids = ids || qFilter();
-    var d = ids.filter(isQ).length;
-    el.textContent = ids.length + ' quests · ' + d + ' hechas · ' + (ids.length - d) + ' pendientes';
+    var d = ids.filter(isQ).length, g = ids.filter(function(i){ return !isQ(i) && questState(i).s === 'gone'; }).length;
+    el.textContent = ids.length + ' quests · ' + d + ' hechas · ' + (ids.length - d - g) + ' pendientes' + (g ? ' · ' + g + ' que ya no se pueden coger' : '');
   }
   function renderQuests(){
     var list = $('#qlist'); if (!list) return;
@@ -842,6 +932,10 @@
     if (q.rc) rows.push('<dt>A elegir</dt><dd>' + items(q.rc) + '</dd>');
     if (q.r) rows.push('<dt>Además</dt><dd>' + items(q.r) + '</dd>');
     if (q.p) rows.push('<dt>Reputación</dt><dd>' + q.p.map(function(x){ return '+' + x[1] + ' ' + esc(x[0]); }).join(', ') + '</dd>');
+    if (q.rq) rows.push('<dt>Pide</dt><dd>' + esc(q.rq.join(' y ')) + '</dd>');
+    if (q.pq && D.q[q.pq]) rows.push('<dt>Solo sale</dt><dd>mientras tienes cogida ' + qLink(q.pq) + ', sin entregarla</dd>');
+    var shut = (q.gn || []).filter(function(i){ return D.q[i] && i !== q.pq; });
+    if (shut.length) rows.push('<dt>Deja de ofrecerse</dt><dd>cuando completas ' + shut.map(qLink).join(' o ') + '</dd>');
     if (q.aka) rows.push('<dt>Otro número</dt><dd>En Forever esta quest lleva el número ' + id + '. La base de datos la trae duplicada también como ' + q.aka.join(', ') + ': ese otro número solo sirve para reconocerla al importar.</dd>');
     var where = [];
     if (home) where.push('<a href="#' + home + '">' + esc(qPlace(q)) + '</a>');
@@ -850,7 +944,7 @@
     var after = (q.nx || []).filter(function(i){ return D.q[i]; });
     pg.innerHTML = '<header class="ph"><div class="crumb"><a href="#quests">Quests</a><span>›</span>' + esc(q.n) + '</div><h2>' + esc(q.n) + '</h2>' +
       '<div class="ph-meta"><span class="lv">nivel ' + (q.l || '?') + (q.m && q.m < q.l ? ', desde ' + q.m : '') + '</span>' + (qPlace(q) ? '<span>' + esc(qPlace(q)) + '</span>' : '') + qTags(q) +
-      (function(){ var s = questState(id); return s.s === 'ok' ? '<span class="tag okk">puedes cogerla ya</span>' : s.s === 'pre' ? '<span class="why">antes hay que hacer <a href="#q-' + s.need + '">' + esc(D.q[s.need].n) + '</a></span>' : s.s === 'lv' ? '<span class="why">desde nivel ' + s.need + '</span>' : ''; })() +
+      (function(){ var s = questState(id), a = s.need && D.q[s.need] ? '<a href="#q-' + s.need + '">' + esc(D.q[s.need].n) + '</a>' : ''; return s.s === 'ok' ? '<span class="tag okk">puedes cogerla ya</span>' : s.s === 'gone' ? '<span class="why">ya no se puede coger: hiciste ' + a + '</span>' : s.s === 'pre' ? '<span class="why">' + (s.how === 'pq' ? 'sale mientras tienes cogida ' : 'antes hay que hacer ') + a + '</span>' : s.s === 'lv' ? '<span class="why">desde nivel ' + s.need + '</span>' : ''; })() +
       '<span class="cprog"></span></div><div class="dones"><label class="done">' + qBox(id) + ' Hecha</label> ' + qLink(id).replace('>' + esc(q.n) + '<', '>Abrir en ' + (mode === 'wdb' ? 'Warcraft DB' : 'Wowhead') + '<') + '</div></header>' +
       '<section class="blk"><h3>Ficha</h3><dl class="qd">' + rows.join('') + '</dl>' + (where.length ? '<p class="src">Aparece en: ' + where.join(', ') + '.</p>' : '') + '</section>' +
       '<section class="blk csteps"><h3>' + (anc.length ? 'Cadena hasta aquí' : 'Requisitos') + '</h3>' +
@@ -865,7 +959,7 @@
             return stepLi(i, n + 1, i === id, imp);
           }).join('');
         })() + '</ol>'
-        : '<p>No tiene requisitos: se puede coger directamente' + (q.m ? ' desde nivel ' + q.m : '') + '.</p><ol class="chain" hidden>' + stepLi(id, 1, true) + '</ol>') + '</section>' +
+        : '<p>' + (q.pq && D.q[q.pq] ? 'No pide haber completado otra quest, pero solo sale mientras tienes cogida ' + qLink(q.pq) : 'No tiene requisitos: se puede coger directamente') + (q.m ? ' desde nivel ' + q.m : '') + '.</p><ol class="chain" hidden>' + stepLi(id, 1, true) + '</ol>') + '</section>' +
       (after.length ? '<section class="blk"><h3>Al terminarla se abre</h3><ul class="clinks">' + after.map(function(i){
         var n = D.q[i]; return '<li><a class="clink" href="#q-' + i + '"><b>' + esc(n.n) + '</b><span class="lv">' + (n.l || '') + '</span><span class="cl-h">' + esc(qPlace(n)) + '</span><span class="cl-p">' + (KS['q' + i] ? 'hecha' : '') + '</span></a></li>';
       }).join('') + '</ul></section>' : '');

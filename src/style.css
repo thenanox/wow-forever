@@ -726,6 +726,9 @@ ol.chain > li.skip > .cs-b .cs-t::after{content:"no hizo falta";font-size:.82rem
 .allq.f-avail li:not(.avail){display:none}
 .qm[data-why]::after{content:" \00b7  " attr(data-why);color:var(--warn)}
 .ql li.avail > label > span > .lv{box-shadow:inset 0 -2px 0 var(--ok)}
+/* quest que ya no se puede coger porque se hizo la siguiente: resuelta, sin estar hecha */
+.ql li.gone > label > span > a.x, .allq li.gone > label > span > a.x, .dq li.gone > label > span > a.x{text-decoration:line-through;color:var(--muted)}
+.ql li.gone, .allq li.gone, .dq li.gone{opacity:.75}
 .why{color:var(--warn);font-size:.86rem}
 .dq-ready{font-size:.95rem;margin:0 0 8px;max-width:none}
 .dq-ready b{font-family:var(--f-mono);font-weight:600}
@@ -758,3 +761,19 @@ dl.imp-g dd{margin:0;max-width:86ch}
 li.imp-later{list-style:none;margin:16px 0 6px;font-family:var(--f-display);font-size:1.05rem;color:var(--muted)}
 .blk.imp li.st-lv > label,.blk.imp li.st-pre > label{opacity:.75}
 @media (max-width:640px){ dl.imp-g{grid-template-columns:1fr;gap:0 0} dl.imp-g dd{margin:0 0 8px} .imp-d{margin-left:0} }
+
+/* retos de Legacy */
+.lg-t{font-size:1.05rem;max-width:none}
+.lg-t b{font-family:var(--f-display);font-weight:400;font-size:1.5rem;color:var(--bronze)}
+.lgl{list-style:none;padding:0;margin:8px 0 0;max-width:none}
+.lgl > li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:0 12px;background:var(--paper);padding:11px 14px;margin:0 0 8px}
+.lgl > li b{font-family:var(--f-display);font-weight:400;font-size:1.1rem;letter-spacing:.01em}
+.lgl > li p{margin:2px 0 6px;max-width:none}
+.lgl > li p:last-child,.lgl > li .chips:last-child{margin-bottom:0}
+.lg-m{display:grid;place-items:center;width:30px;height:30px;background:var(--rule);color:var(--paper);font-weight:700}
+.lgl > li.done .lg-m{background:var(--ok)}
+.lgl > li.done > div > b{color:var(--ok)}
+.lgl label.chip{cursor:pointer;align-items:center}
+.lgl label.chip input{appearance:auto;-webkit-appearance:auto;width:14px;height:14px;margin:0;clip-path:none;accent-color:var(--bronze)}
+@media screen{ .lgl > li{--c:10px;clip-path:var(--oct)} .lg-m{--c:8px;clip-path:var(--oct)} }
+@media print{ #legacy-track{display:none} }

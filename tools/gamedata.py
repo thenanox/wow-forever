@@ -12,6 +12,10 @@ HOST = 'https://forever.warcraftdb.com'
 UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36'
 OFFLINE = False
 QS = questie.load()          # Questie: requisitos, raza y clase de cada quest ({} si no se ha descargado)
+QV = questie.version()       # versión descargada y nombres de zonas y profesiones por número
+MY_SKILLS = {202: 'Ingeniería', 186: 'Minería', 185: 'Cocina', 356: 'Pesca', 129: 'Primeros auxilios'}     # las del personaje
+SKILL_ES = {**MY_SKILLS, 164: 'Herrería', 165: 'Peletería', 171: 'Alquimia', 182: 'Herboristería', 197: 'Sastrería',
+            333: 'Encantamiento', 393: 'Desuello', 762: 'Equitación'}
 
 ALLY_REP = {'Stormwind', 'Ironforge', 'Gnomeregan Exiles', 'Darnassus', 'Wildhammer Clan', 'Brotherhood of the Horse',
             'The League of Arathor', 'Stormpike Guard', 'Silverwing Sentinels', 'Theramore Expeditionary Force',
@@ -70,10 +74,19 @@ def load_quests():
 
 
 def playable(qid):
-    """¿Puede hacerla un enano chamán? None si Questie no conoce la quest."""
+    """¿Puede hacerla este enano chamán? None si Questie no conoce la quest.
+    Questie la descarta si es de otra raza, clase o facción, si pide una profesión que el personaje no tiene
+    o si está en su lista de ocultas (1). Las ocultas solo en el mapa (2) existen y se pueden hacer."""
     s = QS.get(qid)
     if not s: return None
-    return bool(s['dwarf'] and s['shaman'] and s['side'] != 'H' and not s.get('hid'))
+    return bool(s['dwarf'] and s['shaman'] and s['side'] != 'H' and s.get('hid') != 1 and not other_skill(qid))
+
+
+def other_skill(qid):
+    """Nombre de la profesión que pide la quest si el personaje no la tiene."""
+    sk = (QS.get(qid) or {}).get('skill')
+    if sk and sk[0] not in MY_SKILLS: return SKILL_ES.get(sk[0], str(sk[0]))
+    return None
 
 
 NOISE = re.compile(r"^Craftsman's Writ|\bMission [IVXLC]+:", re.I)
@@ -84,15 +97,32 @@ def repeatable(qid):
 
 
 def prereqs(qid):
-    """(todas estas, una de estas): requisitos de Questie que el personaje puede hacer."""
+    """(todas estas, una de estas): lo que hay que tener completado, como lo comprueba Questie (QuestieDB.IsDoable).
+    Si la quest tiene preQuestSingle basta una de esa lista y preQuestGroup no cuenta; si no, hacen falta todas
+    las de preQuestGroup, y por cada una vale también otra que se excluya con ella (salvo las marcadas como exactas)."""
     s = QS.get(qid)
     if not s: return [], []
-    al = [i for i in s['preg'] + ([s['parent']] if s['parent'] else []) if playable(i)]
-    return al, [i for i in s['pres'] if playable(i)]
+    if s['pres']: return [], [i for i in s['pres'] if playable(i)]
+    al = []
+    for i in s['preg']:
+        if playable(i): al.append(i)
+        elif i not in s.get('strict', ()):
+            alt = [e for e in (QS.get(i) or {}).get('excl', []) if playable(e)]
+            if alt: al.append(alt[0])
+    return al, []
+
+
+def parent(qid):
+    """Quest que hay que tener cogida, sin entregar, para que salga esta (parentQuest)."""
+    p = (QS.get(qid) or {}).get('parent')
+    return p if p and playable(p) else None
 
 
 def pretty_zone(z):
-    return ' '.join(w.capitalize() if w not in ('OF', 'THE') or k == 0 else w.lower() for k, w in enumerate(z.split('.')[-1].split('_')))
+    """Nombre legible de una zona de Questie por su número: DUN_MOROGH -> Dun Morogh."""
+    name = (QV.get('zones') or {}).get(str(z))
+    if not name: return None
+    return ' '.join(w.capitalize() if w not in ('OF', 'THE') or k == 0 else w.lower() for k, w in enumerate(name.split('_')))
 
 
 def enrich(Q):
@@ -110,18 +140,20 @@ def enrich(Q):
     while stack:
         for j in link[stack.pop()]:
             if j not in seen: seen.add(j); stack.append(j)
-    need = set()
+    need, oneed = set(), set()
     for i, q in Q.items():
         s = QS.get(i)
         if not s: continue
         # Warcraft DB deja sin nivel muchas quests reales: valen las de Questie que no sean repetibles ni encargos en serie
         if q.get('level') is None and playable(i) and (s.get('lv') or 0) > 0 and (i in seen or not (repeatable(i) or NOISE.search(q.get('name') or ''))):
             q['level'], q['min'] = s['lv'], s.get('min') or q.get('min')
+        # si las dos fuentes dan un nivel mínimo distinto vale el más alto: llegar antes de tiempo es peor que llegar tarde
+        if q.get('min') and (s.get('min') or 0) > q['min'] and playable(i): q['min'] = s['min']
         if not q.get('obj') and s.get('obj'): q['obj'] = s['obj']
-        if not q.get('starts'): need.update(s['sn'][:1])
-        if not q.get('ends'): need.update(s['en'][:1])
+        if not q.get('starts'): need.update(s['sn'][:1]); oneed.update(s['so'][:1])
+        if not q.get('ends'): need.update(s['en'][:1]); oneed.update(s['eo'][:1])
         need.update(x['id'] for x in (q.get('starts') or [])[:1] if x.get('t') == 'npc')
-    NP = questie.npcs(need)
+    NP, OB = questie.npcs(need), questie.objects(oneed)
     votes = defaultdict(Counter)                             # número de zona de Questie -> nombre de mapa de Warcraft DB
     for q in Q.values():
         st = (q.get('starts') or [None])[0]
@@ -129,27 +161,23 @@ def enrich(Q):
             zs = [z for z in NP[st['id']][1] if isinstance(z, int)]
             if len(zs) == 1: votes[zs[0]][q['sc'][2]] += 1
     zname = {z: c.most_common(1)[0][0] for z, c in votes.items()}
-    zn = lambda z: zname.get(z) if isinstance(z, int) else pretty_zone(z) if isinstance(z, str) else None
-    def where(nid, qzone):
-        """Referencia al PNJ y su posición: en la zona de la quest si aparece allí; si hay varias y ninguna encaja, sin posición."""
-        n = NP.get(nid)
+    zn = lambda z: zname.get(z) or pretty_zone(z)
+    def where(nid, qzone, kind='npc'):
+        """Referencia al PNJ u objeto y su posición: en la zona de la quest si aparece allí; si hay varias y ninguna encaja, sin posición."""
+        n = (NP if kind == 'npc' else OB).get(nid)
         if not n: return None, None
         named = [(zn(z), xy) for z, xy in n[1].items()]
         pick = next(((z, xy) for z, xy in named if z and z == qzone), None) or (named[0] if len(named) == 1 and named[0][0] else None)
-        return {'t': 'npc', 'id': nid, 'name': n[0]}, ([round(pick[1][0], 1), round(pick[1][1], 1), pick[0]] if pick else None)
+        return {'t': kind, 'id': nid, 'name': n[0]}, ([round(pick[1][0], 1), round(pick[1][1], 1), pick[0]] if pick else None)
     for i, q in Q.items():
         s = QS.get(i)
         if not s: continue
-        if not q.get('starts') and s['sn']:
-            ref, c = where(s['sn'][0], q.get('zone'))
+        for field, coord, who, what in (('starts', 'sc', s['sn'], s['so']), ('ends', 'ec', s['en'], s['eo'])):
+            if q.get(field): continue
+            ref, c = where(who[0], q.get('zone')) if who else where(what[0], q.get('zone'), 'object') if what else (None, None)
             if ref:
-                q['starts'] = [ref]
-                if c and not q.get('sc'): q['sc'] = c
-        if not q.get('ends') and s['en']:
-            ref, c = where(s['en'][0], q.get('zone'))
-            if ref:
-                q['ends'] = [ref]
-                if c and not q.get('ec'): q['ec'] = c
+                q[field] = [ref]
+                if c and not q.get(coord): q[coord] = c
 
 
 def faction(q):
