@@ -99,7 +99,7 @@
     var box = $('#progreso');
     if (box) box.innerHTML = '<span>Mazmorras <b>' + dg[0] + '/' + dg[1] + '</b></span><span>Imprescindibles <b>' + im[0] + '/' + im[1] +
       '</b></span><span>Quests <b>' + ql[0] + '/' + ql[1] + '</b></span><span>Ruta <b>' + rt[0] + '/' + rt[1] + '</b></span>';
-    updateChains(); renderCards(); renderSide(); renderNow(); updateRoute(); questStats(); updateTotems(); updateWall();
+    updateChains(); markAvail(); renderCards(); renderSide(); renderNow(); updateRoute(); questStats(); updateTotems(); updateWall();
   }
   function restore(){
     // una marca antigua puesta a mano en una vista pasa a sus quests
@@ -126,6 +126,46 @@
     savedToast(storeOK);
     syncViews(); updateBlocks(); refresh();
   });
+
+  // ---------------------------------------------------------------- qué se puede coger ahora
+  // Estado de una quest para este personaje: hecha, disponible, bloqueada por un requisito o por nivel.
+  function questState(id){
+    var q = D.q[id]; if (!q) return { s: 'x' };
+    if (isQ(id)) return { s: 'done' };
+    var miss = (q.pa || []).filter(function(p){ return D.q[p] && !isQ(p); });
+    if (!miss.length && q.po && q.po.length && !q.po.some(function(p){ return !D.q[p] || isQ(p); })) miss = [q.po[0]];
+    if (miss.length) return { s: 'pre', need: miss[0] };
+    var v = L(); if (v && (q.m || 0) > v) return { s: 'lv', need: q.m };
+    return { s: 'ok' };
+  }
+  // una fila puede ser una quest, varios pasos seguidos o variantes de las que basta una
+  function rowState(box){
+    var dep = box.dataset.dep;
+    if (!dep) return /^q\d+$/.test(box.dataset.k) ? questState(+box.dataset.k.slice(1)) : null;
+    var ids = dep.split(/[,|]/).filter(function(k){ return /^q\d+$/.test(k); }).map(function(k){ return +k.slice(1); });
+    if (!ids.length) return null;
+    var sts = ids.map(questState);
+    if (dep.indexOf('|') >= 0) return sts.filter(function(s){ return s.s === 'done'; })[0] || sts.filter(function(s){ return s.s === 'ok'; })[0] || sts[0];
+    return sts.filter(function(s){ return s.s !== 'done'; })[0] || { s: 'done' };
+  }
+  function markAvail(){
+    $$('.allq li, .dq li').forEach(function(li){
+      var box = $('input', li), st = box && rowState(box), qm = $('.qm', li); if (!st) return;
+      li.classList.toggle('avail', st.s === 'ok'); li.classList.toggle('blocked', st.s === 'pre'); li.classList.toggle('low', st.s === 'lv');
+      if (!qm) return;
+      if (st.s === 'pre') qm.dataset.why = 'antes hay que hacer ' + D.q[st.need].n;
+      else if (st.s === 'lv') qm.dataset.why = 'desde nivel ' + st.need;
+      else qm.removeAttribute('data-why');
+    });
+    $$('.dpage').forEach(function(pg){
+      var blk = $('.dq', pg); if (!blk) return;
+      var n = $$('li', blk).length, ok = $$('li.avail', blk).length, pre = $$('li.blocked', blk).length, lv = $$('li.low', blk).length, done = n - ok - pre - lv;
+      if (!n) return;
+      var el = $('.dq-ready', blk);
+      if (!el){ el = document.createElement('p'); el.className = 'dq-ready'; var h = $('h3', blk); if (h) h.parentNode.insertBefore(el, h.nextSibling); else blk.insertBefore(el, blk.firstChild); }
+      el.innerHTML = '<b>' + ok + '</b> ' + (ok === 1 ? 'puedes cogerla' : 'puedes cogerlas') + ' ya' + (pre ? ' · <b>' + pre + '</b> con algo que hacer antes' : '') + (lv ? ' · <b>' + lv + '</b> piden más nivel' : '') + (done ? ' · <b>' + done + '</b> hechas' : '');
+    });
+  }
 
   // los cuatro totems de la portada se encienden al entregar la quest que da cada uno
   function updateTotems(){
@@ -175,6 +215,20 @@
     if (qd && !qd.hidden){ var s = markSteps(qd), pr = $('.cprog', qd); if (pr) pr.textContent = s.n > 1 ? s.done + ' de ' + s.n : ''; }
   }
 
+  function manualBehind(){
+    var v = L(), out = [];
+    $$('#ruta .steps > li').forEach(function(li){
+      if (!(v > +(li.dataset.lv || '').split('-')[1])) return;
+      $$('li.man input', li).forEach(function(b){ if (!b.checked) out.push(b); });
+    });
+    return out;
+  }
+  document.addEventListener('click', function(e){
+    if (!e.target.closest || !e.target.closest('#man-up')) return;
+    manualBehind().forEach(function(b){ setKey(b.dataset.k, true); });
+    savedToast(storeOK); syncViews(); updateBlocks(); refresh();
+  });
+
   // pasos de la ruta: hecho, pendiente de antes o el que toca
   function updateRoute(){
     var v = L();
@@ -185,6 +239,8 @@
       var t = $('.st-tag', li);
       if (t) t.textContent = done ? 'hecho' : behind ? 'te queda ' + (c[1] - c[0]) + ' de ' + c[1] : c[0] ? c[0] + ' de ' + c[1] : '';
     });
+    var mb = $('#man-up'), todo = manualBehind();
+    if (mb){ mb.hidden = !todo.length; mb.textContent = 'Dar por hechos los ' + todo.length + ' puntos «a mano» de los tramos que ya pasé'; }
   }
 
   // ---------------------------------------------------------------- nivel
@@ -199,7 +255,7 @@
     var now = $('.g-now');
     if (now){ now.hidden = !(v >= 10); now.style.setProperty('--p', (Math.max(10, Math.min(60, v)) - 10) / 50); now.dataset.l = v; }
     var rail = $('.rail'); if (rail) rail.style.setProperty('--lv', v || 1);
-    updateTotems(); updateWall();
+    updateTotems(); updateWall(); markAvail();
     var tnow = $('#tl-now');
     if (tnow){
       var curT = null, nextT = null, tname = function(li){ return $('b', li).textContent; };
@@ -229,7 +285,7 @@
         by[z.grp].push('<a class="card' + (inRange(v, z.a, z.b) && !done ? ' at-level' : '') + (done ? ' done' : '') + '" href="#' + z.id + '">' +
           '<span class="c-h"><b>' + esc(z.n) + '</b><span class="lv">' + esc(z.lv) + '</span></span>' +
           '<span class="c-s">' + esc(z.base) + (z['new'] ? ' · nueva en Forever' : '') + '</span>' + bar(im[0] + q[0], im[1] + q[1]) +
-          '<span class="c-f">' + (im[1] ? 'Imprescindibles ' + im[0] + '/' + im[1] + ' · ' : '') + 'Quests ' + q[0] + '/' + q[1] + '</span></a>');
+          '<span class="c-f">' + (im[1] ? 'Imprescindibles ' + im[0] + '/' + im[1] + ' · ' : '') + 'Quests ' + q[0] + '/' + q[1] + (function(){ var n = $$('.allq li.avail', pg).length; return n ? ' · ' + n + ' ahora' : ''; })() + '</span></a>');
       });
       host.innerHTML = groups.map(function(g){ return '<h4 class="cg">' + esc(g) + '</h4><div class="cards">' + by[g].join('') + '</div>'; }).join('');
     }
@@ -264,7 +320,7 @@
         return '<a class="card' + (inRange(v, g.a, g.b) && !done ? ' at-level' : '') + (done ? ' done' : '') + '" href="#dg-' + g.g + '">' +
           '<span class="c-h"><b>' + esc(g.n) + '</b><span class="lv">' + g.a + '-' + g.b + '</span></span>' +
           '<span class="c-s">' + esc(g.loc) + (g.isNew ? ' · nueva en Forever' : '') + '</span>' + bar(q[0], q[1]) +
-          '<span class="c-f">' + (g.wings.length > 1 ? 'Alas ' + wd + '/' + g.wings.length + ' · ' : '') + 'Quests ' + q[0] + '/' + q[1] + '</span></a>';
+          '<span class="c-f">' + (g.wings.length > 1 ? 'Alas ' + wd + '/' + g.wings.length + ' · ' : '') + 'Quests ' + q[0] + '/' + q[1] + (function(){ var n = $$('.dq li.avail', pg).length; return n ? ' · ' + n + ' ahora' : ''; })() + '</span></a>';
       }).join('') + '</div>';
     }
   }
@@ -323,7 +379,8 @@
     var pr = D.prof.filter(function(p){ return v <= p[0]; })[0] || D.prof[D.prof.length - 1];
     var h = '<div class="tile"><h4>Zonas de tu nivel</h4><ul class="chips">' +
       (zs.map(function(z){ return chip(z.id, z.n, z.lv, zoneDone(z.id) ? 'done' : ''); }).join('') || '<li><small>Ninguna.</small></li>') + '</ul>' +
-      (zn.length ? '<small>Pronto:</small><ul class="chips">' + zn.map(function(z){ return chip(z.id, z.n, z.lv, 'soon'); }).join('') + '</ul>' : '') + '</div>';
+      (zn.length ? '<small>Pronto:</small><ul class="chips">' + zn.map(function(z){ return chip(z.id, z.n, z.lv, 'soon'); }).join('') + '</ul>' : '') +
+      (function(){ var n = 0; zs.forEach(function(z){ n += $$('#' + z.id + ' .allq li.avail').length; }); return n ? '<small><a href="#quests" data-qf="a">' + n + ' quests que puedes coger ahora en estas zonas</a></small>' : ''; })() + '</div>';
     h += '<div class="tile"><h4>Mazmorras en rango</h4><ul class="chips">' +
       (ds.map(function(d){ return chip('dg-' + d.g, d.n, d.a + '-' + d.b, isDone(d.k) ? 'done' : ''); }).join('') || '<li><small>Ninguna todavía: la primera es a nivel 13.</small></li>') + '</ul>' +
       (dn.length ? '<small>Pronto:</small><ul class="chips">' + dn.map(function(d){ return chip('dg-' + d.g, d.n, d.a + '-' + d.b, 'soon'); }).join('') + '</ul>' : '') + '</div>';
@@ -418,6 +475,7 @@
     if (!a || a.classList.contains('res')) return;
     var id = a.getAttribute('href').slice(1);
     if (!id) return;
+    if (a.dataset.qf && qf.state){ qf.state.value = a.dataset.qf; qf.zone.value = ''; qf.kind.value = ''; qf.text.value = ''; qf.level.checked = false; qshown = 150; }
     e.preventDefault(); navigate(id);
     var cfg = $('details.cfg'); if (cfg) cfg.open = false;
   });
@@ -427,7 +485,7 @@
     var b = e.target.closest ? e.target.closest('.filters button') : null; if (!b) return;
     var box = b.closest('.allq');
     $$('.filters button', box).forEach(function(o){ o.classList.toggle('on', o === b); });
-    box.classList.remove('f-pend', 'f-new', 'f-star');
+    box.classList.remove('f-pend', 'f-new', 'f-star', 'f-avail');
     if (b.dataset.f) box.classList.add('f-' + b.dataset.f);
   });
 
@@ -460,6 +518,7 @@
     if (q.rc) h += '<dt>A elegir</dt><dd>' + items(q.rc) + '</dd>';
     if (q.r) h += '<dt>Además</dt><dd>' + items(q.r) + '</dd>';
     if (q.p) h += '<dt>Reputación</dt><dd>' + q.p.map(function(p){ return '+' + p[1] + ' ' + esc(p[0]); }).join(', ') + '</dd>';
+    if (q.aka) h += '<dt>Otro número</dt><dd>' + q.aka.join(', ') + '</dd>';
     if (q.k){
       var prev = q.k[3] && D.q[q.k[3]] ? D.q[q.k[3]].n : '', nxt = q.k[4] && D.q[q.k[4]] ? D.q[q.k[4]].n : '';
       h += '<dt>Cadena</dt><dd>' + esc(q.k[0]) + ', paso ' + q.k[1] + ' de ' + q.k[2] + (prev ? '<br>Antes: ' + esc(prev) : '') + (nxt ? '<br>Después: ' + esc(nxt) : '') + '</dd>';
@@ -608,6 +667,7 @@
   function markDone(ids){
     var fresh = 0, known = 0, unk = [];
     ids.forEach(function(id){
+      if (D.alias && D.alias[id]) id = D.alias[id];          // la misma quest con otro número
       if (!D.q[id]){ unk.push(id); return; }
       known++; if (!KS['q' + id]){ setKey('q' + id, true); fresh++; }
     });
@@ -672,6 +732,9 @@
     if (q.ch) meta.push('<a class="qc" href="#cad-' + q.ch[0] + '">cadena, paso ' + q.ch[1] + '</a>');
     else if (q.pa || q.po || q.nx) meta.push('<a class="qc" href="#q-' + id + '">cadena</a>');
     else meta.push('<a class="qc" href="#q-' + id + '">ficha</a>');
+    var qs = questState(id);
+    if (qs.s === 'pre') meta.push('<span class="why">antes: <a class="qc" href="#q-' + qs.need + '">' + esc(D.q[qs.need].n) + '</a></span>');
+    else if (qs.s === 'lv') meta.push('<span class="why">desde nivel ' + qs.need + '</span>');
     return '<li><label>' + qBox(id) + '<span><span class="lv">' + (q.l || '?') + '</span> ' + qLink(id) + qTags(q) + (!KS['q' + id] && exDone(id) ? '<span class="tag okk">hecha en otra variante</span>' : '') + '<span class="qm">' + meta.join(' · ') + '</span></span></label></li>';
   }
   var qf = { text: $('#qf-text'), zone: $('#qf-zone'), state: $('#qf-state'), kind: $('#qf-kind'), level: $('#qf-level') }, qshown = 150;
@@ -686,7 +749,7 @@
       var q = D.q[id];
       if (t && q.n.toLowerCase().indexOf(t) < 0 && !(q.g && q.g[2].toLowerCase().indexOf(t) >= 0)) return false;
       if (z && qHome(q) !== z) return false;
-      if (st && (st === 'd') !== isQ(id)) return false;
+      if (st === 'a' ? questState(id).s !== 'ok' : st && (st === 'd') !== isQ(id)) return false;
       if (k === 'im' && !q.im || k === 'dg' && !q.dg || k === 'cl' && !q.cl || k === 'nw' && !q.nw) return false;
       if (k === 'ch' && !(q.ch || q.pa || q.po || q.nx) || k === 'el' && !(q.t === 'Elite' || q.gr)) return false;
       if (lv && !((q.m || q.l || 0) <= lv && (q.l || 0) >= lv - 4)) return false;
@@ -702,6 +765,8 @@
   function renderQuests(){
     var list = $('#qlist'); if (!list) return;
     var ids = qFilter(), more = $('#qmore');
+    // lo que puedes coger ahora, empezando por lo más cercano a tu nivel
+    if (qf.state.value === 'a') ids.sort(function(a, b){ return (D.q[b].l || 0) - (D.q[a].l || 0) || D.q[a].n.localeCompare(D.q[b].n); });
     questStats(ids);
     list.innerHTML = ids.slice(0, qshown).map(qRow).join('') || '<li class="src">Ninguna quest con esos filtros.</li>';
     more.hidden = ids.length <= qshown;
@@ -756,6 +821,8 @@
     if (q.rc) rows.push('<dt>A elegir</dt><dd>' + items(q.rc) + '</dd>');
     if (q.r) rows.push('<dt>Además</dt><dd>' + items(q.r) + '</dd>');
     if (q.p) rows.push('<dt>Reputación</dt><dd>' + q.p.map(function(x){ return '+' + x[1] + ' ' + esc(x[0]); }).join(', ') + '</dd>');
+    if (q.aka) rows.push('<dt>Otro número</dt><dd>La base de datos trae esta misma quest también como ' + q.aka.map(function(x){ return '<a href="' + url('quest', x) + '" target="_blank" rel="noopener">' + x + '</a>'; }).join(', ') +
+      '. Si la ficha de fuera dice que no existe en Forever, prueba con ese número: cualquiera de los dos cuenta al importar.</dd>');
     var where = [];
     if (home) where.push('<a href="#' + home + '">' + esc(qPlace(q)) + '</a>');
     if (q.ch) where.push('<a href="#cad-' + q.ch[0] + '">su cadena, paso ' + q.ch[1] + '</a>');
@@ -763,6 +830,7 @@
     var after = (q.nx || []).filter(function(i){ return D.q[i]; });
     pg.innerHTML = '<header class="ph"><div class="crumb"><a href="#quests">Quests</a><span>›</span>' + esc(q.n) + '</div><h2>' + esc(q.n) + '</h2>' +
       '<div class="ph-meta"><span class="lv">nivel ' + (q.l || '?') + (q.m && q.m < q.l ? ', desde ' + q.m : '') + '</span>' + (qPlace(q) ? '<span>' + esc(qPlace(q)) + '</span>' : '') + qTags(q) +
+      (function(){ var s = questState(id); return s.s === 'ok' ? '<span class="tag okk">puedes cogerla ya</span>' : s.s === 'pre' ? '<span class="why">antes hay que hacer <a href="#q-' + s.need + '">' + esc(D.q[s.need].n) + '</a></span>' : s.s === 'lv' ? '<span class="why">desde nivel ' + s.need + '</span>' : ''; })() +
       '<span class="cprog"></span></div><div class="dones"><label class="done">' + qBox(id) + ' Hecha</label> ' + qLink(id).replace('>' + esc(q.n) + '<', '>Abrir en ' + (mode === 'wdb' ? 'Warcraft DB' : 'Wowhead') + '<') + '</div></header>' +
       '<section class="blk"><h3>Ficha</h3><dl class="qd">' + rows.join('') + '</dl>' + (where.length ? '<p class="src">Aparece en: ' + where.join(', ') + '.</p>' : '') + '</section>' +
       '<section class="blk csteps"><h3>' + (anc.length ? 'Cadena hasta aquí' : 'Requisitos') + '</h3>' +

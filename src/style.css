@@ -721,3 +721,15 @@ ol.chain > li.skip > .cs-b .cs-t::after{content:"no hizo falta";font-size:.82rem
 .gh{display:inline-grid;place-items:center;width:15px;height:15px;margin-right:6px;font-family:var(--f-mono);font-size:.62rem;font-weight:600;font-style:normal;line-height:1;background:var(--fire);color:var(--paper);vertical-align:1px}
 .gantt .lg .gh{margin-right:0}
 .gantt > .src{margin:0 0 8px;max-width:none}
+
+/* qué se puede coger ahora */
+.allq.f-avail li:not(.avail){display:none}
+.qm[data-why]::after{content:" \00b7  " attr(data-why);color:var(--warn)}
+.ql li.avail > label > span > .lv{box-shadow:inset 0 -2px 0 var(--ok)}
+.why{color:var(--warn);font-size:.86rem}
+.dq-ready{font-size:.95rem;margin:0 0 8px;max-width:none}
+.dq-ready b{font-family:var(--f-mono);font-weight:600}
+.man-up{margin:0 0 10px;max-width:none}
+#man-up{font:inherit;font-weight:700;padding:8px 14px;cursor:pointer;border:0;background:var(--paper);color:var(--ink)}
+@media screen{ #man-up{--c:5px;clip-path:var(--oct)} #man-up:hover{background:var(--gold);color:var(--gold-ink)} }
+@media print{ .man-up,.dq-ready{display:none} }

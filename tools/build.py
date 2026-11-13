@@ -25,7 +25,7 @@ USED_Q, USED_I, USED_N = set(), {}, {}
 # ala = (clave, etiqueta, nivel mín., nivel máx., logro de Legacy)
 DG = [
  ('hall-of-thanes', 'Hall of Thanes', 'The Hall of Thanes', True, 'Bajo Ironforge', 'hall-of-thanes', ['hall-of-thanes'], 'hall-of-thanes', [('hall-of-thanes', '', 13, 20, 'N')]),
- ('ragefire-chasm', 'Ragefire Chasm', 'Ragefire Chasm', False, 'Orgrimmar (Horda)', 'ragefire-chasm', [], 'ragefire-chasm', [('ragefire-chasm', '', 13, 18, 'N')]),
+ ('ragefire-chasm', 'Ragefire Chasm', 'Ragefire Chasm', False, 'Orgrimmar (Horda): es la Hall of Thanes de la Horda, a ti no te hace falta', 'ragefire-chasm', [], 'ragefire-chasm', [('ragefire-chasm', '', 13, 18, 'N')]),
  ('ruins-of-lordaeron', 'Ruins of Lordaeron', 'Ruins of Lordaeron', True, 'Tirisfal Glades (Horda)', 'the-ruins-of-lordaeron', ['the-ruins-of-lordaeron'], 'ruins-of-lordaeron', [('ruins-of-lordaeron', '', 15, 22, 'N')]),
  ('wailing-caverns', 'Wailing Caverns', 'Wailing Caverns', False, 'The Barrens (Horda)', 'wailing-caverns', ['wailing-caverns'], 'wailing-caverns', [('wailing-caverns', '', 15, 24, 'N')]),
  ('deadmines', 'The Deadmines', 'The Deadmines', False, 'Moonbrook, Westfall', 'the-deadmines', ['the-deadmines'], 'deadmines', [('deadmines', '', 17, 26, 'N')]),
@@ -282,6 +282,7 @@ def qd(q):
     ex = sorted(EXCL.get(q['id'], ()))
     if ex: d['ex'] = ex
     if q['id'] in BREAD: d['bc'] = 1
+    if q['id'] in AKA: d['aka'] = sorted(AKA[q['id']])
     if q['id'] in QCHAIN: d['ch'] = list(QCHAIN[q['id']][:2])
     return d
 
@@ -369,7 +370,7 @@ def zone_list(title, dbzones, slug):
             f'<span class="qm">{meta}{chain}{f" · {xp} XP" if xp else ""}</span></span></label></li>')
     note = ('Datos del juego (Warcraft DB). Puede incluir alguna quest de otra clase o retirada. '
             + ('★ = aparece en la guía paso a paso.' if ally_txt else ''))
-    chips = ('<button type="button" data-f="" class="on">Todas</button><button type="button" data-f="pend">Pendientes</button>'
+    chips = ('<button type="button" data-f="" class="on">Todas</button><button type="button" data-f="avail">Puedo cogerlas ahora</button><button type="button" data-f="pend">Pendientes</button>'
              '<button type="button" data-f="new">Nuevas en Forever</button>'
              + ('<button type="button" data-f="star">★ En la guía</button>' if ally_txt else ''))
     htmlout = (f'<section class="blk allq" data-total="{len(out)}"><div class="blk-h"><h3>Todas las quests <span class="prog"></span></h3>'
@@ -658,6 +659,19 @@ def req_tokens(ids):
         used.update(alts)
         out.append('|'.join(f'q{j}' for j in alts))
     return out
+
+# la misma quest con otro número: versiones que la base de datos trae duplicadas y que Questie no tiene para Forever.
+# No se sabe cuál de los dos números usa el juego, así que cualquiera de ellos cuenta.
+ALIAS, AKA = {}, defaultdict(list)
+_twin = defaultdict(list)
+for _i, _q in Q.items():
+    if in_guide(_i): _twin[(G.norm(_q['name']), _q.get('zone'))].append(_i)
+for _i, _q in Q.items():
+    if in_guide(_i) or not _q.get('name'): continue
+    _s = G.QS.get(_i)
+    if _s is not None and not _s.get('hid'): continue
+    _t = _twin.get((G.norm(_q['name']), _q.get('zone')))
+    if _t and len(_t) == 1: ALIAS[_i] = _t[0]; AKA[_t[0]].append(_i)
 
 def repeatable(i):
     f = (G.QS.get(i) or {}).get('flags', 0)
@@ -1015,6 +1029,7 @@ def build():
     secs['ruta'] = re.sub(r'<li>(<label><input type="checkbox" data-k="(rt[0-9a-z]+)")(><span>)(.*?)(</span></label></li>)',
                           lambda m: ('<li class="man">' if not deps_for(m.group(2), m.group(4)) else '<li class="mand">' if all(d.startswith('dg-') for d in deps_for(m.group(2), m.group(4))) else '<li>') + m.group(1) + dep_attr(m.group(2), m.group(4)) + m.group(3) + m.group(4) + m.group(5),
                           secs.get('ruta', ''), flags=re.S)
+    secs['ruta'] = secs['ruta'].replace('<ol class="steps">', '<p class="man-up"><button id="man-up" type="button" hidden></button></p>\n<ol class="steps">', 1)
     zpages, zdash = [], []
     for z in zones:
         name = z['name']
@@ -1109,7 +1124,7 @@ def build():
 <div class="qf">
 <input id="qf-text" type="search" placeholder="Nombre de la quest o de quien la da…" autocomplete="off" aria-label="Filtrar por nombre">
 <select id="qf-zone" aria-label="Zona"><option value="">Todas las zonas</option></select>
-<select id="qf-state" aria-label="Estado"><option value="">Hechas y pendientes</option><option value="p">Pendientes</option><option value="d">Hechas</option></select>
+<select id="qf-state" aria-label="Estado"><option value="">Hechas y pendientes</option><option value="a">Puedo cogerlas ahora</option><option value="p">Pendientes</option><option value="d">Hechas</option></select>
 <select id="qf-kind" aria-label="Tipo"><option value="">Todos los tipos</option><option value="im">Imprescindibles</option><option value="ch">Con cadena</option><option value="dg">De mazmorra</option><option value="cl">De clase</option><option value="nw">Nuevas en Forever</option><option value="el">Élite o de grupo</option></select>
 <label class="qf-lv"><input id="qf-level" type="checkbox"> Solo las de mi nivel</label>
 </div>
@@ -1184,7 +1199,7 @@ def build():
         'q': {str(i): dict(qd(Q[i]), **({'im': 1} if i in IMQ else {}), **({'u': 1} if in_guide(i) else {})) for i in sorted(USED_Q) if i in Q},
         'i': {str(i): t for i, t in USED_I.items()},
         'n': {str(i): [n] + (npcloc.get(i) or []) for i, n in USED_N.items()},
-        'zones': zdash, 'dungeons': dash, 'chains': cmeta, 'miles': [list(m) for m in MILESTONES], 'prof': [list(p) for p in PROF],
+        'zones': zdash, 'dungeons': dash, 'chains': cmeta, 'alias': {str(k): v for k, v in sorted(ALIAS.items())}, 'miles': [list(m) for m in MILESTONES], 'prof': [list(p) for p in PROF],
     }
     blob = json.dumps(data, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
     page = ('<title>Enano Chamán en WoW Forever</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n'
