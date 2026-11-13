@@ -26,12 +26,16 @@ Este módulo solo lee los archivos: no ejecuta nada de lo descargado.
   python3 tools/questie.py --refresh    vuelve a descargar todo (de la última versión del repositorio)
   python3 tools/questie.py --why 1275   de qué capa sale cada campo de una quest
 
+La versión descargada queda apuntada en data/questie-version.json, que va al repositorio: en otro equipo se baja
+esa misma versión, no la última, para que la guía salga igual. Solo --refresh pasa a la última.
+
 Al regenerar comprueba que cada capa se ha leído entera y que salen los valores que fijan las pruebas del repositorio.
 """
 import os, re, sys, json, copy, subprocess
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DIR = os.path.join(ROOT, 'cache', 'questie')
+PIN = os.path.join(ROOT, 'data', 'questie-version.json')
 OUT, OUT_NPC, OUT_OBJ, OUT_VER = (os.path.join(DIR, n) for n in ('quests.json', 'npcs.json', 'objects.json', 'version.json'))
 DB_REPO, ADDON_REPO = 'Questie/QuestieDB', 'Questie/Questie'
 C = 'src/corrections/'
@@ -260,17 +264,23 @@ def download(refresh=False):
     """Descarga los archivos de una misma versión de cada repositorio y apunta cuál es."""
     os.makedirs(DIR, exist_ok=True)
     ver = json.load(open(OUT_VER, encoding='utf-8')) if os.path.exists(OUT_VER) else {}
+    pin = json.load(open(PIN, encoding='utf-8')) if os.path.exists(PIN) else {}
     changed = False
     for key, repo, files in (('db', DB_REPO, DB_FILES), ('addon', ADDON_REPO, ADDON_FILES)):
         missing = [n for n in files if not os.path.exists(os.path.join(DIR, n))]
-        if not refresh and not missing and ver.get(key): continue
-        head = json.loads(gh(f'repos/{repo}/commits/HEAD', raw=False))
-        sha, date = head['sha'], head['commit']['committer']['date']
+        want = None if refresh else pin.get(key)             # la versión apuntada en el repositorio manda, salvo con --refresh
+        if not refresh and not missing and ver.get(key) and (not want or ver[key]['sha'] == want['sha']): continue
+        if want: sha, date = want['sha'], want.get('date')
+        else:
+            head = json.loads(gh(f'repos/{repo}/commits/HEAD', raw=False))
+            sha, date = head['sha'], head['commit']['committer']['date']
         for name, path in files.items():                    # todos de la misma versión: las capas dependen unas de otras
             open(os.path.join(DIR, name), 'wb').write(gh(f'repos/{repo}/contents/{path}?ref={sha}'))
         ver[key] = {'repo': repo, 'sha': sha, 'date': date}
         changed = True
     if changed: json.dump(ver, open(OUT_VER, 'w', encoding='utf-8'), indent=1)
+    new = {k: ver[k] for k in ('db', 'addon') if k in ver}
+    if new != pin: open(PIN, 'w', encoding='utf-8').write(json.dumps(new, indent=1, sort_keys=True) + '\n')
     return changed
 
 
@@ -603,10 +613,17 @@ def check():
 
 # ---------------------------------------------------------------- consulta
 def load():
-    """{id: ficha} o {} si no se ha descargado nunca."""
-    if not os.path.exists(OUT):
-        if not all(os.path.exists(os.path.join(DIR, n)) for n in DB_FILES): return {}
-        return build()
+    """{id: ficha}. Si falta, o si el repositorio apunta otra versión, la descarga (hace falta `gh` con sesión iniciada)."""
+    pin = json.load(open(PIN, encoding='utf-8')) if os.path.exists(PIN) else {}
+    have = version()
+    stale = any(k in pin and (have.get(k) or {}).get('sha') != pin[k]['sha'] for k in ('db', 'addon'))
+    changed = False
+    if stale or not all(os.path.exists(os.path.join(DIR, n)) for n in list(DB_FILES) + list(ADDON_FILES)):
+        try:
+            changed = download()
+        except (OSError, subprocess.CalledProcessError) as e:
+            sys.exit(f'Falta la base de datos de Questie y no se ha podido descargar ({e}). Ejecuta: python3 tools/questie.py')
+    if changed or not os.path.exists(OUT): return build()            # lo compuesto era de otra versión: se rehace
     return {int(k): v for k, v in json.load(open(OUT, encoding='utf-8')).items()}
 
 

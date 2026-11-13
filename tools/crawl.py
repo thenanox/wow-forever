@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 """Descarga de forever.warcraftdb.com los listados de quests por zona y la ficha de cada quest.
-Todo queda en cache/ y no se vuelve a pedir. Uso: python3 tools/crawl.py [--lists-only]"""
+Todo queda en cache/ y no se vuelve a pedir; al acabar se empaqueta en data/db/, que es lo que va al repositorio
+(tools/datos.py). Para volver a pedir los listados, que cambian con el tiempo, borra solo la carpeta cache/list/.
+Uso: python3 tools/crawl.py [--lists-only]"""
 import sys, os, re, json, time, html, threading, urllib.request, urllib.parse
 from concurrent.futures import ThreadPoolExecutor
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import datos
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CACHE = os.path.join(ROOT, 'cache')
@@ -21,6 +26,8 @@ eastern-kingdoms/blasted-lands eastern-kingdoms/burning-steppes eastern-kingdoms
 eastern-kingdoms/western-plaguelands eastern-kingdoms/eastern-plaguelands eastern-kingdoms/deadwind-pass
 eastern-kingdoms/gnomeregan eastern-kingdoms/uldaman eastern-kingdoms/shadowfang-keep eastern-kingdoms/the-temple-of-atalhakkar
 eastern-kingdoms/blackrock-depths eastern-kingdoms/blackrock-spire eastern-kingdoms/crafting
+eastern-kingdoms/tirisfal-glades eastern-kingdoms/silverpine-forest eastern-kingdoms/undercity
+kalimdor/durotar kalimdor/mulgore kalimdor/orgrimmar kalimdor/thunder-bluff
 kalimdor/darkshore kalimdor/auberdine kalimdor/ashenvale kalimdor/stonetalon-mountains kalimdor/the-barrens kalimdor/ratchet
 kalimdor/thousand-needles kalimdor/the-shimmering-flats kalimdor/desolace kalimdor/dustwallow-marsh kalimdor/alcaz-island
 kalimdor/feralas kalimdor/feathermoon-stronghold kalimdor/tanaris kalimdor/gadgetzan kalimdor/ungoro-crater kalimdor/felwood
@@ -97,6 +104,8 @@ def fetch_quest(qid):
         if done[0] % 200 == 0: print('  quests', done[0], flush=True)
 
 def main():
+    for d in ('list', 'quest'): os.makedirs(os.path.join(CACHE, d), exist_ok=True)
+    datos.restore()                                          # lo que ya viaja en data/db/ no se vuelve a pedir
     ids, per = {}, {}
     for p in PRESETS:
         try: rows = fetch_list(p)
@@ -112,6 +121,7 @@ def main():
     todo = [q for q in ids if not os.path.exists(os.path.join(CACHE, 'quest', f'{q}.json'))]
     print('por descargar:', len(todo), flush=True)
     with ThreadPoolExecutor(max_workers=3) as ex: list(ex.map(fetch_quest, todo))
+    print('empaquetado en data/db/:', datos.pack(), 'fichas', flush=True)
     print('FIN', flush=True)
 
 if __name__ == '__main__': main()

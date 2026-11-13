@@ -3,7 +3,7 @@ y consultas a forever.warcraftdb.com (siempre con caché en disco)."""
 import os, re, json, glob, html, time, urllib.request, urllib.parse
 from collections import defaultdict, Counter
 
-import questie
+import questie, datos
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CACHE = os.path.join(ROOT, 'cache')
@@ -64,8 +64,11 @@ def cached(kind, key, url):
 
 # ---------- quests ----------
 def load_quests():
+    n = datos.restore()                                      # en un equipo nuevo, o tras un git pull, la caché sale de data/db/
+    if n: print(f'caché rehecha a partir de data/db/: {n} fichas')
     Q = {}
-    for p in glob.glob(os.path.join(CACHE, 'quest', '*.json')):
+    # siempre por número de quest: el orden del disco cambia de un equipo a otro, y de él dependían los desempates
+    for p in sorted(glob.glob(os.path.join(CACHE, 'quest', '*.json')), key=lambda p: (len(os.path.basename(p)), os.path.basename(p))):
         d = json.load(open(p, encoding='utf-8'))
         if 'err' in d or not d.get('name'): continue
         Q[d['id']] = d

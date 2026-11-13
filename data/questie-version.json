@@ -1,0 +1,12 @@
+{
+ "addon": {
+  "date": "2026-11-13T11:19:12Z",
+  "repo": "Questie/Questie",
+  "sha": "043e7268b36aa7b0a605290c109cdab46771500b"
+ },
+ "db": {
+  "date": "2026-11-13T12:39:33Z",
+  "repo": "Questie/QuestieDB",
+  "sha": "f0ad90875a6531368883904b0f157e7423c14f0b"
+ }
+}
