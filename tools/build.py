@@ -878,7 +878,7 @@ DEP_MAP = {k: [_tok(i) for i in v] for k, v in {
     'rt1d': [96392, 96390, 96391], 'rt3a': [94465, 94466, 94467, 94468], 'rt4d': [79008], 'rt4e': [168, 167, 2040],
     'rt6b': [94494, 94495, 94497], 'rt6c': [94499], 'rt6d': [94500], 'rt6e': [79192, 79980, 79974, 79975, 79976], 'rt6f': [94501, 94502, 94503, 94505],
     'rt8b': [94789], 'rt8c': [96264], 'rt8e': [79358, 96135, 96016],
-    'wf4': [153], 'wf6': [92744], 'rt11d': [],
+    'wf3': [214], 'wf4': [153], 'wf6': [92744], 'rt11d': [],
     # puntos que eran manuales y son en realidad una quest
     'ds1': [1275], 'bd3': [1393], 'rg4': [94980], 'ar3': [685], 'sg3': [3801, 3802, 7848], 'sg2': [4363, 4126], 'dm4': [(2926, 2927), 971, 1050],
     'rt5a': [65], 'bs2': ['dg-wailing-caverns'], 'sd1': [208], 'rt12a': [3962], 'pl4': [5944], 'pl1': [(5401, 5405, 5503)],
@@ -892,6 +892,89 @@ NAME_IDS = defaultdict(list)
 for _i in Q:
     if in_guide(_i): NAME_IDS[G.norm(Q[_i]['name'])].append(_i)
 DEPS_SEEN = {}
+
+# ---- por qué importa cada imprescindible: motivo escrito a mano y datos del premio sacados del juego
+WHYS = json.load(open(os.path.join(ROOT, 'data', 'imprescindibles.json'), encoding='utf-8'))
+SLOT = {'Two-Hand': 'dos manos', 'One-Hand': 'una mano', 'Main Hand': 'mano principal', 'Off Hand': 'mano secundaria', 'Held In Off-hand': 'mano secundaria',
+        'Ranged': 'a distancia', 'Head': 'cabeza', 'Shoulder': 'hombros', 'Chest': 'pecho', 'Wrist': 'muñecas', 'Hands': 'manos', 'Waist': 'cintura',
+        'Legs': 'piernas', 'Feet': 'pies', 'Back': 'capa', 'Finger': 'anillo', 'Neck': 'collar', 'Trinket': 'abalorio', 'Relic': 'reliquia'}
+KINDW = {'Mace': 'maza', 'Axe': 'hacha', 'Sword': 'espada', 'Staff': 'bastón', 'Dagger': 'daga', 'Fist Weapon': 'arma de puño', 'Polearm': 'arma de asta',
+         'Shield': 'escudo', 'Cloth': 'tela', 'Leather': 'cuero', 'Mail': 'malla', 'Plate': 'placas', 'Gun': 'arma de fuego', 'Bow': 'arco',
+         'Crossbow': 'ballesta', 'Wand': 'varita', 'Totem': 'totem'}
+STAT = {'Strength': 'Fuerza', 'Agility': 'Agilidad', 'Stamina': 'Aguante', 'Intellect': 'Intelecto', 'Spirit': 'Espíritu'}
+NO_USE = {'Sword', 'Polearm', 'Gun', 'Bow', 'Crossbow', 'Wand', 'Plate'}
+
+def item_note(iid):
+    """(descripción corta de un objeto, si le sirve a un chamán de Mejora): 'top', 'ok', 'mail' (desde 40) o 'no'."""
+    tip = G.item_tip(iid)
+    if not tip: return '', None
+    slot = kind = speed = dps = cls = ''
+    stats = []
+    for l in tip['l']:
+        if ' · ' in l and 'Damage' not in l and not slot:
+            a, b = [x.strip() for x in l.split(' · ', 1)]
+            if a in SLOT: slot, kind = a, b
+        elif l in SLOT and not slot: slot = l
+        m = re.search(r'Speed (\d+\.\d+)', l)
+        if m: speed = m.group(1)
+        m = re.match(r'\((\d+(?:\.\d+)?) damage per second\)', l)
+        if m: dps = m.group(1)
+        m = re.match(r'\+(\d+) (Strength|Agility|Stamina|Intellect|Spirit)$', l)
+        if m: stats.append(f'+{m.group(1)} {STAT[m.group(2)]}')
+        m = re.search(r'Increases attack power by (\d+)', l)
+        if m: stats.append(f'+{m.group(1)} poder de ataque')
+        if l.startswith('Classes:'): cls = l[8:].strip()
+    parts = []
+    weapon = slot in ('Two-Hand', 'One-Hand', 'Main Hand', 'Off Hand', 'Ranged') and kind in KINDW and kind != 'Shield'
+    if weapon: parts.append(KINDW[kind] if slot == 'Ranged' else f'{KINDW[kind]} de {SLOT[slot]}')
+    elif kind == 'Shield': parts.append('escudo')
+    elif kind in KINDW: parts.append(f'{SLOT.get(slot, slot.lower())}, {KINDW[kind]}')
+    elif slot: parts.append(SLOT[slot])
+    if speed: parts.append(f'velocidad {speed}')
+    if dps: parts.append(f'{dps} de daño por segundo')
+    parts += stats[:4]
+    use = ('no' if kind in NO_USE or (cls and 'Shaman' not in cls) else 'mail' if kind == 'Mail'
+           else 'top' if slot == 'Two-Hand' and kind in ('Mace', 'Axe') else 'ok')
+    return ', '.join(parts), use
+
+USE_TXT = {'no': ' <i class="no">no la puedes usar</i>', 'mail': ' <i>malla: desde nivel 40</i>', 'top': ' <i class="top">dos manos de las tuyas</i>'}
+
+def imp_detail(key, deps):
+    """Bloque de detalle bajo un imprescindible: por qué, qué premio da y los datos de sus quests."""
+    ids = [int(t.split('|')[0][1:]) for t in deps if t[0] == 'q']
+    ids = [i for i in ids if i in Q]
+    out = []
+    if WHYS.get(key): out.append(f'<p class="imp-w"><b>Por qué:</b> {linkify(WHYS[key])}</p>')
+    for q in [Q[i] for i in ids if (Q[i].get('choice') or Q[i].get('items'))][-2:]:
+        bits = []
+        for it in ((q.get('choice') or []) + (q.get('items') or []))[:5]:
+            if not it.get('id') or not it.get('name'): continue
+            note, use = item_note(it['id'])
+            bits.append(ia(it['id'], it['name']) + (f' <span class="in">({note})</span>' if note else '') + USE_TXT.get(use, ''))
+        if bits:
+            lead = ('A elegir' if q.get('choice') else 'Te dan') + (f' en {qa(q["id"])}' if len(ids) > 1 else '')
+            out.append(f'<p class="imp-r"><b>{lead}:</b> ' + '; '.join(bits) + '.</p>')
+    facts = []
+    if ids:
+        if len(ids) > 1: facts.append(f'{len(ids)} quests')
+        xp = sum(Q[i].get('xp') or 0 for i in ids)
+        if xp: facts.append(f'{xp:,} XP'.replace(',', '.'))
+        rep = defaultdict(int)
+        for i in ids:
+            for r in Q[i].get('rep') or []:
+                if (r.get('v') or 0) > 0: rep[r['name']] += r['v']
+        if rep:
+            n, v = max(rep.items(), key=lambda x: x[1]); facts.append(f'+{v} {esc(n)}')
+        lv = min((Q[i].get('min') or Q[i].get('level') or 99) for i in ids)
+        if lv < 99: facts.append(f'desde nivel {lv}')
+        st = (Q[ids[0]].get('starts') or [None])[0]
+        if st: facts.append('empieza con ' + step_ref(st, Q[ids[0]].get('sc')))
+        dgs = list(dict.fromkeys(DQ_OF[i] for i in ids if i in DQ_OF))
+        if dgs: facts.append('mazmorra: ' + ', '.join(f'<a href="#dg-{g}">{esc(DG_NAME[g])}</a>' for g in dgs))
+        after = [x for x in dict.fromkeys(j for i in ids for j in SUCC.get(i, [])) if x not in ids and not repeatable(x)][:3]
+        if after: facts.append('después se abre ' + ', '.join(qa(x) for x in after))
+    if facts: out.append('<p class="imp-f">' + ' · '.join(facts) + '</p>')
+    return '<div class="imp-d">' + ''.join(out) + '</div>' if out else ''
 
 def deps_for(key, inner):
     """Claves de las casillas de las que depende un punto de la guía: sus quests o, si solo nombra una mazmorra, sus alas."""
@@ -1039,7 +1122,7 @@ def build():
         items = imp.get(name, [])
         imp_html = ''
         if items:
-            lis = ''.join(f'<li{"" if deps_for(k, inner) else " class=man"}><label><input type="checkbox" data-k="{k}"{dep_attr(k, inner)}><span>{inner}</span></label></li>' for k, inner in items)
+            lis = ''.join(f'<li{"" if deps_for(k, inner) else " class=man"}><label><input type="checkbox" data-k="{k}"{dep_attr(k, inner)}><span>{inner}</span></label>{imp_detail(k, deps_for(k, inner))}</li>' for k, inner in items)
             imp_html = (f'<section class="blk imp"><h3>Imprescindibles <span class="prog"></span></h3>'
                         f'<ul class="chk">{lis}</ul>{paras.get(name, "")}</section>')
         guide = (f'<a href="https://wowforeverinfo.com/guides/{wslug}/" target="_blank" rel="noopener">Guía paso a paso</a>') if wslug else ''
