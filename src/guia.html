@@ -82,14 +82,15 @@
 <!-- ================= CHECKLIST ================= -->
 <section id="checklist">
 <h2><span class="n"></span>Imprescindibles por zona</h2>
-<p class="intro">Solo las quests que de verdad aportan algo, para que no se te escapen aunque juegues sin Questie. Marca las casillas: se guardan en este navegador. Cumplen al menos uno de estos criterios:</p>
+<p class="intro">Lo que no conviene que se te escape aunque juegues sin Questie. Marca las casillas: se guardan en este navegador. Cada punto lleva una categoría (IMP_CAT, en tools/build.py), y solo son imprescindibles los de estas cinco:</p>
 <ul class="crit">
-  <li><b>Desbloquean algo:</b> totem, llave, mazmorra, barco o cadena larga.</li>
-  <li><b>Equipo muy bueno para ti:</b> dos manos lentas, malla o Fuerza.</li>
-  <li><b>Alimentan una mazmorra:</b> quests de mazmorra que se cogen fuera.</li>
-  <li><b>Cadena entre zonas:</b> si saltas un paso, pierdes el final.</li>
-  <li><b>Beneficio permanente:</b> bolsa de dormir, cocina o reputación útil.</li>
+  <li><b>Mazmorra:</b> quests que se hacen dentro de una mazmorra y se cogen fuera, o cadenas que acaban dentro.</li>
+  <li><b>Clase:</b> totems, arma de chamán y quests de clase.</li>
+  <li><b>Objeto:</b> un premio muy bueno para ti, como un arma lenta de dos manos.</li>
+  <li><b>Llave o acceso:</b> llaves, attunements y reputaciones que abren paso.</li>
+  <li><b>Ventaja permanente:</b> bolsa de dormir, cocina y lo que dura todo el leveo.</li>
 </ul>
+<p class="intro">Lo demás sale aparte en cada zona, como «Para aprovechar»: buena experiencia, equipo corriente, pasos de cadenas de otra zona. No es importante.</p>
 
 <details class="zona ck" data-lv="1-12"><summary><span class="zn">Dun Morogh e Ironforge</span><span class="lv">1-12</span><span class="prog"></span></summary><div class="body"><ul class="chk">
 <li><label><input type="checkbox" data-k="dm5"><span><em>Call of Earth</em> (Teo Hammerstorm, Anvilmar, nivel 4): tu Totem de Tierra. [[cad:earth]]</span></label></li>
@@ -115,7 +116,7 @@
 </ul></div></details>
 
 <details class="zona ck" data-lv="1-10"><summary><span class="zn">Elwynn Forest</span><span class="lv">1-10</span><span class="tag">opcional</span><span class="prog"></span></summary><div class="body">
-<p>Zona inicial humana, de nivel 1-10. Un enano no empieza aquí y no tiene quests de clase, de mazmorra ni de la bolsa de dormir. Lo que aporta se coge al cruzarla:</p>
+<p>Zona inicial humana, de nivel 1-10. Un enano no empieza aquí y no tiene quests de clase, de mazmorra ni de la bolsa de dormir: aquí no hay nada imprescindible. Estos dos puntos son pasos de cadenas de Redridge que caen en esta zona:</p>
 <ul class="chk">
 <li><label><input type="checkbox" data-k="ew1"><span><em>A Watchful Eye</em> (Theocritus, Tower of Azora, 65.2, 69.7, hacia 19-22): parte de la cadena de Redridge.</span></label></li>
 <li><label><input type="checkbox" data-k="ew2"><span>Smith Argus, Goldshire (41.7, 65.5): entrega de <em>The Price of Shoes</em>, que viene de Redridge.</span></label></li>
@@ -512,7 +513,7 @@
 <!-- ================= TODAS LAS ZONAS ================= -->
 <section id="zonas">
 <h2><span class="n"></span>Todas las zonas de Forever</h2>
-<p class="intro">Para conocerlo entero, también lo que no es de tu nivel o facción. Las de la Horda, solo para explorar y con cuidado.</p>
+<p class="intro">Para conocerlo entero, también lo que no es de tu nivel o facción. Las de la Horda, solo para explorar y con cuidado. Cada zona tiene su página en <a href="#zonas">Zonas</a>, con el mapa, su bando y qué esperar.</p>
 <div class="tw"><table class="lvt">
 <thead><tr><th>Zona</th><th>Niveles</th><th>Base Alianza</th><th>Qué te ofrece</th><th>Nuevo en Forever</th></tr></thead>
 <tbody>
@@ -1139,6 +1140,8 @@
 <li><a href="https://www.wowhead.com/forever/profession-leveling-guides/engineering" target="_blank" rel="noopener">Ruta de Ingeniería 1-300</a> (3 nov)</li>
 <li><a href="https://www.wowhead.com/forever/talent-calc/shaman" target="_blank" rel="noopener">Calculadora de talentos de chamán</a></li>
 </ul>
+<h3>Cómo se abren las fichas</h3>
+<p>El nombre de una quest abre su ficha dentro de esta guía, con lo que hay que hacer antes y lo que viene después, para seguir una cadena sin salir de aquí. Para verla en Wowhead: el botón de su ficha, el enlace de la ficha emergente, o clic central o Ctrl y clic sobre el nombre. Los objetos y los PNJ se abren directamente en Wowhead. En Ajustes se cambia Wowhead por Wowhead en español o por Warcraft DB.</p>
 <h3>Fuentes usadas</h3>
 <ul>
 <li><a href="https://github.com/Questie/QuestieDB" target="_blank" rel="noopener">QuestieDB</a>, la base de datos del addon Questie para Forever: qué quest hace falta antes de cada una y para qué raza y clase es. De ahí salen el orden de las cadenas y la lista de lo que puede hacer un enano chamán.</li>

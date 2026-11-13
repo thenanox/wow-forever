@@ -105,7 +105,13 @@ EXTRA_ZONES = [
  ("Shen'dralas", '40-55', 'compartida', ["Shen'dralas"], None, 'Zona nueva al sur de Desolace, por el Valley of Bones. Centauros y quests de Dire Maul, Maraudon y Razorfen Downs.'),
  ('Moonglade', '—', 'base: Nighthaven (neutral)', ['Moonglade', 'Nighthaven'], None, 'Refugio druida neutral. Quests de Dire Maul y de Silithus.'),
  ('Deadwind Pass', '55+', 'sin base', ['Deadwind Pass'], None, 'Paso entre Duskwood y Swamp of Sorrows, con Karazhan.'),
+ # territorio de la Horda: sin quests para un enano, pero con mazmorras y con mapa que descubrir
+ ('Tirisfal Glades', '1-12', 'Horda: Brill y Undercity', ['Tirisfal Glades', 'Undercity'], None, 'Las quests de la zona son de la Horda. Lo que hay para ti son sus dos mazmorras y el mapa por descubrir.'),
+ ('Silverpine Forest', '10-20', 'Horda: The Sepulcher', ['Silverpine Forest'], None, 'Las quests de la zona son de la Horda. Lo que hay para ti es Shadowfang Keep, en el sur, y el mapa por descubrir.'),
+ ('Durotar', '1-12', 'Horda: Razor Hill y Orgrimmar', ['Durotar', 'Orgrimmar'], None, 'Las quests de la zona son de la Horda: para ti solo hay mapa por descubrir.'),
+ ('Mulgore', '1-12', 'Horda: Bloodhoof Village y Thunder Bluff', ['Mulgore', 'Thunder Bluff'], None, 'Las quests de la zona son de la Horda: para ti solo hay mapa por descubrir.'),
 ]
+HORDE_ZONES = {'Tirisfal Glades', 'Silverpine Forest', 'Durotar', 'Mulgore'}
 
 MILESTONES = [
  (4, 'Totem de Tierra (Call of Earth) y Earth Shock'), (6, 'Earthbind Totem. Cocina con Camping 101'), (8, 'Lightning Shield y Stoneclaw Totem'),
@@ -278,7 +284,9 @@ def qd(q):
     if G.is_new(q): d['nw'] = 1
     zp = MAP2ZONE.get(q.get('zone'))
     if zp: d['zp'] = slug(zp)
-    if q['id'] in DQ_OF or q.get('zone') in DGZ: d['dg'] = DQ_OF.get(q['id']) or DGZ[q['zone']]
+    ing, lead = dungeon_of(q)
+    if ing: d['dg'] = ing
+    elif lead: d['dp'] = lead
     ex = sorted(EXCL.get(q['id'], ()))
     if ex: d['ex'] = ex
     if q['id'] in BREAD: d['bc'] = 1
@@ -294,16 +302,15 @@ def qd(q):
 
 
 # ---------------------------------------------------------------- listado completo por zona
-def wfi_sections(slug):
-    """(texto de secciones de la Alianza o comunes, texto de secciones de la Horda) de la guía paso a paso."""
-    p = os.path.join(G.CACHE, 'wfi', f'{slug}.txt') if slug else None
-    if not p or not os.path.exists(p): return '', ''
-    ally, horde, cur = [], [], 'a'
-    for line in open(p, encoding='utf-8'):
-        if line.startswith('## '):
-            cur = 'h' if re.match(r'## \s*Horde', line) else 'a'
-        (horde if cur == 'h' else ally).append(line)
-    return ''.join(ally), ''.join(horde)
+_WFI = os.path.join(ROOT, 'data', 'wfi-quests.json')
+WFI = json.load(open(_WFI, encoding='utf-8')) if os.path.exists(_WFI) else {}
+
+def wfi_names(slug):
+    """(¿hay guía paso a paso?, quests que nombra en apartados de la Alianza o comunes, quests que solo nombra en los de la Horda).
+    Sale de data/wfi-quests.json, que genera tools/wfi.py a partir de las guías de wowforeverinfo."""
+    d = WFI.get(slug) if slug else None
+    if not d: return False, set(), set()
+    return True, set(d['a']), set(d['h'])
 
 def fmt_coord(c, dbzones):
     if not c: return ''
@@ -337,12 +344,12 @@ def chain_badge(g):
     return ''
 
 def zone_list(title, dbzones, slug):
-    ally_txt, horde_txt = wfi_sections(slug)
+    guide, in_guide_txt, horde_only = wfi_names(slug)
     groups = defaultdict(list)
     for q in Q.values():
-        if q.get('zone') in dbzones and G.usable(q) and G.faction(q) != 'H':
+        if q.get('zone') in dbzones and in_guide(q['id']):
             n = q['name']
-            if horde_txt and n in horde_txt and n not in ally_txt: continue
+            if n in horde_only: continue
             groups[n].append(q)
     if not groups: return '', 0
     rows = []
@@ -364,7 +371,7 @@ def zone_list(title, dbzones, slug):
         if kind == 'chain': tags += f'<span class="tag st">{len(g)} pasos</span>'
         elif kind == 'alt': tags += f'<span class="tag st">{len(g)} variantes: basta una</span>'
         if first['id'] in BREAD: tags += '<span class="tag st">recado opcional</span>'
-        star = '<span class="star" title="Aparece en la guía paso a paso">★</span>' if ally_txt and n in ally_txt else ''
+        star = '<span class="star" title="Aparece en la guía paso a paso">★</span>' if n in in_guide_txt else ''
         chain = chain_badge(g)
         meta = quest_meta(g, dbzones)
         xp = max(q.get('xp') or 0 for q in g) if kind == 'alt' else sum(q.get('xp') or 0 for q in g)
@@ -375,10 +382,10 @@ def zone_list(title, dbzones, slug):
             f'<span class="lv">{lvl}</span> {star}{A("quest", first["id"], esc(n))}{tags}'
             f'<span class="qm">{meta}{chain}{f" · {xp} XP" if xp else ""}</span></span></label></li>')
     note = ('Datos del juego (Warcraft DB). Puede incluir alguna quest de otra clase o retirada. '
-            + ('★ = aparece en la guía paso a paso.' if ally_txt else ''))
+            + ('★ = aparece en la guía paso a paso.' if guide else ''))
     chips = ('<button type="button" data-f="" class="on">Todas</button><button type="button" data-f="avail">Puedo cogerlas ahora</button><button type="button" data-f="pend">Pendientes</button>'
              '<button type="button" data-f="new">Nuevas en Forever</button>'
-             + ('<button type="button" data-f="star">★ En la guía</button>' if ally_txt else ''))
+             + ('<button type="button" data-f="star">★ En la guía</button>' if guide else ''))
     htmlout = (f'<section class="blk allq" data-total="{len(out)}"><div class="blk-h"><h3>Todas las quests <span class="prog"></span></h3>'
                f'<div class="filters">{chips}</div></div><p class="src">{note}</p><ul class="chk ql">{"".join(out)}</ul></section><!--/allq-->')
     return htmlout, len(out)
@@ -419,7 +426,7 @@ def reward_chips(q, limit=4):
 
 def dungeon_quest_rows(dbzone, slugs):
     ids = dungeon_quest_ids(dbzone, slugs)
-    outside, inside, unknown = [], [], []
+    outside, inside, steps, unknown = [], [], [], []
     for i in ids:
         q = Q[i]
         c = q.get('sc')
@@ -430,7 +437,7 @@ def dungeon_quest_rows(dbzone, slugs):
             where, bucket = (esc(s['name']) if s else 'dentro'), inside
         elif s or c:
             where = (esc(s['name']) if s else '') + (f' · {c[2] or ""} ({c[0]:g}, {c[1]:g})' if c else '')
-            bucket = outside
+            bucket = outside if dungeon_of(q)[0] else steps  # un paso de la cadena que se hace fuera no es una quest de mazmorra
         else:
             where, bucket = '', unknown
         k = chain_info(q)
@@ -447,7 +454,8 @@ def dungeon_quest_rows(dbzone, slugs):
         if not rows: return ''
         rows.sort(key=lambda r: r[0])
         return f'<h5>{title}</h5><ul class="chk ql">{"".join(r[1] for r in rows)}</ul>'
-    return (block('Se cogen fuera: recógelas antes de entrar', outside) + block('Se cogen dentro o caen de un jefe', inside)
+    return (block('Se hacen dentro y se cogen fuera: llévalas cogidas antes de entrar', outside) + block('Se cogen dentro o caen de un jefe', inside)
+            + block('No se hacen dentro: los demás pasos de estas cadenas, antes o después de la mazmorra', steps)
             + block('Sin datos de dónde empiezan', unknown)), len(ids)
 
 def li_list(items):
@@ -568,7 +576,127 @@ for _n, (_dbz, _s) in ZONES.items():
 for _n, _lv, _b, _dbz, _s, _t in EXTRA_ZONES:
     for _d in _dbz: MAP2ZONE.setdefault(_d, _n)
 DG_NAME = {d[0]: d[1] for d in DG}
+DG_LV = {d[0]: (min(w[2] for w in d[8]), max(w[3] for w in d[8])) for d in DG}
 QTYPE = {'Dungeon': 'mazmorra', 'Elite': 'élite', 'Raid': 'raid'}
+
+# ---------------------------------------------------------------- fichas de zona y mapa esquemático
+ZDATA = json.load(open(os.path.join(ROOT, 'data', 'zonas.json'), encoding='utf-8'))
+ZINFO, ZSHORT = ZDATA['zonas'], ZDATA['corto']
+BANDO = {'A': ('Alianza', 'Zona de tu facción: aquí solo la Alianza tiene pueblos.'),
+         'H': ('Horda', 'Territorio de la Horda: sus guardias te atacan.'),
+         'D': ('Disputada', 'Las dos facciones hacen quests aquí.'),
+         'N': ('Neutral', 'Sin bando: lo que hay es compartido por las dos facciones.')}
+CONT = {'ek': 'Reinos del Este', 'ka': 'Kalimdor'}
+ZGRAPH = defaultdict(list)                                   # zona -> [(vecina, medio de transporte o '' si es a pie, detalle)]
+for _a, _b in ZDATA['caminos']:
+    ZGRAPH[_a].append((_b, '', '')); ZGRAPH[_b].append((_a, '', ''))
+for _a, _b, _how, _det in ZDATA['rutas']:
+    ZGRAPH[_a].append((_b, _how, _det)); ZGRAPH[_b].append((_a, _how, _det))
+
+HOME = 'Ironforge'
+def way_to(dest, zmin):
+    """Camino de tu capital a una zona con menos zonas por medio, por tierra, barco y tranvía: [(zona, medio), …].
+    Pisar territorio de la Horda cuenta mucho más, y cruzar una zona de bastante más nivel que el destino también:
+    solo salen cuando no hay otro modo de llegar. zmin: nivel al que empieza cada zona (None si no tiene)."""
+    import heapq
+    if dest == HOME: return []
+    goal = zmin.get(dest)
+    best, prev, heap = {HOME: 0}, {}, [(0, HOME)]
+    while heap:
+        d, z = heapq.heappop(heap)
+        if d > best[z]: continue
+        for n, how, _ in ZGRAPH[z]:
+            c = d + (1.2 if how else 1) + (4 if ZINFO[n]['bando'] == 'H' else 0)
+            if n != dest and goal is not None and (zmin.get(n) or 0) > goal + 3: c += (zmin[n] - goal) / 5
+            if c < best.get(n, 1e9):
+                best[n], prev[n] = c, (z, how); heapq.heappush(heap, (c, n))
+    if dest not in prev: return []
+    path, cur = [], dest
+    while cur != HOME:
+        path.append((cur, prev[cur][1])); cur = prev[cur][0]
+    return path[::-1]
+
+def zlink(n):
+    return f'<a href="#z-{slug(n)}">{esc(n)}</a>'
+
+def zone_info(name, zlv):
+    """Bloques «Qué esperar» y «Dónde está» de la página de una zona. zlv: zona -> (texto del nivel, nivel al que empieza)."""
+    z = ZINFO.get(name)
+    if not z: return ''
+    zmin = {n: v[1] for n, v in zlv.items()}
+    label, what = BANDO[z['bando']]
+    maz = ''.join(f'<li><a class="chip" href="#dg-{g}">{esc(DG_NAME[g])} <span class="lv">{DG_LV[g][0]}-{DG_LV[g][1]}</span></a></li>' for g in z.get('maz', []))
+    walk = [n for n, how, _ in ZGRAPH[name] if not how]
+    other = [(n, how, det) for n, how, det in ZGRAPH[name] if how]
+    where = [f'<p><b>Limita con:</b> {", ".join(zlink(n) for n in walk)}.</p>' if walk else '<p>No se llega andando desde ninguna otra zona.</p>']
+    if other:
+        where.append('<p><b>Barcos y otras rutas:</b> ' + '; '.join(f'{how} a {zlink(n)} ({esc(det)})' for n, how, det in other) + '.</p>')
+    way = way_to(name, zmin)
+    if way:
+        # una zona de paso de bastante más nivel que esta lleva su nivel al lado (en las de la Horda el nivel no dice nada para un enano)
+        goal = zmin.get(name) if z['bando'] != 'H' else None
+        port = {n for (n, how), (_, nxt) in zip(way, way[1:]) if how and nxt}       # se llega y se sale en barco: solo se pisa el muelle
+        hard = lambda n: n != name and n not in port and goal is not None and (zmin.get(n) or 0) > goal + 5
+        hops = zlink(HOME) + ''.join(f' <span class="hop">{"en " + how if how else "a pie"} →</span> {zlink(n)}'
+                                     + (f' <span class="hop hi">({esc(zlv[n][0])})</span>' if hard(n) else '') for n, how in way)
+        warn = ' Las zonas con el nivel entre paréntesis son de más nivel que esta y no hay otro camino por tierra: se cruzan por la carretera, sin salirse.' if any(hard(n) for n, _ in way) else ''
+        where.append(f'<p class="zway"><b>Cómo llegar desde {HOME}:</b> {hops}</p>'
+                     '<p class="src">El camino con menos zonas por medio, por tierra, barco y tranvía, sin contar vuelos. Evita el territorio de la Horda '
+                     f'y las zonas de más nivel cuando hay otro camino.{warn}</p>')
+    return f'''<div class="cols zcols">
+<section class="blk zinfo"><h3>Qué esperar</h3>
+<p>{esc(z["que"])}</p>
+<p class="zb"><span class="bando b-{z["bando"]}">{label}</span> {what} <b>Bases:</b> {esc(z["bases"])}</p>
+{f'<p class="zm"><b>Mazmorras de la zona:</b></p><ul class="chips">{maz}</ul>' if maz else ''}
+<h4>Un poco de historia</h4>
+<p>{esc(z["lore"])}</p></section>
+<section class="blk zwhere"><h3>Dónde está <span class="prog">{CONT[z["cont"]]}</span></h3>
+<div class="zmini" data-cont="{z["cont"]}" data-zone="z-{slug(name)}"></div>
+{"".join(where)}</section>
+</div>'''
+
+NODE_W, NODE_H, COL, ROW, PAD = 104, 34, 116, 54, 6
+def zone_xy(n):
+    x, y = ZINFO[n]['xy']
+    return PAD + x * COL, PAD + y * ROW
+
+def render_map(cont, zlv):
+    """Mapa esquemático de un continente: una ficha por zona, con el color de su bando, y los caminos entre ellas.
+    No está a escala. zlv: zona -> (texto del nivel, rango para resaltar la del nivel del personaje)."""
+    names = [n for n, z in ZINFO.items() if z['cont'] == cont]
+    w = max(zone_xy(n)[0] for n in names) + NODE_W + PAD
+    h = max(zone_xy(n)[1] for n in names) + NODE_H + PAD
+    mid = lambda n: (zone_xy(n)[0] + NODE_W / 2, zone_xy(n)[1] + NODE_H / 2)
+    def line(a, b, cls, tip=''):
+        (x1, y1), (x2, y2) = mid(a), mid(b)
+        return (f'<line class="{cls}" data-a="z-{slug(a)}" data-b="z-{slug(b)}" x1="{x1:g}" y1="{y1:g}" x2="{x2:g}" y2="{y2:g}">'
+                + (f'<title>{esc(tip)}</title>' if tip else '') + '</line>')
+    here = lambda a, b: ZINFO[a]['cont'] == cont and ZINFO[b]['cont'] == cont
+    lines = [line(a, b, 'me') for a, b in ZDATA['caminos'] if here(a, b)]
+    lines += [line(a, b, 'me mr', f'{how}: {det}') for a, b, how, det in ZDATA['rutas'] if here(a, b)]
+    nodes = []
+    for n in names:
+        z, (x, y) = ZINFO[n], zone_xy(n)
+        lvtxt, datalv = zlv.get(n, ('', ''))
+        sea = sorted({how for a, b, how, _ in ZDATA['rutas'] if n in (a, b) and not here(a, b)})
+        tip = f'{n} · {BANDO[z["bando"]][0]}' + (f' · {lvtxt}' if lvtxt else '') + (f' · {" y ".join(sea)} al otro continente' if sea else '')
+        nodes.append(f'<a class="mz b-{z["bando"]}{" mc" if z.get("ciudad") else ""}" href="#z-{slug(n)}" data-z="z-{slug(n)}"'
+                     + (f' data-lv="{datalv}"' if datalv else '') + f'><title>{esc(tip)}</title>'
+                     f'<rect x="{x:g}" y="{y:g}" width="{NODE_W}" height="{NODE_H}" rx="6"/>'
+                     f'<text class="mn" x="{x + NODE_W / 2:g}" y="{y + 15:g}">{esc(ZSHORT.get(n, n))}</text>'
+                     f'<text class="ml" x="{x + NODE_W / 2:g}" y="{y + 27.5:g}">{esc(lvtxt)}{" ⚓" if sea else ""}</text></a>')
+    return (f'<figure class="zmap" data-cont="{cont}"><figcaption>{CONT[cont]}</figcaption>'
+            f'<svg viewBox="0 0 {w:g} {h:g}" role="img" aria-label="Mapa esquemático de {CONT[cont]}">{"".join(lines)}{"".join(nodes)}</svg></figure>')
+
+def render_maps(zlv):
+    sea = '; '.join(f'{zlink(a)} – {zlink(b)}, en {how} ({esc(det)})' for a, b, how, det in ZDATA['rutas'])
+    lg = ''.join(f'<span class="lg"><i class="sw b-{k}"></i><b>{v[0]}</b></span>' for k, v in BANDO.items())
+    return f'''<section class="zmaps" aria-label="Mapa de zonas">
+<div class="zmaps-lg">{lg}<span class="lg"><i class="ln"></i>camino a pie</span><span class="lg"><i class="ln dash"></i>barco o tranvía</span><span class="lg"><i class="sw now"></i>de tu nivel</span><span class="lg">⚓ barco al otro continente</span></div>
+<div class="zmaps-in">{render_map("ka", zlv)}{render_map("ek", zlv)}</div>
+<p class="src">Es un esquema, no un mapa a escala: cada ficha es una zona, puesta más o menos donde cae en el mundo, y las líneas dicen con cuáles se comunica. Pulsa una zona para abrir su página. <b>Alianza</b>: solo tu facción tiene pueblos. <b>Horda</b>: territorio enemigo. <b>Disputada</b>: las dos facciones hacen quests allí. <b>Neutral</b>: lo que hay es compartido. La página de cada zona dice qué bases tiene cada una. En un reino JcJ te pueden atacar en cualquier zona que no sea de la Alianza.</p>
+<p class="src"><b>Barcos y tranvía:</b> {sea}.</p>
+</section>'''
 
 def step_ref(x, c):
     if not x: return ''
@@ -611,8 +739,15 @@ def _class_ids():
     return out
 CLASS_Q = _class_ids()
 
+HORDE_DB = {d for z in EXTRA_ZONES if z[0] in HORDE_ZONES for d in z[3]}      # zonas de la base de datos en territorio de la Horda
+
 def in_guide(i):
-    return i in Q and G.usable(Q[i]) and G.faction(Q[i]) != 'H'
+    """¿Es una quest que puede hacer el personaje? En territorio de la Horda quien la da está en un pueblo enemigo:
+    ahí solo cuenta si Questie la da por quest de la Alianza y Warcraft DB no dice que es de la Horda. No basta con
+    que ninguna de las dos diga de quién es."""
+    q = Q.get(i)
+    if not q or not G.usable(q) or G.faction(q) == 'H': return False
+    return not (q.get('zone') in HORDE_DB and (G.faction(q) != 'A' or q.get('side') == 'Horde'))
 
 # requisitos entre quests (Questie), solo entre las que puede hacer el personaje
 PRE, SUCC = {}, defaultdict(list)
@@ -833,6 +968,14 @@ for _d in DG:
     WINGS[_d[0]] = [w[0] for w in _d[8]]
     for _i in dungeon_quest_ids(_d[2], _d[6]): DQ_OF.setdefault(_i, _d[0])
 
+def dungeon_of(q):
+    """(mazmorra dentro de la que se hace la quest, mazmorra a cuya cadena pertenece aunque se haga fuera).
+    Se hace dentro si la base de datos la marca como quest de mazmorra o si su zona es la propia mazmorra."""
+    g, z = DQ_OF.get(q['id']), DGZ.get(q.get('zone'))
+    if g and (q.get('type') == 'Dungeon' or z == g): return g, None
+    if z: return z, None
+    return None, g
+
 def auto_chains(covered):
     """Cadenas previas a quests de mazmorra, según los requisitos de Questie, que no cubre ninguna cadena escrita a mano."""
     groups = []                                              # [conjunto de quests, mazmorras, quests finales]
@@ -906,7 +1049,7 @@ def render_chains():
                 where = linkify(s['w']) if s.get('w') else step_where(q)
                 obj = esc(G.clean(q.get('obj') or ''))
                 rw = reward_chips(q, 3)
-                if q['id'] in DQ_OF or q.get('type') == 'Dungeon': tag = '<span class="tag ty">mazmorra</span>'
+                if dungeon_of(q)[0] or q.get('type') == 'Dungeon': tag = '<span class="tag ty">mazmorra</span>'
                 elif q.get('type') in QTYPE: tag = f'<span class="tag ty">{QTYPE[q["type"]]}</span>'
                 if s.get('opt'): tag += '<span class="tag st">opcional</span>'
                 if s.get('bc'): tag += '<span class="tag st">recado opcional</span>'
@@ -983,8 +1126,25 @@ _imp('ug1 ug2', "Un'Goro Crater"); _imp('ug3', 'Felwood'); _imp('ug4', 'Azshara'
 _imp('pl1', 'Western Plaguelands', 'Eastern Plaguelands'); _imp('pl2 pl3', 'Western Plaguelands'); _imp('pl4', 'Eastern Plaguelands'); _imp('pl5', 'Winterspring')
 DONE_DEFAULT = set()
 
+# Por qué cuenta cada punto de la checklist. Solo es imprescindible lo que es de mazmorra, de clase, un objeto muy bueno
+# para el personaje, una llave o acceso, o una ventaja que dura todo el leveo. Lo demás va aparte, como «para aprovechar».
+CATS = {'maz': 'mazmorra', 'cla': 'clase', 'obj': 'objeto', 'lla': 'llave o acceso', 'per': 'ventaja permanente'}
+IMP_CAT = {}
+def _cat(c, keys):
+    for k in keys.split(): IMP_CAT[k] = c
+_cat('cla', 'dm5 dm6 lm4 lm5 rr3 wl1 av1 ar1 tw1 tw2 tw3 tw4 pl3')
+_cat('maz', 'dm1 dm4 ds1 ds2 wf1 wf2 wf3 wf6 rr1 rr2 dw1 wl3 wl4 av2 bs2 hb1 hb3 sd2 sd3 rg2 rg3 bd1 bd2 ft1 ft2 ft3 ft4 sg1 sg2 ug1 ug4 pl4')
+_cat('obj', 'wl2 rg1 ug2')
+_cat('lla', 'rg4 sg3 sg4 ug3 ug5 pl2')
+_cat('per', 'dm2 lm3 wf5 bs1 ar2 pl1')
+# lo que no es imprescindible: qué tiene de bueno
+APRO = {'dm3': 'profesión', 'lm1': 'experiencia', 'lm2': 'de paso', 'ds3': 'equipo', 'ew1': 'cadena de otra zona', 'ew2': 'cadena de otra zona',
+        'wf4': 'de paso', 'rr4': 'experiencia', 'dw2': 'experiencia', 'dw3': 'experiencia', 'dw4': 'experiencia', 'wl5': 'de paso',
+        'wl6': 'experiencia', 'hb2': 'de paso', 'ar3': 'experiencia', 'sd1': 'experiencia', 'rg5': 'equipo', 'bd3': 'equipo',
+        'ug6': 'consumibles', 'pl5': 'profesión'}
+
 # explorar: el mismo punto en todas las zonas con mapa
-EXPLORE = ('<li class="man"><label><input type="checkbox" data-k="{k}"><span><b>Exploración</b>: descubre todas las subzonas del mapa de {name}.</span></label>'
+EXPLORE = ('<li class="man"><label><input type="checkbox" data-k="{k}"><span><span class="cat c-no">Legacy</span> <b>Exploración</b>: descubre todas las subzonas del mapa de {name}.</span></label>'
            '<div class="imp-d"><p class="imp-s" aria-live="polite"></p><dl class="imp-g">'
            '<dt>Por qué</dt><dd>Cada subzona que pisas por primera vez da experiencia. Y descubrir el mapa entero del mundo con un mismo personaje es uno de los retos de Legacy, '
            '«Explore the world», que vale 1 punto de cuenta. Cuentan todas las zonas: con una sola a medias no hay punto. '
@@ -1162,7 +1322,7 @@ TOP = '''<header class="top"><div class="top-in">
 <label class="lvl" for="nivel">Nivel<input id="nivel" type="number" min="1" max="60" value="1" inputmode="numeric"></label>
 <div class="search"><input id="buscar" type="search" placeholder="Buscar quest, zona, jefe, objeto…" autocomplete="off" aria-label="Buscar en la guía"><div id="results" hidden></div></div>
 <details class="cfg"><summary>Ajustes</summary><div class="cfg-body">
-<label for="fichas">Abrir fichas en</label>
+<label for="fichas">Enlaces a la web de fuera</label>
 <select id="fichas"><option value="wh">Wowhead</option><option value="whes">Wowhead en español</option><option value="wdb">Warcraft DB</option></select>
 <div id="progreso" class="prog-box" aria-live="polite"></div>
 <button id="imprimir" type="button">Imprimir o guardar PDF</button>
@@ -1247,11 +1407,12 @@ def build():
             zones.append({'name': html.unescape(zn), 'lv': lvtxt, 'datalv': datalv, 'base': base.group(1) if base else '',
                           'new': 'tag new' in rest, 'body': zbody})
     for name, lv, base, dbz, wslug, text in EXTRA_ZONES:
-        zones.append({'name': name, 'lv': lv, 'datalv': lv if re.fullmatch(r'\d+-\d+', lv) else '', 'base': esc(base),
-                      'new': name == "Shen'dralas", 'body': f'<p>{linkify(esc(text))}</p>', 'extra': (dbz, wslug)})
+        horde = name in HORDE_ZONES
+        zones.append({'name': name, 'lv': lv, 'datalv': lv if re.fullmatch(r'\d+-\d+', lv) and not horde else '', 'base': esc(base),
+                      'new': name == "Shen'dralas", 'body': f'<p>{linkify(esc(text))}</p>', 'extra': (dbz, wslug), 'horde': horde})
     def zkey(z):
         a, _ = lv_nums(z['lv'])
-        return (0 if a is not None else 1, a or 0, z['name'])
+        return (2 if z.get('horde') else 0 if a is not None else 1, a or 0, z['name'])
     zones.sort(key=zkey)
 
     cpages, cmeta, czone, cdg = render_chains()
@@ -1259,6 +1420,7 @@ def build():
                           lambda m: ('<li class="man">' if not deps_for(m.group(2), m.group(4)) else '<li class="mand">' if all(d.startswith('dg-') for d in deps_for(m.group(2), m.group(4))) else '<li>') + m.group(1) + dep_attr(m.group(2), m.group(4)) + m.group(3) + m.group(4) + m.group(5),
                           secs.get('ruta', ''), flags=re.S)
     secs['ruta'] = secs['ruta'].replace('<ol class="steps">', '<p class="man-up"><button id="man-up" type="button" hidden></button></p>\n<ol class="steps">', 1)
+    zlv = {z['name']: (z['lv'] if re.search(r'\d', z['lv']) else '', lv_nums(z['lv'])[0]) for z in zones}   # texto del nivel y nivel al que empieza
     zpages, zdash = [], []
     for z in zones:
         name = z['name']
@@ -1267,36 +1429,48 @@ def build():
         zid, a, b = 'z-' + slug(name), *lv_nums(z['lv'])
         items = imp.get(name, [])
         imp_html = ''
-        now, later = [], []
+        now, later, extra = [], [], []                       # imprescindibles de ahora, de más adelante, y lo que solo es para aprovechar
         for k, inner in items:
             det, mn = imp_detail(k, deps_for(k, inner), (a, b))
-            row = f'<li{"" if deps_for(k, inner) else " class=man"}><label><input type="checkbox" data-k="{k}"{dep_attr(k, inner)}><span>{inner}</span></label>{det}</li>'
-            (later if mn and b and mn > b + 2 else now).append(row)
+            cat = IMP_CAT.get(k)
+            chip = f'<span class="cat c-{cat}">{CATS[cat]}</span> ' if cat else f'<span class="cat c-no">{APRO.get(k, "de paso")}</span> '
+            row = f'<li{"" if deps_for(k, inner) else " class=man"}><label><input type="checkbox" data-k="{k}"{dep_attr(k, inner)}><span>{chip}{inner}</span></label>{det}</li>'
+            (extra if not cat else later if mn and b and mn > b + 2 else now).append(row)
         if 'ciudad' not in z['lv']:                          # explorar el mapa cuenta en todas las zonas, no solo en una
-            now.append(EXPLORE.format(k='xpl-' + slug(name), name=esc(name)))
+            extra.append(EXPLORE.format(k='xpl-' + slug(name), name=esc(name)))
         if now or later:
             lis = ''.join(now) + (f'<li class="imp-later">Para más adelante: se cogen aquí, pero piden más nivel del que tiene la zona</li>' + ''.join(later) if later else '')
             imp_html = (f'<section class="blk imp"><h3>Imprescindibles <span class="prog"></span></h3>'
-                        f'<ul class="chk">{lis}</ul>{paras.get(name, "")}</section>')
+                        '<p class="src">Solo lo que de verdad importa. La etiqueta dice por qué: es de mazmorra, de tu clase, da un objeto muy bueno para ti, '
+                        f'abre una llave o un acceso, o es una ventaja que dura todo el leveo.</p><ul class="chk">{lis}</ul></section>')
+        if extra:
+            imp_html += (f'<section class="blk apro"><h3>Para aprovechar <span class="prog"></span></h3>'
+                         '<p class="src">Nada de esto es importante: no abre nada ni da nada único. Se hace si te pilla de camino, y la etiqueta dice qué tiene de bueno.</p>'
+                         f'{paras.get(name, "")}<ul class="chk">{"".join(extra)}</ul></section>')
+        if z.get('horde'): a = b = None                      # nunca es «zona de tu nivel»
         guide = (f'<a href="https://wowforeverinfo.com/guides/{wslug}/" target="_blank" rel="noopener">Guía paso a paso</a>') if wslug else ''
         dl = f' data-lv="{z["datalv"]}"' if z['datalv'] else ''
         chk = ' checked' if name in DONE_DEFAULT else ''
         title = 'Qué hay aquí' if 'extra' in z else 'Ruta por la zona'
+        bando = f'<span class="bando b-{ZINFO[name]["bando"]}">{BANDO[ZINFO[name]["bando"]][0]}</span>' if name in ZINFO else ''
         zpages.append(f'''
 <article class="page zpage" id="{zid}" data-name="{esc(name)}"{dl} hidden>
 <header class="ph">
 <div class="crumb"><a href="#zonas">Zonas</a><span>›</span>{esc(name)}</div>
 <h2>{esc(name)}</h2>
-<div class="ph-meta"><span class="lv">{esc(z["lv"])}</span><span>{z["base"]}</span>{'<span class="tag new">nueva</span>' if z["new"] else ''}{guide}</div>
+<div class="ph-meta">{bando}<span class="lv">{esc(z["lv"])}</span><span>{z["base"]}</span>{'<span class="tag new">nueva</span>' if z["new"] else ''}{guide}</div>
 <div class="dones"><label class="done"><input type="checkbox" data-k="zdone-{slug(name)}" data-zdone="{zid}"{chk}> Zona completada</label></div>
 </header>
+{zone_info(name, zlv)}
 {imp_html}
 {chains_block(czone.get(name))}
 <section class="blk ruta"><h3>{title}</h3>{z["body"]}</section>
 {lst}
 </article>''')
         zdash.append({'id': zid, 'n': name, 'lv': z['lv'], 'a': a, 'b': b, 'base': html.unescape(re.sub(r'<[^>]+>', '', z['base'])),
-                      'grp': bracket(a), 'new': 1 if z['new'] else 0, 'imp': len(items), 'q': n})
+                      'grp': 'Territorio de la Horda' if z.get('horde') else bracket(a), 'new': 1 if z['new'] else 0, 'imp': len(now) + len(later), 'q': n,
+                      'f': ZINFO[name]['bando'] if name in ZINFO else '', 'c': ZINFO[name]['cont'] if name in ZINFO else ''})
+    zmap = {z['name']: (zlv[z['name']][0], z['datalv']) for z in zones}                   # para el mapa: texto del nivel y rango que resalta
 
     dungeons, dash = render_dungeons()
     for gk, links in cdg.items():
@@ -1334,7 +1508,8 @@ def build():
 </section>
 <section class="view" id="v-zonas" hidden>
 <div class="overview"><h2 class="vh">Zonas</h2>
-<p class="intro">Una página por zona con sus imprescindibles, sus cadenas, su ruta y todas sus quests. Las de tu nivel van resaltadas.</p>
+<p class="intro">Una página por zona: qué esperar, de qué bando es, dónde está, sus imprescindibles, sus cadenas, su ruta y todas sus quests. Las de tu nivel van resaltadas.</p>
+{render_maps(zmap)}
 <div id="zcards"></div></div>
 {"".join(zpages)}
 </section>
@@ -1361,7 +1536,7 @@ def build():
 <input id="qf-text" type="search" placeholder="Nombre de la quest o de quien la da…" autocomplete="off" aria-label="Filtrar por nombre">
 <select id="qf-zone" aria-label="Zona"><option value="">Todas las zonas</option></select>
 <select id="qf-state" aria-label="Estado"><option value="">Hechas y pendientes</option><option value="a">Puedo cogerlas ahora</option><option value="p">Pendientes</option><option value="d">Hechas</option></select>
-<select id="qf-kind" aria-label="Tipo"><option value="">Todos los tipos</option><option value="im">Imprescindibles</option><option value="ch">Con cadena</option><option value="dg">De mazmorra</option><option value="cl">De clase</option><option value="nw">Nuevas en Forever</option><option value="el">Élite o de grupo</option></select>
+<select id="qf-kind" aria-label="Tipo"><option value="">Todos los tipos</option><option value="im">Imprescindibles</option><option value="ch">Con cadena</option><option value="dg">De mazmorra</option><option value="dp">De la cadena de una mazmorra</option><option value="cl">De clase</option><option value="nw">Nuevas en Forever</option><option value="el">Élite o de grupo</option></select>
 <label class="qf-lv"><input id="qf-level" type="checkbox"> Solo las de mi nivel</label>
 </div>
 <div id="qstats" class="src" aria-live="polite"></div>
@@ -1424,7 +1599,12 @@ def build():
         if k:
             for j in (k[3], k[4]):
                 if j: USED_Q.add(j)
-    IMQ = {int(t[1:]) for k2, v in DEPS_SEEN.items() if not k2.startswith('rt') for k in v for t in k.split('|') if t[0] == 'q'}
+    IMQ = {}                                                 # quest -> por qué es imprescindible
+    for k2, v in DEPS_SEEN.items():
+        if k2 not in IMP_CAT: continue
+        for k in v:
+            for t in k.split('|'):
+                if t[0] == 'q': IMQ.setdefault(int(t[1:]), IMP_CAT[k2])
     for i in Q:
         if in_guide(i): USED_Q.add(i)
     npcloc = {}
@@ -1432,12 +1612,12 @@ def build():
         if q.get('starts') and q.get('sc') and q['starts'][0]['t'] == 'npc':
             npcloc.setdefault(q['starts'][0]['id'], q['sc'])
     data = {
-        'q': {str(i): dict(qd(Q[i]), **({'im': 1} if i in IMQ else {}), **({'u': 1} if in_guide(i) else {})) for i in sorted(USED_Q) if i in Q},
+        'q': {str(i): dict(qd(Q[i]), **({'im': IMQ[i]} if i in IMQ else {}), **({'u': 1} if in_guide(i) else {})) for i in sorted(USED_Q) if i in Q},
         'i': {str(i): t for i, t in USED_I.items()},
         'n': {str(i): [n] + (npcloc.get(i) or []) for i, n in USED_N.items()},
         'zones': zdash, 'dungeons': dash, 'chains': cmeta, 'alias': {str(k): v for k, v in sorted(ALIAS.items())}, 'names': unknown_names(),
         'legacy': dict({t: [w[0] for d in DG for w in d[8] if w[4] == t] for t in 'NEM'}, val=8995,
-                       xh=['Durotar', 'Mulgore', 'Tirisfal Glades', 'Silverpine Forest']), 'miles': [list(m) for m in MILESTONES], 'prof': [list(p) for p in PROF],
+                       xh=[]), 'miles': [list(m) for m in MILESTONES], 'prof': [list(p) for p in PROF],
     }
     blob = json.dumps(data, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
     page = ('<title>Enano Chamán en WoW Forever</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n'
@@ -1461,6 +1641,10 @@ def build():
     print(f'quests en caché {len(Q)} · fichas de quest {len(data["q"])} · objetos {len(data["i"])} · PNJ {len(data["n"])}')
     print(f'enlaces en el texto: {STATS["linked"]} directos, {STATS["search"]} por búsqueda · zonas {len(zdash)} · mazmorras {len(dash)} · cadenas {len(cmeta)}')
     print(f'index.html {os.path.getsize(os.path.join(ROOT, "index.html")) // 1024} KB')
+    if not WFI: print('AVISO: falta data/wfi-quests.json (tools/wfi.py): los listados salen sin ★ y sin quitar las quests de la Horda de las zonas compartidas')
+    if not G.OFFLINE:
+        import datos
+        print('empaquetado en data/db/:', datos.pack(), 'fichas')
     if '--deps' in sys.argv:
         for k, v in DEPS_SEEN.items():
             names = list(dict.fromkeys(' o '.join(dict.fromkeys(Q[int(t[1:])]['name'] for t in x.split('|'))) if x[0] == 'q' else x for x in v))

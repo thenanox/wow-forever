@@ -1,0 +1,308 @@
+{
+ "_": "Ficha de cada zona: bando (A Alianza, H Horda, D disputada, N neutral), bases, qué esperar, historia, mazmorras, y su sitio en el mapa esquemático (cont: ek Reinos del Este, ka Kalimdor; xy: columna y fila). Lo propio de Forever sale de las guías de wowforeverinfo y de los datos del juego; la historia, del Warcraft clásico.",
+ "zonas": {
+  "Dun Morogh": {
+   "bando": "A", "cont": "ek", "xy": [0.4, 4.0], "maz": ["gnomeregan"],
+   "bases": "Kharanos (Alianza). Ironforge está dentro de la zona.",
+   "que": "Valle nevado entre montañas: es tu zona inicial y la más tranquila para un enano. Empiezas en Coldridge Valley, pasas por un túnel a Kharanos y de ahí haces dos vueltas, al oeste (Brewnall y las cuevas de los trols) y al este (el rancho y la cantera), hasta la puerta de Loch Modan. Enemigos: lobos, osos, jabalíes, wendigos, trols Frostmane y troggs. Ironforge está excavada en la montaña del norte y Gnomeregan queda en el oeste.",
+   "lore": "Es la tierra de los enanos de Ironforge desde hace miles de años. Los gnomos vivían al lado, en Gnomeregan, hasta que una invasión de troggs y la radiación que soltaron para frenarla los echó de su ciudad: por eso hay gnomos refugiados en Ironforge. Los trols Frostmane llevan aquí desde antes que los enanos y no se han ido."
+  },
+  "Ironforge": {
+   "bando": "A", "cont": "ek", "xy": [0.75, 3.15], "ciudad": true, "maz": ["hall-of-thanes"],
+   "bases": "Capital de la Alianza.",
+   "que": "Tu capital: una ciudad redonda bajo la montaña, con la Gran Forja en el centro. Aquí están tus entrenadores de chamán y de armas, el banco, la subasta y el grifo. De Tinker Town, el barrio de los gnomos, sale el Deeprun Tram a Stormwind. En el Hall of Explorers se cogen quests de varias mazmorras, y debajo de la ciudad está Hall of Thanes, tu primera mazmorra.",
+   "lore": "La capital de los enanos Bronzebeard, gobernada por el rey Magni. Tras la Guerra de los Tres Martillos los otros dos clanes se marcharon: los Wildhammer a The Hinterlands y los Dark Iron al sur, donde acabaron esclavos de Ragnaros en Blackrock. La Explorers' League tiene aquí su sede y busca por todo el mundo el origen de los enanos, que apunta a los Titanes."
+  },
+  "Elwynn Forest": {
+   "bando": "A", "cont": "ek", "xy": [1.0, 7.0], "maz": [],
+   "bases": "Goldshire (Alianza). Stormwind está dentro de la zona.",
+   "que": "Bosque verde y soleado alrededor de Stormwind: la zona inicial de los humanos y la más fácil del juego. Para ti es de paso: la cruzas al bajar del tranvía, camino de Westfall o de Redridge. Goldshire, en el centro, es la base. Enemigos: lobos, kóbolds en las minas, bandidos Defias, múrlocs en los lagos y gnolls en el sur.",
+   "lore": "Es el corazón del reino de Stormwind, que los orcos arrasaron en la Primera Guerra y que se reconstruyó después. Con el ejército lejos y los nobles discutiendo, la gente del bosque se defiende sola. Los Defias que roban por aquí son los canteros que reconstruyeron la ciudad y nunca cobraron: su historia sigue en Westfall."
+  },
+  "Stormwind City": {
+   "bando": "A", "cont": "ek", "xy": [0.0, 6.55], "ciudad": true, "maz": ["stockade"],
+   "bases": "Capital de la Alianza.",
+   "que": "La capital humana y la ciudad más grande de la Alianza: barrios separados por canales, con subasta, banco y entrenadores. Llegas en el Deeprun Tram desde Ironforge. Aquí se cogen quests de The Deadmines, The Stockade y Dalaran. La prisión de The Stockade está dentro de la ciudad, y en Forever sale del puerto un barco nuevo a Auberdine.",
+   "lore": "La Horda la destruyó en la Primera Guerra y se reconstruyó piedra a piedra. En la historia de Classic el rey Varian está desaparecido y reina su hijo Anduin, un niño, con Bolvar Fordragon de regente y Lady Katrana Prestor aconsejando a todos. Los canteros que levantaron la ciudad no cobraron, y de ahí salieron los Defias."
+  },
+  "Teldrassil y Darnassus": {
+   "bando": "A", "cont": "ka", "xy": [0.0, 0.0], "maz": [],
+   "bases": "Dolanaar y Darnassus, capital de los elfos de la noche (Alianza).",
+   "que": "Una isla que en realidad es un árbol gigante, frente a la costa noroeste de Kalimdor: la zona inicial de los elfos de la noche, con Darnassus en lo alto. Bosque morado y tranquilo, con Dolanaar como base. Enemigos: fúrbolgs Gnarlpine, arpías, arañas y plantas corrompidas. Para ti queda lejos: se viene por las quests de mazmorra que se cogen en Darnassus y por explorar. Se llega en barco desde Auberdine a Rut'theran Village, al pie del árbol.",
+   "lore": "En la Tercera Guerra los elfos de la noche perdieron la inmortalidad al sacrificar el poder del Árbol del Mundo de Hyjal. Los druidas plantaron Teldrassil para recuperarla, pero sin la bendición de los dragones, y el árbol creció torcido: por eso sus criaturas enloquecen."
+  },
+  "Tirisfal Glades": {
+   "bando": "H", "cont": "ek", "xy": [0.3, 0.0], "maz": ["ruins-of-lordaeron", "scarlet-monastery"],
+   "bases": "Brill y Undercity, capital de los Forsaken (Horda). Tú no tienes pueblo ni vuelo.",
+   "que": "Bosque gris y enfermo en el norte de Lordaeron: la zona inicial de los no-muertos, con Brill como base y Undercity bajo las ruinas de la capital. Es territorio de la Horda: los guardias te atacan. Un enano viene por tres cosas: Scarlet Monastery, la mazmorra nueva Ruins of Lordaeron y explorar el mapa. Forever añade además Bandarion Keep, en el extremo oeste.",
+   "lore": "Era el corazón del reino humano de Lordaeron. El príncipe Arthas volvió de Northrend convertido en caballero de la muerte, mató a su padre en el trono y la Plaga arrasó el reino. Los muertos que recuperaron la voluntad, los Forsaken de Sylvanas, se quedaron con las ruinas. La Scarlet Crusade, humanos fanáticos que ven la Plaga en todas partes, resiste en su monasterio."
+  },
+  "Silverpine Forest": {
+   "bando": "H", "cont": "ek", "xy": [0.3, 1.0], "maz": ["shadowfang-keep"],
+   "bases": "The Sepulcher (Horda). Tú no tienes pueblo ni vuelo.",
+   "que": "Bosque de pinos oscuro y con niebla, al sur de Tirisfal: zona de nivel 10-20 para la Horda, con The Sepulcher como base. Para ti es territorio enemigo y sin quests: se viene por Shadowfang Keep, la fortaleza sobre Pyrewood Village, en el sur de la zona, y por explorar. Se llega andando hacia el oeste desde Southshore, en Hillsbrad. Enemigos: huargen, gnolls, magos de Dalaran y los Forsaken, que aquí son los que mandan.",
+   "lore": "Cuando la Plaga avanzaba, el archimago Arugal invocó a los huargen para frenarla. Se le fueron de las manos: atacaron a todo el mundo, él enloqueció y se encerró con ellos en Shadowfang Keep. Al sur, el muro de Greymane cierra el reino de Gilneas, que se aisló del mundo. Los Forsaken quieren el bosque y los magos de Dalaran, en Ambermill, se lo disputan."
+  },
+  "Durotar": {
+   "bando": "H", "cont": "ka", "xy": [2.6, 3.4], "maz": ["ragefire-chasm"],
+   "bases": "Razor Hill y Orgrimmar, capital de la Horda. Tú no tienes pueblo ni vuelo.",
+   "que": "Tierra roja y seca en la costa este de Kalimdor: la zona inicial de orcos y trols, con Razor Hill como base y Orgrimmar, la capital de la Horda, en el norte. Para un enano solo sirve para explorar el mapa, y con mucho cuidado: es territorio enemigo y queda lejísimos de casa. Ragefire Chasm está dentro de Orgrimmar y no te hace falta: tu equivalente es Hall of Thanes. Enemigos: escórpidos, jabalíes, quilboars y los guardias.",
+   "lore": "Thrall trajo a los orcos a Kalimdor y fundó aquí su nación tras la Tercera Guerra. Llamó a la tierra Durotar por su padre, Durotan, y a la capital Orgrimmar por Orgrim Doomhammer. Los trols Darkspear, a los que salvó por el camino, viven en la costa. En Tiragarde Keep quedan atrincherados marines humanos de Kul Tiras."
+  },
+  "Mulgore": {
+   "bando": "H", "cont": "ka", "xy": [1.1, 4.75], "maz": [],
+   "bases": "Bloodhoof Village y Thunder Bluff, capital de los tauren (Horda). Tú no tienes pueblo ni vuelo.",
+   "que": "Praderas verdes rodeadas de montañas: la zona inicial de los tauren, con Bloodhoof Village como base y Thunder Bluff, su capital, sobre unas mesetas. Es la más tranquila de las zonas iniciales de la Horda, pero para ti es territorio enemigo y solo se viene a explorar. Por tierra solo se entra desde The Barrens. Según los datos del mapa de lanzamiento, en Forever hay además una aeronave que la une con Zephras Isle, la isla inicial de los Skyborne.",
+   "lore": "Los tauren eran nómadas acosados por los centauros. Cuando Thrall llegó a Kalimdor los ayudó a defenderse, y Cairne Bloodhoof pudo asentar a su pueblo en estas praderas y unirse a la Horda. Los enanos de Bael'dun excavan en la zona buscando reliquias de los Titanes, y los tauren no lo llevan bien."
+  },
+  "Loch Modan": {
+   "bando": "A", "cont": "ek", "xy": [2.6, 4.0], "maz": [],
+   "bases": "Thelsamar (Alianza).",
+   "que": "Valle tranquilo alrededor de un gran lago, al este de Dun Morogh: tu segunda zona. Thelsamar, en la orilla oeste, es la base. Primero limpias troggs, kóbolds y animales cerca del pueblo; luego vas al este, a la excavación, al refugio de cazadores y a la presa, y acabas con los ogros del noreste. Aquí están dos de tus totems: el de Fuego y el arranque del de Agua.",
+   "lore": "El lago lo retiene la presa Stonewrought, una de las grandes obras de los enanos. La Explorers' League excava en la zona buscando restos de los Titanes, y los troggs y los Dark Iron intentan sabotearlo todo. De aquí salen los pasos de montaña hacia Wetlands, al norte, y Badlands, al sur."
+  },
+  "Westfall": {
+   "bando": "A", "cont": "ek", "xy": [0.0, 8.0], "maz": ["deadmines"],
+   "bases": "Sentinel Hill (Alianza).",
+   "que": "Campos de trigo amarillos y granjas abandonadas junto al mar, al oeste de Elwynn. Sentinel Hill, en el centro, es la base. Empiezas por las granjas del norte y la costa, y bajas hacia Moonbrook, donde la historia de los Defias acaba dentro de The Deadmines. Enemigos: bandidos Defias, gólems cosechadores, gnolls, buitres y múrlocs. El faro del suroeste tiene una cadena corta para el final.",
+   "lore": "Stormwind dejó la región a su suerte y la ocupó la Defias Brotherhood. Su jefe, Edwin VanCleef, dirigía a los canteros que reconstruyeron Stormwind; los nobles no les pagaron, y desde entonces prepara su venganza escondido en las minas de Moonbrook. Los granjeros que quedan se defienden con la People's Militia de Gryan Stoutmantle."
+  },
+  "Darkshore": {
+   "bando": "A", "cont": "ka", "xy": [0.45, 1.0], "maz": [],
+   "bases": "Auberdine (Alianza).",
+   "que": "Una franja larga de costa gris y con niebla, en el noroeste de Kalimdor. Auberdine es la base y casi todas las quests se entregan allí, así que se anda mucho por el camino de la costa. Enemigos: cangrejos, múrlocs, fúrbolgs corrompidos, nagas y los sectarios de Master's Glaive, en el sur. Para un enano es opcional: se viene por las quests de Blackfathom Deeps y de camino a Ashenvale. Es el gran puerto de la Alianza en Kalimdor.",
+   "lore": "Esta costa se rompió hace diez mil años, cuando el Gran Cataclismo partió Kalimdor: por eso está llena de ruinas de ciudades élficas, con sus fantasmas. En Master's Glaive hay una espada gigante clavada en el esqueleto de una criatura enorme, y el Twilight's Hammer ronda el lugar."
+  },
+  "The Barrens": {
+   "bando": "H", "cont": "ka", "xy": [1.45, 3.4], "maz": ["wailing-caverns", "razorfen-kraul", "razorfen-downs"],
+   "bases": "Crossroads (Horda). Ratchet, el puerto goblin, es neutral.",
+   "que": "Una sabana seca y enorme en el centro de Kalimdor, por donde pasan todas las razas de la Horda entre nivel 10 y 25. Crossroads es su base. Ratchet, el puerto goblin de la costa este, es neutral y es tu punto de apoyo: se llega en el barco de Booty Bay o andando desde Ashenvale. Aquí están Wailing Caverns, Razorfen Kraul y Razorfen Downs, y dos pasos de la bolsa de dormir. Fuera de Ratchet, cuidado: es territorio de la Horda.",
+   "lore": "Antes del Gran Cataclismo esto era bosque; después quedó una llanura reseca que se disputan centauros, quilboars y arpías. Los quilboars viven bajo las zarzas gigantes que brotaron donde murió el semidiós jabalí Agamaggan. La Horda la usa de paso entre Durotar, Mulgore y el resto del continente, y la Alianza mantiene un fuerte en la costa, Northwatch Hold."
+  },
+  "Redridge Mountains": {
+   "bando": "A", "cont": "ek", "xy": [2.1, 7.0], "maz": [],
+   "bases": "Lakeshire (Alianza). La Horda no tiene base.",
+   "que": "Valle de roca roja alrededor del lago Everstill, al este de Elwynn. Lakeshire, en la orilla oeste, es la base. Se hace en dos vueltas: la primera hacia nivel 16-19, contra gnolls y múrlocs, y la segunda a principios de los 20, contra los orcos Blackrock del este y Stonewatch Keep. Varias quests son para ir acompañado. De aquí sube el camino a Burning Steppes y, en Forever, la entrada por tierra a Riverglades.",
+   "lore": "Los orcos Blackrock bajan de Burning Steppes y tienen el pueblo medio sitiado, con el puente a medio reparar. Lakeshire pide tropas a Stormwind una y otra vez, y los nobles no las mandan. Es la misma historia de abandono que en Westfall, vista desde otro pueblo."
+  },
+  "Stonetalon Mountains": {
+   "bando": "D", "cont": "ka", "xy": [0.3, 3.0], "maz": [],
+   "bases": "Alianza: Stonetalon Peak, en el extremo norte. Horda: Sun Rock Retreat, en el centro.",
+   "que": "Sierra rocosa entre The Barrens, Ashenvale y Desolace. Para ti es una zona de paso: aquí hay un tramo de la bolsa de dormir y es el camino a Desolace. Enemigos: la Venture Company, arpías, arañas y elementales de fuego en Charred Vale.",
+   "lore": "Los goblins de la Venture Company están talando la sierra entera para vender la madera, y druidas y tauren intentan pararlos, cada uno por su lado. El Talondeep Path es un túnel que la comunica con Ashenvale."
+  },
+  "Ashenvale": {
+   "bando": "D", "cont": "ka", "xy": [1.3, 2.0], "maz": ["blackfathom-deeps"],
+   "bases": "Alianza: Astranaar. Horda: Splintertree Post y Zoram'gar Outpost.",
+   "que": "El gran bosque de los elfos de la noche, al sur de Darkshore. Astranaar, en una isla del lago, es tu base. Se entra por Maestra's Post, en el noroeste. Para un enano es una visita corta: un paso del Totem de Agua, Blackfathom Deeps (en Zoram Strand, en la costa) y Seeking Caitlin. Enemigos: fúrbolgs, sátiros, arañas y, en el este, los orcos Warsong.",
+   "lore": "Es un bosque sagrado para los elfos. En la Tercera Guerra los orcos Warsong vinieron a talar, el semidiós Cenarius salió a defenderlo y Grom Hellscream lo mató bajo el influjo de la sangre de demonio. Poco después Grom murió matando al demonio Mannoroth en Demon Fall Canyon. Los elfos y los Warsong siguen peleando por los árboles."
+  },
+  "Duskwood": {
+   "bando": "A", "cont": "ek", "xy": [1.0, 8.0], "maz": [],
+   "bases": "Darkshire (Alianza). La Horda no tiene base.",
+   "que": "Un bosque donde siempre es de noche, al sur de Elwynn. Darkshire, en el este, es la base, y casi todas las quests salen de allí. Enemigos: arañas, lobos, esqueletos y necrófagos en el cementerio de Raven Hill, huargen en el este y ogros en el sur. Sus historias largas (Sven, el Embalmer, Stalvan, Mor'Ladim) recorren toda la zona. Mejor en dos vueltas: de 20 a 25 y a finales de los 20.",
+   "lore": "Una maldición dejó el bosque a oscuras y Stormwind lo abandonó; lo defiende la Night Watch, una milicia de vecinos. Detrás de lo que pasa están el nigromante Morbent Fel, la Guadaña de Elune, que trajo a los huargen, y la sombra de la torre de Karazhan, que queda al lado, en Deadwind Pass."
+  },
+  "Wetlands": {
+   "bando": "A", "cont": "ek", "xy": [1.8, 3.0], "maz": ["excavation-site"],
+   "bases": "Menethil Harbor (Alianza). La Horda no tiene base.",
+   "que": "Una marisma lluviosa entre Loch Modan y Arathi. Menethil Harbor, en la costa oeste, es la base y un puerto importante: barcos a Darkshore, a Theramore y, nuevo en Forever, a Southshore. Primero se hace la costa, luego la excavación del centro, el este y Dun Modr, en el norte. Enemigos: cocodrilos, raptores, múrlocs, gnolls, orcos Dragonmaw y enanos Dark Iron. La mazmorra nueva Excavation Site está en la excavación.",
+   "lore": "En la Segunda Guerra los orcos Dragonmaw esclavizaron a los dragones rojos en la fortaleza de Grim Batol, al este de la marisma. Los que quedan del clan siguen por aquí. Los Dark Iron volaron parte de Thandol Span, el puente que une la zona con Arathi."
+  },
+  "Thousand Needles": {
+   "bando": "D", "cont": "ka", "xy": [1.85, 5.75], "maz": [],
+   "bases": "Horda: Freewind Post. La Alianza no tiene pueblo: el circuito de Shimmering Flats es neutral.",
+   "que": "Un cañón lleno de agujas de roca altísimas, al sur de The Barrens. La Horda vive arriba, en Freewind Post; tu punto de apoyo es el circuito de carreras de Shimmering Flats, en la llanura de sal del sureste. Se viene por Heed My Call, de la cadena de tu arma, y por una quest de Razorfen Kraul. Enemigos: centauros, tauren Grimtotem, arpías y fauna de desierto. Es el camino por tierra a Tanaris.",
+   "lore": "Los tauren construyeron sus puestos en lo alto de las agujas para estar a salvo de los centauros. En la llanura de sal, goblins y gnomos compiten con sus bólidos en el circuito."
+  },
+  "Hillsbrad Foothills": {
+   "bando": "D", "cont": "ek", "xy": [1.2, 2.0], "maz": [],
+   "bases": "Alianza: Southshore. Horda: Tarren Mill, a un paso.",
+   "que": "Colinas verdes y granjas junto al mar, al oeste de Arathi. Southshore es tu base y Tarren Mill, la de la Horda, está al lado: es de las zonas con más peleas entre jugadores. Para ti es una parada hacia nivel 30: múrlocs y nagas en la costa, yetis y leones en las colinas, y quests que suben a Alterac. En Forever se llega en barco desde Menethil y aquí empieza la quest de City of Dalaran.",
+   "lore": "Fue tierra del reino de Lordaeron. En Durnholde Keep creció Thrall como esclavo y gladiador antes de escaparse y liberar a su pueblo. Ahora los Forsaken de Tarren Mill atacan a los granjeros humanos, y el Syndicate ocupa lo que queda del castillo."
+  },
+  "Alterac Mountains": {
+   "bando": "D", "cont": "ek", "xy": [1.45, 1.0], "maz": ["city-of-dalaran"],
+   "bases": "Sin pueblo propio: Alianza desde Southshore, Horda desde Tarren Mill. Dalaran es neutral.",
+   "que": "Sierra nevada al norte de Hillsbrad. Las quests se cogen en Southshore. Peleas contra el Syndicate en sus campamentos y en Strahnbrad, contra los ogros Crushridge en las ruinas del centro y contra magos a orillas del lago Lordamere. En Forever la ciudad de Dalaran vuelve a estar en la orilla oeste, con entrenadores neutrales y una mazmorra nueva, City of Dalaran. Bath'rah, el que te da tu arma de chamán, vive aquí.",
+   "lore": "Alterac fue un reino humano. En la Segunda Guerra su rey, Perenolde, traicionó a la Alianza y pactó con la Horda; lo descubrieron y el reino fue arrasado. Los nobles que quedaron se hicieron bandidos: son el Syndicate. Dalaran, la ciudad de los magos, la destruyó el demonio Archimonde en la Tercera Guerra."
+  },
+  "Arathi Highlands": {
+   "bando": "D", "cont": "ek", "xy": [2.4, 2.0], "maz": [],
+   "bases": "Alianza: Refuge Pointe, en el centro. Horda: Hammerfall, en el este.",
+   "que": "Praderas abiertas al este de Hillsbrad, con las ruinas de Stromgarde en el suroeste. Enemigos: el Syndicate, trols Witherbark, ogros Boulderfist, raptores y elementales en los círculos de piedra. Aquí está Call of Air, tu Totem de Aire, y acaba la bolsa de dormir. Se entra desde Wetlands por el puente de Thandol Span. Faldir's Cove, en el extremo suroeste, tiene quests compartidas para nivel 35 o más.",
+   "lore": "Aquí nació Arathor, el primer reino humano, con capital en Strom: de él salieron todos los demás. Su heredera, Stromgarde, cayó tras la Tercera Guerra, y ahora se la reparten el Syndicate, los ogros y los pocos soldados que aguantan. La cuenca del centro da nombre al campo de batalla de Arathi Basin."
+  },
+  "Stranglethorn Vale": {
+   "bando": "D", "cont": "ek", "xy": [0.8, 9.0], "maz": ["drowned-city"],
+   "bases": "Alianza: Rebel Camp, en el norte. Horda: Grom'gol. Neutral: Booty Bay, en la punta sur.",
+   "que": "Una selva larguísima al sur de Duskwood, a la que volverás varias veces entre nivel 30 y 45. Arriba están el Rebel Camp y el campamento de caza de Nesingwary; en la costa oeste, Grom'gol; y en la punta sur, Booty Bay, puerto goblin con barco a Ratchet. Enemigos: tigres, panteras, raptores, gorilas, trols y piratas. Es famosa por las emboscadas entre jugadores. La mazmorra nueva The Drowned City está frente a la costa, bajo el agua.",
+   "lore": "Fue el centro del imperio de los trols Gurubashi, que se hundió cuando sus sacerdotes invocaron a Hakkar, un dios sediento de sangre. Sus ruinas están por toda la selva, con Zul'Gurub como capital. Hoy se la disputan las tribus trol, la Venture Company, los goblins de Booty Bay y los piratas Bloodsail."
+  },
+  "Desolace": {
+   "bando": "D", "cont": "ka", "xy": [0.35, 3.9], "maz": ["maraudon"],
+   "bases": "Alianza: Nijel's Point, en el noreste. Horda: Shadowprey Village y Ghost Walker Post.",
+   "que": "Una tierra gris y muerta al oeste de Stonetalon. El centro de la zona es la guerra entre clanes de centauros: si ayudas a uno, los otros te odian, así que elige uno y no cambies. También hay demonios en Mannoroc Coven y nagas en la costa. Aquí están Maraudon, un totem de la cadena de tu arma y la entrada a Shen'dralas. Forever añade recompensas de facción a las quests de centauros.",
+   "lore": "Los centauros nacieron de Zaetar, hijo del semidiós Cenarius, y de la princesa elemental Theradras. Mataron a su propio padre, y Theradras guarda su cuerpo en Maraudon, el lugar sagrado de los clanes. Desde entonces solo saben pelear entre ellos. La Legión Ardiente dejó tropas aquí tras la Tercera Guerra."
+  },
+  "The Riverglades": {
+   "bando": "D", "cont": "ek", "xy": [2.7, 6.0], "maz": ["kroldok-stronghold"],
+   "bases": "Alianza: Farholde Keep, en el sureste. Horda: Rog'mar, en el centro. Neutral: Powderfuse Port, en la costa este.",
+   "que": "La gran zona nueva de Forever: un trozo del sureste de los Reinos del Este al que en Classic no se podía entrar, del tamaño de Stranglethorn y con casi 200 quests. Limita con Redridge, Burning Steppes, Badlands y Swamp of Sorrows. Se entra por tierra desde Redridge o en barco desde Tanaris. Se empieza por el sur y el oeste (nivel 36) y se acaba en el extremo oeste (44). La mazmorra es Krol'dok Stronghold.",
+   "lore": "Todo es nuevo, así que no hay historia de Classic que contar. Lo que se ve en el juego: Farholde Keep es la casa de la Brotherhood of the Horse; los ogros Bolder'ok, en el norte, están del lado de la Horda; y el Twilight's Hammer ocupa las ruinas de Sunnyglade y Twilight's Shroud, en el oeste, bajo la colina de Krol'dok."
+  },
+  "Dustwallow Marsh": {
+   "bando": "D", "cont": "ka", "xy": [2.5, 4.55], "maz": ["alcaz-prison"],
+   "bases": "Alianza: Theramore Isle, en la costa este. Horda: Brackenwall Village, en el noroeste.",
+   "que": "Un pantano en la costa este de Kalimdor, al sur de The Barrens. Theramore es una ciudad amurallada en una isla, a la que llegas en barco desde Menethil. Las dos facciones investigan el mismo misterio: una posada quemada y un oficial desaparecido. Enemigos: cocodrilos, arañas, raptores, múrlocs y desertores; en el sur, los dragones negros de Onyxia. Aquí hay un totem de la cadena de tu arma y la mazmorra nueva Alcaz Prison.",
+   "lore": "Theramore la fundó Jaina Proudmoore con los humanos que huyeron de Lordaeron antes de que cayera. Luchó junto a Thrall contra la Legión Ardiente, y esa paz incómoda con la Horda es la que mantiene la zona en equilibrio. Onyxia, hija de Deathwing, tiene su guarida en el sur."
+  },
+  "Badlands": {
+   "bando": "D", "cont": "ek", "xy": [2.6, 5.0], "maz": ["uldaman"],
+   "bases": "Horda: Kargath, en el extremo oeste. La Alianza no tiene pueblo: solo los enanos de Hammertoe's Dig Site.",
+   "que": "Un cañón seco y agrietado al sur de Loch Modan. No tienes pueblo, y el vuelo más cercano es Thelsamar. Casi todas las quests salen de campamentos neutrales que comparten las dos facciones. Enemigos: coyotes, buitres, elementales de roca, ogros, enanos Shadowforge y crías de dragón negro en el este. Uldaman está en el norte. Aquí hay un totem de la cadena de tu arma, y mitril.",
+   "lore": "Bajo estas tierras está Uldaman, una ciudad de los Titanes. Lo que los enanos han encontrado dentro explica de dónde vienen: descienden de los earthen, criaturas de piedra creadas por los Titanes. Los Dark Iron de Shadowforge excavan por su cuenta para llevarse lo que haya."
+  },
+  "Swamp of Sorrows": {
+   "bando": "D", "cont": "ek", "xy": [3.0, 8.0], "maz": ["sunken-temple"],
+   "bases": "Horda: Stonard, en el centro. Alianza: solo Watcher Biggs, en el camino del oeste.",
+   "que": "Un pantano al este de Duskwood, pasado Deadwind Pass. Para la Horda es una zona completa; tú tienes un puñado de quests, así que casi siempre se cruza de camino a Blasted Lands. Las dos facciones comparten a los exiliados del Harborage. Enemigos: cocodrilos, panteras, arañas, crías de dragón verde y múrlocs en la costa. Aquí está Sunken Temple, y un totem de la cadena de tu arma.",
+   "lore": "Era parte del Black Morass, el pantano donde se abrió el Portal Oscuro. Los trols Atal'ai construyeron aquí un templo para traer de vuelta a su dios Hakkar; los dragones verdes lo hundieron para impedirlo y se quedaron a vigilarlo, pero acabaron corrompidos. En el Harborage viven draenei exiliados."
+  },
+  "Feralas": {
+   "bando": "D", "cont": "ka", "xy": [0.75, 5.9], "maz": ["dire-maul"],
+   "bases": "Alianza: Feathermoon Stronghold, en una isla frente a la costa. Horda: Camp Mojache, en el este.",
+   "que": "Una selva enorme y verde en la costa oeste de Kalimdor, al sur de Desolace. Enemigos: gnolls Woodpaw, ogros Gordunni, yetis, tauren Grimtotem, nagas y una colmena de silítidos. En el centro está Dire Maul, la gran mazmorra de los 50.",
+   "lore": "Dire Maul fue Eldre'Thalas, una ciudad de los Highborne, los magos de la antigua reina Azshara. Sobrevivieron al Gran Cataclismo escondidos allí, alimentándose de la energía de un demonio encadenado. Con el tiempo los ogros Gordunni ocuparon media ciudad. El resto de la selva lo vigilan los elfos de Feathermoon."
+  },
+  "Shen'dralas": {
+   "bando": "N", "cont": "ka", "xy": [0.0, 4.9], "maz": [],
+   "bases": "Compartida por las dos facciones.",
+   "que": "Zona nueva de Forever, al sur de Desolace: se entra por el Valley of Bones. Casi todas sus quests son neutrales. Lo que hay, según los datos del juego: centauros, con reputación para los clanes Magram y Gelkis, nigromantes, fantasmas y pilones. Aquí se cogen quests de Dire Maul, Maraudon y Razorfen Downs. Las guías todavía no la detallan, así que esta ficha es corta a propósito.",
+   "lore": "En Classic, Shen'dralas era el nombre de los Highborne que vivían escondidos en Dire Maul. La zona es nueva y las fuentes de esta guía aún no cuentan su historia."
+  },
+  "Tanaris": {
+   "bando": "N", "cont": "ka", "xy": [2.5, 6.75], "maz": ["zulfarrak"],
+   "bases": "Neutral: Gadgetzan, en el norte, y Steamwheedle Port, en la costa este.",
+   "que": "Un desierto grande al sur de Thousand Needles. Casi todo es neutral: las dos facciones trabajan desde Gadgetzan, el pueblo goblin amurallado, y desde Steamwheedle Port, de donde sale el barco nuevo a Riverglades. Enemigos: bandidos Wastewander, piratas, ogros Dunemaul, escórpidos, basiliscos y silítidos. Zul'Farrak está en el noroeste. En Gadgetzan se aprende Ingeniería Artesano.",
+   "lore": "Las arenas esconden más de lo que enseñan: la ciudad trol de Zul'Farrak, las Caverns of Time de los dragones de bronce y, al sur, las puertas selladas de Uldum, obra de los Titanes. Los goblins del Steamwheedle Cartel hacen negocio con todo el que pasa."
+  },
+  "The Hinterlands": {
+   "bando": "D", "cont": "ek", "xy": [2.6, 1.0], "maz": [],
+   "bases": "Alianza: Aerie Peak, en el extremo oeste. Horda: Revantusk Village, en la costa sureste.",
+   "que": "Colinas verdes y altas al este de Hillsbrad. Aerie Peak es el pueblo de los enanos Wildhammer y sus grifos. Entre las dos bases están los elfos de Quel'Danil Lodge, las babosas de Skulk Rock y dos tribus trol: los Witherbark y los Vilebranch de Jintha'Alor. Se llega por el camino desde Hillsbrad o en vuelo.",
+   "lore": "Tras la Guerra de los Tres Martillos, los enanos Wildhammer dejaron la montaña y acabaron aquí, viviendo al aire libre y criando grifos: son tus primos. En Seradane, al norte, hay un portal al Sueño Esmeralda vigilado por dragones verdes."
+  },
+  "Searing Gorge": {
+   "bando": "N", "cont": "ek", "xy": [1.5, 5.0], "maz": ["blackrock-depths"],
+   "bases": "Neutral: Thorium Point, en el noroeste.",
+   "que": "Un valle de lava y ceniza entre Badlands y Burning Steppes, dominado por los enanos Dark Iron. Las dos facciones trabajan desde Thorium Point, el campamento de la Thorium Brotherhood. Enemigos: enanos Dark Iron, gólems, elementales de fuego, arañas de lava y el Twilight's Hammer. En el extremo sur está Blackrock Mountain, con Blackrock Depths.",
+   "lore": "En la Guerra de los Tres Martillos, el brujo Thaurissan, jefe de los Dark Iron, quiso invocar un arma contra los otros clanes y trajo a Ragnaros, el señor del fuego. La explosión destrozó la sierra, levantó el volcán de Blackrock y dejó calcinados este valle y Burning Steppes. Los Dark Iron son desde entonces sus esclavos."
+  },
+  "Azshara": {
+   "bando": "D", "cont": "ka", "xy": [2.6, 2.25], "maz": ["blackmaw-hold"],
+   "bases": "Alianza: Talrendis Point. Horda: Valormok, en el oeste.",
+   "que": "Una costa de acantilados al este de Ashenvale, llena de ruinas élficas, sátiros, nagas y fantasmas. Tiene menos quests que otras zonas de su nivel y la Alianza, muy pocas: se viene por las compartidas, por Duke Hydraxis si piensas hacer raids y por Blackmaw Hold, la mazmorra nueva de nivel 55-60.",
+   "lore": "Lleva el nombre de la reina Azshara, que hace diez mil años abrió la puerta a la Legión Ardiente. Esto era parte de su capital; el Gran Cataclismo hundió casi toda bajo el mar, y sus nobles se convirtieron en las nagas que hoy salen del agua."
+  },
+  "Blasted Lands": {
+   "bando": "D", "cont": "ek", "xy": [3.0, 9.0], "maz": [],
+   "bases": "Alianza: Nethergarde Keep, en el noreste. La Horda no tiene base.",
+   "que": "Un yermo rojo y quemado al sur de Swamp of Sorrows, alrededor del Portal Oscuro. Casi toda la zona es una sola idea, y vale para las dos facciones: dos Bloodmages cambian pociones por trozos de las bestias de la zona. Enemigos: hienas, jabalíes, escorpiones, basiliscos, buitres, ogros Dreadmaul y demonios en el sur. Las quests de los Bloodmages piden nivel 45 y el resto es para el final de los 50.",
+   "lore": "Por el Portal Oscuro entró la Horda desde Draenor en la Primera Guerra. La magia que lo abrió mató la tierra a su alrededor. Los magos de Nethergarde lo vigilan desde entonces, por si vuelve a abrirse."
+  },
+  "Felwood": {
+   "bando": "D", "cont": "ka", "xy": [1.5, 1.0], "maz": [],
+   "bases": "Compartida: Emerald Sanctuary, en el sur. Alianza: Talonbranch Glade. Horda: Bloodvenom Post.",
+   "que": "Un bosque largo y envenenado al norte de Ashenvale, de un verde enfermizo, con babas y demonios. El camino sube hacia el norte entre fúrbolgs Deadwood, sátiros Jadefire y la fortaleza de Jaedenar, hasta Timbermaw Hold, el túnel de los fúrbolgs que lleva a Winterspring y a Moonglade. Sin reputación con los Timbermaw, los del túnel te atacan.",
+   "lore": "Era parte de Ashenvale hasta que la Legión Ardiente lo corrompió en la Tercera Guerra. Aquí Illidan consumió el poder de la Calavera de Gul'dan para matar al señor del terror Tichondrius, y quedó transformado para siempre. Los fúrbolgs Timbermaw son los únicos de su raza que no han enloquecido."
+  },
+  "Un'Goro Crater": {
+   "bando": "N", "cont": "ka", "xy": [1.3, 6.85], "maz": ["shapers-terrace"],
+   "bases": "Neutral: Marshal's Refuge, en el norte.",
+   "que": "Una selva humeante hundida en un cráter al oeste de Tanaris, llena de dinosaurios, plantas gigantes y silítidos, con un volcán en el centro. Todo es compartido, y la base es una cueva de exploradores. Se baja por la rampa de Tanaris. Cuidado con los devilsaurios, élites enormes que pasean por el fondo del cráter. Aquí están los cristales de poder, la cadena de Linken y la mazmorra nueva Shaper's Terrace.",
+   "lore": "Se cuenta que los Titanes usaron el cráter como campo de pruebas para crear vida: por eso hay criaturas que no existen en ningún otro sitio, y pilones de cristal que nadie sabe del todo para qué sirven."
+  },
+  "Burning Steppes": {
+   "bando": "D", "cont": "ek", "xy": [1.5, 6.0], "maz": ["blackrock-depths", "blackrock-spire"],
+   "bases": "Alianza: Morgan's Vigil, en el sureste. Compartida: Flame Crest, en el norte.",
+   "que": "Una llanura negra y quemada entre Redridge y Blackrock Mountain. Morgan's Vigil está al final del camino que sube de Redridge. Enemigos: orcos Blackrock, dragones negros y ogros Firegut. Muchas quests llevan a Blackrock Depths y Blackrock Spire, dentro de la montaña, en el oeste.",
+   "lore": "Es la otra mitad de la tierra que calcinó Ragnaros al llegar. En la montaña hay dos bandos que se odian: abajo, los Dark Iron y Ragnaros; arriba, los orcos Blackrock de Rend Blackhand, que se considera el verdadero jefe de la Horda, y el dragón negro Nefarian."
+  },
+  "Western Plaguelands": {
+   "bando": "D", "cont": "ek", "xy": [1.45, 0.0], "maz": ["scholomance"],
+   "bases": "Alianza: Chillwind Camp, en el sur. Horda: The Bulwark, en el oeste.",
+   "que": "Las antiguas granjas de Lordaeron, ahora tierra muerta y ocupada por la Plaga. La cadena principal es la misma para todos: destruir los cuatro calderos que envenenan la tierra, granja a granja. Enemigos: no-muertos de todo tipo, arañas, animales enfermos y la Scarlet Crusade. En el centro está la ciudad en ruinas de Andorhal y, en Caer Darrow, Scholomance.",
+   "lore": "Aquí empezó la Plaga: Kel'Thuzad y su Cult of the Damned envenenaron el grano que salía de Andorhal, y media Lordaeron murió y se levantó como no-muerta. En la zona está la tumba de Uther, el paladín al que mató su propio discípulo, Arthas."
+  },
+  "Eastern Plaguelands": {
+   "bando": "N", "cont": "ek", "xy": [2.6, 0.0], "maz": ["stratholme"],
+   "bases": "Neutral: Light's Hope Chapel, del Argent Dawn, en el este.",
+   "que": "Lo peor de las tierras de la Plaga: humo y no-muertos por todas partes. Aquí todo es compartido. Tirion Fordring vive en una cabaña junto a la entrada del oeste y su cadena recorre la zona; la base de verdad es Light's Hope Chapel. Stratholme está en el norte. Es zona de reputación con el Argent Dawn.",
+   "lore": "Stratholme es la ciudad que Arthas quemó con sus habitantes dentro para que no se convirtieran en no-muertos: fue su primer paso hacia el Rey Exánime. Los que siguen luchando contra la Plaga se dividieron en dos: la Scarlet Crusade, fanática, y el Argent Dawn, que acepta a cualquiera que quiera ayudar."
+  },
+  "Winterspring": {
+   "bando": "N", "cont": "ka", "xy": [2.55, 0.25], "maz": [],
+   "bases": "Neutral: Everlook, en el centro. La Alianza tiene además Starfall Village.",
+   "que": "Un valle nevado en el extremo norte de Kalimdor, al que se llega por el túnel de Timbermaw Hold desde Felwood. Las dos facciones trabajan desde Everlook, el pueblo goblin. Enemigos: fúrbolgs Winterfall, yetis, quimeras, osos y dragones azules. Es buen sitio de torio, y en Everlook se compra el esquema de Thorium Tube. Por el sur, Darkwhisper Gorge lleva a Mount Hyjal.",
+   "lore": "Un rincón apartado donde los goblins del Steamwheedle Cartel comercian con todos. Los fúrbolgs Winterfall beben un licor que los ha vuelto locos, en las cuevas de Mazthoril viven dragones azules y en el lago Kel'Theril vagan los fantasmas de elfos Highborne."
+  },
+  "Deadwind Pass": {
+   "bando": "N", "cont": "ek", "xy": [2.0, 8.0], "maz": [],
+   "bases": "Sin bases.",
+   "que": "Un desfiladero gris y muerto entre Duskwood y Swamp of Sorrows. No tiene pueblo ni apenas quests: se cruza por el camino, de oeste a este. Fuera del camino los enemigos son de nivel muy alto (ogros, buitres, espíritus), así que no te salgas de él cuando lo cruces hacia nivel 35. La torre de Karazhan se ve en el sur, por fuera.",
+   "lore": "En Karazhan vivía Medivh, el último Guardián de Tirisfal. Poseído por el titán oscuro Sargeras, abrió el Portal Oscuro y dejó entrar a la Horda. Cuando lo mataron, la magia que se liberó secó la vida de todo el desfiladero."
+  },
+  "Silithus": {
+   "bando": "N", "cont": "ka", "xy": [0.15, 7.0], "maz": [],
+   "bases": "Neutral: Cenarion Hold, en el centro.",
+   "que": "Un desierto de colmenas de silítidos en el extremo suroeste de Kalimdor, bajo Un'Goro. Las dos facciones trabajan desde el fuerte de los druidas. Enemigos: silítidos, gusanos, escórpidos y el Twilight's Hammer. Casi todo es contenido de nivel 60, así que una visita de leveo es corta.",
+   "lore": "Hace mil años, los elfos de la noche y los dragones libraron aquí la Guerra de las Arenas Cambiantes contra los qiraji, un imperio de insectos al servicio de un dios antiguo. No pudieron vencerlos: los encerraron tras el Scarab Wall, en Ahn'Qiraj. Los silítidos que ves son la señal de que detrás del muro algo se mueve."
+  },
+  "Moonglade": {
+   "bando": "N", "cont": "ka", "xy": [1.45, 0.0], "maz": [],
+   "bases": "Neutral: Nighthaven.",
+   "que": "Un claro tranquilo junto a un lago, en el norte de Kalimdor: el refugio de los druidas, sin apenas enemigos. Nighthaven es un pueblo neutral. Se llega por el túnel de Timbermaw Hold, desde Felwood. Aquí hay quests de Dire Maul y de Silithus.",
+   "lore": "Es la sede del Cenarion Circle, donde druidas tauren y elfos de la noche conviven sin importar la facción. Lo cuida Keeper Remulos, hijo del semidiós Cenarius."
+  },
+  "Mount Hyjal": {
+   "bando": "N", "cont": "ka", "xy": [2.55, 1.25], "maz": [],
+   "bases": "Compartida por las dos facciones.",
+   "que": "Zona nueva de nivel 60, cerrada en Classic. Se entra por el sur de Winterspring, cruzando Darkwhisper Gorge. Es contenido de final de juego: reputaciones nuevas (Barkskin Burrow y Guardians of Hyjal, según los datos del juego) y las raids, con Hyjal Summit y una entrada a Barrow Deeps, que abren el 9 de diciembre. Casi todas sus quests son compartidas por las dos facciones.",
+   "lore": "En la cima está Nordrassil, el Árbol del Mundo. Aquí acabó la Tercera Guerra: orcos, humanos y elfos de la noche frenaron juntos al demonio Archimonde, y los elfos sacrificaron el poder del árbol, y con él su inmortalidad, para destruirlo."
+  }
+ },
+ "caminos": [
+  ["Tirisfal Glades", "Silverpine Forest"], ["Tirisfal Glades", "Western Plaguelands"], ["Western Plaguelands", "Eastern Plaguelands"],
+  ["Western Plaguelands", "Alterac Mountains"], ["Western Plaguelands", "The Hinterlands"], ["Silverpine Forest", "Hillsbrad Foothills"],
+  ["Hillsbrad Foothills", "Alterac Mountains"], ["Hillsbrad Foothills", "Arathi Highlands"], ["Hillsbrad Foothills", "The Hinterlands"],
+  ["Arathi Highlands", "Wetlands"], ["Wetlands", "Loch Modan"], ["Loch Modan", "Dun Morogh"], ["Dun Morogh", "Ironforge"],
+  ["Loch Modan", "Badlands"], ["Badlands", "Searing Gorge"], ["Searing Gorge", "Burning Steppes"], ["Burning Steppes", "Redridge Mountains"],
+  ["Redridge Mountains", "The Riverglades"], ["Redridge Mountains", "Elwynn Forest"], ["Redridge Mountains", "Duskwood"],
+  ["Elwynn Forest", "Stormwind City"], ["Elwynn Forest", "Westfall"], ["Elwynn Forest", "Duskwood"], ["Westfall", "Duskwood"],
+  ["Duskwood", "Stranglethorn Vale"], ["Duskwood", "Deadwind Pass"], ["Deadwind Pass", "Swamp of Sorrows"], ["Swamp of Sorrows", "Blasted Lands"],
+  ["Darkshore", "Ashenvale"], ["Ashenvale", "Felwood"], ["Ashenvale", "Azshara"], ["Ashenvale", "Stonetalon Mountains"], ["Ashenvale", "The Barrens"],
+  ["Stonetalon Mountains", "The Barrens"], ["Stonetalon Mountains", "Desolace"], ["Desolace", "Feralas"], ["Desolace", "Shen'dralas"],
+  ["Feralas", "Thousand Needles"], ["The Barrens", "Thousand Needles"], ["The Barrens", "Durotar"], ["The Barrens", "Mulgore"],
+  ["The Barrens", "Dustwallow Marsh"], ["Thousand Needles", "Tanaris"], ["Tanaris", "Un'Goro Crater"], ["Un'Goro Crater", "Silithus"],
+  ["Felwood", "Winterspring"], ["Felwood", "Moonglade"], ["Winterspring", "Mount Hyjal"]
+ ],
+ "rutas": [
+  ["Ironforge", "Stormwind City", "tranvía", "Deeprun Tram, entre Tinker Town y Stormwind"],
+  ["Wetlands", "Darkshore", "barco", "Menethil Harbor – Auberdine"],
+  ["Wetlands", "Hillsbrad Foothills", "barco", "Menethil Harbor – Southshore, nuevo en Forever"],
+  ["Wetlands", "Dustwallow Marsh", "barco", "Menethil Harbor – Theramore"],
+  ["Stormwind City", "Darkshore", "barco", "Stormwind Harbor – Auberdine, nuevo en Forever"],
+  ["Darkshore", "Teldrassil y Darnassus", "barco", "Auberdine – Rut'theran Village"],
+  ["Stranglethorn Vale", "The Barrens", "barco", "Booty Bay – Ratchet"],
+  ["Tanaris", "The Riverglades", "barco", "Steamwheedle Port – Powderfuse Port, nuevo en Forever"]
+ ],
+ "corto": {
+  "Teldrassil y Darnassus": "Teldrassil", "Stonetalon Mountains": "Stonetalon", "Thousand Needles": "Thousand Needles",
+  "Dustwallow Marsh": "Dustwallow", "Un'Goro Crater": "Un'Goro", "Tirisfal Glades": "Tirisfal", "Silverpine Forest": "Silverpine",
+  "Western Plaguelands": "W. Plaguelands", "Eastern Plaguelands": "E. Plaguelands", "Alterac Mountains": "Alterac",
+  "The Hinterlands": "Hinterlands", "Hillsbrad Foothills": "Hillsbrad", "Arathi Highlands": "Arathi", "Redridge Mountains": "Redridge",
+  "Stormwind City": "Stormwind", "Elwynn Forest": "Elwynn", "Stranglethorn Vale": "Stranglethorn", "Swamp of Sorrows": "Swamp of Sorrows",
+  "The Riverglades": "Riverglades", "The Barrens": "The Barrens", "Burning Steppes": "Burning Steppes"
+ }
+}

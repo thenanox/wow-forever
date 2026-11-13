@@ -172,7 +172,7 @@
     });
     // estado de cada imprescindible: hecho, se puede hacer ya, falta nivel o falta algo antes
     var lvNow = L();
-    $$('.blk.imp li').forEach(function(li){
+    $$('.blk.imp li, .blk.apro li').forEach(function(li){
       var box = $('input', li), out = $('.imp-s', li); if (!box || !out) return;
       var cls = 'st-man', txt = 'Esta se marca a mano: no depende de ninguna quest.';
       if (box.dataset.dep){
@@ -230,10 +230,10 @@
     var zs = D.zones.filter(function(z){ return z.lv !== 'ciudad'; }).map(function(z){ return { k: 'xpl-' + z.id.slice(2), n: z.n, id: z.id }; });
     var hs = (G.xh || []).map(function(n){ return { k: 'xpl-' + n.toLowerCase().replace(/[^a-z0-9]+/g, '-'), n: n }; });
     var zd = zs.concat(hs).filter(function(z){ return KS[z.k]; }).length, zn = zs.length + hs.length;
-    row(zd === zn, 'Explore the world', '<p>Descubrir el mapa entero del mundo con este personaje: llevas ' + zd + ' de ' + zn + ' zonas. Cada zona se marca en su página; las de la Horda que no tienen página, aquí.</p><ul class="chips">' +
+    row(zd === zn, 'Explore the world', '<p>Descubrir el mapa entero del mundo con este personaje: llevas ' + zd + ' de ' + zn + ' zonas. Cada zona se marca en su página, en «Para aprovechar».</p><ul class="chips">' +
       zs.map(function(z){ return chip(z.id, z.n, '', KS[z.k] ? 'done' : ''); }).join('') +
       hs.map(function(z){ return '<li><label class="chip">' + kBox(z.k) + ' ' + esc(z.n) + '</label></li>'; }).join('') + '</ul>' +
-      '<p class="src">Las cuatro últimas son zonas iniciales de la Horda: para un enano son peligrosas, pero el mapa cuenta igual. Si el juego te marca alguna zona más, como la isla inicial de los Skyborne, fíate del juego.</p>');
+      '<p class="src">Durotar, Mulgore, Tirisfal Glades y Silverpine Forest son territorio de la Horda: para un enano son peligrosas, pero el mapa cuenta igual. Si el juego te marca alguna zona más, como la isla inicial de los Skyborne, fíate del juego.</p>');
     if (G.val && D.q[G.val]){
       var vs = chainOf(G.val).concat([G.val]), vd = vs.filter(isQ).length;
       row(vd === vs.length, 'Lord Valthalak', '<p>La cadena del conjunto de mazmorra, que pasa por varias de nivel 55-60: llevas ' + vd + ' de ' + vs.length + ' pasos. <a href="#q-' + G.val + '">Ver la cadena</a></p>');
@@ -354,6 +354,28 @@
 
   // ---------------------------------------------------------------- tarjetas de zonas y mazmorras
   function bar(done, total){ return '<span class="bar"><i style="width:' + (total ? Math.round(done / total * 100) : 0) + '%"></i></span>'; }
+  var BN = { A: 'Alianza', H: 'Horda', D: 'Disputada', N: 'Neutral' };
+  function bando(f){ return BN[f] ? '<span class="bando b-' + f + '">' + BN[f] + '</span> ' : ''; }
+  // minimapa de la página de una zona: el mapa de su continente, con ella y sus vecinas resaltadas
+  function miniMap(page){
+    var host = $('.zmini', page); if (!host || host.firstChild) return;
+    var src = $('.zmap[data-cont="' + host.dataset.cont + '"] svg'); if (!src) return;
+    var svg = src.cloneNode(true), id = host.dataset.zone, near = {};
+    $$('line', svg).forEach(function(l){
+      var on = l.dataset.a === id || l.dataset.b === id;
+      l.classList.toggle('on', on);
+      if (on) near[l.dataset.a === id ? l.dataset.b : l.dataset.a] = 1;
+    });
+    $$('a.mz', svg).forEach(function(a){
+      a.classList.remove('at-level');
+      a.removeAttribute('data-lv');
+      if (a.dataset.z === id){ a.classList.add('here'); a.removeAttribute('href'); }
+      else if (near[a.dataset.z]) a.classList.add('near');
+      else a.classList.add('far');
+    });
+    svg.setAttribute('aria-label', 'Dónde está ' + page.dataset.name);
+    host.appendChild(svg);
+  }
   function renderCards(){
     var v = L(), host = $('#zcards');
     if (host){
@@ -363,7 +385,7 @@
         var pg = document.getElementById(z.id), im = countIn(pg, '.imp input'), q = countIn(pg, '.allq input'), done = zoneDone(z.id);
         by[z.grp].push('<a class="card' + (inRange(v, z.a, z.b) && !done ? ' at-level' : '') + (done ? ' done' : '') + '" href="#' + z.id + '">' +
           '<span class="c-h"><b>' + esc(z.n) + '</b><span class="lv">' + esc(z.lv) + '</span></span>' +
-          '<span class="c-s">' + esc(z.base) + (z['new'] ? ' · nueva en Forever' : '') + '</span>' + bar(im[0] + q[0], im[1] + q[1]) +
+          '<span class="c-s">' + bando(z.f) + esc(z.base) + (z['new'] ? ' · nueva en Forever' : '') + '</span>' + bar(im[0] + q[0], im[1] + q[1]) +
           '<span class="c-f">' + (im[1] ? 'Imprescindibles ' + im[0] + '/' + im[1] + ' · ' : '') + 'Quests ' + q[0] + '/' + q[1] + (function(){ var n = $$('.allq li.avail', pg).length; return n ? ' · ' + n + ' ahora' : ''; })() + '</span></a>');
       });
       host.innerHTML = groups.map(function(g){ return '<h4 class="cg">' + esc(g) + '</h4><div class="cards">' + by[g].join('') + '</div>'; }).join('');
@@ -415,7 +437,7 @@
       D.zones.forEach(function(z){
         if (z.grp !== last){ h += '<h4>' + esc(z.grp) + '</h4>'; last = z.grp; }
         h += '<a href="#' + z.id + '" class="' + (z.id === pid ? 'on ' : '') + (inRange(v, z.a, z.b) ? 'at-level ' : '') + (zoneDone(z.id) ? 'done' : '') +
-          '"><span>' + esc(z.n) + '</span><span class="lv">' + esc(z.lv) + '</span></a>';
+          '"><span>' + (BN[z.f] ? '<i class="bd b-' + z.f + '" title="' + BN[z.f] + '"></i>' : '') + esc(z.n) + '</span><span class="lv">' + esc(z.lv) + '</span></a>';
       });
     } else if (cur.view === 'mazmorras'){
       h = '<a class="s-all' + (pid ? '' : ' on') + '" href="#mazmorras">Todas las mazmorras</a><h4>Por nivel</h4>';
@@ -528,6 +550,7 @@
       }
     }
     cur = { view: view, page: page };
+    hide();
     $$('.view').forEach(function(v){ v.hidden = v.id !== 'v-' + view; });
     $$('.tabs a').forEach(function(a){ a.classList.toggle('on', a.dataset.view === view); });
     var tabOn = $('.tabs a.on'), tabs = $('.tabs');
@@ -540,6 +563,7 @@
     if (view === 'muro') openWall();
     if (page && page.classList.contains('cpage')) chainEmblem(page);
     if (page && page.id === 'qdetail') updateChains();
+    if (page && page.classList.contains('zpage')) miniMap(page);
     renderSide();
     var go = pending || target; pending = null;
     if (go){
@@ -552,6 +576,14 @@
     try { location.hash = id; } catch(e){ route(id); }
   }
   window.addEventListener('hashchange', function(){ route(); });
+  // Una quest se abre dentro de la guía, en su ficha. El enlace a la web de fuera sigue en el propio enlace
+  // (clic central o con Ctrl), en la ficha emergente y en el botón de la ficha.
+  document.addEventListener('click', function(e){
+    var a = e.target.closest ? e.target.closest('a.x-quest[data-id]') : null;
+    if (!a || a.classList.contains('ext') || e.defaultPrevented || e.button || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+    if (!D.q[a.dataset.id]) return;
+    e.preventDefault(); navigate('q-' + a.dataset.id);
+  });
   document.addEventListener('click', function(e){
     var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
     if (!a || a.classList.contains('res')) return;
@@ -623,8 +655,10 @@
     var where = mode === 'wdb' ? 'Warcraft DB' : 'Wowhead';
     if (a.classList.contains('rn')) return h + '<div class="p-f"><span>' + (KS['q' + id] ? 'Tallada' : 'Sin tallar') + '</span>' +
       (touch ? '<a href="' + a.getAttribute('href') + '">Ver su ficha</a>' : '<span>Clic para ver su ficha</span>') + '</div>';
-    return h + '<div class="p-f"><span>' + (touch ? '' : 'Clic para abrir en ' + where) + '</span>' +
-      (touch ? '<a href="' + a.href + '" target="_blank" rel="noopener">Abrir en ' + where + '</a>' : '') + '</div>';
+    var out = '<a href="' + a.href + '" target="_blank" rel="noopener">' + where + ' ↗</a>';
+    if (t === 'quest' && D.q[id] && !a.classList.contains('ext'))
+      return h + '<div class="p-f">' + (touch ? '<a href="#q-' + id + '">Ver su ficha</a>' : '<span>Clic: su ficha en la guía</span>') + out + '</div>';
+    return h + '<div class="p-f"><span>' + (touch ? '' : 'Clic para abrir en ' + where) + '</span>' + (touch ? out : '') + '</div>';
   }
   function show(a){
     var h = content(a); if (!h) return false;
@@ -820,14 +854,16 @@
   var ZN = {}, DN = {};
   D.zones.forEach(function(z){ ZN[z.id.slice(2)] = z.n; });
   DG.forEach(function(g){ DN[g.g] = g.n; });
+  var IMC = { obj: 'objeto', lla: 'llave o acceso', per: 'ventaja permanente' };   // mazmorra y clase ya llevan su etiqueta
   function qPlace(q){ return q.dg ? DN[q.dg] : q.zp ? ZN[q.zp] : q.z || ''; }
   function qHome(q){ return q.dg ? 'dg-' + q.dg : q.zp ? 'z-' + q.zp : ''; }
   function qTags(q){
     var t = '';
     if (q.nw) t += '<span class="tag new">nueva</span>';
     if (q.dg) t += '<span class="tag ty">mazmorra</span>'; else if (q.t && TY[q.t]) t += '<span class="tag ty">' + TY[q.t] + '</span>';
+    if (q.dp && DN[q.dp]) t += '<span class="tag st">cadena de ' + esc(DN[q.dp]) + '</span>';   // lleva a una mazmorra, pero se hace fuera
     if (q.cl) t += '<span class="tag ty">clase</span>';
-    if (q.im) t += '<span class="tag st">imprescindible</span>';
+    if (q.im) t += '<span class="tag im">imprescindible' + (IMC[q.im] ? ': ' + IMC[q.im] : '') + '</span>';
     if (q.bc) t += '<span class="tag st">recado opcional</span>';
     return t;
   }
@@ -861,7 +897,7 @@
       if (t && q.n.toLowerCase().indexOf(t) < 0 && !(q.g && q.g[2].toLowerCase().indexOf(t) >= 0)) return false;
       if (z && qHome(q) !== z) return false;
       if (st === 'a' ? questState(id).s !== 'ok' : st === 'd' ? !isQ(id) : st && (isQ(id) || questState(id).s === 'gone')) return false;
-      if (k === 'im' && !q.im || k === 'dg' && !q.dg || k === 'cl' && !q.cl || k === 'nw' && !q.nw) return false;
+      if (k === 'im' && !q.im || k === 'dg' && !q.dg || k === 'dp' && !q.dp || k === 'cl' && !q.cl || k === 'nw' && !q.nw) return false;
       if (k === 'ch' && !(q.ch || q.pa || q.po || q.nx) || k === 'el' && !(q.t === 'Elite' || q.gr)) return false;
       if (lv && !((q.m || q.l || 0) <= lv && (q.l || 0) >= lv - 4)) return false;
       return true;
@@ -921,6 +957,24 @@
       (isCur ? '' : '<a class="qc" href="#q-' + id + '">ficha</a>') + '</div>' +
       (w.length ? '<p class="cs-w">' + w.join(' ') + '</p>' : '') + (q.o ? '<p class="cs-o">' + esc(q.o) + '</p>' : '') + alt + '</div></li>';
   }
+  // anterior y siguiente dentro de su cadena: la escrita a mano si la tiene; si no, lo que dicen los requisitos
+  function chainNav(id){
+    var q = D.q[id], prev = 0, next = [], mid = '';
+    var c = q.ch ? (D.chains || []).filter(function(x){ return x.k === q.ch[0]; })[0] : null;
+    if (c){
+      var i = c.ids.indexOf(id);
+      prev = i > 0 ? c.ids[i - 1] : 0; if (i >= 0 && c.ids[i + 1]) next = [c.ids[i + 1]];
+      mid = '<a href="#cad-' + c.k + '">' + esc(c.t) + '</a><small>paso ' + q.ch[1] + ' de ' + c.n + '</small>';
+    } else {
+      var anc = chainOf(id); prev = anc.length ? anc[anc.length - 1] : 0;
+      next = (q.nx || []).filter(function(i){ return D.q[i]; });
+      if (prev || next.length) mid = '<span>Cadena</span><small>según los requisitos</small>';
+    }
+    if (!prev && !next.length) return '';
+    var side = function(i, cls, lab){ return '<a class="qn-' + cls + '" href="#q-' + i + '"><small>' + lab + '</small>' + esc(D.q[i].n) + '</a>'; };
+    return '<nav class="qnav" aria-label="Cadena">' + (prev && D.q[prev] ? side(prev, 'p', '← Anterior') : '<span></span>') + '<span class="qn-m">' + mid + '</span>' +
+      (next.length ? side(next[0], 'n', (next.length > 1 ? 'Siguiente (una de ' + next.length + ')' : 'Siguiente') + ' →') : '<span></span>') + '</nav>';
+  }
   function renderQuest(id){
     var pg = $('#qdetail'), q = D.q[id], anc = chainOf(id), home = qHome(q), rows = [], rw = [];
     pg.dataset.name = q.n;
@@ -945,7 +999,7 @@
     pg.innerHTML = '<header class="ph"><div class="crumb"><a href="#quests">Quests</a><span>›</span>' + esc(q.n) + '</div><h2>' + esc(q.n) + '</h2>' +
       '<div class="ph-meta"><span class="lv">nivel ' + (q.l || '?') + (q.m && q.m < q.l ? ', desde ' + q.m : '') + '</span>' + (qPlace(q) ? '<span>' + esc(qPlace(q)) + '</span>' : '') + qTags(q) +
       (function(){ var s = questState(id), a = s.need && D.q[s.need] ? '<a href="#q-' + s.need + '">' + esc(D.q[s.need].n) + '</a>' : ''; return s.s === 'ok' ? '<span class="tag okk">puedes cogerla ya</span>' : s.s === 'gone' ? '<span class="why">ya no se puede coger: hiciste ' + a + '</span>' : s.s === 'pre' ? '<span class="why">' + (s.how === 'pq' ? 'sale mientras tienes cogida ' : 'antes hay que hacer ') + a + '</span>' : s.s === 'lv' ? '<span class="why">desde nivel ' + s.need + '</span>' : ''; })() +
-      '<span class="cprog"></span></div><div class="dones"><label class="done">' + qBox(id) + ' Hecha</label> ' + qLink(id).replace('>' + esc(q.n) + '<', '>Abrir en ' + (mode === 'wdb' ? 'Warcraft DB' : 'Wowhead') + '<') + '</div></header>' +
+      '<span class="cprog"></span></div><div class="dones"><label class="done">' + qBox(id) + ' Hecha</label> <a class="x x-quest ext btn" data-t="quest" data-id="' + id + '" href="' + url('quest', id) + '" target="_blank" rel="noopener">Abrir en ' + (mode === 'wdb' ? 'Warcraft DB' : 'Wowhead') + ' ↗</a></div>' + chainNav(id) + '</header>' +
       '<section class="blk"><h3>Ficha</h3><dl class="qd">' + rows.join('') + '</dl>' + (where.length ? '<p class="src">Aparece en: ' + where.join(', ') + '.</p>' : '') + '</section>' +
       '<section class="blk csteps"><h3>' + (anc.length ? 'Cadena hasta aquí' : 'Requisitos') + '</h3>' +
       (anc.length ? '<p class="src">Lo que hay que haber hecho antes, en orden, según los requisitos de Questie. La última es esta quest.</p><ol class="chain">' +

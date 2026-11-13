@@ -777,3 +777,76 @@ li.imp-later{list-style:none;margin:16px 0 6px;font-family:var(--f-display);font
 .lgl label.chip input{appearance:auto;-webkit-appearance:auto;width:14px;height:14px;margin:0;clip-path:none;accent-color:var(--bronze)}
 @media screen{ .lgl > li{--c:10px;clip-path:var(--oct)} .lg-m{--c:8px;clip-path:var(--oct)} }
 @media print{ #legacy-track{display:none} }
+
+/* ---- bando de cada zona, mapa esquemático y fichas de zona */
+.b-A{--c:var(--water)} .b-H{--c:var(--fire)} .b-D{--c:var(--warn)} .b-N{--c:var(--ok)}
+.bando{display:inline-block;font-family:var(--f-mono);font-size:.7rem;font-weight:600;padding:1px 8px;border-radius:999px;color:var(--paper);background:var(--c);letter-spacing:.02em;vertical-align:1px;white-space:nowrap}
+.bd{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c);margin-right:7px;vertical-align:1px}
+.zmaps{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin:14px 0 18px}
+.zmaps-lg{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;margin-bottom:10px;font-size:.84rem;color:var(--muted)}
+.zmaps-lg .lg{display:inline-flex;align-items:center;gap:6px}
+.zmaps-lg b{color:var(--ink);font-weight:600}
+.zmaps-lg .sw{display:inline-block;width:20px;height:12px;border-radius:3px;border:1.5px solid var(--c);background:color-mix(in srgb, var(--c) 16%, var(--paper))}
+.zmaps-lg .sw.now{border:3px solid var(--muted);background:var(--hl)}
+.zmaps-lg .ln{display:inline-block;width:22px;border-top:2px solid var(--stone)}
+.zmaps-lg .ln.dash{border-top:2px dashed var(--air)}
+.zmaps-in{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-start;justify-content:center}
+.zmap{margin:0;flex:1 1 300px;min-width:0}
+.zmap[data-cont="ka"]{max-width:440px} .zmap[data-cont="ek"]{max-width:488px}
+.zmap figcaption{font-family:var(--f-display);font-size:1.05rem;margin-bottom:4px}
+.zmap svg,.zmini svg{display:block;width:100%;height:auto;overflow:visible}
+.zmaps > .src{max-width:none;margin:10px 0 0}
+.me{stroke:var(--stone);stroke-width:2}
+.me.mr{stroke:var(--air);stroke-dasharray:5 4}
+.mz{cursor:pointer}
+.mz rect{fill:color-mix(in srgb, var(--c, var(--stone)) 18%, var(--paper));stroke:var(--c, var(--stone));stroke-width:1.5}
+.mz.mc rect{fill:var(--bg);stroke-width:2.5}
+.mz text{text-anchor:middle;fill:var(--ink);pointer-events:none}
+.mz .mn{font-family:var(--f-body);font-size:11.5px;font-weight:700}
+.mz .ml{font-family:var(--f-mono);font-size:8.5px;fill:var(--muted)}
+.mz:hover rect,.mz:focus-visible rect{stroke-width:3}
+.mz:focus-visible{outline:none}
+.mz.at-level rect{fill:var(--hl);stroke-width:3.5}
+.zmini{margin:2px 0 10px}
+.zmini .me{opacity:.35}
+.zmini .me.on{opacity:1;stroke-width:2.5}
+.zmini .me.on:not(.mr){stroke:var(--ink)}
+.zmini .mz.far{opacity:.42}
+.zmini .mz.here{cursor:default}
+.zmini .mz.here rect{fill:var(--c, var(--stone));stroke:var(--ink);stroke-width:2.5}
+.zmini .mz.here text{fill:var(--paper)}
+.zmini .mz.near rect{stroke-width:2.5}
+.zcols{align-items:stretch}
+.zcols > .blk{margin:12px 0 0}
+.zinfo p,.zwhere p{max-width:none}
+.zinfo h4{margin:14px 0 4px;font-size:1rem}
+.zb{font-size:.94rem;color:var(--muted)}
+.zb b{color:var(--ink)}
+.zm{margin-bottom:4px}
+.zway{line-height:1.9}
+.hop{color:var(--muted);font-size:.82rem;white-space:nowrap}
+.zwhere > h3 .prog{font-family:var(--f-body)}
+
+/* ---- por qué importa cada punto, y lo que solo es para aprovechar */
+.cat{display:inline-block;font-family:var(--f-mono);font-size:.68rem;font-weight:600;padding:1px 7px;border-radius:999px;border:1px solid var(--c, var(--rule));color:var(--c, var(--muted));vertical-align:2px;margin-right:2px;white-space:nowrap}
+.cat.c-maz{--c:var(--fire)} .cat.c-cla{--c:var(--water)} .cat.c-obj{--c:var(--bronze)} .cat.c-lla{--c:var(--warn)} .cat.c-per{--c:var(--ok)}
+.cat.c-no{font-weight:400}
+.blk.apro{border-style:dashed}
+.blk.apro > h3{color:var(--muted)}
+.blk.apro li.st-lv > label,.blk.apro li.st-pre > label{opacity:.75}
+.blk.imp > .src,.blk.apro > .src{max-width:none;margin:0 0 4px}
+.tag.im{background:var(--bronze-soft);color:var(--bronze)}
+
+/* ---- ficha de quest: salir a la web de fuera y moverse por la cadena */
+a.x.btn{display:inline-block;padding:2px 11px;border:1px solid var(--bronze);border-radius:999px;color:var(--bronze);text-decoration:none;font-size:.86rem;font-weight:600}
+a.x.btn:hover{background:var(--bronze-soft)}
+.qnav{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;margin-top:12px;align-items:stretch}
+.qnav > a{display:flex;flex-direction:column;justify-content:center;padding:7px 12px;border:1px solid var(--rule);border-radius:8px;background:var(--paper);color:var(--ink);text-decoration:none;font-weight:600;min-width:0;line-height:1.3}
+.qnav > a:hover{border-color:var(--bronze)}
+.qnav > a.qn-n{text-align:right}
+.qnav small{font-weight:400;font-size:.76rem;color:var(--muted)}
+.qn-m{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:.9rem;padding:0 6px;line-height:1.3}
+.qn-m a{font-weight:700;text-decoration:none}
+@media (max-width:640px){.qnav{grid-template-columns:minmax(0,1fr) minmax(0,1fr)} .qn-m{grid-column:1 / -1;order:-1}}
+@media print{.zmini,.qnav{display:none}}
+.hop.hi{color:var(--warn)}
