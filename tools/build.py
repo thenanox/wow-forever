@@ -673,6 +673,9 @@ for _i, _q in Q.items():
     _t = _twin.get((G.norm(_q['name']), _q.get('zone')))
     if _t and len(_t) == 1: ALIAS[_i] = _t[0]; AKA[_t[0]].append(_i)
 
+# En Forever vale el número clásico (comprobado en el juego con Researching the Corruption, 1275):
+# el otro número solo sirve para reconocer la quest al importar.
+
 def repeatable(i):
     f = (G.QS.get(i) or {}).get('flags', 0)
     return 'REPEATABLE' in str(f).upper() if isinstance(f, (str, list, tuple)) else bool(int(f or 0) & 1)
@@ -939,42 +942,63 @@ def item_note(iid):
 
 USE_TXT = {'no': ' <i class="no">no la puedes usar</i>', 'mail': ' <i>malla: desde nivel 40</i>', 'top': ' <i class="top">dos manos de las tuyas</i>'}
 
-def imp_detail(key, deps):
-    """Bloque de detalle bajo un imprescindible: por qué, qué premio da y los datos de sus quests."""
+def imp_detail(key, deps, zone=None):
+    """(bloque de detalle de un imprescindible, nivel mínimo para empezarlo): estado, cuándo, por qué, qué hay que hacer, premio y datos."""
     ids = [int(t.split('|')[0][1:]) for t in deps if t[0] == 'q']
     ids = [i for i in ids if i in Q]
-    out = []
-    if WHYS.get(key): out.append(f'<p class="imp-w"><b>Por qué:</b> {linkify(WHYS[key])}</p>')
+    rows, mn = [], None
+    if ids:
+        mn = min((Q[i].get('min') or Q[i].get('level') or 99) for i in ids)
+        lo, hi = min(Q[i]['level'] for i in ids), max(Q[i]['level'] for i in ids)
+        when = f'Se puede coger desde nivel {mn}. ' + (f'Es de nivel {lo}' if lo == hi else f'Sus quests van de nivel {lo} a {hi}') + ': con menos nivel que ese, sus enemigos te quedan grandes.'
+        if zone and zone[1] and mn > zone[1] + 2:
+            when += f' Se coge en esta zona, pero no al nivel de la zona ({zone[0]}-{zone[1]}): vuelve cuando tengas nivel {mn}.'
+        def dg_ref(g):
+            w = next(d[8] for d in DG if d[0] == g)
+            return f'<a href="#dg-{g}">{esc(DG_NAME[g])}</a> (niveles {min(x[2] for x in w)}-{max(x[3] for x in w)})'
+        # dentro de la mazmorra de verdad, o solo un paso previo que lleva a ella
+        inside = list(dict.fromkeys(DQ_OF[i] for i in ids if i in DQ_OF and (Q[i].get('type') == 'Dungeon' or DGZ.get(Q[i].get('zone')) == DQ_OF[i])))
+        lead = [g for g in dict.fromkeys(DQ_OF[i] for i in ids if i in DQ_OF) if g not in inside]
+        if inside: when += ' Se resuelve dentro de ' + ' y '.join(dg_ref(g) for g in inside) + ': llévala cogida antes de entrar.'
+        if lead: when += ' Es un paso previo a las quests de ' + ' y '.join(dg_ref(g) for g in lead) + '.'
+        rows.append(('Cuándo', when))
+    if WHYS.get(key): rows.append(('Por qué', linkify(WHYS[key])))
+    if ids:
+        if len(ids) <= 4:
+            lines = []
+            for i in ids:
+                q = Q[i]
+                who = step_where(q)
+                lines.append(f'<li>{qa(i)} <span class="lv">nivel {q["level"]}</span>: {esc(G.clean(q.get("obj") or "")) or "sin objetivo en los datos"}' + (f' <span class="in">{who}</span>' if who else '') + '</li>')
+            rows.append(('Qué hay que hacer', '<ul class="imp-q">' + ''.join(lines) + '</ul>'))
+        else:
+            q = Q[ids[0]]
+            rows.append(('Qué hay que hacer', f'Son {len(ids)} quests seguidas. Empieza con {qa(ids[0])}: {esc(G.clean(q.get("obj") or ""))} <span class="in">{step_where(q)}</span> El resto, paso a paso, en su cadena.'))
+    prize = []
     for q in [Q[i] for i in ids if (Q[i].get('choice') or Q[i].get('items'))][-2:]:
         bits = []
         for it in ((q.get('choice') or []) + (q.get('items') or []))[:5]:
             if not it.get('id') or not it.get('name'): continue
             note, use = item_note(it['id'])
             bits.append(ia(it['id'], it['name']) + (f' <span class="in">({note})</span>' if note else '') + USE_TXT.get(use, ''))
-        if bits:
-            lead = ('A elegir' if q.get('choice') else 'Te dan') + (f' en {qa(q["id"])}' if len(ids) > 1 else '')
-            out.append(f'<p class="imp-r"><b>{lead}:</b> ' + '; '.join(bits) + '.</p>')
+        if bits: prize.append(('A elegir' if q.get('choice') else 'Te dan') + (f' en {qa(q["id"])}' if len(ids) > 1 else '') + ': ' + '; '.join(bits) + '.')
+    if prize: rows.append(('Premio', '<br>'.join(prize)))
     facts = []
     if ids:
-        if len(ids) > 1: facts.append(f'{len(ids)} quests')
         xp = sum(Q[i].get('xp') or 0 for i in ids)
-        if xp: facts.append(f'{xp:,} XP'.replace(',', '.'))
+        if xp: facts.append(f'{xp:,} XP'.replace(',', '.') + (' en total' if len(ids) > 1 else ''))
         rep = defaultdict(int)
         for i in ids:
             for r in Q[i].get('rep') or []:
                 if (r.get('v') or 0) > 0: rep[r['name']] += r['v']
         if rep:
-            n, v = max(rep.items(), key=lambda x: x[1]); facts.append(f'+{v} {esc(n)}')
-        lv = min((Q[i].get('min') or Q[i].get('level') or 99) for i in ids)
-        if lv < 99: facts.append(f'desde nivel {lv}')
-        st = (Q[ids[0]].get('starts') or [None])[0]
-        if st: facts.append('empieza con ' + step_ref(st, Q[ids[0]].get('sc')))
-        dgs = list(dict.fromkeys(DQ_OF[i] for i in ids if i in DQ_OF))
-        if dgs: facts.append('mazmorra: ' + ', '.join(f'<a href="#dg-{g}">{esc(DG_NAME[g])}</a>' for g in dgs))
+            n, v = max(rep.items(), key=lambda x: x[1]); facts.append(f'+{v} de reputación con {esc(n)}')
         after = [x for x in dict.fromkeys(j for i in ids for j in SUCC.get(i, [])) if x not in ids and not repeatable(x)][:3]
-        if after: facts.append('después se abre ' + ', '.join(qa(x) for x in after))
-    if facts: out.append('<p class="imp-f">' + ' · '.join(facts) + '</p>')
-    return '<div class="imp-d">' + ''.join(out) + '</div>' if out else ''
+        if after: facts.append('al terminarla se abre ' + ', '.join(qa(x) for x in after))
+    if facts: rows.append(('Además', ' · '.join(facts) + '.'))
+    if not rows: return '', mn
+    return ('<div class="imp-d"><p class="imp-s" aria-live="polite"></p><dl class="imp-g">'
+            + ''.join(f'<dt>{k}</dt><dd>{v}</dd>' for k, v in rows) + '</dl></div>'), mn
 
 def deps_for(key, inner):
     """Claves de las casillas de las que depende un punto de la guía: sus quests o, si solo nombra una mazmorra, sus alas."""
@@ -1122,7 +1146,12 @@ def build():
         items = imp.get(name, [])
         imp_html = ''
         if items:
-            lis = ''.join(f'<li{"" if deps_for(k, inner) else " class=man"}><label><input type="checkbox" data-k="{k}"{dep_attr(k, inner)}><span>{inner}</span></label>{imp_detail(k, deps_for(k, inner))}</li>' for k, inner in items)
+            now, later = [], []
+            for k, inner in items:
+                det, mn = imp_detail(k, deps_for(k, inner), (a, b))
+                row = f'<li{"" if deps_for(k, inner) else " class=man"}><label><input type="checkbox" data-k="{k}"{dep_attr(k, inner)}><span>{inner}</span></label>{det}</li>'
+                (later if mn and b and mn > b + 2 else now).append(row)
+            lis = ''.join(now) + (f'<li class="imp-later">Para más adelante: se cogen aquí, pero piden más nivel del que tiene la zona</li>' + ''.join(later) if later else '')
             imp_html = (f'<section class="blk imp"><h3>Imprescindibles <span class="prog"></span></h3>'
                         f'<ul class="chk">{lis}</ul>{paras.get(name, "")}</section>')
         guide = (f'<a href="https://wowforeverinfo.com/guides/{wslug}/" target="_blank" rel="noopener">Guía paso a paso</a>') if wslug else ''

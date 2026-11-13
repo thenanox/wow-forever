@@ -745,3 +745,16 @@ ol.chain > li.skip > .cs-b .cs-t::after{content:"no hizo falta";font-size:.82rem
 .imp-d i.no{color:var(--warn)}
 @media screen{ .imp-d{--c:8px;clip-path:var(--oct)} }
 @media print{ .imp-d{margin-left:18pt;padding:2pt 0;background:none} }
+
+/* imprescindibles: estado según tu nivel y filas rotuladas */
+.imp-s{font-weight:700;margin:0 0 8px!important}
+li.st-ok .imp-s{color:var(--ok)} li.st-lv .imp-s,li.st-pre .imp-s{color:var(--warn)} li.st-done .imp-s,li.st-man .imp-s{color:var(--muted);font-weight:400}
+dl.imp-g{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:6px 14px;margin:0}
+dl.imp-g dt{font-variant-caps:all-small-caps;letter-spacing:.05em;font-weight:700;color:var(--muted);font-size:.92rem;padding-top:1px}
+dl.imp-g dd{margin:0;max-width:86ch}
+.imp-q{margin:0;padding-left:1.1em}
+.imp-q li{margin:0 0 3px}
+.imp-q .lv{font-size:.76rem;color:var(--bronze)}
+li.imp-later{list-style:none;margin:16px 0 6px;font-family:var(--f-display);font-size:1.05rem;color:var(--muted)}
+.blk.imp li.st-lv > label,.blk.imp li.st-pre > label{opacity:.75}
+@media (max-width:640px){ dl.imp-g{grid-template-columns:1fr;gap:0 0} dl.imp-g dd{margin:0 0 8px} .imp-d{margin-left:0} }

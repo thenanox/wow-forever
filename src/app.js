@@ -157,6 +157,25 @@
       else if (st.s === 'lv') qm.dataset.why = 'desde nivel ' + st.need;
       else qm.removeAttribute('data-why');
     });
+    // estado de cada imprescindible: hecho, se puede hacer ya, falta nivel o falta algo antes
+    var lvNow = L();
+    $$('.blk.imp li').forEach(function(li){
+      var box = $('input', li), out = $('.imp-s', li); if (!box || !out) return;
+      var cls = 'st-man', txt = 'Esta se marca a mano: no depende de ninguna quest.';
+      if (box.dataset.dep){
+        var toks = box.dataset.dep.split(','), left = toks.filter(function(t){ return !tokDone(t); });
+        if (!left.length){ cls = 'st-done'; txt = 'Hecha.'; }
+        else if (!/^q\d+/.test(left[0])){ cls = 'st-ok'; txt = 'Pendiente: se marca sola cuando marques la mazmorra como hecha.'; }
+        else {
+          var id = +left[0].split('|')[0].slice(1), st = questState(id), q = D.q[id] || {}, prog = toks.length > 1 ? ' Llevas ' + (toks.length - left.length) + ' de ' + toks.length + '.' : '';
+          if (st.s === 'lv'){ cls = 'st-lv'; txt = 'Todavía no: pide nivel ' + st.need + (lvNow ? ' y tienes ' + lvNow : '') + '.' + prog; }
+          else if (st.s === 'pre'){ var nq = D.q[st.need]; cls = 'st-pre'; txt = 'Todavía no: antes hay que hacer ' + nq.n + (nq.g ? ', que da ' + nq.g[2] + (nq.gc && nq.gc[2] ? ' en ' + nq.gc[2] : '') : '') + '.' + prog; }
+          else { cls = 'st-ok'; txt = 'Puedes hacerla ya' + (toks.length > 1 ? ': te toca ' + (q.n || '') : '') + (q.g ? ', con ' + q.g[2] + (q.gc ? ' (' + (q.gc[2] ? q.gc[2] + ' ' : '') + q.gc[0] + ', ' + q.gc[1] + ')' : '') : '') + '.' + prog; }
+        }
+      }
+      out.textContent = txt;
+      li.className = li.className.replace(/\bst-\w+/g, '').trim() + ' ' + cls;
+    });
     $$('.dpage').forEach(function(pg){
       var blk = $('.dq', pg); if (!blk) return;
       var n = $$('li', blk).length, ok = $$('li.avail', blk).length, pre = $$('li.blocked', blk).length, lv = $$('li.low', blk).length, done = n - ok - pre - lv;
@@ -402,7 +421,9 @@
       zs.forEach(function(z){
         if (zoneDone(z.id)) return;
         $$('#' + z.id + ' .blk.imp input[data-k]').forEach(function(b){
-          if (b.checked || seen[b.dataset.k]) return; seen[b.dataset.k] = 1;
+          if (b.checked || seen[b.dataset.k]) return;
+          var bl = b.closest('li'); if (bl && (bl.classList.contains('st-lv') || bl.classList.contains('st-pre'))) return;   // aún no se puede hacer
+          seen[b.dataset.k] = 1;
           var c = b.parentNode.cloneNode(true); $$('.tag', c).forEach(function(x){ x.remove(); });
           var t = c.textContent.replace(/\s+/g, ' ').trim(); if (t.length > 150) t = t.slice(0, 147) + '…';
           items.push('<li><a href="#' + z.id + '"><b>' + esc(z.n) + '</b>' + esc(t) + '</a></li>');
@@ -821,8 +842,7 @@
     if (q.rc) rows.push('<dt>A elegir</dt><dd>' + items(q.rc) + '</dd>');
     if (q.r) rows.push('<dt>Además</dt><dd>' + items(q.r) + '</dd>');
     if (q.p) rows.push('<dt>Reputación</dt><dd>' + q.p.map(function(x){ return '+' + x[1] + ' ' + esc(x[0]); }).join(', ') + '</dd>');
-    if (q.aka) rows.push('<dt>Otro número</dt><dd>La base de datos trae esta misma quest también como ' + q.aka.map(function(x){ return '<a href="' + url('quest', x) + '" target="_blank" rel="noopener">' + x + '</a>'; }).join(', ') +
-      '. Si la ficha de fuera dice que no existe en Forever, prueba con ese número: cualquiera de los dos cuenta al importar.</dd>');
+    if (q.aka) rows.push('<dt>Otro número</dt><dd>En Forever esta quest lleva el número ' + id + '. La base de datos la trae duplicada también como ' + q.aka.join(', ') + ': ese otro número solo sirve para reconocerla al importar.</dd>');
     var where = [];
     if (home) where.push('<a href="#' + home + '">' + esc(qPlace(q)) + '</a>');
     if (q.ch) where.push('<a href="#cad-' + q.ch[0] + '">su cadena, paso ' + q.ch[1] + '</a>');
