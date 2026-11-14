@@ -9,7 +9,7 @@
     set: function(k, v){ try { window.localStorage.setItem(k, v); return true; } catch(e){ return false; } }
   };
   function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
-  var VIEWS = ['inicio', 'zonas', 'mazmorras', 'cadenas', 'quests', 'chaman', 'profesiones', 'referencia', 'muro'];
+  var VIEWS = ['inicio', 'zonas', 'mazmorras', 'cadenas', 'quests', 'chaman', 'profesiones', 'referencia', 'muro', 'cronica'];
   var cur = { view: 'inicio', page: null };
 
   // grupos de mazmorra (una entrada por mazmorra, con sus alas)
@@ -122,7 +122,7 @@
     if (!b.matches || !b.matches('input[type=checkbox][data-k]')) return;
     storeOK = true;
     if (b.checked) tink();
-    var mark = function(k){ setKey(k, true); if (/^q\d+$/.test(k)) markBefore(+k.slice(1), {}); };
+    var mark = function(k){ setKey(k, true); stamp(k); if (/^q\d+$/.test(k)) markBefore(+k.slice(1), {}); };
     if (!b.dataset.dep){ if (b.checked) mark(b.dataset.k); else setKey(b.dataset.k, false); }
     else b.dataset.dep.split(',').forEach(function(t){
       var alts = t.split('|');
@@ -561,6 +561,7 @@
     if (page) addPrevNext(page);
     if (view === 'quests' && !page) renderQuests();
     if (view === 'muro') openWall();
+    if (view === 'cronica') renderCronica();
     if (page && page.classList.contains('cpage')) chainEmblem(page);
     if (page && page.id === 'qdetail') updateChains();
     if (page && page.classList.contains('zpage')) miniMap(page);
@@ -745,7 +746,7 @@
   // ---------------------------------------------------------------- copiar y cargar progreso
   var code = $('#sync-code'), msg = $('#sync-msg');
   function exportCode(){
-    return btoa(unescape(encodeURIComponent(JSON.stringify({ v: 3, nivel: lvl.value, on: Object.keys(KS) }))));
+    return btoa(unescape(encodeURIComponent(JSON.stringify({ v: 4, nivel: lvl.value, on: Object.keys(KS), log: logRead() }))));
   }
   var bc = $('#sync-copy'), bl = $('#sync-load');
   if (bc) bc.addEventListener('click', function(){
@@ -760,6 +761,7 @@
       Object.keys(KS).forEach(function(k){ if (!on[k]) setKey(k, false); });
       Object.keys(on).forEach(function(k){ setKey(k, true); });
       if (d.nivel){ lvl.value = d.nivel; store.set('nivel', d.nivel); }
+      if (Array.isArray(d.log)) logWrite(d.log);
       restore(); applyLevel();
       msg.textContent = 'Progreso cargado: ' + (d.on || []).length + ' marcas.';
     } catch (err){ msg.textContent = 'Ese código no es válido. Cópialo entero desde el otro dispositivo.'; }
@@ -1124,8 +1126,203 @@
     } catch(e){}
   }
   var nameIn = $('#nombre'), cinIn = $('#cincel');
-  if (nameIn){ nameIn.value = store.get('nombre') || ''; nameIn.addEventListener('input', function(){ store.set('nombre', nameIn.value); updateWall(); }); }
+  if (nameIn){ nameIn.value = store.get('nombre') || ''; nameIn.addEventListener('input', function(){ store.set('nombre', nameIn.value); var cn = $('#nombre-cron'); if (cn) cn.value = nameIn.value; updateWall(); }); }
   if (cinIn){ cinIn.checked = store.get('cincel') === '1'; cinIn.addEventListener('change', function(){ store.set('cincel', cinIn.checked ? '1' : '0'); tink(); }); }
+
+
+  // ---------------------------------------------------------------- la crónica
+  // Un libro que se escribe con lo que marcas. Cada línea sale de una marca propia: un capítulo de zona solo cuenta
+  // la llegada y el sitio, y aparece si hay algo hecho allí; una mazmorra, si su casilla está marcada; una saga, si
+  // están todos sus pasos; un totem, si tienes su quest. Si desmarcas algo, su línea desaparece.
+  // Las fechas: cada casilla que marcas a mano se apunta con su día y hora en 'cronica-log' (fuera de 'chk-', que es
+  // lo que leen las casillas). Lo que llega al importar, al cargar un código o como requisito marcado solo, no tiene fecha.
+  var LOG_KEY = 'cronica-log', GAP = 3 * 3600;
+  function logRead(){ try { var l = JSON.parse(store.get(LOG_KEY) || '[]'); return Array.isArray(l) ? l : []; } catch(e){ return []; } }
+  function logWrite(l){ if (l.length > 8000) l = l.slice(-8000); store.set(LOG_KEY, JSON.stringify(l)); }
+  function now(){ return Math.round(Date.now() / 1000); }
+  function stamp(k){
+    var l = logRead().filter(function(e){ return e[1] !== k; });
+    if (L() && !l.some(function(e){ return e[1].indexOf('lv:') === 0; })) l.push([now(), 'lv:' + L()]);
+    l.push([now(), k]); logWrite(l);
+  }
+  var lvT = null;
+  lvl.addEventListener('input', function(){
+    clearTimeout(lvT);
+    lvT = setTimeout(function(){
+      var v = L(); if (!v) return;
+      var l = logRead(), last = l.filter(function(e){ return e[1].indexOf('lv:') === 0; }).pop();
+      if (!last || last[1] !== 'lv:' + v){ l.push([now(), 'lv:' + v]); logWrite(l); }
+    }, 2500);
+  });
+
+  var C = D.cron || {}, ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
+  function roman(n){ var t = ['', 'X', 'XX', 'XXX', 'XL', 'L', 'LX', 'LXX', 'LXXX', 'XC']; return n < 100 ? t[Math.floor(n / 10)] + ROMAN[n % 10] : String(n); }
+  function num(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+  function hash(s){ var h = 0; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return Math.abs(h); }
+  function pick(list, key){ return list[hash(key) % list.length]; }
+  // texto del repositorio con los huecos rellenos; el nombre va escapado y, sin nombre, «tu enano» (en mayúscula al empezar frase)
+  function fill(t, vars){
+    var out = esc(t).replace(/\{(\w+)\}/g, function(m, k){ return vars[k] != null ? vars[k] : m; });
+    return out.replace(/(^|[.!?»:]\s+)tu enano/g, '$1Tu enano');
+  }
+  function fecha(t, hora){
+    var d = new Date(t * 1000), o = { weekday: 'long', day: 'numeric', month: 'long' };
+    if (d.getFullYear() !== new Date().getFullYear()) o.year = 'numeric';
+    var s = d.toLocaleDateString('es-ES', o);
+    return hora ? s + ', ' + d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }) : s;
+  }
+  var ZQ = null;
+  function zoneQuests(){
+    if (ZQ) return ZQ;
+    ZQ = {}; DG.forEach(function(g){ ZQ['dg-' + g.g] = []; });
+    D.zones.forEach(function(z){ ZQ[z.id] = []; });
+    QALL.forEach(function(id){ var h = qHome(D.q[id]); if (ZQ[h]) ZQ[h].push(id); });
+    return ZQ;
+  }
+  // los capítulos: uno por zona con algo hecho, más los totems como interludios
+  function chronicle(){
+    var name = (store.get('nombre') || '').trim(), who = name ? '<b class="nm">' + esc(name) + '</b>' : 'tu enano';
+    var log = logRead(), when = {};
+    log.forEach(function(e){ if (e[1].indexOf('lv:') !== 0 && keyDone(e[1]) && (!when[e[1]] || e[0] < when[e[1]])) when[e[1]] = e[0]; });
+    var zq = zoneQuests(), chap = {}, zinfo = {};
+    D.zones.forEach(function(z, i){ zinfo[z.id] = { n: z.n, a: z.a, i: i }; });
+    function get(zid){ return chap[zid] || (chap[zid] = { id: zid, lines: [], t: null, lv: [] }); }
+    function seen(c, k, lv){ if (!when[k]) c.old = true; else if (c.t == null || when[k] < c.t) c.t = when[k]; if (lv) c.lv.push(lv); }
+    var V = function(extra){ var o = { nombre: who }; for (var k in extra) o[k] = extra[k]; return o; };
+    // lo hecho en cada zona
+    D.zones.forEach(function(z){
+      var all = zq[z.id] || [], done = all.filter(isQ);
+      if (!done.length && !KS['xpl-' + z.id.slice(2)]) return;
+      var c = get(z.id);
+      done.forEach(function(id){ seen(c, 'q' + id, D.q[id].l); });
+      if (done.length) c.lines.push(fill(done.length === all.length ? C.todas : C.gestas, V({ n: done.length, m: all.length })));
+      if (KS['xpl-' + z.id.slice(2)]){ c.lines.push(fill(C.expl, V({}))); seen(c, 'xpl-' + z.id.slice(2)); }
+    });
+    // mazmorras: cada ala con su casilla marcada, en el capítulo de su zona
+    var told = {};
+    D.dungeons.forEach(function(d){
+      if (!isDone(d.k)) return;
+      var c = get((C.dgz || {})[d.g] || 'otras'), boss = (C.jefe || {})[d.k], dn = '<i>' + esc(d.n) + '</i>';
+      c.lines.push(boss ? fill(pick(C.maz, d.k), V({ mazmorra: dn, jefe: '<i>' + esc(boss) + '</i>' })) : fill(C.maz0, V({ mazmorra: dn })));
+      seen(c, 'dg-' + d.k, d.a);
+      if (!told[d.g]){
+        told[d.g] = 1;
+        var qs = zq['dg-' + d.g] || [], qd = qs.filter(isQ);
+        if (qd.length) c.lines.push(fill(C.mazq, V({ n: qd.length, m: qs.length })));
+      }
+    });
+    // sagas cerradas, en el capítulo de la zona de su último paso (las de los totems van aparte)
+    (D.chains || []).forEach(function(c){
+      if (/^(earth|fire|water|air)$/.test(c.k)) return;
+      var s = chainState(c); if (!s.n || s.done !== s.n || !c.ids.length) return;
+      var h = '';                                            // la zona del último paso que tenga zona; si no, la de quien da sus quests
+      for (var i = c.ids.length - 1; i >= 0 && !h; i--) if (D.q[c.ids[i]]) h = qHome(D.q[c.ids[i]]);
+      if (!h && c.zh) h = c.zh;
+      var zid = h.indexOf('dg-') === 0 ? ((C.dgz || {})[h.slice(3)] || 'otras') : (h || 'otras');
+      var xp = c.ids.reduce(function(a, id){ return a + (D.q[id] && D.q[id].x || 0); }, 0), ch = get(zid);
+      ch.lines.push(fill(pick(C.saga, c.k), V({ cadena: '<a href="#cad-' + c.k + '">' + esc(c.t) + '</a>', pasos: s.n, xp: num(xp) })));
+    });
+    // capítulos y totems, en orden: primero lo que no tiene fecha (por nivel), luego lo fechado (por fecha)
+    var blocks = Object.keys(chap).map(function(k){
+      var c = chap[k], z = zinfo[k];
+      var lv = z && z.a != null ? z.a : c.lv.length ? Math.min.apply(null, c.lv) : 99;
+      if (c.old) c.t = null;                                 // ya tenía algo hecho antes de que la crónica apuntara fechas
+      return { kind: 'z', c: c, t: c.t, lv: lv, ord: z ? z.i : 999 };
+    });
+    var tots = $$('a.totem').filter(function(a){ return isQ(a.dataset.q); });
+    tots.forEach(function(a){ blocks.push({ kind: 't', el: a.dataset.el, t: when['q' + a.dataset.q] || null, lv: +a.dataset.tl, ord: -1 }); });
+    blocks.sort(function(a, b){
+      if ((a.t == null) !== (b.t == null)) return a.t == null ? -1 : 1;
+      if (a.t != null) return a.t - b.t;
+      return a.lv - b.lv || a.ord - b.ord;
+    });
+    return { who: who, name: name, blocks: blocks, tots: tots.length, log: log, when: when };
+  }
+  function renderCronica(){
+    var host = $('#cronica'); if (!host) return;
+    var cr = chronicle(), V = { nombre: cr.who }, h = '', n = 0;
+    var nq = UNI.filter(isQ).length, nd = DG.filter(function(g){ return g.wings.filter(isDone).length === g.wings.length; }).length;
+    var nc = (D.chains || []).filter(function(c){ var s = CH[c.k]; return s && s.n && s.done === s.n; }).length;
+    h += '<header class="lb-h"><p class="lb-k">Crónica de la Sala de los Exploradores</p><h2>La crónica de ' + (cr.name ? esc(cr.name) : 'tu enano') + '</h2>' +
+      '<p class="lb-s">' + (L() ? 'Nivel ' + L() + ' · ' : '') + num(nq) + ' gestas · ' + nc + ' sagas · ' + nd + ' mazmorras · ' + cr.tots + ' de 4 totems</p></header>';
+    if (!cr.blocks.length){ host.innerHTML = h + '<p class="lb-p lb-empty">' + fill(C.vac, V) + '</p>'; renderJornadas(cr); return; }
+    h += '<p class="lb-p lb-pro">' + fill(C.pro, V) + '</p>';
+    cr.blocks.forEach(function(b){
+      if (b.kind === 't'){
+        h += '<aside class="lb-tot t-' + b.el + '"><span class="lb-rune" aria-hidden="true"></span><p>' + fill(C.tot[b.el], V) + '</p></aside>';
+        return;
+      }
+      var c = b.c, z = c.id === 'otras' ? null : D.zones.filter(function(x){ return x.id === c.id; })[0];
+      n++;
+      h += '<section class="lb-c"><p class="lb-n">Capítulo ' + roman(n) + (c.t ? ' · ' + fecha(c.t) : '') + '</p>' +
+        '<h3>' + (z ? '<a href="#' + z.id + '">' + esc(z.n) + '</a>' : 'Otras gestas') + '</h3>' +
+        (z && C.zonas[z.id] ? '<p class="lb-p">' + fill(C.zonas[z.id], V) + '</p>' : '') +
+        (c.lines.length ? '<ul class="lb-d">' + c.lines.map(function(l){ return '<li>' + l + '</li>'; }).join('') + '</ul>' : '') + '</section>';
+    });
+    if (cr.tots === 4) h += '<aside class="lb-tot t-all"><span class="lb-rune" aria-hidden="true"></span><p>' + fill(C.tot.todos, V) + '</p></aside>';
+    if (L() === 60) h += '<p class="lb-p lb-epi">' + fill(C.epi, V) + '</p>';
+    host.innerHTML = h;
+    renderJornadas(cr);
+  }
+  // jornadas: lo marcado a mano, agrupado en sesiones (tres horas sin marcar nada cierran una)
+  function renderJornadas(cr){
+    var host = $('#jornadas'); if (!host) return;
+    var ev = cr.log.filter(function(e){ return e[1].indexOf('lv:') === 0 || keyDone(e[1]); }).sort(function(a, b){ return a[0] - b[0]; });
+    if (!ev.some(function(e){ return e[1].indexOf('lv:') !== 0; })){
+      host.innerHTML = '<p class="src">Las jornadas se cuentan desde que abres esta crónica por primera vez: cada casilla que marques a mano quedará apuntada con su día y su hora. Lo que marcaste antes, lo que llega al importar desde Questie y lo que se marca solo por ser requisito de otra quest no tiene fecha.</p>';
+      return;
+    }
+    var ses = [], cur = null, lvBefore = null;
+    ev.forEach(function(e){
+      if (!cur || e[0] - cur.end > GAP){ cur = { start: e[0], end: e[0], ev: [], lv0: lvBefore }; ses.push(cur); }
+      cur.end = e[0]; cur.ev.push(e);
+      if (e[1].indexOf('lv:') === 0) lvBefore = +e[1].slice(3);
+    });
+    var stampOf = {};
+    ev.forEach(function(e){ stampOf[e[1]] = e[0]; });
+    var rows = ses.map(function(s){
+      var qs = [], dgs = [], places = {}, lvs = [];
+      s.ev.forEach(function(e){
+        var k = e[1];
+        if (k.indexOf('lv:') === 0){ lvs.push(+k.slice(3)); return; }
+        if (/^q\d+$/.test(k)){ var q = D.q[k.slice(1)]; if (q){ qs.push(+k.slice(1)); if (qHome(q)) places[qPlace(q)] = 1; } }
+        else if (k.indexOf('dg-') === 0){ var d = D.dungeons.filter(function(x){ return 'dg-' + x.k === k; })[0]; if (d) dgs.push(d.n); }
+      });
+      if (!qs.length && !dgs.length && !lvs.length) return '';
+      var xp = qs.reduce(function(a, id){ return a + (D.q[id].x || 0); }, 0);
+      var closed = (D.chains || []).filter(function(c){
+        var st = CH[c.k]; if (!st || !st.n || st.done !== st.n) return false;
+        var t = Math.max.apply(null, c.ids.map(function(id){ return stampOf['q' + id] || 0; }));
+        return t >= s.start && t <= s.end;
+      });
+      var bits = [];
+      if (qs.length) bits.push('<b>' + qs.length + '</b> ' + (qs.length === 1 ? 'gesta' : 'gestas') + (xp ? ', ' + num(xp) + ' XP de quests' : ''));
+      var l0 = s.lv0 != null ? s.lv0 : lvs[0], l1 = lvs.length ? lvs[lvs.length - 1] : null;
+      if (l1 != null && l0 != null && l1 !== l0) bits.push('nivel ' + l0 + ' → ' + l1);
+      else if (l1 != null) bits.push('nivel ' + l1);
+      var pl = Object.keys(places);
+      var more = [];
+      if (pl.length) more.push('Por ' + pl.slice(0, 4).map(esc).join(', ') + (pl.length > 4 ? ' y ' + (pl.length - 4) + (pl.length === 5 ? ' sitio más' : ' sitios más') : '') + '.');
+      if (dgs.length) more.push('Mazmorra: ' + dgs.map(esc).join(', ') + '.');
+      if (closed.length) more.push('Sagas cerradas: ' + closed.map(function(c){ return '<a href="#cad-' + c.k + '">' + esc(c.t) + '</a>'; }).join(', ') + '.');
+      var mins = Math.round((s.end - s.start) / 60), dur = s.ev.length > 1 && mins >= 5 ? ' · ' + (mins >= 60 ? Math.floor(mins / 60) + ' h ' + (mins % 60 ? mins % 60 + ' min' : '') : mins + ' min') : '';
+      return '<li><p class="jr-d">' + fecha(s.start, true) + '<span>' + dur + '</span></p><p class="jr-b">' + bits.join(' · ') + '</p>' + (more.length ? '<p class="jr-m">' + more.join(' ') + '</p>' : '') + '</li>';
+    }).filter(Boolean).reverse();
+    var first = ev[0][0], shown = rows.slice(0, 30);
+    host.innerHTML = '<p class="src">Desde el ' + fecha(first) + '. Una jornada termina cuando pasan tres horas sin marcar nada. La experiencia es la que dan las quests, sin contar la de matar.</p>' +
+      '<ol class="jr">' + shown.join('') + '</ol>' + (rows.length > 30 ? '<p class="src">Y ' + (rows.length - 30) + ' jornadas más antiguas.</p>' : '');
+  }
+  var cronName = $('#nombre-cron');
+  if (cronName){
+    cronName.value = store.get('nombre') || '';
+    cronName.addEventListener('input', function(){ store.set('nombre', cronName.value); if (nameIn) nameIn.value = cronName.value; updateWall(); renderCronica(); });
+  }
+  var cronPrint = $('#cron-print');
+  if (cronPrint) cronPrint.addEventListener('click', function(){
+    document.body.classList.add('print-cron');
+    window.print();
+  });
+  window.addEventListener('afterprint', function(){ document.body.classList.remove('print-cron'); });
 
   // ---------------------------------------------------------------- arranque
   restore();
@@ -1135,6 +1332,7 @@
   // Versión local: al imprimir se muestran todas las secciones y páginas
   if (LOCAL && !PRINT_ALL){
     window.addEventListener('beforeprint', function(){
+      if (document.body.classList.contains('print-cron')) return;
       document.body.classList.add('printing');
       $$('.view, .page, .overview').forEach(function(el){ el.hidden = false; });
     });

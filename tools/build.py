@@ -616,6 +616,27 @@ def way_to(dest, zmin):
         path.append((cur, prev[cur][1])); cur = prev[cur][0]
     return path[::-1]
 
+# ---------------------------------------------------------------- la crónica del personaje
+CRON = json.load(open(os.path.join(ROOT, 'data', 'cronica.json'), encoding='utf-8'))
+
+def cron_data(zone_names):
+    """Lo que necesita la crónica en el navegador: textos por zona y jefe final de cada ala de mazmorra."""
+    miss = sorted(set(zone_names) - set(CRON['zonas']))
+    assert not miss, f'zonas sin texto en data/cronica.json: {miss}'
+    dgz = {}
+    for n, z in ZINFO.items():
+        for g in z.get('maz', []): dgz.setdefault(g, 'z-' + slug(n))
+    boss = {}
+    for d in DG:
+        for w in d[8]:
+            bs = [b['name'] for b in (CARDS.get(w[0], {}).get('bosses') or [])
+                  if not b.get('optional') and not b.get('name', '').startswith('Botín')]
+            if bs: boss[w[0]] = bs[-1].replace(' and ', ' y ')
+    return {'pro': CRON['prologo'], 'vac': CRON['vacio'], 'epi': CRON['epilogo'],
+            'zonas': {'z-' + slug(n): CRON['zonas'][n] for n in zone_names}, 'tot': CRON['totems'],
+            'maz': CRON['mazmorra'], 'maz0': CRON['mazmorra_sin_jefe'], 'mazq': CRON['mazmorra_quests'], 'saga': CRON['saga'],
+            'gestas': CRON['gestas'], 'todas': CRON['gestas_todas'], 'expl': CRON['explorada'], 'dgz': dgz, 'jefe': boss}
+
 def zlink(n):
     return f'<a href="#z-{slug(n)}">{esc(n)}</a>'
 
@@ -1099,7 +1120,9 @@ def render_chains():
 <ol class="chain">{"".join(lis)}</ol>
 {f'<p class="after"><b>Al terminar se abre:</b> {", ".join(qa(x) for x in after[:8])}.</p>' if after else ''}</section>
 </article>''')
-        meta.append({'k': ch['k'], 't': ch['t'], 'g': ch['g'], 'lv': ch['lv'], 'a': a, 'b': b, 'n': len(lis), 'sub': sub, 'ids': ids, 'im': {str(k): v for k, v in implied.items()}})
+        zh = next((MAP2ZONE.get(c[2]) for i in reversed(ids) for c in (Q[i].get('sc'), Q[i].get('ec')) if c and MAP2ZONE.get(c[2])), None)
+        meta.append({'k': ch['k'], 't': ch['t'], 'g': ch['g'], 'lv': ch['lv'], 'a': a, 'b': b, 'n': len(lis), 'sub': sub, 'ids': ids, 'im': {str(k): v for k, v in implied.items()},
+                     **({'zh': 'z-' + slug(zh)} if zh else {})})
     order = ['Tu chamán', 'Tu personaje', 'Mazmorras', 'Zonas']
     meta.sort(key=lambda m: (order.index(m['g']), m['a'] or 0, m['b'] or 0))
     return ''.join(pages), meta, byzone, bydg
@@ -1501,7 +1524,7 @@ def build():
 <h2>Tu muro de gestas</h2>
 <p class="insc" id="insc-ini"></p>
 <div class="friso" id="friso-ini"></div>
-<p class="src">Los enanos no apuntan sus hazañas: las tallan. Cada asta es una de tus cadenas, y se va dorando paso a paso. <a href="#muro">Entra a ver el muro entero</a>, con una runa por cada quest del juego.</p>
+<p class="src">Los enanos no apuntan sus hazañas: las tallan. Cada asta es una de tus cadenas, y se va dorando paso a paso. <a href="#muro">Entra a ver el muro entero</a>, con una runa por cada quest del juego. Y lo que no cabe en runas lo cuenta <a href="#cronica">tu crónica</a>: un libro que se escribe solo con lo que vas marcando.</p>
 </section>
 {sec('ruta')}
 <section id="tus-pendientes"{NOW_HTML.split('<section id="tus-pendientes"')[1]}
@@ -1553,6 +1576,7 @@ def build():
 <label for="nombre">Nombre de tu enano <input id="nombre" type="text" maxlength="24" autocomplete="off" placeholder="sin nombre"></label>
 <label class="qf-lv" for="cincel"><input id="cincel" type="checkbox"> Oír el cincel al tallar</label>
 <span id="muro-new" class="src" aria-live="polite"></span>
+<a href="#cronica">Leer tu crónica</a>
 </div>
 <p class="intro">Los enanos no apuntan sus hazañas: las tallan. Este muro tiene una runa por cada quest que puede hacer tu personaje. Las que aún no has hecho están solo marcadas a punzón; cada quest que entregas se talla y se rellena de oro. Pasa por encima de una runa para saber cuál es, y entra en ella para ver su ficha.</p>
 <details class="leer"><summary>Cómo se leen las runas</summary><div id="leyenda"></div></details>
@@ -1561,6 +1585,18 @@ def build():
 <div class="friso" id="friso"></div>
 <h3>Las gestas, zona a zona</h3>
 <div id="muro"></div>
+</div>
+</section>
+<section class="view" id="v-cronica" hidden>
+<div class="cronica">
+<p class="eyebrow">Sala de los Exploradores · Ironforge</p>
+<div class="cron-tools">
+<label for="nombre-cron">Nombre de tu enano <input id="nombre-cron" type="text" maxlength="24" autocomplete="off" placeholder="sin nombre"></label>
+<button id="cron-print" type="button">Imprimir tu crónica</button>
+<a href="#muro">Ver tu muro de gestas</a>
+</div>
+<article class="libro" id="cronica" aria-live="polite"></article>
+<section class="jornadas" aria-labelledby="jornadas-h"><h3 id="jornadas-h">Jornadas</h3><div id="jornadas"></div></section>
 </div>
 </section>
 {hub('chaman', 'Tu chamán', 'Cómo se juega la clase, dónde poner los talentos, qué arma llevar y qué hay que comprar o entrenar.', [
@@ -1615,7 +1651,7 @@ def build():
         'q': {str(i): dict(qd(Q[i]), **({'im': IMQ[i]} if i in IMQ else {}), **({'u': 1} if in_guide(i) else {})) for i in sorted(USED_Q) if i in Q},
         'i': {str(i): t for i, t in USED_I.items()},
         'n': {str(i): [n] + (npcloc.get(i) or []) for i, n in USED_N.items()},
-        'zones': zdash, 'dungeons': dash, 'chains': cmeta, 'alias': {str(k): v for k, v in sorted(ALIAS.items())}, 'names': unknown_names(),
+        'zones': zdash, 'dungeons': dash, 'chains': cmeta, 'cron': cron_data([z['n'] for z in zdash]), 'alias': {str(k): v for k, v in sorted(ALIAS.items())}, 'names': unknown_names(),
         'legacy': dict({t: [w[0] for d in DG for w in d[8] if w[4] == t] for t in 'NEM'}, val=8995,
                        xh=[]), 'miles': [list(m) for m in MILESTONES], 'prof': [list(p) for p in PROF],
     }
@@ -1624,12 +1660,13 @@ def build():
             '<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Germania+One&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">\n'
             f'<style>\n{css}</style>\n{main}\n<script id="gd" type="application/json">{blob}</script>\n<script>\n{js}</script>\n')
-    ids = set(re.findall(r'\sid="([^"]+)"', main)) | {'inicio', 'zonas', 'mazmorras', 'cadenas', 'quests', 'chaman', 'profesiones', 'referencia', 'muro'}
+    ids = set(re.findall(r'\sid="([^"]+)"', main)) | {'inicio', 'zonas', 'mazmorras', 'cadenas', 'quests', 'chaman', 'profesiones', 'referencia', 'muro', 'cronica'}
     broken = sorted({h for h in re.findall(r'href="#([^"]+)"', main) if h not in ids and not re.fullmatch(r'q-\d+', h)})
     if broken: print('ENLACES INTERNOS ROTOS:', ', '.join(broken))
     os.makedirs(os.path.join(ROOT, 'dist'), exist_ok=True)
     open(os.path.join(ROOT, 'dist', 'artifact.html'), 'w', encoding='utf-8').write(page)
     def wrap(p, cls):
+        p = p.replace('<meta name="claude:viewport-fit-sides" content="cover">\n', '', 1)   # solo para dist/artifact.html
         return ('<!doctype html>\n<html lang="es"><head><meta charset="utf-8">'
                 '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
                 '<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 fill=%27%2310151A%27/%3E%3Cpath fill=%27%237FC0CE%27 d=%27M11 3h10l2 2v4H9V5z%27/%3E%3Cpath fill=%27%2362ADE5%27 d=%27M8 10h16v5H8z%27/%3E%3Cpath fill=%27%23F47B40%27 d=%27M9 16h14v5H9z%27/%3E%3Cpath fill=%27%23CFA560%27 d=%27M9 22h14l3 3v4H6v-4z%27/%3E%3C/svg%3E">\n'

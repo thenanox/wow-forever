@@ -8,6 +8,7 @@ Guía de leveo 1-60 para un enano chamán (Alianza, Mejora, Ingeniería + Miner�
 - **Quests**: el nombre de una quest abre su ficha dentro de la guía, con anterior y siguiente en su cadena. Para verla en Wowhead: el botón de la ficha, el enlace de la ficha emergente, o clic central o Ctrl y clic.
 - **Zonas**: cada una dice de qué bando es (Alianza, Horda, disputada o neutral), qué esperar, un poco de historia, dónde está y cómo se llega. Las de la Horda también tienen página: no hay quests para un enano, pero sí mazmorras y mapa por descubrir.
 - **Imprescindibles**: solo lo que es de mazmorra, de clase, un objeto muy bueno, una llave o acceso, o una ventaja permanente. El resto de cada zona va aparte, como «Para aprovechar».
+- **La crónica** (`#cronica`, desde el Inicio y el muro): un libro con la historia de tu enano, capítulo a capítulo, escrito con lo que has marcado. Cada línea sale de una marca propia: el capítulo de una zona solo cuenta la llegada y el sitio; una mazmorra sale si está marcada como hecha; una saga, si están todos sus pasos; un totem, si tienes su quest. Desmarcar algo quita su línea. Debajo, las jornadas: lo marcado a mano queda apuntado con día y hora (en `cronica-log`, en el navegador, y también en el código de progreso), y se agrupa en sesiones con las gestas, la experiencia de las quests y el nivel. Lo importado o marcado antes no tiene fecha. Se puede imprimir como un libro aparte. Los textos están en `data/cronica.json`.
 - **Progreso**: las casillas se guardan en el `localStorage` del navegador donde las marcas. En Referencia › Importar se pueden marcar las quests completadas a partir del `Questie.lua` de SavedVariables o de una lista de números de quest.
 - **`Enano-Chaman-WoW-Forever.pdf`**: versión para leer o imprimir, con marcadores. No incluye el listado completo de quests por zona.
 
@@ -47,6 +48,7 @@ Después de descargar algo, haz commit de `data/` junto con `index.html`.
 | ★ de los listados de zona y quests de la Horda en zonas compartidas | `data/wfi-quests.json`, de las guías por zona de wowforeverinfo (`tools/wfi.py`) |
 | Bando, bases, qué esperar, historia, vecinas y sitio en el mapa de cada zona | `data/zonas.json`, escrito a mano. Lo propio de Forever sale de wowforeverinfo y de los datos del juego; la historia, del Warcraft clásico |
 | Por qué es imprescindible cada punto | `IMP_CAT` en `tools/build.py` (categoría) y `data/imprescindibles.json` (explicación) |
+| Textos de la crónica | `data/cronica.json`, escrito a mano; el jefe final de cada mazmorra sale de `data/dungeons-*.json` |
 
 Los enlaces van a Wowhead Forever. Los identificadores son los del juego, así que valen igual en Warcraft DB.
 
