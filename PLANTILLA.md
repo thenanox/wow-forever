@@ -6,7 +6,7 @@ Este repositorio es una guía de leveo de 1 a 60 para un personaje concreto: un 
 
 1. Abre el asistente en una carpeta vacía.
 2. Rellena los huecos `<…>` del bloque «Datos del personaje».
-3. Copia todo lo que hay debajo de la segunda línea horizontal y pégalo como primer mensaje.
+3. Copia todo lo que hay debajo de la primera línea horizontal y pégalo como primer mensaje.
 
 El asistente tiene que poder usar `git`, `gh` (con una cuenta de GitHub iniciada), Python 3 y Chrome o Chromium.
 
