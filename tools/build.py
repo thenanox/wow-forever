@@ -118,7 +118,7 @@ MILESTONES = [
  (10, 'Totem de Fuego (Call of Fire), Flame Shock, primer talento y Oficial en profesiones. Entrena mazas y hachas de dos manos en Ironforge'), (12, 'Fire Nova, Purge y Ancestral Spirit'),
  (13, 'Primera mazmorra: Hall of Thanes'), (14, 'Empieza la cadena de la Cozy Sleeping Bag'), (16, 'Cure Poison'), (18, 'Tremor Totem'),
  (20, 'Totem de Agua (Call of Water), Ghost Wolf, Frost Shock, Call of the Elements y Experto en profesiones'),
- (22, 'Cure Disease, Poison Cleansing Totem y Totemic Projection'), (25, 'Stormstrike (talento) y primer punto de Legacy'),
+ (22, 'Cure Disease, Poison Cleansing Totem y Totemic Projection'), (25, 'Stormstrike (talento) y un punto de Legacy'),
  (26, 'Magma Totem, Mana Spring Totem e Improved Ghost Wolf'), (28, 'Flametongue Totem'),
  (30, 'Totem de Aire (Call of Air), Windfury Weapon, Reincarnation y especialización de Ingeniería (con 200)'),
  (32, 'Windfury Totem y Chain Lightning'), (35, 'Artesano en profesiones y Maelstrom Weapon (35-39)'),
@@ -1608,14 +1608,14 @@ def build():
     ('rol', 'Curar o tanquear en mazmorras y los totems que salvan al grupo.'),
     ('compras', 'Lo que hay que pagar o ir a aprender: armas, hechizos, montura.'),
     ('personaje', 'Bolsa de dormir, cocina, campamentos y ventajas de enano.'),
-    ('legacy', 'El sistema de puntos de cuenta y qué talentos convienen.')])}
+    ('legacy', 'Qué talentos de cuenta coger y en qué orden, y de dónde salen los puntos.')])}
 {hub('profesiones', 'Profesiones', 'Minería e Ingeniería, y las tres secundarias que no ocupan hueco: qué rango toca a cada nivel, qué fabricar y qué hay que ir a buscar.', [
     ('prof-plan', 'Rangos, entrenadores, precios y la habilidad que conviene llevar a cada nivel.'),
     ('mineria', 'Qué mineral buscar en cada tramo, en qué zonas y dónde sale la plata.'),
     ('ingenieria', 'Qué fabricar para subir de 1 a 300, recetas alternativas, especialización y qué guardar.'),
-    ('cocina', 'Secundaria. La comida da experiencia y el cocinero enciende la hoguera del campamento.'),
+    ('cocina', 'Secundaria. La comida da experiencia y el cocinero enciende la hoguera del campamento. Con recetas alternativas.'),
     ('pesca', 'Secundaria. Dónde pescar, cebos y el Fish Bowl, que da un 8% a todo.'),
-    ('auxilios', 'Secundaria. Vendas con tu tela y, en Forever, las pociones de curación.'),
+    ('auxilios', 'Secundaria. Vendas con tu tela y, en Forever, las pociones de curación. Con recetas alternativas.'),
     ('prof-quests', 'Quests que piden barras o inventos tuyos: guárdalos al fabricarlos.')])}
 {hub('referencia', 'Referencia', 'Material de consulta: vocabulario, tablas, llaves, estado del juego y fuentes.', [
     ('vocabulario', 'Las palabras del juego que usa la guía.'),

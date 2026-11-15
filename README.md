@@ -49,8 +49,9 @@ Después de descargar algo, haz commit de `data/` junto con `index.html`.
 | ★ de los listados de zona y quests de la Horda en zonas compartidas | `data/wfi-quests.json`, de las guías por zona de wowforeverinfo (`tools/wfi.py`) |
 | Bando, bases, qué esperar, historia, vecinas y sitio en el mapa de cada zona | `data/zonas.json`, escrito a mano. Lo propio de Forever sale de wowforeverinfo y de los datos del juego; la historia, del Warcraft clásico |
 | Por qué es imprescindible cada punto | `IMP_CAT` en `tools/build.py` (categoría) y `data/imprescindibles.json` (explicación) |
-| Recetas alternativas de Ingeniería (colores y materiales) | Lista de recetas de la profesión en forever.warcraftdb.com (`/api/data/node/profession/9/tab/skills`), elegidas y escritas a mano en `src/guia.html` |
+| Recetas alternativas de Ingeniería, Cocina y Primeros auxilios (colores y materiales) | Lista de recetas de cada profesión en forever.warcraftdb.com (`/api/data/node/profession/<id>/tab/skills`: 9, 6 y 1), elegidas y escritas a mano en `src/guia.html` |
 | Dónde sale la plata | Puntos de aparición de las vetas en los objetos de Questie: en cuántos sitios de cada zona puede salir y con qué otras vetas comparte sitio |
+| Talentos de Legacy: qué coger y en qué orden | Efectos, de la descripción de cada talento en forever.warcraftdb.com (`/api/v1/tooltip/spell/<id>`). Filas, requisitos y repartos, de las guías de Conquest Capped y Method, escritas con la beta. El orden para este personaje está escrito a mano en `src/guia.html` |
 | Textos de la crónica | `data/cronica.json`, escrito a mano; el jefe final de cada mazmorra sale de `data/dungeons-*.json` |
 
 Los enlaces van a Wowhead Forever. Los identificadores son los del juego, así que valen igual en Warcraft DB.

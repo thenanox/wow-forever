@@ -99,7 +99,8 @@ Es la fuente de las fichas: nombre, zona, nivel, quién la da y dónde, objetivo
 - **Ficha de quest:** `/api/data/node/quest/<id>`. Trae `data`, con `starts`/`ends` en HTML con enlaces `/data/npc|object|item/<id>`, `rewards`, `storyline`, `log_description` y `objectives`. Trae también `extra.quest_map`, con las coordenadas de inicio y entrega (`u`, `v` de 0 a 1, y la planta).
 - **Búsqueda:** `/api/v1/search?q=<nombre>`.
 - **Tooltip de objeto:** `/api/v1/tooltip/item/<id>`.
-- **Recetas de una profesión:** `/api/data/node/profession/<id>/tab/skills?page=N` (Ingeniería es la 9 y Minería la 7). Cada fila trae los colores (`min_rank`, `trivial_low`, `trivial_high`) y los materiales por número de objeto; los nombres salen del tooltip de cada objeto. Para las recetas alternativas de cada tramo, elige las naranjas o amarillas con materiales que el personaje ya junta.
+- **Tooltip de hechizo:** `/api/v1/tooltip/spell/<id>`. Los talentos de Legacy están entre los ids 1225435 y 1225503; búscalos por nombre.
+- **Recetas de una profesión:** `/api/data/node/profession/<id>/tab/skills?page=N` (Primeros auxilios es la 1, Cocina la 6, Minería la 7 e Ingeniería la 9; del 1 al 12 están todas). Cada fila trae los colores (`min_rank`, `trivial_low`, `trivial_high`) y los materiales por número de objeto; los nombres salen del tooltip de cada objeto. Para las recetas alternativas de cada tramo, elige las naranjas o amarillas con materiales que el personaje ya junta.
 - **Cómo pedir:** con cabecera `User-Agent` de navegador, 3 peticiones a la vez como mucho y una pausa de unos 0,35 segundos.
 - **Caché:** se guarda todo y no se vuelve a pedir. Un error queda como `{"err": …}` y no se reintenta: búscalos y bórralos.
 
@@ -114,6 +115,7 @@ Trampas:
 - En las recetas, `min_rank` vale 1 en muchas de nivel alto: es un dato que falta, no que se aprendan a 1. Toma `trivial_low` como habilidad de partida.
 - En las recetas, la fuente «—» quiere decir que no tiene enlace, no que no se pueda aprender, y el entrenador que dice casi nunca es el único. Ahí se mezclan las de especialización gnómica o goblin: no las des por de entrenador.
 - Las recetas nuevas de Forever piden materiales nuevos de Forever: no las pongas como alternativa barata sin decir qué piden.
+- En los talentos de Legacy, el tooltip da el efecto con todos los rangos. No trae filas, requisitos ni rangos: salen de guías como Conquest Capped o Method, escritas con la beta. En ese rango de ids hay también hechizos que no son talentos o no están en el juego (los que llevan «NYI», entre otros): no los cuentes. El orden recomendado depende de cuándo le llegan los puntos al personaje: el primero no tiene ninguno hasta nivel 20-25, así que Talented no le sirve.
 
 #### 2. Questie (repositorios Questie/QuestieDB y Questie/Questie)
 
