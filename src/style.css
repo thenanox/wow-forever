@@ -550,6 +550,15 @@ header.hero::after{grid-column:1/-1}
 header.hero h1{font-size:clamp(2.7rem,7.4vw,4.8rem);line-height:.9;margin:.12em 0 .22em;letter-spacing:.005em}
 header.hero h1 span{display:block;font-size:.4em;line-height:1.1;color:var(--bronze);margin-top:.18em}
 .lede{font-size:1.16rem;max-width:58ch}
+.cta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin:16px 0 0}
+.cta a{display:inline-block;padding:8px 16px;background:var(--gold);color:var(--gold-ink);font-weight:700;text-decoration:none;border-radius:8px}
+.cta a:hover{background:var(--ink);color:var(--paper)}
+.cta span{color:var(--muted);font-size:.95rem}
+/* colores de receta: a qué habilidad se pone naranja, amarilla, verde y gris */
+.dif{display:inline-flex;gap:3px;white-space:nowrap}
+.dif b{padding:0 5px;border-radius:4px;color:#1D1300;font-weight:700;font-variant-numeric:tabular-nums;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+table.alt{min-width:860px}
+.dif .d-o{background:#FF9A4D} .dif .d-y{background:#FFDD55} .dif .d-g{background:#7FCF7F} .dif .d-x{background:#BDBDBD}
 .totems{display:grid;grid-template-columns:repeat(4,minmax(58px,84px));gap:12px;align-items:start;justify-content:end}
 .totems li{padding:0;border:0;border-radius:0;background:none;font:inherit;margin:0}
 .totem{display:grid;justify-items:center;gap:1px;text-align:center;text-decoration:none;color:var(--stone);transition:color .45s,transform .18s}
@@ -609,7 +618,7 @@ footer::before{content:"";display:block;height:9px;margin-bottom:14px;background
   ol.tl > li.key > div{box-shadow:inset 5px 0 0 var(--tc),inset 0 -3px 0 var(--tc)}
   .card:focus-visible,.clink:focus-visible,.pend a:focus-visible,.pn a:focus-visible,.chip:focus-visible,.tabs a:focus-visible{outline:0;box-shadow:inset 0 0 0 3px var(--ink)}
   /* piezas pequeñas */
-  .chip,.tag,.kind,.filters button,.tabs a,.cfg > summary,.cfg-body button,.sync button,#imprimir,#qmore,.imp-box button{--c:5px;clip-path:var(--oct);border:0;border-radius:0}
+  .chip,.tag,.kind,.filters button,.tabs a,.cfg > summary,.cfg-body button,.sync button,#imprimir,#qmore,.imp-box button,.cta a{--c:5px;clip-path:var(--oct);border:0;border-radius:0}
   .chip{background:var(--bg);padding:4px 10px}
   .chip:hover{background:color-mix(in srgb,var(--bg) 78%,var(--gold))}
   .chip.soon{background:none;box-shadow:inset 0 0 0 1px var(--rule)}
@@ -704,7 +713,7 @@ a.rn:hover{color:var(--ink)}
 .brune svg{display:block;height:92px;width:auto}
 @media screen{ .friso{--c:14px;clip-path:var(--oct)} #muro{--c:26px;clip-path:var(--oct)} }
 @media (max-width:640px){ #muro{padding:20px 14px 22px} .brune svg{height:64px} .cpage .ph{padding-right:40px} }
-@media print{ #v-muro,#tu-muro,.brune{display:none!important} }
+@media print{ #v-muro,#tu-muro,.brune,.cta{display:none!important} }
 
 /* pasos superados sin marcar y puntos que no dependen de ninguna quest */
 ol.chain > li.skip > .cs-b{opacity:.62}

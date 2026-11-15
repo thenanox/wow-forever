@@ -1339,7 +1339,7 @@ def bracket(a):
 TOP = '''<header class="top"><div class="top-in">
 <a class="brand" href="#inicio"><svg viewBox="0 0 20 30" aria-hidden="true"><path fill="var(--air)" d="M5 0h10l2 2v5H3V2z"/><path fill="var(--water)" d="M2 8h16v6H2z"/><path fill="var(--fire)" d="M3 15h14v6H3z"/><path fill="var(--earth)" d="M3 22h14l3 3v5H0v-5z"/></svg>Enano Chamán<span>WoW Forever</span></a>
 <nav class="tabs" aria-label="Secciones">
-<a href="#inicio" data-view="inicio">Inicio</a><a href="#zonas" data-view="zonas">Zonas</a><a href="#mazmorras" data-view="mazmorras">Mazmorras</a><a href="#cadenas" data-view="cadenas">Cadenas</a><a href="#quests" data-view="quests">Quests</a><a href="#chaman" data-view="chaman">Tu chamán</a><a href="#profesiones" data-view="profesiones">Profesiones</a><a href="#referencia" data-view="referencia">Referencia</a>
+<a href="#inicio" data-view="inicio">Inicio</a><a href="#zonas" data-view="zonas">Zonas</a><a href="#mazmorras" data-view="mazmorras">Mazmorras</a><a href="#cadenas" data-view="cadenas">Cadenas</a><a href="#quests" data-view="quests">Quests</a><a href="#chaman" data-view="chaman">Tu chamán</a><a href="#cronica" data-view="cronica">Tu crónica</a><a href="#profesiones" data-view="profesiones">Profesiones</a><a href="#referencia" data-view="referencia">Referencia</a>
 </nav>
 <div class="top-tools">
 <label class="lvl" for="nivel">Nivel<input id="nivel" type="number" min="1" max="60" value="1" inputmode="numeric"></label>
@@ -1611,8 +1611,8 @@ def build():
     ('legacy', 'El sistema de puntos de cuenta y qué talentos convienen.')])}
 {hub('profesiones', 'Profesiones', 'Minería e Ingeniería, y las tres secundarias que no ocupan hueco: qué rango toca a cada nivel, qué fabricar y qué hay que ir a buscar.', [
     ('prof-plan', 'Rangos, entrenadores, precios y la habilidad que conviene llevar a cada nivel.'),
-    ('mineria', 'Qué mineral buscar en cada tramo y en qué zonas.'),
-    ('ingenieria', 'Qué fabricar para subir de 1 a 300, especialización y qué guardar.'),
+    ('mineria', 'Qué mineral buscar en cada tramo, en qué zonas y dónde sale la plata.'),
+    ('ingenieria', 'Qué fabricar para subir de 1 a 300, recetas alternativas, especialización y qué guardar.'),
     ('cocina', 'Secundaria. La comida da experiencia y el cocinero enciende la hoguera del campamento.'),
     ('pesca', 'Secundaria. Dónde pescar, cebos y el Fish Bowl, que da un 8% a todo.'),
     ('auxilios', 'Secundaria. Vendas con tu tela y, en Forever, las pociones de curación.'),

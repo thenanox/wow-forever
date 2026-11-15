@@ -99,6 +99,7 @@ Es la fuente de las fichas: nombre, zona, nivel, quién la da y dónde, objetivo
 - **Ficha de quest:** `/api/data/node/quest/<id>`. Trae `data`, con `starts`/`ends` en HTML con enlaces `/data/npc|object|item/<id>`, `rewards`, `storyline`, `log_description` y `objectives`. Trae también `extra.quest_map`, con las coordenadas de inicio y entrega (`u`, `v` de 0 a 1, y la planta).
 - **Búsqueda:** `/api/v1/search?q=<nombre>`.
 - **Tooltip de objeto:** `/api/v1/tooltip/item/<id>`.
+- **Recetas de una profesión:** `/api/data/node/profession/<id>/tab/skills?page=N` (Ingeniería es la 9 y Minería la 7). Cada fila trae los colores (`min_rank`, `trivial_low`, `trivial_high`) y los materiales por número de objeto; los nombres salen del tooltip de cada objeto. Para las recetas alternativas de cada tramo, elige las naranjas o amarillas con materiales que el personaje ya junta.
 - **Cómo pedir:** con cabecera `User-Agent` de navegador, 3 peticiones a la vez como mucho y una pausa de unos 0,35 segundos.
 - **Caché:** se guarda todo y no se vuelve a pedir. Un error queda como `{"err": …}` y no se reintenta: búscalos y bórralos.
 
@@ -110,6 +111,9 @@ Trampas:
 - Hay quests duplicadas con otro número.
 - Algunas desaparecen de los listados aunque existan (`data/extra-quest-ids.json`).
 - Las coordenadas son de la planta que dice `ui_map_id`, que no siempre es la zona de la quest.
+- En las recetas, `min_rank` vale 1 en muchas de nivel alto: es un dato que falta, no que se aprendan a 1. Toma `trivial_low` como habilidad de partida.
+- En las recetas, la fuente «—» quiere decir que no tiene enlace, no que no se pueda aprender, y el entrenador que dice casi nunca es el único. Ahí se mezclan las de especialización gnómica o goblin: no las des por de entrenador.
+- Las recetas nuevas de Forever piden materiales nuevos de Forever: no las pongas como alternativa barata sin decir qué piden.
 
 #### 2. Questie (repositorios Questie/QuestieDB y Questie/Questie)
 
@@ -147,6 +151,8 @@ Cómo se leen los campos, que es como decide el addon si una quest se puede coge
 - `nextQuestInChain`, `breadcrumbForQuestId`/`breadcrumbs`, `parentQuest` y `availableUntilCompleted`: una quest deja de ofrecerse cuando completas la siguiente de su cadena, el destino de su recado, su quest madre o la que la retira. Un recado que solo lleva a otra quest no es obligatorio.
 - `requiredSkill`, `requiredSpecialization` (como Ingeniería gnómica o goblin), `requiredMinRep` y `requiredMaxRep`: las que piden algo que el personaje no tiene se quedan fuera.
 - `specialFlags & 1`: repetible.
+
+Los objetos de Questie traen también las vetas de mineral y sus puntos de aparición, zona a zona. Ojo: muchas vetas comparten punto (la plata casi siempre sale donde otras veces hay cobre y estaño, o hierro y oro), así que el número de puntos dice dónde puede salir, no cuánto sale.
 
 #### 3. wowforeverinfo.com
 
@@ -212,7 +218,7 @@ Guías paso a paso por zona: `/guides/<zona>-<niveles>/`. Las direcciones salen 
 
 ### La estructura de la web (la plantilla)
 
-**Pestañas:** Inicio, Zonas, Mazmorras, Cadenas, Quests, Tu clase, Profesiones y Referencia. Además, dos vistas sin pestaña: el muro de gestas y la crónica, que son los toques especiales de la de referencia; haz los tuyos.
+**Pestañas:** Inicio, Zonas, Mazmorras, Cadenas, Quests, Tu clase, Tu crónica, Profesiones y Referencia. El muro de gestas y la crónica son los toques especiales de la de referencia: la crónica tiene pestaña y botón en la portada, y el muro se abre desde el Inicio. Lo que no tiene pestaña ni botón no lo encuentra nadie. Haz los tuyos.
 
 **Rutas por hash:**
 
