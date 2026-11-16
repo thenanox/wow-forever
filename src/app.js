@@ -53,7 +53,7 @@
   function setKey(k, on){
     if (on) KS[k] = 1; else delete KS[k];
     storeOK = store.set('chk-' + k, on ? '1' : '0') && storeOK;
-    $$('input[data-k="' + k + '"]').forEach(function(o){ if (!o.dataset.dep) o.checked = on; });
+    $$('input[data-k="' + k + '"]').forEach(function(o){ if (!o.dataset.dep) o.checked = on || !!(o.dataset.got && GOT[o.dataset.got]); });
   }
   // marcar una quest da por hechas las que el juego exige antes (si hay varias alternativas no se sabe cuál, y no se toca)
   function markBefore(id, seen){
@@ -80,7 +80,7 @@
       var li = b.closest('li');                              // un recado u opcional no cuenta para el total
       return !(li && (li.classList.contains('bc') || li.classList.contains('opt') || li.hasAttribute('data-opt') || li.closest('details.opt')));
     });
-    return [all.filter(function(b){ return b.checked || (b.parentNode.parentNode.classList && b.parentNode.parentNode.classList.contains('gone')); }).length, all.length];
+    return [all.filter(function(b){ return (b.dataset.got ? isQ(+b.dataset.got) : b.checked) || (b.parentNode.parentNode.classList && b.parentNode.parentNode.classList.contains('gone')); }).length, all.length];
   }
   function whyText(st){
     var n = D.q[st.need] ? D.q[st.need].n : '';
@@ -109,7 +109,7 @@
     var box = $('#progreso');
     if (box) box.innerHTML = '<span>Mazmorras <b>' + dg[0] + '/' + dg[1] + '</b></span><span>Imprescindibles <b>' + im[0] + '/' + im[1] +
       '</b></span><span>Quests <b>' + ql[0] + '/' + ql[1] + '</b></span><span>Ruta <b>' + rt[0] + '/' + rt[1] + '</b></span>';
-    updateChains(); markAvail(); renderLegacy(); renderCards(); renderSide(); renderNow(); updateRoute(); questStats(); updateTotems(); updateWall();
+    syncGot(); updateChains(); markAvail(); renderLegacy(); renderCards(); renderSide(); renderNow(); updateRoute(); questStats(); updateTotems(); updateWall();
   }
   function restore(){
     // una marca antigua puesta a mano en una vista pasa a sus quests
@@ -124,6 +124,14 @@
   document.addEventListener('change', function(e){
     var b = e.target;
     if (!b.matches || !b.matches('input[type=checkbox][data-k]')) return;
+    if (b.dataset.got){
+      var gid = b.dataset.got;
+      if (b.checked){ GOT[gid] = 1; tink(); }
+      else { delete GOT[gid]; if (isQ(+gid)) setKey('q' + gid, false); }
+      store.set('llevo', JSON.stringify(GOT));
+      syncGot(); restore();
+      return;
+    }
     storeOK = true;
     if (b.checked) tink();
     var mark = function(k){ setKey(k, true); stamp(k); if (/^q\d+$/.test(k)) markBefore(+k.slice(1), {}); };
@@ -198,76 +206,58 @@
     });
     $$('.dpage').forEach(dqReady);
   }
-  // ---------------------------------------------------------------- antes de entrar: las quests que hay que llevar cogidas
-  // Con las quests completadas se sabe cuáles puedes coger ya. Cuáles llevas cogidas sale del diario de Questie al importar
-  // (o de tocar el icono de la quest). Se guarda aparte ('llevo'): no es una quest hecha y no viaja en el código de progreso
+  // ---------------------------------------------------------------- listo para entrar: las quests que hay que llevar cogidas
+  // Con las quests completadas se sabe cuáles puedes coger ya. Cuáles llevas cogidas: el diario de Questie al importar, o
+  // la casilla de la quest en «Llévalas cogidas al entrar». Se guarda aparte ('llevo'): no es una quest hecha y no viaja en el código
   var GOT = {};
   try { GOT = JSON.parse(store.get('llevo') || '{}') || {}; } catch(e){ GOT = {}; }
-  document.addEventListener('click', function(e){
-    var b = e.target.closest && e.target.closest('button.dq-ic'); if (!b || b.disabled) return;
-    var id = b.dataset.q; if (GOT[id]) delete GOT[id]; else { GOT[id] = 1; tink(); }
-    store.set('llevo', JSON.stringify(GOT));
-    var pg = b.closest('.dpage'); if (pg) dqReady(pg);
-    renderCards();
-  });
-  var PLAN = { done: [0, '✓', 'hecha'], gone: [0, '✓', 'ya no hace falta'], got: [1, '●', 'en tu diario'], ok: [2, '○', 'por coger'], lv: [3, '◌', 'aún no'], pre: [3, '◌', 'aún no'] };
-  function planOf(id){
-    var st = questState(id), k = st.s === 'done' || st.s === 'gone' ? st.s : GOT[id] ? 'got' : st.s;
-    return { k: PLAN[k] ? k : 'pre', st: st };
+  // en «Llévalas cogidas al entrar» la casilla dice «la tengo cogida»: marcada si la llevas o si ya está hecha
+  function syncGot(){
+    $$('input[data-got]').forEach(function(b){
+      var id = +b.dataset.got, done = isQ(id);
+      b.checked = done || !!GOT[id];
+      var li = b.closest('li'); if (li){ li.classList.toggle('hecha', done); li.classList.toggle('cogida', !done && !!GOT[id]); }
+    });
   }
   function dqReady(pg){
     var blk = $('.dq', pg); if (!blk) return;
     var rows = $$('li.dqc:not([data-opt])', blk), el = $('.dq-ready', blk);
     if (!el){ el = document.createElement('div'); el.className = 'dq-ready'; var h = $('h3', blk); if (h) h.parentNode.insertBefore(el, h.nextSibling); else blk.insertBefore(el, blk.firstChild); }
-    if (!rows.length){ el.innerHTML = $$('li', blk).length ? '<p class="dq-none">No hay que llevar ninguna: se cogen todas dentro o al volver. Están en el detalle de abajo.</p>' : ''; return; }
-    // en las mazmorras de varias alas, una lista por ala (una quest de varias alas sale en cada una)
+    if (!rows.length){ el.innerHTML = $$('li', blk).length ? '<p>Ninguna hay que llevarla cogida: se cogen todas dentro o al volver.</p>' : ''; return; }
+    // en las mazmorras de varias alas, una línea por ala (una quest de varias alas cuenta en cada una)
     var wname = {};
     $$('.dq-wn', blk).forEach(function(t){ wname[t.dataset.w] = t.textContent; });
     var groups = [], by = {};
     rows.forEach(function(li){
-      (li.dataset.w ? li.dataset.w.split(' ') : ['']).forEach(function(w){ if (!by[w]){ by[w] = []; groups.push(w); } if (by[w].indexOf(+li.dataset.q) < 0) by[w].push(+li.dataset.q); });
+      (li.dataset.w ? li.dataset.w.split(' ') : ['']).forEach(function(w){ if (!by[w]){ by[w] = []; groups.push(w); } by[w].push(li); });
     });
-    var qa = function(id){ return '<a href="#q-' + id + '">' + esc((D.q[id] || {}).n || '') + '</a>'; };
-    var at = function(q){ return q.gc ? (q.gc[2] ? esc(q.gc[2]) + ' ' : '') + '(' + q.gc[0] + ', ' + q.gc[1] + ')' : ''; };
+    // cada quest para llevar dice en su fila cómo está: en tu diario sin hacer, hecha o por coger (y por qué no todavía)
+    $$('li.dqc', blk).forEach(function(li){
+      var id = +li.dataset.q, st = questState(id), done = st.s === 'done' || st.s === 'gone', got = !done && !!GOT[id];
+      li.classList.toggle('lista', done || got);
+      li.classList.toggle('puede', !done && !got && st.s === 'ok');
+      var tag = $(':scope > .dq-st', li);                    // fuera del texto de la casilla, que se tacha al estar hecha
+      if (!tag){ tag = document.createElement('span'); li.insertBefore(tag, li.firstChild); }
+      var txt, cls;
+      if (st.s === 'done'){ txt = 'Hecha'; cls = 'hecha'; }
+      else if (st.s === 'gone'){ txt = 'Ya no hace falta'; cls = 'hecha'; }
+      else if (got){ txt = 'En tu diario · sin hacer'; cls = 'diario'; }
+      else if (st.s === 'ok'){ txt = 'Por coger · ya puedes'; cls = 'coger'; }
+      else if (st.s === 'lv'){ txt = 'Por coger · pide nivel ' + st.need; cls = 'aun'; }
+      else { txt = 'Por coger · ' + (D.q[st.need] ? (st.how === 'pq' ? 'sale con ' : 'antes, ') + D.q[st.need].n : 'falta algo antes'); cls = 'aun'; }
+      tag.className = 'dq-st ' + cls; tag.textContent = txt;
+    });
     el.innerHTML = groups.map(function(w){
-      var ids = by[w].map(function(id){ return { id: id, p: planOf(id) }; });
-      ids.sort(function(x, y){ return PLAN[y.p.k][0] - PLAN[x.p.k][0] || ((D.q[x.id] || {}).l || 0) - ((D.q[y.id] || {}).l || 0); });
-      var have = 0, inLog = 0, route = {}, zones = [];
-      var lis = ids.map(function(o){
-        var id = o.id, q = D.q[id] || {}, k = o.p.k, st = o.p.st, what = PLAN[k][2];
-        if (k === 'done' || k === 'gone') have++;
-        if (k === 'got'){ have++; inLog++; }
-        if (k === 'ok'){
-          what = 'cógela' + (q.g ? ': ' + esc(q.g[2]) + (q.gc ? ' · ' + at(q) : '') : '');
-          var z = q.gc && q.gc[2] || 'Sin sitio conocido', who = q.g ? q.g[2] : '';
-          if (!route[z]){ route[z] = {}; zones.push(z); }
-          var key = who + '|' + (q.gc ? q.gc[0] + ', ' + q.gc[1] : '');
-          (route[z][key] = route[z][key] || []).push(id);
-        }
-        if (k === 'lv') what = 'aún no: pide nivel ' + st.need;
-        if (k === 'pre'){
-          var nq = D.q[st.need];
-          what = nq ? (st.how === 'pq' ? 'sale mientras llevas ' : 'aún no: antes, ') + qa(st.need) + (q.ch ? ' · <a href="#cad-' + q.ch[0] + '">ver la cadena</a>' : '') : 'aún no: falta algo antes';
-        }
-        var canTap = k === 'got' || k === 'ok';
-        return '<li class="pl-' + k + '"><button type="button" class="dq-ic" data-q="' + id + '"' + (canTap ? '' : ' disabled') +
-          ' title="' + (k === 'got' ? 'Quitar de tu diario' : k === 'ok' ? 'Ya la tengo en el diario' : PLAN[k][2]) + '">' + PLAN[k][1] + '</button>' +
-          '<span class="dq-n">' + qa(id) + '</span><span class="dq-do">' + what + '</span></li>';
+      var inLog = 0, done = 0, left = 0, can = 0;
+      by[w].forEach(function(li){
+        var id = +li.dataset.q, st = questState(id);
+        if (st.s === 'done' || st.s === 'gone') done++; else if (GOT[id]) inLog++; else { left++; if (st.s === 'ok') can++; }
       });
-      var n = ids.length, head = w ? esc(wname[w] || 'Sin ala conocida') + ' · ' : groups.length > 1 ? 'Sin ala conocida · ' : '';
-      var ready = have === n;
-      var out = '<div class="dq-plan' + (ready ? ' listo' : '') + '"><p class="dq-head">' + head + (ready
-        ? '<b>Listo para entrar</b> · tienes las ' + n + (inLog === n ? ' en tu diario' : '')
-        : '<b>Antes de entrar</b> · tienes ' + have + ' de ' + n) + '</p><ul class="dq-todo">' + lis.join('') + '</ul>';
-      if (zones.length){
-        out += '<p class="dq-rh">Ruta para recoger las que puedes coger ya</p><ul class="dq-route">' + zones.map(function(z){
-          return '<li><b>' + esc(z) + '</b>' + Object.keys(route[z]).map(function(key){
-            var pr = key.split('|');
-            return '<span>' + (pr[0] ? esc(pr[0]) : 'Sin PNJ conocido') + (pr[1] ? ' (' + pr[1] + ')' : '') + ' → ' + route[z][key].map(qa).join(', ') + '</span>';
-          }).join('') + '</li>';
-        }).join('') + '</ul>';
-      }
-      return out + '</div>';
+      var n = by[w].length, head = w ? '<b class="dq-w">' + esc(wname[w] || 'Sin ala conocida') + ':</b> ' : groups.length > 1 ? '<b class="dq-w">Sin ala conocida:</b> ' : '';
+      var have = [inLog ? inLog + ' en tu diario' : '', done ? done + (done === 1 ? ' hecha' : ' hechas') : ''].filter(Boolean).join(' y ');
+      if (!left) return '<p class="listo">' + head + '<b>Listo para entrar</b>: ' + have + ', de ' + n + '.</p>';
+      return '<p class="' + (left === can ? 'puede' : 'falta') + '">' + head + (have ? 'Tienes ' + have + '. ' : '') + '<b>' + (left === 1 ? 'Te falta 1' : 'Te faltan ' + left) + ' por coger</b>'
+        + (left === can ? ': ya puedes cogerl' + (left === 1 ? 'a' : 'as') + '.' : can ? ' (' + can + ' ya puedes).' : '.') + '</p>';
     }).join('');
   }
 
@@ -490,12 +480,12 @@
     host = $('#dcards');
     if (host){
       host.innerHTML = '<div class="cards">' + DG.map(function(g){
-        var pg = document.getElementById('dg-' + g.g), q = countIn(pg, '.dq input[data-k]');
+        var pg = document.getElementById('dg-' + g.g), q = countIn(pg, '.dq input[data-k]');            // incluye las de llevar: cuentan hechas
         var wd = g.wings.filter(isDone).length, done = wd === g.wings.length;
         return '<a class="card' + (inRange(v, g.a, g.b) && !done ? ' at-level' : '') + (done ? ' done' : '') + '" href="#dg-' + g.g + '">' +
           '<span class="c-h"><b>' + esc(g.n) + '</b><span class="lv">' + g.a + '-' + g.b + '</span></span>' +
           '<span class="c-s">' + esc(g.loc) + (g.isNew ? ' · nueva en Forever' : '') + '</span>' + bar(q[0], q[1]) +
-          '<span class="c-f">' + (g.wings.length > 1 ? 'Alas ' + wd + '/' + g.wings.length + ' · ' : '') + 'Quests ' + q[0] + '/' + q[1] + (function(){ var r = {}; $$('.dq li.dqc:not([data-opt])', pg).forEach(function(li){ r[li.dataset.q] = 1; }); var ids = Object.keys(r), n = ids.filter(function(id){ var k = planOf(+id).k; return k === 'done' || k === 'gone' || k === 'got'; }).length; return ids.length ? ' · antes de entrar ' + n + '/' + ids.length : ''; })() + '</span></a>';
+          '<span class="c-f">' + (g.wings.length > 1 ? 'Alas ' + wd + '/' + g.wings.length + ' · ' : '') + 'Quests ' + q[0] + '/' + q[1] + (function(){ var r = $$('.dq li.dqc:not([data-opt])', pg), n = r.filter(function(li){ return li.classList.contains('lista') || li.classList.contains('puede'); }).length; return r.length ? ' · para llevar ' + n + ' de ' + r.length : ''; })() + '</span></a>';
       }).join('') + '</div>';
     }
   }
@@ -896,7 +886,7 @@
     });
     Object.keys(off).forEach(function(id){ delete GOT[id]; });
     store.set('llevo', JSON.stringify(GOT));
-    $$('.dpage').forEach(dqReady); renderCards();
+    syncGot(); $$('.dpage').forEach(dqReady);
     return got;
   }
   function markDone(ids){
