@@ -546,8 +546,7 @@ def dungeon_quest_rows(dbzone, slugs, wings):
         rw = reward_chips(q)
         attrs = f' data-q="{i}"' + (f' data-w="{" ".join(ws)}"' if ws else '')
         if b == 'bread' and not cls: cls = ' class="bc"'
-        box = f'data-k="q{i}" data-got="{i}" title="La tengo cogida"' if b == 'carry' else f'data-k="q{i}"'
-        return (f'<li{cls} data-lv="{q.get("min") or q["level"]}-{q["level"] + 3}"{attrs}><label><input type="checkbox" {box}><span>'
+        return (f'<li{cls} data-lv="{q.get("min") or q["level"]}-{q["level"] + 3}"{attrs}><label><input type="checkbox" data-k="q{i}"><span>'
                 f'<span class="lv">{q["level"]}</span> {qa(i)}{new}{chain}{one}{wt}'
                 f'<span class="qm">{where(q, b)}{f" · {q["xp"]} XP" if q.get("xp") else ""}</span>'
                 f'{f"<span class=qr>{rw}</span>" if rw else ""}</span></label>{inner}</li>')
@@ -570,9 +569,7 @@ def dungeon_quest_rows(dbzone, slugs, wings):
         return row(i, 'carry', inner, ' class="dqc"')
     html_ = ''.join(f'<span class="dq-wn" hidden data-w="{w}">{esc(t)}</span>' for w, t in wname.items()) if multi else ''
     if bk['carry']:
-        html_ += ('<h5>Llévalas cogidas al entrar</h5><p class="dq-how">Se cogen fuera y se hacen o se entregan dentro. '
-                  'Aquí la casilla quiere decir <b>la tengo cogida</b>. Se marca sola al <a href="#importar">importar tu archivo de Questie</a>, '
-                  'o márcala tú; cuando la entregues, sigue marcada y cuenta como hecha. Con todas marcadas, estás listo. Las opcionales no cuentan.</p>')
+        html_ += '<h5>Llévalas cogidas al entrar</h5><p class="dq-how">Se cogen fuera y se hacen o se entregan dentro.</p>'
         if multi:
             groups, seen = [], set()
             for w in [w[0] for w in wings]:
@@ -599,6 +596,10 @@ def dungeon_quest_rows(dbzone, slugs, wings):
         html_ += (f'<details class="dq-more"><summary>Otras {n} quests de estas cadenas, fuera de la mazmorra</summary>'
                   f'<ul class="chk ql">{"".join(row(i, "steps") for i in sorted(bk["steps"], key=order))}</ul></details>')
     total = len(set().union(*bk.values()))
+    # arriba va «Antes de entrar» (lo escribe app.js); aquí, plegado, el detalle de cada quest con su casilla de hecha
+    marks = re.match(r'(?:<span class="dq-wn"[^>]*>[^<]*</span>)*', html_).group(0)
+    html_ = (f'{marks}<details class="dq-det"><summary>Detalle de las quests: requisitos, recompensas y las que se cogen dentro</summary>'
+             f'{html_[len(marks):]}</details>') if html_[len(marks):] else marks
     return html_, total
 
 def li_list(items):
@@ -670,11 +671,11 @@ def render_dungeons():
 <div class="ph-meta"><span class="lv">{lo}-{hi}</span><span>{esc(loc)}</span>{'<span class="tag new">nueva</span>' if new else ''}<span>{legacy}</span></div>
 <div class="dones">{done}</div>
 </header>
+<section class="blk dq"><h3>Quests <span class="prog"></span></h3>{qrows or '<p class="src">Sin quests de Alianza documentadas.</p>'}</section><!--/dq-->
 <div class="cols">
 <div>
 {blk('Cómo llegar', how)}
 {blk('Antes de entrar', li_list(before[:7]))}
-<section class="blk dq"><h3>Quests <span class="prog"></span></h3>{qrows or '<p class="src">Sin quests de Alianza documentadas.</p>'}</section>
 </div>
 <div>
 {blk('Jefes en orden', classic + bosses)}
@@ -1693,7 +1694,7 @@ def build():
 
     dungeons, dash = render_dungeons()
     for gk, links in cdg.items():
-        dungeons, k = re.subn(r'(<article class="page dpage" id="dg-%s".*?</header>)' % re.escape(gk),
+        dungeons, k = re.subn(r'(<article class="page dpage" id="dg-%s".*?<!--/dq-->)' % re.escape(gk),
                               lambda m: m.group(1) + '\n' + chains_block(links, 'Cadenas que acaban aquí'), dungeons, count=1, flags=re.S)
         assert k == 1, gk
     secs['explorar'] = '<h2>Exploración y reputaciones</h2>' + explore if explore else ''
@@ -1870,7 +1871,7 @@ def build():
     open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write(wrap(page, 'local'))
     pr = re.sub(r'<section class="blk allq".*?<!--/allq-->', '', page, flags=re.S)
     pr = re.sub(r'(<(?:section class="view"|article class="page [a-z]+")[^>]*?) hidden>', r'\1>', pr)
-    pr = re.sub(r'<details class="(pre|dq-more)">', r'<details class="\1" open>', pr)          # en papel, abiertos
+    pr = re.sub(r'<details class="(pre|dq-more|dq-det)">', r'<details class="\1" open>', pr)          # en papel, abiertos
     open(os.path.join(ROOT, 'dist', 'print.html'), 'w', encoding='utf-8').write(wrap(pr, 'local print-all'))
     print(f'quests en caché {len(Q)} · fichas de quest {len(data["q"])} · objetos {len(data["i"])} · PNJ {len(data["n"])}')
     print(f'enlaces en el texto: {STATS["linked"]} directos, {STATS["search"]} por búsqueda · zonas {len(zdash)} · mazmorras {len(dash)} · cadenas {len(cmeta)}')
