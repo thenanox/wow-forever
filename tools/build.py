@@ -187,6 +187,11 @@ def link_plain(text):
     def sub(m):
         name = html.unescape(m.group(1))
         ref = NAMES.any(name)
+        # en texto normal (sin cursiva) un nombre es un PNJ: si también hay una quest que se llama igual,
+        # casi siempre un recado que lleva hasta él, el enlace va al PNJ
+        if ref and ref[0] == 'quest':
+            npc = NAMES.search(name, 'npc')
+            if npc: ref = ('npc', npc)
         if not ref:
             for want in ('npc', 'item'):
                 i = NAMES.search(name, want)
@@ -287,6 +292,8 @@ def qd(q):
     ing, lead = dungeon_of(q)
     if ing: d['dg'] = ing
     elif lead: d['dp'] = lead
+    b = dq_bucket(q['id'])
+    if b and ing: d['db'] = {'carry': 'c', 'opt': 'c', 'inside': 'i', 'after': 'a'}[b[1]]
     ex = sorted(EXCL.get(q['id'], ()))
     if ex: d['ex'] = ex
     if q['id'] in BREAD: d['bc'] = 1
@@ -369,6 +376,7 @@ def zone_list(title, dbzones, slug):
         isnew = any(G.is_new(q) for q in g)
         if isnew: tags += '<span class="tag new">nueva</span>'
         t = first.get('type')
+        if t == 'Dungeon' and first['id'] in BREAD: t = None
         if t in ('Elite', 'Dungeon', 'Raid', 'PvP'):
             tags += f'<span class="tag ty">{ {"Elite": "élite", "Dungeon": "mazmorra", "Raid": "raid", "PvP": "JcJ"}[t] }</span>'
         if kind == 'chain': tags += f'<span class="tag st">{len(g)} pasos</span>'
@@ -475,19 +483,7 @@ def dungeon_buckets(dbzone, slugs):
     ids = {i for i in dungeon_quest_ids(dbzone, slugs) | add if gk not in DQFIX.get(i, {}).get('no', [])}
     dz = dungeon_zones(dbzone, ids)
     dq = {i for i in ids if Q[i].get('type') == 'Dungeon' or Q[i].get('zone') == dbzone} | add
-    giver = {}
-    for j in sorted(dq):
-        for s in Q[j].get('starts') or []:
-            if s['t'] == 'npc': giver.setdefault(s['id'], j)
-    bread = {}
-    for i in sorted(ids):
-        q, e = Q[i], (Q[i].get('ends') or [None])[0]
-        if BTO.get(i) in dq: bread[i] = BTO[i]
-        elif (not q.get('objectives') and q.get('sc') and q.get('ec') and e and e['t'] == 'npc' and giver.get(e['id']) not in (None, i)
-              and e['id'] not in {x['id'] for x in q.get('starts') or [] if x['t'] == 'npc'}
-              and i not in ancestors(giver[e['id']]) and giver[e['id']] not in ancestors(i)
-              and not starts_inside(q, dbzone, dz) and not ends_inside(q, dbzone, dz)):
-            bread[i] = giver[e['id']]
+    bread = {i: BTO[i] for i in sorted(ids) if BTO.get(i) in dq}       # recados: los de Questie y los deducidos (BTO)
     dq -= set(bread)
     lead = {i for i in bread if ends_inside(Q[i], dbzone, dz)}       # recados que se entregan dentro: se llevan cogidos, pero no hacen falta
     pre = lambda i: PRE.get(i, ([], []))[0] + PRE.get(i, ([], []))[1]
@@ -506,6 +502,16 @@ def dungeon_buckets(dbzone, slugs):
             for b in out.values(): b.discard(i)
             out[fx['b']].add(i)
     return out, bread
+
+_DQB = {}
+def dq_bucket(i):
+    """(mazmorra, bloque) de una quest en las páginas de mazmorra: carry, inside, after u opt; None si no está en ninguno."""
+    if not _DQB:
+        for d in DG:
+            bk, _ = dungeon_buckets(d[2], d[6])
+            for b in ('opt', 'carry', 'inside', 'after'):
+                for x in bk[b]: _DQB.setdefault(x, (d[0], b))
+    return _DQB.get(i)
 
 def dungeon_quest_rows(dbzone, slugs, wings):
     """Bloque de quests de la página de una mazmorra: las que hay que llevar cogidas (con lo que piden antes y sus
@@ -1165,6 +1171,18 @@ def dungeon_of(q):
     if z: return z, None
     return None, g
 
+def chain_when(targets):
+    """Qué pasa si llegas a la mazmorra sin la cadena previa, según dónde se cogen sus quests finales."""
+    bs = {(dq_bucket(t) or (None, None))[1] for t in targets}
+    if bs <= {'carry', 'opt'}: return 'Sin estos pasos no te las dan, y hay que llevarlas cogidas al entrar.'
+    if bs == {'inside'}: return 'Si entras a la mazmorra sin estos pasos, esas quests no te salen dentro.'
+    if bs == {'after'}: return 'Se cogen al volver de la mazmorra, y piden antes estos pasos.'
+    bs = {'carry' if b == 'opt' else b for b in bs if b}
+    parts = [t for k, t in (('carry', 'se llevan cogidas'), ('inside', 'salen dentro'), ('after', 'salen al volver')) if k in bs]
+    if len(parts) < 2: return 'Sin estos pasos no te dan esas quests.'
+    parts = ['unas ' + parts[0]] + ['otras ' + p for p in parts[1:]]
+    return 'Sin estos pasos no te dan esas quests: ' + ', '.join(parts[:-1]) + ' y ' + parts[-1] + '.'
+
 def auto_chains(covered):
     """Cadenas previas a quests de mazmorra, según los requisitos de Questie, que no cubre ninguna cadena escrita a mano."""
     groups = []                                              # [conjunto de quests, mazmorras, quests finales]
@@ -1186,7 +1204,7 @@ def auto_chains(covered):
         out.append({'k': f'a{last}', 't': Q[last]['name'], 'g': 'Mazmorras', 'lv': f'{min(Q[i].get("min") or Q[i]["level"] for i in order)}-{max(lv)}',
                     'dg': dgs, 'auto': True, 's': [{'q': i} for i in order],
                     'why': f'Lo que hay que hacer antes para poder coger {tn}, de {" y ".join(esc(DG_NAME[g]) for g in dgs)}. '
-                           'Si entras a la mazmorra sin estos pasos, esas quests no te aparecen. El orden sale de los requisitos de Questie.'})
+                           + chain_when(targets) + ' El orden sale de los requisitos de Questie.'})
     return out
 
 QCHAIN = {}                                # quest -> (clave de cadena, número de paso, título)
@@ -1238,7 +1256,7 @@ def render_chains():
                 where = linkify(s['w']) if s.get('w') else step_where(q)
                 obj = esc(G.clean(q.get('obj') or ''))
                 rw = reward_chips(q, 3)
-                if dungeon_of(q)[0] or q.get('type') == 'Dungeon': tag = '<span class="tag ty">mazmorra</span>'
+                if dungeon_of(q)[0]: tag = '<span class="tag ty">mazmorra</span>'
                 elif q.get('type') in QTYPE: tag = f'<span class="tag ty">{QTYPE[q["type"]]}</span>'
                 if s.get('opt'): tag += '<span class="tag st">opcional</span>'
                 if s.get('bc'): tag += '<span class="tag st">recado opcional</span>'
@@ -1429,9 +1447,15 @@ def imp_detail(key, deps, zone=None):
             w = next(d[8] for d in DG if d[0] == g)
             return f'<a href="#dg-{g}">{esc(DG_NAME[g])}</a> (niveles {min(x[2] for x in w)}-{max(x[3] for x in w)})'
         # dentro de la mazmorra de verdad, o solo un paso previo que lleva a ella
-        inside = list(dict.fromkeys(dungeon_of(Q[i])[0] for i in ids if dungeon_of(Q[i])[0]))
+        bks = [dq_bucket(i) for i in ids]
+        carry = list(dict.fromkeys(b[0] for b in bks if b and b[1] in ('carry', 'opt')))
+        within = list(dict.fromkeys(b[0] for b in bks if b and b[1] == 'inside' and b[0] not in carry))
+        later = list(dict.fromkeys(b[0] for b in bks if b and b[1] == 'after' and b[0] not in carry + within))
+        inside = carry + within + later
         lead = [g for g in dict.fromkeys(DQ_OF[i] for i in ids if i in DQ_OF) if g not in inside]
-        if inside: when += ' Se resuelve dentro de ' + ' y '.join(dg_ref(g) for g in inside) + ': llévala cogida antes de entrar.'
+        if carry: when += ' Se resuelve dentro de ' + ' y '.join(dg_ref(g) for g in carry) + ': llévala cogida antes de entrar.'
+        if within: when += ' Se coge dentro de ' + ' y '.join(dg_ref(g) for g in within) + '.'
+        if later: when += ' Sale al volver de ' + ' y '.join(dg_ref(g) for g in later) + ': pide antes otra quest de la mazmorra.'
         if lead and all(i in BREAD for i in ids):
             when += ' Es un recado opcional hacia las quests de ' + ' y '.join(dg_ref(g) for g in lead) + ': no hace falta para cogerlas.'
         elif lead: when += ' Es un paso previo a las quests de ' + ' y '.join(dg_ref(g) for g in lead) + '.'

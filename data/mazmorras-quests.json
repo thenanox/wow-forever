@@ -34,6 +34,10 @@
   "dg": "gnomeregan",
   "why": "La da Kernobee, dentro de Gnomeregan (DungeonJournal)."
  },
+ "2945": {
+  "dg": "gnomeregan",
+  "why": "El Grime-Encrusted Ring cae dentro de Gnomeregan y empieza la cadena de Return of the Ring."
+ },
  "2948": {
   "dg": "gnomeregan",
   "why": "Sigue a Return of the Ring, que se coge dentro (DungeonJournal)."
@@ -41,6 +45,10 @@
  "2951": {
   "dg": "gnomeregan",
   "why": "Sale de The Sparklematic 5200, dentro de Gnomeregan (DungeonJournal)."
+ },
+ "2952": {
+  "dg": "gnomeregan",
+  "why": "Segunda vez en The Sparklematic 5200, dentro de Gnomeregan."
  },
  "4083": {
   "dg": "blackrock-depths",
@@ -187,13 +195,6 @@
    "dire-maul-west"
   ]
  },
- "5250": {
-  "dg": "dire-maul",
-  "why": "Quest de la Alianza que se hace en Dire Maul West (DungeonJournal).",
-  "w": [
-   "dire-maul-west"
-  ]
- },
  "5251": {
   "w": [
    "stratholme-live"
@@ -323,6 +324,10 @@
    "dire-maul-east"
   ],
   "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "7505": {
+  "dg": "dire-maul",
+  "why": "Libro de chamán que cae en Dire Maul («Frost Shock and You»): se entrega para el Royal Seal of Eldre'Thalas. Warcraft Tavern no lo pone en la lista."
  },
  "7604": {
   "dg": "blackrock-depths",

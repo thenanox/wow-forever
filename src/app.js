@@ -75,7 +75,11 @@
   // una quest que ya no se puede coger no queda pendiente: cuenta como resuelta
   function countIn(el, q){
     if (!el) return [0, 0];
-    var seen = {}, all = $$(q || 'input[type=checkbox][data-k]', el).filter(function(b){ if (seen[b.dataset.k]) return false; seen[b.dataset.k] = 1; return true; });
+    var seen = {}, all = $$(q || 'input[type=checkbox][data-k]', el).filter(function(b){
+      if (seen[b.dataset.k]) return false; seen[b.dataset.k] = 1;
+      var li = b.closest('li');                              // un recado u opcional no cuenta para el total
+      return !(li && (li.classList.contains('bc') || li.classList.contains('opt') || li.hasAttribute('data-opt') || li.closest('details.opt')));
+    });
     return [all.filter(function(b){ return b.checked || (b.parentNode.parentNode.classList && b.parentNode.parentNode.classList.contains('gone')); }).length, all.length];
   }
   function whyText(st){
@@ -312,11 +316,12 @@
       var box = $('input', li), on = box.checked, skip = !on && (keyDone(box.dataset.k) || (!!li.dataset.imp && li.dataset.imp.split(',').some(keyDone)));
       li.classList.toggle('done', on); li.classList.toggle('skip', skip); li.classList.remove('next');
       // el siguiente que te toca es el primer paso que hace falta; un recado u opcional solo si no queda otro
-      if (on || skip) done++; else if (li.classList.contains('opt')){ if (!opt) opt = i + 1; } else if (!next) next = i + 1;
+      var isOpt = li.classList.contains('opt');
+      if (on || skip){ if (!isOpt) done++; } else if (isOpt){ if (!opt) opt = i + 1; } else if (!next) next = i + 1;
     });
     next = next || opt;
     if (next) lis[next - 1].classList.add('next');
-    return { done: done, n: lis.length, next: next };
+    return { done: done, n: lis.filter(function(li){ return !li.classList.contains('opt'); }).length, next: next };
   }
   function updateChains(){
     (D.chains || []).forEach(function(c){
@@ -902,7 +907,7 @@
   function qTags(q){
     var t = '';
     if (q.nw) t += '<span class="tag new">nueva</span>';
-    if (q.dg) t += '<span class="tag ty">mazmorra</span>'; else if (q.t && TY[q.t]) t += '<span class="tag ty">' + TY[q.t] + '</span>';
+    if (q.dg) t += '<span class="tag ty">mazmorra' + (q.db === 'c' ? ': llévala cogida' : q.db === 'i' ? ': se coge dentro' : q.db === 'a' ? ': al volver' : '') + '</span>'; else if (q.t && TY[q.t]) t += '<span class="tag ty">' + TY[q.t] + '</span>';
     if (q.dp && DN[q.dp]) t += '<span class="tag st">cadena de ' + esc(DN[q.dp]) + '</span>';   // lleva a una mazmorra, pero se hace fuera
     if (q.cl) t += '<span class="tag ty">clase</span>';
     if (q.im) t += '<span class="tag im">imprescindible' + (IMC[q.im] ? ': ' + IMC[q.im] : '') + '</span>';
