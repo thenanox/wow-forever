@@ -199,17 +199,10 @@
     $$('.dpage').forEach(dqReady);
   }
   // ---------------------------------------------------------------- listo para entrar: las quests que hay que llevar cogidas
-  // «la llevo» se guarda aparte ('llevo'): no es una quest hecha, no cuenta para nada más y no viaja en el código de progreso
+  // Lo que se sabe sin preguntar: con las quests completadas, cuáles puedes coger ya; con el diario de Questie (al importar),
+  // cuáles llevas cogidas. Esto último se guarda aparte ('llevo'): no es una quest hecha y no viaja en el código de progreso
   var GOT = {};
-  try { GOT = JSON.parse(store.get('llevo') || '{}') || {}; } catch(e){ GOT = {}; }
-  $$('input[data-got]').forEach(function(b){ b.checked = !!GOT[b.dataset.got]; });
-  document.addEventListener('change', function(e){
-    var b = e.target; if (!b.matches || !b.matches('input[data-got]')) return;
-    if (b.checked){ GOT[b.dataset.got] = 1; tink(); } else delete GOT[b.dataset.got];
-    store.set('llevo', JSON.stringify(GOT));
-    $$('input[data-got="' + b.dataset.got + '"]').forEach(function(o){ o.checked = b.checked; });
-    var pg = b.closest('.dpage'); if (pg) dqReady(pg);
-  });
+  try { if (store.get('llevo-de') === 'questie') GOT = JSON.parse(store.get('llevo') || '{}') || {}; } catch(e){ GOT = {}; }   // las marcas a mano de antes no valen
   function dqReady(pg){
     var blk = $('.dq', pg); if (!blk) return;
     var rows = $$('li.dqc:not([data-opt])', blk), el = $('.dq-ready', blk);
@@ -225,20 +218,26 @@
     $$('li.dqc', blk).forEach(function(li){
       var id = +li.dataset.q, st = questState(id);
       li.classList.toggle('lista', st.s === 'done' || st.s === 'gone' || !!GOT[id]);
+      li.classList.toggle('puede', !li.classList.contains('lista') && st.s === 'ok');
     });
+    var link = function(id){ return '<a href="#q-' + id + '">' + esc((D.q[id] || {}).n || '') + '</a>'; };
     el.innerHTML = groups.map(function(w){
-      var have = 0, miss = [];
+      var have = 0, can = [], miss = [];
       by[w].forEach(function(li){
         var id = +li.dataset.q, st = questState(id), q = D.q[id] || {};
         if (li.classList.contains('lista')){ have++; return; }
-        var why = st.s === 'ok' ? 'cógela' + (q.g ? ': ' + esc(q.g[2]) : '') : st.s === 'lv' ? 'pide nivel ' + st.need
-          : st.s === 'pre' && D.q[st.need] ? (st.how === 'pq' ? 'sale con ' : 'antes, ') + esc(D.q[st.need].n) : '';
-        miss.push('<a href="#q-' + id + '">' + esc(q.n || '') + '</a>' + (why ? ' <span>(' + why + ')</span>' : ''));
+        if (st.s === 'ok'){ can.push(link(id) + (q.g ? ' <span>(' + esc(q.g[2]) + ')</span>' : '')); return; }
+        var why = st.s === 'lv' ? 'pide nivel ' + st.need : st.s === 'pre' && D.q[st.need] ? (st.how === 'pq' ? 'sale con ' : 'antes, ') + esc(D.q[st.need].n) : '';
+        miss.push(link(id) + (why ? ' <span>(' + why + ')</span>' : ''));
       });
       var n = by[w].length, head = w ? '<b class="dq-w">' + esc(wname[w] || 'Sin ala conocida') + ':</b> ' : groups.length > 1 ? '<b class="dq-w">Sin ala conocida:</b> ' : '';
-      return '<p class="' + (miss.length ? 'falta' : 'listo') + '">' + head + (miss.length
-        ? 'Llevas <b>' + have + '</b> de <b>' + n + '</b>. Te ' + (miss.length === 1 ? 'falta' : 'faltan') + ': ' + miss.join(' · ') + '.'
-        : '<b>Listo para entrar</b>: ' + (n === 1 ? 'tienes la que hay que llevar' : 'tienes las ' + n + ' que hay que llevar') + '.') + '</p>';
+      var got = have ? 'Llevas <b>' + have + '</b> de <b>' + n + '</b>. ' : '';
+      if (!can.length && !miss.length)
+        return '<p class="listo">' + head + '<b>Listo para entrar</b>: ' + (n === 1 ? 'llevas la que hay que llevar' : 'llevas las ' + n + ' que hay que llevar') + '.</p>';
+      if (!miss.length)
+        return '<p class="puede">' + head + got + '<b>Puedes llevarlas todas</b>. Antes de entrar, coge: ' + can.join(' · ') + '.</p>';
+      return '<p class="falta">' + head + got + (can.length ? 'Ya puedes coger: ' + can.join(' · ') + '. ' : '')
+        + 'Aún no ' + (miss.length === 1 ? 'puedes coger' : 'puedes coger') + ': ' + miss.join(' · ') + '.</p>';
     }).join('');
   }
 
@@ -466,7 +465,7 @@
         return '<a class="card' + (inRange(v, g.a, g.b) && !done ? ' at-level' : '') + (done ? ' done' : '') + '" href="#dg-' + g.g + '">' +
           '<span class="c-h"><b>' + esc(g.n) + '</b><span class="lv">' + g.a + '-' + g.b + '</span></span>' +
           '<span class="c-s">' + esc(g.loc) + (g.isNew ? ' · nueva en Forever' : '') + '</span>' + bar(q[0], q[1]) +
-          '<span class="c-f">' + (g.wings.length > 1 ? 'Alas ' + wd + '/' + g.wings.length + ' · ' : '') + 'Quests ' + q[0] + '/' + q[1] + (function(){ var r = $$('.dq li.dqc:not([data-opt])', pg), n = r.filter(function(li){ return li.classList.contains('lista'); }).length; return r.length ? ' · llevas ' + n + ' de ' + r.length : ''; })() + '</span></a>';
+          '<span class="c-f">' + (g.wings.length > 1 ? 'Alas ' + wd + '/' + g.wings.length + ' · ' : '') + 'Quests ' + q[0] + '/' + q[1] + (function(){ var r = $$('.dq li.dqc:not([data-opt])', pg), n = r.filter(function(li){ return li.classList.contains('lista') || li.classList.contains('puede'); }).length; return r.length ? ' · para llevar ' + n + ' de ' + r.length : ''; })() + '</span></a>';
       }).join('') + '</div>';
     }
   }
@@ -813,19 +812,63 @@
   });
 
   // ---------------------------------------------------------------- importar quests completadas (Questie o lista de números)
-  var impFile = $('#imp-file'), impChar = $('#imp-char'), impIds = $('#imp-ids'), impGo = $('#imp-go'), impMsg = $('#imp-msg'), impData = null;
-  function parseQuestie(txt){
-    var chars = {}, re = /\["complete"\]\s*=\s*\{/g, m;
-    while ((m = re.exec(txt))){
-      var i = re.lastIndex, depth = 1;
-      while (i < txt.length && depth){ var ch = txt.charAt(i++); if (ch === '{') depth++; else if (ch === '}') depth--; }
-      var block = txt.slice(re.lastIndex, i), ids = [], r = /\[(\d+)\]\s*=\s*true|^\s*(\d+),\s*--\s*\[\d+\]/gm, x;
-      while ((x = r.exec(block))) ids.push(+(x[1] || x[2]));
-      var names = txt.slice(0, m.index).match(/\["([^"\n]+ - [^"\n]+)"\]\s*=\s*\{/g);
-      var name = names ? names[names.length - 1].replace(/^\["|"\]\s*=\s*\{$/g, '') : 'Personaje ' + (Object.keys(chars).length + 1);
-      if (ids.length) chars[name] = (chars[name] || []).concat(ids);
+  var impFile = $('#imp-file'), impChar = $('#imp-char'), impIds = $('#imp-ids'), impGo = $('#imp-go'), impMsg = $('#imp-msg'), impData = null, impLogs = {};
+  // cada bloque «["clave"] = { … }» del archivo, con el personaje al que pertenece: las claves que cuelgan de ["char"]
+  // (Classic las llama «Nombre - Reino»; Forever, solo por el nombre). Sin ["char"], el nombre más cercano que haya antes
+  function luaEnd(txt, i){ var depth = 1; while (i < txt.length && depth){ var ch = txt.charAt(i++); if (ch === '{') depth++; else if (ch === '}') depth--; } return i; }
+  function luaBlocks(txt, key, fn){
+    var re = new RegExp('\\["' + key + '"\\]\\s*=\\s*\\{', 'g'), m, k = 0, owners = [];
+    var cm = /\["char"\]\s*=\s*\{/.exec(txt);
+    if (cm){
+      var ce = luaEnd(txt, cm.index + cm[0].length), cr = /\["([^"\n]+)"\]\s*=\s*\{/g, c;
+      cr.lastIndex = cm.index + cm[0].length;
+      while ((c = cr.exec(txt)) && c.index < ce){ var e = luaEnd(txt, cr.lastIndex); owners.push([c.index, e, c[1]]); cr.lastIndex = e; }
     }
+    while ((m = re.exec(txt))){
+      var i = luaEnd(txt, re.lastIndex), own = owners.filter(function(o){ return o[0] < m.index && m.index < o[1]; })[0], name;
+      if (own) name = own[2];
+      else if (!owners.length){
+        var names = txt.slice(0, m.index).match(/\["([^"\n]+ - [^"\n]+)"\]\s*=\s*\{/g);
+        name = names ? names[names.length - 1].replace(/^\["|"\]\s*=\s*\{$/g, '') : 'Personaje ' + (++k);
+      } else continue;                                   // un bloque fuera de los personajes (perfiles, global)
+      fn(name, txt.slice(re.lastIndex, i));
+    }
+  }
+  function parseQuestie(txt){
+    var chars = {};
+    luaBlocks(txt, 'complete', function(name, block){
+      var ids = [], r = /\[(\d+)\]\s*=\s*true|^\s*(\d+),\s*--\s*\[\d+\]/gm, x;
+      while ((x = r.exec(block))) ids.push(+(x[1] || x[2]));
+      if (ids.length) chars[name] = (chars[name] || []).concat(ids);
+    });
     return chars;
+  }
+  // el diario de Questie apunta cada quest que aceptas, entregas o abandonas: lo último de cada una dice si la llevas
+  function parseJourney(txt){
+    var logs = {};
+    luaBlocks(txt, 'journey', function(name, block){
+      var last = logs[name] = logs[name] || {}, r = /\{[^{}]*\}/g, x;
+      while ((x = r.exec(block))){
+        var e = x[0], ev = e.match(/\["Event"\]\s*=\s*"(\w+)"/), st = e.match(/\["SubType"\]\s*=\s*"(\w+)"/), q = e.match(/\["Quest"\]\s*=\s*(\d+)/);
+        if (ev && ev[1] === 'Quest' && st && q) last[+q[1]] = st[1];
+      }
+    });
+    return logs;
+  }
+  // lo que llevas según el diario: aceptada y ni entregada ni abandonada después. Cada importación lo rehace entero
+  function applyJourney(last, done){
+    var got = 0, off = {};
+    GOT = {};
+    (done || []).forEach(function(id){ off[D.alias && D.alias[id] || id] = 1; });
+    Object.keys(last).forEach(function(k){
+      var id = +k; id = D.alias && D.alias[id] || id;
+      if (last[k] === 'Accept' && !off[id]){ if (D.q[id]){ GOT[id] = 1; got++; } }
+      else delete GOT[id];
+    });
+    Object.keys(off).forEach(function(id){ delete GOT[id]; });
+    store.set('llevo', JSON.stringify(GOT)); store.set('llevo-de', 'questie');
+    $$('.dpage').forEach(dqReady);
+    return got;
   }
   function markDone(ids){
     var fresh = 0, known = 0, unk = [];
@@ -872,7 +915,8 @@
     if (!f) return;
     var rd = new FileReader();
     rd.onload = function(){
-      var chars = parseQuestie(String(rd.result)), names = Object.keys(chars);
+      var txt = String(rd.result), chars = parseQuestie(txt), names = Object.keys(chars);
+      impLogs = parseJourney(txt);
       if (!names.length){ impMsg.textContent = 'No encuentro la lista de quests completadas en ese archivo. Comprueba que es Questie.lua de la carpeta SavedVariables.'; return; }
       impData = chars;
       names.sort(function(a, b){ return chars[b].length - chars[a].length; });
@@ -889,8 +933,13 @@
     var typed = (impIds.value.match(/\d+/g) || []).map(Number);
     if (typed.length){ ids = ids.concat(typed); src = src ? src + ' y la lista pegada' : 'la lista pegada'; }
     if (!ids.length){ impMsg.textContent = 'Elige antes el archivo de Questie o pega una lista de números.'; return; }
-    var r = markDone(ids);
-    impMsg.textContent = 'De ' + src + ': ' + ids.length + ' quests completadas, ' + r[1] + ' están en la guía. Marcadas ahora ' + r[0] + (r[1] - r[0] ? '; las otras ' + (r[1] - r[0]) + ' ya lo estaban.' : '.');
+    var r = markDone(ids), who = impData && (impChar.value || Object.keys(impData)[0]), log = who && impLogs[who];
+    var txt = 'De ' + src + ': ' + ids.length + ' quests completadas, ' + r[1] + ' están en la guía. Marcadas ahora ' + r[0] + (r[1] - r[0] ? '; las otras ' + (r[1] - r[0]) + ' ya lo estaban.' : '.');
+    if (log && Object.keys(log).length){
+      var g = applyJourney(log, impData[who]);
+      txt += ' Según el diario de Questie llevas cogidas ' + g + ' de la guía: las mazmorras ya lo tienen en cuenta.';
+    } else if (impData) txt += ' El archivo no trae el diario de Questie: las mazmorras dirán qué puedes coger, pero no qué llevas.';
+    impMsg.textContent = txt;
   });
 
   // ---------------------------------------------------------------- todas las quests: una ficha por quest y vistas de ella

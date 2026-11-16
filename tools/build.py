@@ -544,13 +544,12 @@ def dungeon_quest_rows(dbzone, slugs, wings):
         ws = [w for w in DQFIX.get(i, {}).get('w', []) if w in wname] if multi else []
         wt = f'<span class="tag wg">{" · ".join(esc(wname[w]) for w in ws)}</span>' if ws and (b != 'carry' or len(ws) > 1) else ''
         rw = reward_chips(q)
-        got = (f'<label class="got"><input type="checkbox" data-got="{i}"><span>la llevo</span></label>' if b == 'carry' else '')
         attrs = f' data-q="{i}"' + (f' data-w="{" ".join(ws)}"' if ws else '')
         if b == 'bread' and not cls: cls = ' class="bc"'
         return (f'<li{cls} data-lv="{q.get("min") or q["level"]}-{q["level"] + 3}"{attrs}><label><input type="checkbox" data-k="q{i}"><span>'
                 f'<span class="lv">{q["level"]}</span> {qa(i)}{new}{chain}{one}{wt}'
                 f'<span class="qm">{where(q, b)}{f" · {q["xp"]} XP" if q.get("xp") else ""}</span>'
-                f'{f"<span class=qr>{rw}</span>" if rw else ""}</span></label>{got}{inner}</li>')
+                f'{f"<span class=qr>{rw}</span>" if rw else ""}</span></label>{inner}</li>')
     order = lambda i: (Q[i]['level'], Q[i]['name'], i)
     def carry_row(i):
         if i in bk['opt']:
@@ -571,7 +570,8 @@ def dungeon_quest_rows(dbzone, slugs, wings):
     html_ = ''.join(f'<span class="dq-wn" hidden data-w="{w}">{esc(t)}</span>' for w, t in wname.items()) if multi else ''
     if bk['carry']:
         html_ += ('<h5>Llévalas cogidas al entrar</h5><p class="dq-how">Se cogen fuera y se hacen o se entregan dentro. '
-                  'Marca «la llevo» cuando la tengas: con todas marcadas, o ya hechas, estás listo. Las opcionales no cuentan.</p>')
+                  'Con las quests que tienes completadas, la guía sabe cuáles puedes coger ya. Si además '
+                  '<a href="#importar">importas tu archivo de Questie</a>, sabe cuáles llevas cogidas. Las opcionales no cuentan.</p>')
         if multi:
             groups, seen = [], set()
             for w in [w[0] for w in wings]:
@@ -1556,12 +1556,12 @@ TOP = '''<header class="top"><div class="top-in">
 
 IMPORT_HTML = '''<section id="importar" class="sec">
 <h2>Importar tu progreso del juego</h2>
-<p>Las casillas de quests de la guía usan el mismo número de quest que el juego. Por eso se pueden marcar solas a partir de la lista de quests que tu personaje ya ha completado. El archivo se lee en tu navegador y no se envía a ningún sitio; las marcas se guardan, como siempre, en este navegador.</p>
+<p>Las casillas de quests de la guía usan el mismo número de quest que el juego. Por eso se pueden marcar solas a partir de la lista de quests que tu personaje ya ha completado. Con Questie, además, la guía sabe qué quests llevas cogidas para cada mazmorra: Questie apunta en su diario cada quest que aceptas, entregas o abandonas. El archivo se lee en tu navegador y no se envía a ningún sitio; las marcas se guardan, como siempre, en este navegador.</p>
 <h3>Con Questie</h3>
 <ol>
 <li>En el juego, escribe <code>/reload</code> o sal del personaje. Los addons solo guardan sus datos en disco en ese momento.</li>
 <li>En el ordenador donde juegas, busca dentro de la carpeta del juego: <code>WTF</code> › <code>Account</code> › tu cuenta › <code>SavedVariables</code> › <code>Questie.lua</code>.</li>
-<li>Elige ese archivo aquí abajo y pulsa el botón.</li>
+<li>Elige ese archivo aquí abajo y pulsa el botón. Repítelo antes de cada mazmorra para ver si estás listo.</li>
 </ol>
 <div class="imp-box">
 <input id="imp-file" type="file" accept=".lua,.txt,text/plain" aria-label="Archivo de Questie">
@@ -1577,7 +1577,7 @@ IMPORT_HTML = '''<section id="importar" class="sec">
 <textarea id="imp-unk" rows="6" readonly spellcheck="false" aria-label="Quests completadas que la guía no usa"></textarea>
 <div class="sync-btns"><button id="imp-unk-copy" type="button">Copiar la lista</button></div></details>
 </div>
-<p class="src">Solo añade marcas, nunca quita. Marca las quests de las listas de cada zona y los pasos de las cadenas. Los imprescindibles y la ruta del inicio no son quests sueltas: esos se marcan a mano. El formato del archivo es el de Questie para Classic; si el de Forever cambia y no reconoce tu archivo, el mensaje lo dirá.</p>
+<p class="src">Las quests completadas solo se añaden, nunca se quitan. Las que llevas cogidas se toman del diario en cada importación; el diario solo conoce las que cogiste con Questie instalado. Marca las quests de las listas de cada zona y los pasos de las cadenas. Los imprescindibles y la ruta del inicio no son quests sueltas: esos se marcan a mano. Probado con el archivo de Questie de Forever. Si una versión nueva cambia el formato y no lo reconoce, el mensaje lo dirá.</p>
 </section>'''
 
 NOW_HTML = '''<section id="ahora" class="sec">

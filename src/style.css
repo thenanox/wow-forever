@@ -743,6 +743,8 @@ ol.chain > li.skip > .cs-b .cs-t::after{content:"no hizo falta";font-size:.82rem
 .dq-ready b{font-family:var(--f-mono);font-weight:600}
 .dq-ready p{margin:0 0 6px;padding:8px 12px;border-left:3px solid var(--warn);background:var(--bg);max-width:none}
 .dq-ready p.listo{border-left-color:var(--ok)}
+.dq-ready p.puede{border-left-color:var(--ok);border-left-style:dashed}
+.dq-ready p.puede > b:not(.dq-w){font-family:inherit}
 .dq-ready p.listo > b:not(.dq-w){color:var(--ok);font-family:inherit}
 .dq-ready p span{color:var(--muted)}
 .dq-ready .dq-w{font-family:inherit}
@@ -750,8 +752,7 @@ ol.chain > li.skip > .cs-b .cs-t::after{content:"no hizo falta";font-size:.82rem
 .dq h6{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:10px 0 0}
 .dq li.dqc{border-left:3px solid var(--rule);padding-left:6px;margin:6px 0}
 .dq li.dqc.lista{border-left-color:var(--ok)}
-.dq label.got{display:inline-flex;align-items:center;gap:6px;font-size:.84rem;color:var(--muted);margin:0 0 2px 1.6em;padding:2px 8px;border:1px solid var(--rule);border-radius:999px;cursor:pointer}
-.dq li.dqc.lista label.got{color:var(--ok);border-color:var(--ok)}
+.dq li.dqc.puede{border-left-color:var(--ok);border-left-style:dashed}
 .dq details.pre{margin:2px 0 4px 1.6em;padding-left:10px;border-left:2px dotted var(--rule)}
 .dq details.pre > summary, .dq details.dq-more > summary{font-size:.84rem;color:var(--muted);cursor:pointer}
 .dq details.pre .ql{margin:2px 0}
@@ -766,7 +767,6 @@ ol.chain > li.opt{opacity:.8}
 ol.chain > li.opt::before{background:repeating-linear-gradient(var(--rule) 0 4px, transparent 4px 8px)}
 .dq details.dq-more{margin-top:10px}
 .tag.wg{background:var(--bg);color:var(--muted)}
-@media print{ .dq label.got{display:none} }
 .man-up{margin:0 0 10px;max-width:none}
 #man-up{font:inherit;font-weight:700;padding:8px 14px;cursor:pointer;border:0;background:var(--paper);color:var(--ink)}
 @media screen{ #man-up{--c:5px;clip-path:var(--oct)} #man-up:hover{background:var(--gold);color:var(--gold-ink)} }

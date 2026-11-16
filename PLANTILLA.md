@@ -261,7 +261,7 @@ Guías paso a paso por zona: `/guides/<zona>-<niveles>/`. Las direcciones salen 
 **Página de mazmorra:**
 
 - Cómo llegar y qué coger antes.
-- Quests en bloques: llévalas cogidas al entrar (con lo que piden antes y sus recados), se cogen dentro, al volver y otros pasos. Arriba, un aviso de «listo para entrar» con una marca «la llevo» que no cuenta como quest hecha; en las de varias alas, ala por ala.
+- Quests en bloques: llévalas cogidas al entrar (con lo que piden antes y sus recados), se cogen dentro, al volver y otros pasos. Arriba, un aviso de «listo para entrar» que sale solo: con las quests completadas dice qué puedes coger ya, y con el diario de Questie (al importar) qué llevas cogidas; en las de varias alas, ala por ala.
 - Jefes en orden, objetos clave para la clase del personaje y consejos.
 - Casilla «Hecha» por ala.
 
