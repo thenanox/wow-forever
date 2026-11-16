@@ -252,7 +252,7 @@ h5{font-size:.82rem;margin:12px 0 4px;color:var(--ink);font-weight:700}
 .qm{display:block;color:var(--muted);font-size:.84rem;line-height:1.35}
 .qr{display:block;font-size:.84rem;line-height:1.4}
 .star{color:var(--bronze);margin-right:2px}
-.ql li.at-level label{background:var(--hl);border-radius:6px}
+.ql li.at-level > label:not(.got){background:var(--hl);border-radius:6px}
 details.allq{margin:12px 0 4px;border:1px dashed var(--rule);border-radius:8px}
 details.allq > summary{cursor:pointer;padding:9px 12px;font-weight:700;display:flex;gap:10px;align-items:baseline}
 details.allq > summary .prog{margin-left:auto;font-family:var(--f-mono);font-size:.76rem;color:var(--muted);font-weight:500}
@@ -278,7 +278,7 @@ details.allq > p, details.allq > ul{margin-left:12px;margin-right:12px}
   .tile,.gantt{border:1px solid #CCC}
   .dg-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4px 18px}
   .gr{height:18px}
-  .ql li.at-level label{background:transparent}
+  .ql li.at-level > label:not(.got){background:transparent}
   label.done input,.chk input{accent-color:#555}
 }
 
@@ -741,6 +741,24 @@ ol.chain > li.skip > .cs-b .cs-t::after{content:"no hizo falta";font-size:.82rem
 .why{color:var(--warn);font-size:.86rem}
 .dq-ready{font-size:.95rem;margin:0 0 8px;max-width:none}
 .dq-ready b{font-family:var(--f-mono);font-weight:600}
+.dq-ready p{margin:0 0 6px;padding:8px 12px;border-left:3px solid var(--warn);background:var(--bg);max-width:none}
+.dq-ready p.listo{border-left-color:var(--ok)}
+.dq-ready p.listo > b:not(.dq-w){color:var(--ok);font-family:inherit}
+.dq-ready p span{color:var(--muted)}
+.dq-ready .dq-w{font-family:inherit}
+.dq-how{font-size:.86rem;color:var(--muted);margin:0 0 4px;max-width:none}
+.dq h6{font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:10px 0 0}
+.dq li.dqc{border-left:3px solid var(--rule);padding-left:6px;margin:6px 0}
+.dq li.dqc.lista{border-left-color:var(--ok)}
+.dq label.got{display:inline-flex;align-items:center;gap:6px;font-size:.84rem;color:var(--muted);margin:0 0 2px 1.6em;padding:2px 8px;border:1px solid var(--rule);border-radius:999px;cursor:pointer}
+.dq li.dqc.lista label.got{color:var(--ok);border-color:var(--ok)}
+.dq details.pre, .dq ul.opt{margin:2px 0 4px 1.6em}
+.dq details.pre > summary, .dq details.dq-more > summary{font-size:.84rem;color:var(--muted);cursor:pointer}
+.dq details.pre .ql, .dq ul.opt{margin:2px 0}
+.dq li.opt > label > span::after{content:" \00b7  recado opcional";font-size:.8rem;color:var(--muted);font-variant-caps:all-small-caps;letter-spacing:.04em}
+.dq details.dq-more{margin-top:10px}
+.tag.wg{background:var(--bg);color:var(--muted)}
+@media print{ .dq label.got{display:none} }
 .man-up{margin:0 0 10px;max-width:none}
 #man-up{font:inherit;font-weight:700;padding:8px 14px;cursor:pointer;border:0;background:var(--paper);color:var(--ink)}
 @media screen{ #man-up{--c:5px;clip-path:var(--oct)} #man-up:hover{background:var(--gold);color:var(--gold-ink)} }

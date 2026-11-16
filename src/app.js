@@ -75,7 +75,7 @@
   // una quest que ya no se puede coger no queda pendiente: cuenta como resuelta
   function countIn(el, q){
     if (!el) return [0, 0];
-    var all = $$(q || 'input[type=checkbox][data-k]', el);
+    var seen = {}, all = $$(q || 'input[type=checkbox][data-k]', el).filter(function(b){ if (seen[b.dataset.k]) return false; seen[b.dataset.k] = 1; return true; });
     return [all.filter(function(b){ return b.checked || (b.parentNode.parentNode.classList && b.parentNode.parentNode.classList.contains('gone')); }).length, all.length];
   }
   function whyText(st){
@@ -191,14 +191,50 @@
       out.textContent = txt;
       li.className = li.className.replace(/\bst-\w+/g, '').trim() + ' ' + cls;
     });
-    $$('.dpage').forEach(function(pg){
-      var blk = $('.dq', pg); if (!blk) return;
-      var n = $$('li', blk).length, ok = $$('li.avail', blk).length, pre = $$('li.blocked', blk).length, lv = $$('li.low', blk).length, done = n - ok - pre - lv - $$('li.gone', blk).length;
-      if (!n) return;
-      var el = $('.dq-ready', blk);
-      if (!el){ el = document.createElement('p'); el.className = 'dq-ready'; var h = $('h3', blk); if (h) h.parentNode.insertBefore(el, h.nextSibling); else blk.insertBefore(el, blk.firstChild); }
-      el.innerHTML = '<b>' + ok + '</b> ' + (ok === 1 ? 'puedes cogerla' : 'puedes cogerlas') + ' ya' + (pre ? ' · <b>' + pre + '</b> con algo que hacer antes' : '') + (lv ? ' · <b>' + lv + '</b> piden más nivel' : '') + (done ? ' · <b>' + done + '</b> hechas' : '');
+    $$('.dpage').forEach(dqReady);
+  }
+  // ---------------------------------------------------------------- listo para entrar: las quests que hay que llevar cogidas
+  // «la llevo» se guarda aparte ('llevo'): no es una quest hecha, no cuenta para nada más y no viaja en el código de progreso
+  var GOT = {};
+  try { GOT = JSON.parse(store.get('llevo') || '{}') || {}; } catch(e){ GOT = {}; }
+  $$('input[data-got]').forEach(function(b){ b.checked = !!GOT[b.dataset.got]; });
+  document.addEventListener('change', function(e){
+    var b = e.target; if (!b.matches || !b.matches('input[data-got]')) return;
+    if (b.checked){ GOT[b.dataset.got] = 1; tink(); } else delete GOT[b.dataset.got];
+    store.set('llevo', JSON.stringify(GOT));
+    $$('input[data-got="' + b.dataset.got + '"]').forEach(function(o){ o.checked = b.checked; });
+    var pg = b.closest('.dpage'); if (pg) dqReady(pg);
+  });
+  function dqReady(pg){
+    var blk = $('.dq', pg); if (!blk) return;
+    var rows = $$('li.dqc:not([data-opt])', blk), el = $('.dq-ready', blk);
+    if (!el){ el = document.createElement('div'); el.className = 'dq-ready'; var h = $('h3', blk); if (h) h.parentNode.insertBefore(el, h.nextSibling); else blk.insertBefore(el, blk.firstChild); }
+    if (!rows.length){ el.innerHTML = $$('li', blk).length ? '<p>Ninguna hay que llevarla cogida: se cogen todas dentro o al volver.</p>' : ''; return; }
+    // en las mazmorras de varias alas, una línea por ala (una quest de varias alas cuenta en cada una)
+    var wname = {};
+    $$('.dq-wn', blk).forEach(function(t){ wname[t.dataset.w] = t.textContent; });
+    var groups = [], by = {};
+    rows.forEach(function(li){
+      (li.dataset.w ? li.dataset.w.split(' ') : ['']).forEach(function(w){ if (!by[w]){ by[w] = []; groups.push(w); } by[w].push(li); });
     });
+    $$('li.dqc', blk).forEach(function(li){
+      var id = +li.dataset.q, st = questState(id);
+      li.classList.toggle('lista', st.s === 'done' || st.s === 'gone' || !!GOT[id]);
+    });
+    el.innerHTML = groups.map(function(w){
+      var have = 0, miss = [];
+      by[w].forEach(function(li){
+        var id = +li.dataset.q, st = questState(id), q = D.q[id] || {};
+        if (li.classList.contains('lista')){ have++; return; }
+        var why = st.s === 'ok' ? 'cógela' + (q.g ? ': ' + esc(q.g[2]) : '') : st.s === 'lv' ? 'pide nivel ' + st.need
+          : st.s === 'pre' && D.q[st.need] ? (st.how === 'pq' ? 'sale con ' : 'antes, ') + esc(D.q[st.need].n) : '';
+        miss.push('<a href="#q-' + id + '">' + esc(q.n || '') + '</a>' + (why ? ' <span>(' + why + ')</span>' : ''));
+      });
+      var n = by[w].length, head = w ? '<b class="dq-w">' + esc(wname[w] || 'Sin ala conocida') + ':</b> ' : groups.length > 1 ? '<b class="dq-w">Sin ala conocida:</b> ' : '';
+      return '<p class="' + (miss.length ? 'falta' : 'listo') + '">' + head + (miss.length
+        ? 'Llevas <b>' + have + '</b> de <b>' + n + '</b>. Te ' + (miss.length === 1 ? 'falta' : 'faltan') + ': ' + miss.join(' · ') + '.'
+        : '<b>Listo para entrar</b>: ' + (n === 1 ? 'tienes la que hay que llevar' : 'tienes las ' + n + ' que hay que llevar') + '.') + '</p>';
+    }).join('');
   }
 
   // ---------------------------------------------------------------- retos de Legacy al alcance de este personaje
@@ -416,12 +452,12 @@
     host = $('#dcards');
     if (host){
       host.innerHTML = '<div class="cards">' + DG.map(function(g){
-        var pg = document.getElementById('dg-' + g.g), q = countIn(pg, '.dq input');
+        var pg = document.getElementById('dg-' + g.g), q = countIn(pg, '.dq input[data-k]');
         var wd = g.wings.filter(isDone).length, done = wd === g.wings.length;
         return '<a class="card' + (inRange(v, g.a, g.b) && !done ? ' at-level' : '') + (done ? ' done' : '') + '" href="#dg-' + g.g + '">' +
           '<span class="c-h"><b>' + esc(g.n) + '</b><span class="lv">' + g.a + '-' + g.b + '</span></span>' +
           '<span class="c-s">' + esc(g.loc) + (g.isNew ? ' · nueva en Forever' : '') + '</span>' + bar(q[0], q[1]) +
-          '<span class="c-f">' + (g.wings.length > 1 ? 'Alas ' + wd + '/' + g.wings.length + ' · ' : '') + 'Quests ' + q[0] + '/' + q[1] + (function(){ var n = $$('.dq li.avail', pg).length; return n ? ' · ' + n + ' ahora' : ''; })() + '</span></a>';
+          '<span class="c-f">' + (g.wings.length > 1 ? 'Alas ' + wd + '/' + g.wings.length + ' · ' : '') + 'Quests ' + q[0] + '/' + q[1] + (function(){ var r = $$('.dq li.dqc:not([data-opt])', pg), n = r.filter(function(li){ return li.classList.contains('lista'); }).length; return r.length ? ' · llevas ' + n + ' de ' + r.length : ''; })() + '</span></a>';
       }).join('') + '</div>';
     }
   }
@@ -1335,6 +1371,7 @@
       if (document.body.classList.contains('print-cron')) return;
       document.body.classList.add('printing');
       $$('.view, .page, .overview').forEach(function(el){ el.hidden = false; });
+      $$('.dq details').forEach(function(d){ d.open = true; });
     });
     window.addEventListener('afterprint', function(){ document.body.classList.remove('printing'); route(); });
     var pb = $('#imprimir');

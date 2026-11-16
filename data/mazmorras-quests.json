@@ -1,0 +1,475 @@
+{
+ "_": "Correcciones al reparto de quests de cada mazmorra (tools/build.py, dungeon_buckets). dg: añade la quest a esa mazmorra. b: fuerza el bloque (carry: llevarla cogida; inside: se coge dentro; after: sale al volver; bread: recado; steps: otros pasos). w: alas donde se hace. no: mazmorras de las que se quita. pre: requisitos que Questie no tiene. donde: quién la da, cuando la base de datos no lo dice. why: de dónde sale cada corrección.",
+ "1050": {
+  "w": [
+   "sm-library"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "1053": {
+  "w": [
+   "sm-library",
+   "sm-armory",
+   "sm-cathedral"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "1198": {
+  "dg": "blackfathom-deeps",
+  "why": "Se entrega dentro, a Argent Guard Thaelrid, que da Blackfathom Villainy (DungeonJournal)."
+ },
+ "1446": {
+  "dg": "sunken-temple",
+  "why": "La da Atal'ai Exile, en The Hinterlands, y se hace en Sunken Temple (DungeonJournal)."
+ },
+ "2418": {
+  "dg": "uldaman",
+  "why": "La da Rigglefuzz, en Badlands, y las piedras salen en Uldaman (DungeonJournal)."
+ },
+ "2439": {
+  "dg": "uldaman",
+  "why": "Sigue a The Platinum Discs: se entrega a High Explorer Magellas, en Ironforge (DungeonJournal)."
+ },
+ "2904": {
+  "dg": "gnomeregan",
+  "why": "La da Kernobee, dentro de Gnomeregan (DungeonJournal)."
+ },
+ "2948": {
+  "dg": "gnomeregan",
+  "why": "Sigue a Return of the Ring, que se coge dentro (DungeonJournal)."
+ },
+ "2951": {
+  "dg": "gnomeregan",
+  "why": "Sale de The Sparklematic 5200, dentro de Gnomeregan (DungeonJournal)."
+ },
+ "4083": {
+  "dg": "blackrock-depths",
+  "why": "La da Gloom'rel, dentro de Blackrock Depths; pide Minería 230 (DungeonJournal)."
+ },
+ "4701": {
+  "w": [
+   "lbrs"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "4729": {
+  "w": [
+   "lbrs"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "4734": {
+  "w": [
+   "ubrs"
+  ],
+  "why": "Se hace en The Rookery, en Upper Blackrock Spire."
+ },
+ "4735": {
+  "w": [
+   "ubrs"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "4742": {
+  "w": [
+   "lbrs"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "4743": {
+  "w": [
+   "ubrs"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "4764": {
+  "w": [
+   "ubrs"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "4788": {
+  "w": [
+   "lbrs"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "4862": {
+  "w": [
+   "lbrs"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "4866": {
+  "w": [
+   "lbrs"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "4867": {
+  "w": [
+   "lbrs"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "5001": {
+  "w": [
+   "lbrs"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "5047": {
+  "dg": "blackrock-spire",
+  "why": "Sale del cadáver de The Beast, dentro de Upper Blackrock Spire (DungeonJournal).",
+  "w": [
+   "ubrs"
+  ]
+ },
+ "5081": {
+  "w": [
+   "lbrs"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "5089": {
+  "w": [
+   "lbrs"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "5102": {
+  "w": [
+   "ubrs"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "5125": {
+  "w": [
+   "stratholme-dead"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "5160": {
+  "dg": "blackrock-spire",
+  "why": "La da Awbee, dentro de Upper Blackrock Spire (DungeonJournal).",
+  "w": [
+   "ubrs"
+  ]
+ },
+ "5212": {
+  "w": [
+   "stratholme-live"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "5213": {
+  "w": [
+   "stratholme-dead"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "5214": {
+  "w": [
+   "stratholme-live"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "5243": {
+  "w": [
+   "stratholme-live"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "5247": {
+  "dg": "dire-maul",
+  "why": "Quest de la Alianza que se hace en Dire Maul West (DungeonJournal).",
+  "w": [
+   "dire-maul-west"
+  ]
+ },
+ "5250": {
+  "dg": "dire-maul",
+  "why": "Quest de la Alianza que se hace en Dire Maul West (DungeonJournal).",
+  "w": [
+   "dire-maul-west"
+  ]
+ },
+ "5251": {
+  "w": [
+   "stratholme-live"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "5262": {
+  "w": [
+   "stratholme-live"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "5263": {
+  "w": [
+   "stratholme-dead"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "5281": {
+  "w": [
+   "stratholme-live",
+   "stratholme-dead"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "5282": {
+  "w": [
+   "stratholme-live",
+   "stratholme-dead"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "5382": {
+  "no": [
+   "stratholme"
+  ],
+  "why": "Se hace en Scholomance, no en Stratholme."
+ },
+ "5463": {
+  "w": [
+   "stratholme-dead"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "5518": {
+  "w": [
+   "dire-maul-north"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "5525": {
+  "w": [
+   "dire-maul-north"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "5526": {
+  "w": [
+   "dire-maul-east"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "5848": {
+  "w": [
+   "stratholme-live"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "6031": {
+  "no": [
+   "blackmaw-hold"
+  ],
+  "why": "Es la entrega de Runecloth a Meilosh (Timbermaw Hold), no una quest de la mazmorra."
+ },
+ "6502": {
+  "w": [
+   "ubrs"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "7066": {
+  "dg": "maraudon",
+  "why": "La da Zaetar's Spirit, dentro de Maraudon (DungeonJournal)."
+ },
+ "7441": {
+  "w": [
+   "dire-maul-east"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "7461": {
+  "w": [
+   "dire-maul-west"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "7482": {
+  "w": [
+   "dire-maul-west",
+   "dire-maul-north"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "7483": {
+  "dg": "dire-maul",
+  "why": "La da Lorekeeper Lydros, dentro de Dire Maul (DungeonJournal).",
+  "w": [
+   "dire-maul-north"
+  ]
+ },
+ "7484": {
+  "dg": "dire-maul",
+  "why": "La da Lorekeeper Lydros, dentro de Dire Maul (DungeonJournal).",
+  "w": [
+   "dire-maul-north"
+  ]
+ },
+ "7485": {
+  "dg": "dire-maul",
+  "why": "La da Lorekeeper Lydros, dentro de Dire Maul (DungeonJournal).",
+  "w": [
+   "dire-maul-north"
+  ]
+ },
+ "7488": {
+  "w": [
+   "dire-maul-east"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "7604": {
+  "dg": "blackrock-depths",
+  "why": "El contrato lo da Lokhtos Darkbargainer, dentro, a cambio de un Sulfuron Ingot (DungeonJournal)."
+ },
+ "7703": {
+  "w": [
+   "dire-maul-west",
+   "dire-maul-north"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "7761": {
+  "dg": "blackrock-spire",
+  "b": "carry",
+  "why": "La carta la suelta el Scarshield Quartermaster, en Blackrock Mountain, fuera de la mazmorra (DungeonJournal).",
+  "w": [
+   "ubrs"
+  ]
+ },
+ "8945": {
+  "dg": "stratholme",
+  "why": "Quest del conjunto de mazmorra que se hace en Stratholme (DungeonJournal).",
+  "w": [
+   "stratholme-dead"
+  ]
+ },
+ "8948": {
+  "dg": "dire-maul",
+  "why": "Conjunto de mazmorra: Anthion manda a Falrin Treeshaper, en el Athenaeum de Dire Maul West (DungeonJournal)."
+ },
+ "8949": {
+  "dg": "dire-maul",
+  "w": [
+   "dire-maul-west"
+  ],
+  "why": "Conjunto de mazmorra: la da Falrin Treeshaper, dentro de Dire Maul West (DungeonJournal)."
+ },
+ "8950": {
+  "dg": "dire-maul",
+  "w": [
+   "dire-maul-west"
+  ],
+  "why": "Conjunto de mazmorra: la da Falrin Treeshaper, dentro de Dire Maul West (DungeonJournal)."
+ },
+ "9015": {
+  "dg": "blackrock-depths",
+  "why": "Conjunto de mazmorra: la da Falrin Treeshaper en Dire Maul y se hace en el Ring of Law de Blackrock Depths (DungeonJournal)."
+ },
+ "92065": {
+  "b": "carry",
+  "donde": "Gatekeeper Rageroar · Azshara (42.4, 20.2)",
+  "why": "Warcraft DB no dice quién la da; DungeonJournal: Gatekeeper Rageroar, en Ursolan, tras la cadena Blackmaw Counter-Offensive."
+ },
+ "92066": {
+  "b": "carry",
+  "donde": "Lorekeeper Nok · Azshara (41.4, 20)",
+  "why": "Warcraft DB no dice quién la da; DungeonJournal: Lorekeeper Nok, en Ursolan. Pide Timbermaw Hold neutral."
+ },
+ "94969": {
+  "b": "inside",
+  "donde": "Marcus Tilwell, dentro",
+  "why": "Sin datos de quién la da. Es una escolta de Marcus Tilwell: por su objetivo, se coge dentro."
+ },
+ "94982": {
+  "pre": [
+   94890
+  ],
+  "why": "DungeonJournal: Eye of Mugg sale después de Bring Me His Head."
+ },
+ "94984": {
+  "pre": [
+   94879
+  ],
+  "why": "DungeonJournal: Tome of Twilight sale después de Scraps of Knowledge."
+ },
+ "95189": {
+  "dg": "ruins-of-lordaeron",
+  "why": "La empieza un objeto que cae dentro (DungeonJournal)."
+ },
+ "95250": {
+  "b": "inside",
+  "donde": "Captain Truman, nada más entrar, a la izquierda",
+  "why": "Warcraft DB no dice quién la da; DungeonJournal la sitúa dentro."
+ },
+ "95790": {
+  "b": "inside",
+  "donde": "Partially Digested Journal, en el suelo",
+  "why": "Se coge al pulsar un diario que hay dentro (DungeonJournal)."
+ },
+ "95798": {
+  "dg": "drowned-city",
+  "why": "Sigue a Magics of the Drowned City (DungeonJournal)."
+ },
+ "95799": {
+  "dg": "drowned-city",
+  "why": "Sigue a Take Two With Water (DungeonJournal)."
+ },
+ "96264": {
+  "dg": "razorfen-kraul",
+  "why": "Paso de Razorfen Kraul de la cadena del arma del chamán (The Tempest's Weapons): hay que matar a Charlga Razorflank (DungeonJournal)."
+ },
+ "96335": {
+  "b": "inside",
+  "donde": "Mason Connery, encadenado dentro",
+  "why": "Warcraft DB no dice quién la da; DungeonJournal la sitúa dentro."
+ },
+ "96377": {
+  "b": "after",
+  "donde": "la Document Box que da The Man in the Iron Chains",
+  "why": "Sale de un objeto que dan al terminar The Man in the Iron Chains; aún no se sabe quién la recoge (DungeonJournal)."
+ },
+ "96603": {
+  "no": [
+   "city-of-dalaran"
+  ],
+  "why": "Warcraft DB la pone en la zona City of Dalaran, pero es de nivel 52-60 y no se hace en la mazmorra; DungeonJournal tampoco la cuenta."
+ },
+ "96609": {
+  "no": [
+   "city-of-dalaran"
+  ],
+  "why": "Warcraft DB la pone en la zona City of Dalaran, pero es de nivel 52-60 y no se hace en la mazmorra; DungeonJournal tampoco la cuenta."
+ },
+ "96800": {
+  "w": [
+   "sm-library"
+  ],
+  "why": "Ala donde se hace, según DungeonJournal."
+ },
+ "96812": {
+  "no": [
+   "city-of-dalaran"
+  ],
+  "why": "Warcraft DB la pone en la zona City of Dalaran, pero es de nivel 52-60 y no se hace en la mazmorra; DungeonJournal tampoco la cuenta."
+ },
+ "98423": {
+  "b": "inside",
+  "donde": "tablilla de piedra en una cámara de la Reliquary of Kings",
+  "why": "La empieza un objeto que está dentro de Hall of Thanes (DungeonJournal)."
+ },
+ "98830": {
+  "b": "inside",
+  "w": [
+   "dire-maul-west"
+  ],
+  "donde": "Tortheldrin's Broken Glaive",
+  "why": "Sin datos de quién la da. Por su objetivo, entregar la Broken Glaive de Tortheldrin al Shen'dralar Ancient, se coge y se entrega dentro."
+ }
+}

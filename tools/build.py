@@ -424,39 +424,166 @@ def reward_chips(q, limit=4):
     more = len(its) - limit
     return ' · '.join(out) + (f' y {more} más' if more > 0 else '')
 
-def dungeon_quest_rows(dbzone, slugs):
-    ids = dungeon_quest_ids(dbzone, slugs)
-    outside, inside, steps, unknown = [], [], [], []
+_DQFIX = os.path.join(ROOT, 'data', 'mazmorras-quests.json')
+DQFIX = {int(k): v for k, v in json.load(open(_DQFIX, encoding='utf-8')).items() if k.isdigit()} if os.path.exists(_DQFIX) else {}
+
+NPCZ = json.load(open(G.questie.OUT_NPC, encoding='utf-8')) if os.path.exists(G.questie.OUT_NPC) else {}
+
+def npc_inside(n, dz):
+    """¿Está el PNJ dentro de la mazmorra? Questie no da coordenadas a lo que está dentro, pero sí su zona."""
+    r = NPCZ.get(str(n))
+    return bool(r) and (any(int(z) in dz for z in r[1]) or (not r[1] and len(r) > 3 and r[3] in dz))
+
+def dungeon_zones(dbzone, ids):
+    """Números de zona de Questie de la mazmorra: los que llevan su nombre (con sus salas, sin el exterior)
+    y el más repetido entre sus quests."""
+    nz = lambda t: re.sub(r'[^A-Z0-9]', '', str(t).upper())
+    out = {int(k) for k, v in (G.QV.get('zones') or {}).items()
+           if nz(v).startswith(nz(dbzone)) and not re.search(r'EXTERIOR|_MOP', str(v))}
+    c = defaultdict(int)
     for i in ids:
+        z = (G.QS.get(i) or {}).get('zone') or 0
+        if z > 0 and Q[i].get('zone') == dbzone: c[z] += 1
+    return out | ({max(c, key=c.get)} if c else set())
+
+def starts_inside(q, dbzone, dz=()):
+    """¿Se coge dentro? La da un objeto o algo que cae ahí, o quien la da está dentro."""
+    c, s = q.get('sc'), (q['starts'][0] if q.get('starts') else None)
+    if s and s['t'] in ('item', 'object') and not (c and c[2] and c[2] != dbzone): return True
+    if any(npc_inside(n, dz) for n in (G.QS.get(q['id']) or {}).get('sn', [])): return True
+    return bool(c and c[2] and (c[2] == dbzone or dbzone.replace('The ', '') in c[2]))
+
+def ends_inside(q, dbzone, dz=()):
+    c = q.get('ec')
+    if any(npc_inside(n, dz) for n in (G.QS.get(q['id']) or {}).get('en', [])): return True
+    return bool(c and c[2] and (c[2] == dbzone or dbzone.replace('The ', '') in c[2]))
+
+def dungeon_buckets(dbzone, slugs):
+    """Reparte las quests de una mazmorra según cuándo se cogen:
+    carry  se cogen fuera y se hacen dentro: hay que llevarlas cogidas al entrar;
+    inside se cogen dentro (cae un objeto, la da alguien de dentro o sale al entregar dentro otra de la mazmorra);
+    after  se cogen fuera, pero piden antes otra de la mazmorra: salen al volver;
+    bread  recados que solo llevan hasta quien da una de las de llevar; no hacen falta;
+    steps  pasos de fuera de estas cadenas que no son requisito de ninguna de las de llevar;
+    unknown sin datos de dónde empiezan.
+    Las correcciones a mano están en data/mazmorras-quests.json."""
+    gk = DGZ.get(dbzone)
+    add = {i for i, fx in DQFIX.items() if fx.get('dg') == gk and i in Q and in_guide(i)}
+    ids = {i for i in dungeon_quest_ids(dbzone, slugs) | add if gk not in DQFIX.get(i, {}).get('no', [])}
+    dz = dungeon_zones(dbzone, ids)
+    dq = {i for i in ids if Q[i].get('type') == 'Dungeon' or Q[i].get('zone') == dbzone} | add
+    giver = {}
+    for j in sorted(dq):
+        for s in Q[j].get('starts') or []:
+            if s['t'] == 'npc': giver.setdefault(s['id'], j)
+    bread = {}
+    for i in sorted(ids):
+        q, e = Q[i], (Q[i].get('ends') or [None])[0]
+        if BFOR.get(i) in dq: bread[i] = BFOR[i]
+        elif (not q.get('objectives') and q.get('sc') and q.get('ec') and e and e['t'] == 'npc' and giver.get(e['id']) not in (None, i)
+              and e['id'] not in {x['id'] for x in q.get('starts') or [] if x['t'] == 'npc'}
+              and i not in ancestors(giver[e['id']]) and giver[e['id']] not in ancestors(i)
+              and not starts_inside(q, dbzone, dz) and not ends_inside(q, dbzone, dz)):
+            bread[i] = giver[e['id']]
+    dq -= set(bread)
+    lead = {i for i in bread if ends_inside(Q[i], dbzone, dz)}       # recados que se entregan dentro: se llevan cogidos, pero no hacen falta
+    pre = lambda i: PRE.get(i, ([], []))[0] + PRE.get(i, ([], []))[1]
+    inside = {i for i in dq if starts_inside(Q[i], dbzone, dz) or (not Q[i].get('starts') and any(p in dq for p in pre(i)))}
+    carry, after, unknown = set(), set(), set()
+    for i in dq - inside:
+        if any(a in dq for a in ancestors(i)): after.add(i)
+        elif Q[i].get('starts') or Q[i].get('sc'): carry.add(i)
+        else: unknown.add(i)
+    rest = set(ids) - dq - set(bread)
+    need = {a for i in carry for a in ancestors(i)}
+    steps = {i for i in rest if i not in need}
+    out = {'carry': carry | lead, 'inside': inside, 'after': after, 'bread': set(bread) - lead, 'steps': steps, 'unknown': unknown, 'opt': lead}
+    for i, fx in DQFIX.items():
+        if i in ids and fx.get('b') in out:
+            for b in out.values(): b.discard(i)
+            out[fx['b']].add(i)
+    return out, bread
+
+def dungeon_quest_rows(dbzone, slugs, wings):
+    """Bloque de quests de la página de una mazmorra: las que hay que llevar cogidas (con lo que piden antes y sus
+    recados), las que se cogen dentro, las que salen al volver y el resto. Devuelve (html, número de quests)."""
+    bk, bread = dungeon_buckets(dbzone, slugs)
+    wname = {w[0]: w[1] for w in wings if w[1]}
+    multi = len(wname) > 1
+    def where(q, b):
+        fx = DQFIX.get(q['id'], {})
+        if fx.get('donde'): return esc(fx['donde'])
+        c, s = q.get('sc'), (q['starts'][0] if q.get('starts') else None)
+        if b == 'inside':
+            if s and s['t'] == 'item': return 'cae: ' + esc(s['name'])
+            if s and s['t'] == 'object': return 'objeto: ' + esc(s['name'])
+            p = next((x for x in PRE.get(q['id'], ([], []))[0] + PRE.get(q['id'], ([], []))[1] if x in bk['carry'] | bk['inside']), None)
+            if not s and p: return f'sale al entregar {esc(Q[p]["name"])}'
+            return (esc(s['name']) + ', dentro') if s else 'dentro'
+        out = esc(s['name']) if s else ''
+        if c: out += f' · {esc(c[2] or "")} ({c[0]:g}, {c[1]:g})'
+        return out
+    anyof = {x for i in bk['carry'] for a in [i] + ancestors(i) if len(PRE.get(a, ([], []))[1]) > 1 for x in PRE[a][1]}
+    def row(i, b, inner='', cls=''):
         q = Q[i]
-        c = q.get('sc')
-        s = q['starts'][0] if q.get('starts') else None
-        if s and s['t'] in ('item', 'object') and not (c and c[2] and c[2] != dbzone):
-            where, bucket = ('cae: ' if s['t'] == 'item' else 'objeto: ') + esc(s['name']), inside
-        elif c and c[2] and (c[2] == dbzone or dbzone.replace('The ', '') in c[2]):
-            where, bucket = (esc(s['name']) if s else 'dentro'), inside
-        elif s or c:
-            where = (esc(s['name']) if s else '') + (f' · {c[2] or ""} ({c[0]:g}, {c[1]:g})' if c else '')
-            bucket = outside if dungeon_of(q)[0] else steps  # un paso de la cadena que se hace fuera no es una quest de mazmorra
-        else:
-            where, bucket = '', unknown
         k = chain_info(q)
-        order = (k[1] if k else 0, q['level'], q['name'], q['id'])
         chain = f'<span class="tag st">paso {k[1]} de {k[2]}</span>' if k else ''
         new = '<span class="tag new">nueva</span>' if G.is_new(q) else ''
+        one = '<span class="tag">basta una</span>' if i in anyof else ''
+        ws = [w for w in DQFIX.get(i, {}).get('w', []) if w in wname] if multi else []
+        wt = f'<span class="tag wg">{" · ".join(esc(wname[w]) for w in ws)}</span>' if ws and (b != 'carry' or len(ws) > 1) else ''
         rw = reward_chips(q)
-        row = (f'<li data-lv="{q.get("min") or q["level"]}-{q["level"] + 3}"><label><input type="checkbox" data-k="q{i}"><span>'
-               f'<span class="lv">{q["level"]}</span> {qa(i)}{new}{chain}'
-               f'<span class="qm">{where}{f" · {q["xp"]} XP" if q.get("xp") else ""}</span>'
-               f'{f"<span class=qr>{rw}</span>" if rw else ""}</span></label></li>')
-        bucket.append((order, row))
-    def block(title, rows):
-        if not rows: return ''
-        rows.sort(key=lambda r: r[0])
-        return f'<h5>{title}</h5><ul class="chk ql">{"".join(r[1] for r in rows)}</ul>'
-    return (block('Se hacen dentro y se cogen fuera: llévalas cogidas antes de entrar', outside) + block('Se cogen dentro o caen de un jefe', inside)
-            + block('No se hacen dentro: los demás pasos de estas cadenas, antes o después de la mazmorra', steps)
-            + block('Sin datos de dónde empiezan', unknown)), len(ids)
+        got = (f'<label class="got"><input type="checkbox" data-got="{i}"><span>la llevo</span></label>' if b == 'carry' else '')
+        attrs = f' data-q="{i}"' + (f' data-w="{" ".join(ws)}"' if ws else '')
+        return (f'<li{cls} data-lv="{q.get("min") or q["level"]}-{q["level"] + 3}"{attrs}><label><input type="checkbox" data-k="q{i}"><span>'
+                f'<span class="lv">{q["level"]}</span> {qa(i)}{new}{chain}{one}{wt}'
+                f'<span class="qm">{where(q, b)}{f" · {q["xp"]} XP" if q.get("xp") else ""}</span>'
+                f'{f"<span class=qr>{rw}</span>" if rw else ""}</span></label>{got}{inner}</li>')
+    order = lambda i: (Q[i]['level'], Q[i]['name'], i)
+    def carry_row(i):
+        if i in bk['opt']:
+            return row(i, 'carry', '', ' class="dqc" data-opt="1"').replace('</a><', '</a><span class="tag">opcional</span><', 1)
+        anc = topo(ancestors(i))
+        inner = ''
+        if anc:
+            n = len(anc)
+            inner += (f'<details class="pre"{" open" if n <= 4 else ""}><summary>Antes: {n} {"quest" if n == 1 else "quests"}'
+                      f'{"" if n <= 4 else ", desde " + esc(Q[anc[0]]["name"])}</summary>'
+                      f'<ul class="chk ql">{"".join(row(a, "pre") for a in anc)}</ul></details>')
+        br = sorted((x for x, t in bread.items() if t == i and x in bk['bread']), key=order)
+        if br: inner += f'<ul class="chk ql opt">{"".join(row(x, "bread", cls=" class=\"opt\"") for x in br)}</ul>'
+        return row(i, 'carry', inner, ' class="dqc"')
+    html_ = ''.join(f'<span class="dq-wn" hidden data-w="{w}">{esc(t)}</span>' for w, t in wname.items()) if multi else ''
+    if bk['carry']:
+        html_ += ('<h5>Llévalas cogidas al entrar</h5><p class="dq-how">Se cogen fuera y se hacen o se entregan dentro. '
+                  'Marca «la llevo» cuando la tengas: con todas marcadas, o ya hechas, estás listo. Las opcionales no cuentan.</p>')
+        if multi:
+            groups, seen = [], set()
+            for w in [w[0] for w in wings]:
+                ids_ = sorted((i for i in bk['carry'] if i not in seen and (DQFIX.get(i, {}).get('w') or [None])[0] == w), key=order)
+                seen |= set(ids_)
+                if ids_: groups.append((wname.get(w, ''), ids_))
+            rest = sorted((i for i in bk['carry'] if i not in seen), key=order)
+            if rest: groups.append(('Sin ala conocida', rest))
+            for t, ids_ in groups:
+                html_ += f'<h6>{esc(t)}</h6><ul class="chk ql">{"".join(carry_row(i) for i in ids_)}</ul>'
+        else:
+            html_ += f'<ul class="chk ql">{"".join(carry_row(i) for i in sorted(bk["carry"], key=order))}</ul>'
+    def block(title, b, ids_, note=''):
+        if not ids_: return ''
+        return (f'<h5>{title}</h5>{f"<p class=dq-how>{note}</p>" if note else ""}'
+                f'<ul class="chk ql">{"".join(row(i, b) for i in sorted(ids_, key=order))}</ul>')
+    loose = {x for x in bk['bread'] if bread.get(x) not in bk['carry']}
+    html_ += block('Se cogen dentro', 'inside', bk['inside'], 'Caen de un enemigo, las da alguien de dentro o salen al entregar dentro otra de la lista.')
+    html_ += block('Al volver', 'after', bk['after'], 'Se cogen fuera, pero piden antes otra quest de esta mazmorra. Algunas te mandan otra vez dentro.')
+    html_ += block('Recados opcionales', 'bread', loose, 'Solo llevan hasta quien da otra quest. Puedes saltártelos.')
+    html_ += block('Sin datos de dónde empiezan', 'unknown', bk['unknown'])
+    if bk['steps']:
+        n = len(bk['steps'])
+        html_ += (f'<details class="dq-more"><summary>Otras {n} quests de estas cadenas, fuera de la mazmorra</summary>'
+                  f'<ul class="chk ql">{"".join(row(i, "steps") for i in sorted(bk["steps"], key=order))}</ul></details>')
+    total = len(set().union(*bk.values()))
+    return html_, total
 
 def li_list(items):
     return '<ul>' + ''.join(f'<li>{linkify(esc(x))}</li>' for x in items if x) + '</ul>' if items else ''
@@ -491,7 +618,7 @@ def render_dungeons():
         cards = [(w[1], CARDS.get(w[0], {})) for w in wings]
         first = cards[0][1]
         lo, hi = min(w[2] for w in wings), max(w[3] for w in wings)
-        qrows, qn = dungeon_quest_rows(dbzone, wtq)
+        qrows, qn = dungeon_quest_rows(dbzone, wtq, wings)
         tiers = sorted({TIER[w[4]] for w in wings if w[4]})
         for w in wings:
             dash.append({'k': w[0], 'g': gkey, 'gn': name, 'n': name + (f' · {w[1]}' if w[1] else ''), 'a': w[2], 'b': w[3],
@@ -779,6 +906,13 @@ for _i in Q:
     if _al or _an: PRE[_i] = (_al, _an)
     for _p in _al + _an: SUCC[_p].append(_i)
 
+# requisitos que Questie no tiene, de data/mazmorras-quests.json
+for _i, _fx in DQFIX.items():
+    for _p in _fx.get('pre', []):
+        if in_guide(_i) and in_guide(_p) and _p not in PRE.get(_i, ([], []))[0]:
+            _al, _an = PRE.get(_i, ([], []))
+            PRE[_i] = (_al + [_p], _an); SUCC[_p].append(_i)
+
 # variantes que se excluyen entre sí (solo se puede hacer una): cuentan como la misma gesta
 EXCL = defaultdict(set)
 for _i in Q:
@@ -987,7 +1121,10 @@ def payoff(ids):
 DQ_OF, WINGS = {}, {}                      # quest de mazmorra -> clave de mazmorra; mazmorra -> claves de sus alas
 for _d in DG:
     WINGS[_d[0]] = [w[0] for w in _d[8]]
-    for _i in dungeon_quest_ids(_d[2], _d[6]): DQ_OF.setdefault(_i, _d[0])
+    for _i in dungeon_quest_ids(_d[2], _d[6]):
+        if _d[0] not in DQFIX.get(_i, {}).get('no', []): DQ_OF.setdefault(_i, _d[0])
+for _i, _fx in DQFIX.items():
+    if _fx.get('dg') and _i in Q: DQ_OF.setdefault(_i, _fx['dg'])
 
 def dungeon_of(q):
     """(mazmorra dentro de la que se hace la quest, mazmorra a cuya cadena pertenece aunque se haga fuera).
@@ -1674,6 +1811,7 @@ def build():
     open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write(wrap(page, 'local'))
     pr = re.sub(r'<section class="blk allq".*?<!--/allq-->', '', page, flags=re.S)
     pr = re.sub(r'(<(?:section class="view"|article class="page [a-z]+")[^>]*?) hidden>', r'\1>', pr)
+    pr = re.sub(r'<details class="(pre|dq-more)">', r'<details class="\1" open>', pr)          # en papel, abiertos
     open(os.path.join(ROOT, 'dist', 'print.html'), 'w', encoding='utf-8').write(wrap(pr, 'local print-all'))
     print(f'quests en caché {len(Q)} · fichas de quest {len(data["q"])} · objetos {len(data["i"])} · PNJ {len(data["n"])}')
     print(f'enlaces en el texto: {STATS["linked"]} directos, {STATS["search"]} por búsqueda · zonas {len(zdash)} · mazmorras {len(dash)} · cadenas {len(cmeta)}')

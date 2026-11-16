@@ -194,7 +194,10 @@ Guías paso a paso por zona: `/guides/<zona>-<niveles>/`. Las direcciones salen 
 **Quests de mazmorra**
 
 - Una quest es de mazmorra solo si se hace dentro: la base de datos la marca como `Dungeon` o su zona es la mazmorra.
-- Los pasos previos de su cadena se hacen fuera: llevan «cadena de» y el nombre de la mazmorra, y en la página de la mazmorra van en un bloque aparte.
+- Los pasos previos de su cadena se hacen fuera: llevan «cadena de» y el nombre de la mazmorra, y en la página de la mazmorra van debajo de la quest que desbloquean.
+- Se reparten según cuándo se cogen. Hay que llevar cogidas las que se cogen fuera y no piden antes otra de la mazmorra. Se cogen dentro las que da un objeto que cae, alguien de dentro, o las que salen al entregar dentro otra. Son «al volver» las que se cogen fuera pero piden antes una de la mazmorra. Los recados que solo llevan hasta quien da una quest son opcionales.
+- Quién está dentro: Questie no da coordenadas a los PNJ de dentro de una mazmorra, pero sí su zona; los números de zona de la mazmorra salen de los nombres de zona de Questie.
+- Contrasta el reparto, mazmorra a mazmorra, con el addon DungeonJournal (CurseForge, de ExehnTV). Tiene la lista de quests de cada mazmorra y las cadenas que de verdad hacen falta. Lo que añada o corrija va a un archivo de correcciones, cada una con su motivo; los datos del addon no se copian al repositorio.
 
 **Zonas**
 
@@ -257,7 +260,7 @@ Guías paso a paso por zona: `/guides/<zona>-<niveles>/`. Las direcciones salen 
 **Página de mazmorra:**
 
 - Cómo llegar y qué coger antes.
-- Quests en tres bloques: se hacen dentro y se cogen fuera; se cogen dentro; los demás pasos de sus cadenas.
+- Quests en bloques: llévalas cogidas al entrar (con lo que piden antes y sus recados), se cogen dentro, al volver y otros pasos. Arriba, un aviso de «listo para entrar» con una marca «la llevo» que no cuenta como quest hecha; en las de varias alas, ala por ala.
 - Jefes en orden, objetos clave para la clase del personaje y consejos.
 - Casilla «Hecha» por ala.
 
