@@ -757,7 +757,11 @@ ol.chain > li.skip > .cs-b .cs-t::after{content:"no hizo falta";font-size:.82rem
 .dq li.dqc.diario{border-left-width:5px;background:color-mix(in srgb, var(--ok) 11%, transparent);padding-top:5px;padding-bottom:3px}
 .dq li.dqc.diario > label{background:transparent!important}
 /* estado de cada quest para llevar, encima de su nombre */
-.dq-st{display:block;width:max-content;margin:0 0 3px 30px;padding:1px 8px;border-radius:999px;font-size:.76rem;font-weight:600;line-height:1.5;text-decoration:none;border:1px solid currentColor}
+.dq-sts{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin:0 0 3px 30px}
+.dq-tog{font:inherit;font-size:.74rem;padding:1px 8px;border-radius:999px;border:1px dashed var(--rule);background:transparent;color:var(--muted);cursor:pointer}
+.dq-tog:hover{border-color:var(--ok);color:var(--ok)}
+@media print{ .dq-tog{display:none} }
+.dq-st{display:inline-block;margin:0;padding:1px 8px;border-radius:999px;font-size:.76rem;font-weight:600;line-height:1.5;text-decoration:none;border:1px solid currentColor}
 .dq-st.diario{color:var(--paper);background:var(--ok);border-color:var(--ok)}
 .dq-st.hecha{color:var(--muted)}
 .dq-st.coger{color:var(--warn)}

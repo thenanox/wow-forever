@@ -570,7 +570,7 @@ def dungeon_quest_rows(dbzone, slugs, wings):
     html_ = ''.join(f'<span class="dq-wn" hidden data-w="{w}">{esc(t)}</span>' for w, t in wname.items()) if multi else ''
     if bk['carry']:
         html_ += ('<h5>Llévalas cogidas al entrar</h5><p class="dq-how">Se cogen fuera y se hacen dentro. Las que tienes en el diario '
-                  'salen en verde al <a href="#importar">importar Questie</a>.</p>')
+                  'salen en verde: al <a href="#importar">importar Questie</a> o con el botón «La llevo en el diario» de cada una.</p>')
         if multi:
             groups, seen = [], set()
             for w in [w[0] for w in wings]:

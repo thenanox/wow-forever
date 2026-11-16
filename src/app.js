@@ -199,10 +199,17 @@
     $$('.dpage').forEach(dqReady);
   }
   // ---------------------------------------------------------------- listo para entrar: las quests que hay que llevar cogidas
-  // Con las quests completadas se sabe cuáles puedes coger ya. Cuáles llevas cogidas sale del diario de Questie al importar.
+  // Con las quests completadas se sabe cuáles puedes coger ya. Cuáles llevas cogidas sale del diario de Questie al importar o del botón de cada una.
   // Se guarda aparte ('llevo'): no es una quest hecha (la casilla sigue siendo «hecha») y no viaja en el código de progreso
   var GOT = {};
   try { GOT = JSON.parse(store.get('llevo') || '{}') || {}; } catch(e){ GOT = {}; }
+  // a mano: el botón junto al estado de cada quest para llevar (la casilla sigue siendo la de hecha)
+  document.addEventListener('click', function(e){
+    var b = e.target.closest && e.target.closest('button.dq-tog'); if (!b) return;
+    var id = b.dataset.q; if (GOT[id]) delete GOT[id]; else { GOT[id] = 1; tink(); }
+    store.set('llevo', JSON.stringify(GOT));
+    $$('.dpage').forEach(dqReady); renderCards();
+  });
   function dqReady(pg){
     var blk = $('.dq', pg); if (!blk) return;
     var rows = $$('li.dqc:not([data-opt])', blk), el = $('.dq-ready', blk);
@@ -221,8 +228,11 @@
       li.classList.toggle('lista', done || got);
       li.classList.toggle('puede', !done && !got && st.s === 'ok');
       li.classList.toggle('diario', got);
-      var tag = $(':scope > .dq-st', li);                    // fuera del texto de la casilla, que se tacha al estar hecha
-      if (!tag){ tag = document.createElement('span'); li.insertBefore(tag, li.firstChild); }
+      var box = $(':scope > .dq-sts', li);                   // fuera del texto de la casilla, que se tacha al estar hecha
+      if (!box){ box = document.createElement('div'); box.className = 'dq-sts'; box.innerHTML = '<span></span><button type="button" class="dq-tog"></button>'; li.insertBefore(box, li.firstChild); }
+      var tag = box.firstChild, tog = box.lastChild;
+      tog.dataset.q = id; tog.hidden = done;
+      tog.textContent = got ? 'Quitar del diario' : '+ La llevo en el diario';
       var txt, cls;
       if (st.s === 'done'){ txt = 'Hecha'; cls = 'hecha'; }
       else if (st.s === 'gone'){ txt = 'Ya no hace falta'; cls = 'hecha'; }
