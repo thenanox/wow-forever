@@ -151,6 +151,7 @@ Cómo se leen los campos, que es como decide el addon si una quest se puede coge
 - `preQuestGroup`: hacen falta todas, y solo cuenta si no hay `preQuestSingle`. Un número negativo exige esa quest exacta; si no, vale también otra que se excluya con ella.
 - `exclusiveTo`: variantes que se excluyen. Hecha una, la otra cuenta como hecha.
 - `nextQuestInChain`, `breadcrumbForQuestId`/`breadcrumbs`, `parentQuest` y `availableUntilCompleted`: una quest deja de ofrecerse cuando completas la siguiente de su cadena, el destino de su recado, su quest madre o la que la retira. Un recado que solo lleva a otra quest no es obligatorio.
+- Recados en Questie (`QuestieDB.IsDoable`): el recado deja de ofrecerse cuando la quest a la que lleva está cogida o hecha, y esa quest no se ofrece mientras lleves uno de sus recados. Hay recados que Questie no marca: «habla con» o «lleva esto a» sin requisitos, que nada pide y que acaban en quien da otra quest. Se pueden tratar como opcionales, pero sin aplicarles esas reglas. Que no cuenten como quest de mazmorra aunque la base de datos los ponga allí, y que la cadena no los proponga como siguiente paso.
 - `requiredSkill`, `requiredSpecialization` (como Ingeniería gnómica o goblin), `requiredMinRep` y `requiredMaxRep`: las que piden algo que el personaje no tiene se quedan fuera.
 - `specialFlags & 1`: repetible.
 

@@ -80,7 +80,7 @@
   }
   function whyText(st){
     var n = D.q[st.need] ? D.q[st.need].n : '';
-    return st.s === 'gone' ? 'ya no se puede coger: hiciste ' + n : st.s === 'lv' ? 'desde nivel ' + st.need
+    return st.s === 'gone' ? (st.how === 'got' ? 'ya no te lo dan: llevas cogida ' : 'ya no se puede coger: hiciste ') + n : st.s === 'lv' ? 'desde nivel ' + st.need
       : st.how === 'pq' ? 'sale mientras tienes cogida ' + n : 'antes hay que hacer ' + n;
   }
   function uniq(q){
@@ -142,6 +142,7 @@
     if (isQ(id)) return { s: 'done' };
     var shut = (q.gn || []).filter(isQ)[0];
     if (shut) return { s: 'gone', need: shut };
+    if (q.bf && typeof GOT === 'object' && GOT && GOT[q.bf]) return { s: 'gone', need: q.bf, how: 'got' };
     if (q.pq && D.q[q.pq] && questState(q.pq).s !== 'ok') return { s: 'pre', need: q.pq, how: 'pq' };
     var miss = (q.pa || []).filter(function(p){ return D.q[p] && !isQ(p); });
     if (!miss.length && q.po && q.po.length && !q.po.some(function(p){ return !D.q[p] || isQ(p); })) miss = [q.po[0]];
@@ -305,13 +306,16 @@
   var CH = {};
   function chainState(c){ return CH[c.k] || { done: 0, n: c.n, next: 1 }; }
   function markSteps(root){
-    var lis = $$('ol.chain > li', root), done = 0, next = 0;
+    var lis = $$('ol.chain > li', root), done = 0, next = 0, opt = 0;
     lis.forEach(function(li, i){
       // un paso sin marcar cuenta como superado si ya está hecho uno posterior que depende de él o al que solo llevaba
       var box = $('input', li), on = box.checked, skip = !on && (keyDone(box.dataset.k) || (!!li.dataset.imp && li.dataset.imp.split(',').some(keyDone)));
       li.classList.toggle('done', on); li.classList.toggle('skip', skip); li.classList.remove('next');
-      if (on || skip) done++; else if (!next){ next = i + 1; li.classList.add('next'); }
+      // el siguiente que te toca es el primer paso que hace falta; un recado u opcional solo si no queda otro
+      if (on || skip) done++; else if (li.classList.contains('opt')){ if (!opt) opt = i + 1; } else if (!next) next = i + 1;
     });
+    next = next || opt;
+    if (next) lis[next - 1].classList.add('next');
     return { done: done, n: lis.length, next: next };
   }
   function updateChains(){
@@ -920,7 +924,7 @@
     if (qs.s === 'pre') meta.push('<span class="why">' + (qs.how === 'pq' ? 'mientras tienes: ' : 'antes: ') + '<a class="qc" href="#q-' + qs.need + '">' + esc(D.q[qs.need].n) + '</a></span>');
     else if (qs.s === 'lv') meta.push('<span class="why">desde nivel ' + qs.need + '</span>');
     else if (qs.s === 'gone') meta.push('<span class="why">ya no se puede coger: hiciste <a class="qc" href="#q-' + qs.need + '">' + esc(D.q[qs.need].n) + '</a></span>');
-    return '<li' + (qs.s === 'gone' ? ' class="gone"' : '') + '><label>' + qBox(id) + '<span><span class="lv">' + (q.l || '?') + '</span> ' + qLink(id) + qTags(q) + (!KS['q' + id] && exDone(id) ? '<span class="tag okk">hecha en otra variante</span>' : '') + '<span class="qm">' + meta.join(' · ') + '</span></span></label></li>';
+    return '<li' + (qs.s === 'gone' || q.bc ? ' class="' + [qs.s === 'gone' ? 'gone' : '', q.bc ? 'bc' : ''].join(' ').trim() + '"' : '') + '><label>' + qBox(id) + '<span><span class="lv">' + (q.l || '?') + '</span> ' + qLink(id) + qTags(q) + (!KS['q' + id] && exDone(id) ? '<span class="tag okk">hecha en otra variante</span>' : '') + '<span class="qm">' + meta.join(' · ') + '</span></span></label></li>';
   }
   var qf = { text: $('#qf-text'), zone: $('#qf-zone'), state: $('#qf-state'), kind: $('#qf-kind'), level: $('#qf-level') }, qshown = 150;
   if (qf.zone){
@@ -1026,6 +1030,9 @@
     if (q.p) rows.push('<dt>Reputación</dt><dd>' + q.p.map(function(x){ return '+' + x[1] + ' ' + esc(x[0]); }).join(', ') + '</dd>');
     if (q.rq) rows.push('<dt>Pide</dt><dd>' + esc(q.rq.join(' y ')) + '</dd>');
     if (q.pq && D.q[q.pq]) rows.push('<dt>Solo sale</dt><dd>mientras tienes cogida ' + qLink(q.pq) + ', sin entregarla</dd>');
+    if (q.bf && D.q[q.bf]) rows.push('<dt>Recado</dt><dd>Opcional: solo lleva hasta quien da ' + qLink(q.bf) + '. Según Questie, deja de ofrecerse en cuanto la tienes cogida o hecha, y mientras lleves este recado no te la dan: entrégalo antes.</dd>');
+    else if (q.bt && q.e) rows.push('<dt>Recado</dt><dd>Opcional: solo lleva hasta ' + esc(q.e[2]) + ', que da otras quests, y ninguna lo pide. Questie no lo marca como recado, así que sus reglas de recado no se aplican.</dd>');
+    if (q.br) rows.push('<dt>Recados</dt><dd>' + q.br.filter(function(i){ return D.q[i]; }).map(qLink).join(' o ') + (q.br.length > 1 ? ' llevan' : ' lleva') + ' hasta aquí y ' + (q.br.length > 1 ? 'son opcionales' : 'es opcional') + '. Si llevas uno cogido, entrégalo antes: mientras lo lleves, no te dan esta.</dd>');
     var shut = (q.gn || []).filter(function(i){ return D.q[i] && i !== q.pq; });
     if (shut.length) rows.push('<dt>Deja de ofrecerse</dt><dd>cuando completas ' + shut.map(qLink).join(' o ') + '</dd>');
     if (q.aka) rows.push('<dt>Otro número</dt><dd>En Forever esta quest lleva el número ' + id + '. La base de datos la trae duplicada también como ' + q.aka.join(', ') + ': ese otro número solo sirve para reconocerla al importar.</dd>');
@@ -1036,7 +1043,7 @@
     var after = (q.nx || []).filter(function(i){ return D.q[i]; });
     pg.innerHTML = '<header class="ph"><div class="crumb"><a href="#quests">Quests</a><span>›</span>' + esc(q.n) + '</div><h2>' + esc(q.n) + '</h2>' +
       '<div class="ph-meta"><span class="lv">nivel ' + (q.l || '?') + (q.m && q.m < q.l ? ', desde ' + q.m : '') + '</span>' + (qPlace(q) ? '<span>' + esc(qPlace(q)) + '</span>' : '') + qTags(q) +
-      (function(){ var s = questState(id), a = s.need && D.q[s.need] ? '<a href="#q-' + s.need + '">' + esc(D.q[s.need].n) + '</a>' : ''; return s.s === 'ok' ? '<span class="tag okk">puedes cogerla ya</span>' : s.s === 'gone' ? '<span class="why">ya no se puede coger: hiciste ' + a + '</span>' : s.s === 'pre' ? '<span class="why">' + (s.how === 'pq' ? 'sale mientras tienes cogida ' : 'antes hay que hacer ') + a + '</span>' : s.s === 'lv' ? '<span class="why">desde nivel ' + s.need + '</span>' : ''; })() +
+      (function(){ var s = questState(id), a = s.need && D.q[s.need] ? '<a href="#q-' + s.need + '">' + esc(D.q[s.need].n) + '</a>' : ''; return s.s === 'ok' ? '<span class="tag okk">puedes cogerla ya</span>' : s.s === 'gone' ? '<span class="why">' + (s.how === 'got' ? 'ya no te lo dan: llevas cogida ' : 'ya no se puede coger: hiciste ') + a + '</span>' : s.s === 'pre' ? '<span class="why">' + (s.how === 'pq' ? 'sale mientras tienes cogida ' : 'antes hay que hacer ') + a + '</span>' : s.s === 'lv' ? '<span class="why">desde nivel ' + s.need + '</span>' : ''; })() +
       '<span class="cprog"></span></div><div class="dones"><label class="done">' + qBox(id) + ' Hecha</label> <a class="x x-quest ext btn" data-t="quest" data-id="' + id + '" href="' + url('quest', id) + '" target="_blank" rel="noopener">Abrir en ' + (mode === 'wdb' ? 'Warcraft DB' : 'Wowhead') + ' ↗</a></div>' + chainNav(id) + '</header>' +
       '<section class="blk"><h3>Ficha</h3><dl class="qd">' + rows.join('') + '</dl>' + (where.length ? '<p class="src">Aparece en: ' + where.join(', ') + '.</p>' : '') + '</section>' +
       '<section class="blk csteps"><h3>' + (anc.length ? 'Cadena hasta aquí' : 'Requisitos') + '</h3>' +

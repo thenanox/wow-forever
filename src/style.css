@@ -752,10 +752,18 @@ ol.chain > li.skip > .cs-b .cs-t::after{content:"no hizo falta";font-size:.82rem
 .dq li.dqc.lista{border-left-color:var(--ok)}
 .dq label.got{display:inline-flex;align-items:center;gap:6px;font-size:.84rem;color:var(--muted);margin:0 0 2px 1.6em;padding:2px 8px;border:1px solid var(--rule);border-radius:999px;cursor:pointer}
 .dq li.dqc.lista label.got{color:var(--ok);border-color:var(--ok)}
-.dq details.pre, .dq ul.opt{margin:2px 0 4px 1.6em}
+.dq details.pre{margin:2px 0 4px 1.6em}
 .dq details.pre > summary, .dq details.dq-more > summary{font-size:.84rem;color:var(--muted);cursor:pointer}
-.dq details.pre .ql, .dq ul.opt{margin:2px 0}
-.dq li.opt > label > span::after{content:" \00b7  recado opcional";font-size:.8rem;color:var(--muted);font-variant-caps:all-small-caps;letter-spacing:.04em}
+.dq details.pre .ql{margin:2px 0}
+.dq details.pre.opt > summary{font-style:italic}
+.dq details.pre.opt li{opacity:.8}
+.dq details.pre.opt li > label, .dq li.dqc[data-opt] > label:not(.got){background:transparent!important}
+.dq li.dqc[data-opt]{border-left-style:dashed;opacity:.85}
+/* recados y pasos opcionales, en toda la guía: más discretos que lo que hace falta */
+.ql li.bc, .allq li.bc{opacity:.8}
+.ql li.bc.at-level > label{background:transparent}
+ol.chain > li.opt{opacity:.8}
+ol.chain > li.opt::before{background:repeating-linear-gradient(var(--rule) 0 4px, transparent 4px 8px)}
 .dq details.dq-more{margin-top:10px}
 .tag.wg{background:var(--bg);color:var(--muted)}
 @media print{ .dq label.got{display:none} }

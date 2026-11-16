@@ -290,6 +290,9 @@ def qd(q):
     ex = sorted(EXCL.get(q['id'], ()))
     if ex: d['ex'] = ex
     if q['id'] in BREAD: d['bc'] = 1
+    if q['id'] in BFOR and BFOR[q['id']] in Q: d['bf'] = BFOR[q['id']]           # recado de Questie: sus reglas
+    elif q['id'] in ERRAND: d['bt'] = ERRAND[q['id']]                              # recado deducido
+    if BREADS_OF.get(q['id']): d['br'] = BREADS_OF[q['id']]
     pq = G.parent(q['id'])
     if pq and pq in Q and in_guide(pq): d['pq'] = pq
     gn = closes(q['id'])
@@ -378,7 +381,7 @@ def zone_list(title, dbzones, slug):
         lo = min((q.get('min') or q['level']) for q in g)
         box = (f'data-k="g{first["id"]}" data-dep="{("|" if kind == "alt" else ",").join("q%d" % q["id"] for q in g)}"' if len(g) > 1 else f'data-k="q{first["id"]}"')
         out.append(
-            f'<li data-lv="{lo}-{lvl + 2}"{" data-new" if isnew else ""}{" data-star" if star else ""}><label><input type="checkbox" {box}><span>'
+            f'<li data-lv="{lo}-{lvl + 2}"{" data-new" if isnew else ""}{" data-star" if star else ""}{" class=bc" if first["id"] in BREAD else ""}><label><input type="checkbox" {box}><span>'
             f'<span class="lv">{lvl}</span> {star}{A("quest", first["id"], esc(n))}{tags}'
             f'<span class="qm">{meta}{chain}{f" · {xp} XP" if xp else ""}</span></span></label></li>')
     note = ('Datos del juego (Warcraft DB). Puede incluir alguna quest de otra clase o retirada. '
@@ -479,7 +482,7 @@ def dungeon_buckets(dbzone, slugs):
     bread = {}
     for i in sorted(ids):
         q, e = Q[i], (Q[i].get('ends') or [None])[0]
-        if BFOR.get(i) in dq: bread[i] = BFOR[i]
+        if BTO.get(i) in dq: bread[i] = BTO[i]
         elif (not q.get('objectives') and q.get('sc') and q.get('ec') and e and e['t'] == 'npc' and giver.get(e['id']) not in (None, i)
               and e['id'] not in {x['id'] for x in q.get('starts') or [] if x['t'] == 'npc'}
               and i not in ancestors(giver[e['id']]) and giver[e['id']] not in ancestors(i)
@@ -522,6 +525,8 @@ def dungeon_quest_rows(dbzone, slugs, wings):
             return (esc(s['name']) + ', dentro') if s else 'dentro'
         out = esc(s['name']) if s else ''
         if c: out += f' · {esc(c[2] or "")} ({c[0]:g}, {c[1]:g})'
+        if b == 'bread' and q['id'] in BFOR and BFOR[q['id']] in Q:
+            out += f' · si lo llevas, entrégalo antes: mientras lo tengas no te dan {esc(Q[BFOR[q["id"]]]["name"])}'
         return out
     anyof = {x for i in bk['carry'] for a in [i] + ancestors(i) if len(PRE.get(a, ([], []))[1]) > 1 for x in PRE[a][1]}
     def row(i, b, inner='', cls=''):
@@ -535,6 +540,7 @@ def dungeon_quest_rows(dbzone, slugs, wings):
         rw = reward_chips(q)
         got = (f'<label class="got"><input type="checkbox" data-got="{i}"><span>la llevo</span></label>' if b == 'carry' else '')
         attrs = f' data-q="{i}"' + (f' data-w="{" ".join(ws)}"' if ws else '')
+        if b == 'bread' and not cls: cls = ' class="bc"'
         return (f'<li{cls} data-lv="{q.get("min") or q["level"]}-{q["level"] + 3}"{attrs}><label><input type="checkbox" data-k="q{i}"><span>'
                 f'<span class="lv">{q["level"]}</span> {qa(i)}{new}{chain}{one}{wt}'
                 f'<span class="qm">{where(q, b)}{f" · {q["xp"]} XP" if q.get("xp") else ""}</span>'
@@ -551,7 +557,10 @@ def dungeon_quest_rows(dbzone, slugs, wings):
                       f'{"" if n <= 4 else ", desde " + esc(Q[anc[0]]["name"])}</summary>'
                       f'<ul class="chk ql">{"".join(row(a, "pre") for a in anc)}</ul></details>')
         br = sorted((x for x, t in bread.items() if t == i and x in bk['bread']), key=order)
-        if br: inner += f'<ul class="chk ql opt">{"".join(row(x, "bread", cls=" class=\"opt\"") for x in br)}</ul>'
+        if br:
+            inner += (f'<details class="pre opt" open><summary>Antes, opcional: {"un recado" if len(br) == 1 else f"{len(br)} recados"} '
+                      f'que solo {"lleva" if len(br) == 1 else "llevan"} hasta quien la da. No hace falta para cogerla</summary>'
+                      f'<ul class="chk ql">{"".join(row(x, "bread") for x in br)}</ul></details>')
         return row(i, 'carry', inner, ' class="dqc"')
     html_ = ''.join(f'<span class="dq-wn" hidden data-w="{w}">{esc(t)}</span>' for w, t in wname.items()) if multi else ''
     if bk['carry']:
@@ -928,6 +937,26 @@ for _i in Q:
     for _b in _s.get('bread', []):
         if in_guide(_b): BFOR.setdefault(_b, _i)
 BREAD = set(BFOR)
+# Recados que Questie no marca: «habla con» o «lleva esto a» sin requisitos, que ninguna otra quest pide y que acaban en
+# quien da otra quest. Son opcionales por los propios requisitos de Questie; a estos no se les aplican sus reglas de recado.
+_ERR_NO = re.compile(r'\b(escort|protect|help|learn|maintain|read|explore|kill|slay|collect|bring back)\b', re.I)
+_GIVER = defaultdict(list)
+for _j in Q:
+    if in_guide(_j):
+        for _s in Q[_j].get('starts') or []:
+            if _s['t'] == 'npc': _GIVER[_s['id']].append(_j)
+ERRAND = {}
+for _i in Q:
+    if not in_guide(_i) or _i in BFOR or _i in CLASS_Q: continue
+    _q = Q[_i]; _e = (_q.get('ends') or [None])[0]; _st = {s['id'] for s in _q.get('starts') or [] if s['t'] == 'npc'}
+    if (_q.get('objectives') or not _st or not _q.get('sc') or not _e or _e['t'] != 'npc' or _e['id'] in _st or PRE.get(_i) or SUCC.get(_i)
+            or (G.QS.get(_i) or {}).get('next') or _ERR_NO.search(G.clean(_q.get('obj') or ''))): continue
+    _js = [j for j in _GIVER.get(_e['id'], []) if j != _i and not G.repeatable(j)]
+    if _js: ERRAND[_i] = min(_js, key=lambda j: (abs((Q[j].get('level') or 0) - (_q.get('level') or 0)), j))
+BREAD |= set(ERRAND)
+BTO = {**ERRAND, **BFOR}                    # recado -> quest a la que lleva
+BREADS_OF = defaultdict(list)              # quest -> recados de Questie que llevan a ella
+for _b, _t in sorted(BFOR.items()): BREADS_OF[_t].append(_b)
 
 REP_ES = [(42000, 'Exaltado'), (21000, 'Reverenciado'), (9000, 'Honorable'), (3000, 'Amistoso'), (0, 'Neutral'), (-3000, 'Antipático'), (-6000, 'Hostil')]
 def standing(v):
@@ -1128,8 +1157,10 @@ for _i, _fx in DQFIX.items():
 
 def dungeon_of(q):
     """(mazmorra dentro de la que se hace la quest, mazmorra a cuya cadena pertenece aunque se haga fuera).
-    Se hace dentro si la base de datos la marca como quest de mazmorra o si su zona es la propia mazmorra."""
+    Se hace dentro si la base de datos la marca como quest de mazmorra o si su zona es la propia mazmorra.
+    Un recado no se hace dentro aunque la base de datos lo ponga en la mazmorra: solo lleva hasta quien da la quest."""
     g, z = DQ_OF.get(q['id']), DGZ.get(q.get('zone'))
+    if q['id'] in BREAD and (g or z): return None, g or z
     if g and (q.get('type') == 'Dungeon' or z == g): return g, None
     if z: return z, None
     return None, g
@@ -1175,7 +1206,7 @@ def render_chains():
         ids = [s['q'] for s in ch['s'] if 'q' in s and s['q'] in Q]
         CHAIN_IDS[ch['k']] = ids
         for s in ch['s']:                                    # recado que solo lleva al paso siguiente: no es obligatorio
-            if 'q' in s and BFOR.get(s['q']) in ids: s['bc'] = 1
+            if 'q' in s and BTO.get(s['q']) in ids: s['bc'] = 1
         CHAIN_REQ[ch['k']] = [s['q'] for s in ch['s'] if 'q' in s and s['q'] in Q and not s.get('opt') and not s.get('bc')]
         for n, s in enumerate(ch['s'], 1):
             if 'q' in s: QCHAIN.setdefault(s['q'], (ch['k'], n, ch['t']))
@@ -1224,7 +1255,7 @@ def render_chains():
             else:
                 key = f'c-{ch["k"]}-{s["x"]}'; title = f'<b>{esc(s["n"])}</b>'; where = linkify(s.get('w', ''))
             lis.append(
-                f'<li{imp_attr(implied, s)}><label class="cs-n"><input type="checkbox" data-k="{key}" aria-label="Paso {i} hecho"><span data-n="{i}"></span></label>'
+                f'<li{imp_attr(implied, s)}{" class=opt" if s.get("opt") or s.get("bc") else ""}><label class="cs-n"><input type="checkbox" data-k="{key}" aria-label="Paso {i} hecho"><span data-n="{i}"></span></label>'
                 f'<div class="cs-b"><div class="cs-t">{title}' + (f'<span class="lv">{lv}</span>' if lv else '') + tag + '</div>'
                 + (f'<p class="cs-w">{where}</p>' if where else '')
                 + (f'<p class="cs-o">{obj}</p>' if obj else '')
@@ -1447,10 +1478,10 @@ def deps_for(key, inner):
         cads = re.findall(r'href="#cad-([a-z0-9]+)"', inner)
         ids = list(dict.fromkeys(i for c in cads for i in CHAIN_REQ.get(c, [])))
         if not ids:
-            for i in map(int, re.findall(r'data-t="quest" data-id="(\d+)"', inner)):
-                if in_guide(i):
-                    for j in sorted(NAME_IDS[G.norm(Q[i]['name'])]):
-                        if j not in ids and j not in BREAD: ids.append(j)
+            named = [j for i in map(int, re.findall(r'data-t="quest" data-id="(\d+)"', inner)) if in_guide(i)
+                     for j in sorted(NAME_IDS[G.norm(Q[i]['name'])])]
+            # un recado no cuenta como lo que hay que hacer, salvo que el punto hable solo de ese recado
+            ids = list(dict.fromkeys(j for j in named if j not in BREAD)) or list(dict.fromkeys(named))
         out = req_tokens(ids)
         if not out:
             out = [f'dg-{w}' for g in dict.fromkeys(re.findall(r'href="#dg-([a-z0-9-]+)"', inner)) for w in WINGS.get(g, [])]
