@@ -53,7 +53,7 @@
   function setKey(k, on){
     if (on) KS[k] = 1; else delete KS[k];
     storeOK = store.set('chk-' + k, on ? '1' : '0') && storeOK;
-    $$('input[data-k="' + k + '"]').forEach(function(o){ if (!o.dataset.dep) o.checked = on; });
+    $$('input[data-k="' + k + '"]').forEach(function(o){ if (!o.dataset.dep) o.checked = on || !!(o.dataset.got && GOT[o.dataset.got]); });
   }
   // marcar una quest da por hechas las que el juego exige antes (si hay varias alternativas no se sabe cuál, y no se toca)
   function markBefore(id, seen){
@@ -80,7 +80,7 @@
       var li = b.closest('li');                              // un recado u opcional no cuenta para el total
       return !(li && (li.classList.contains('bc') || li.classList.contains('opt') || li.hasAttribute('data-opt') || li.closest('details.opt')));
     });
-    return [all.filter(function(b){ return b.checked || (b.parentNode.parentNode.classList && b.parentNode.parentNode.classList.contains('gone')); }).length, all.length];
+    return [all.filter(function(b){ return (b.dataset.got ? isQ(+b.dataset.got) : b.checked) || (b.parentNode.parentNode.classList && b.parentNode.parentNode.classList.contains('gone')); }).length, all.length];
   }
   function whyText(st){
     var n = D.q[st.need] ? D.q[st.need].n : '';
@@ -109,7 +109,7 @@
     var box = $('#progreso');
     if (box) box.innerHTML = '<span>Mazmorras <b>' + dg[0] + '/' + dg[1] + '</b></span><span>Imprescindibles <b>' + im[0] + '/' + im[1] +
       '</b></span><span>Quests <b>' + ql[0] + '/' + ql[1] + '</b></span><span>Ruta <b>' + rt[0] + '/' + rt[1] + '</b></span>';
-    updateChains(); markAvail(); renderLegacy(); renderCards(); renderSide(); renderNow(); updateRoute(); questStats(); updateTotems(); updateWall();
+    syncGot(); updateChains(); markAvail(); renderLegacy(); renderCards(); renderSide(); renderNow(); updateRoute(); questStats(); updateTotems(); updateWall();
   }
   function restore(){
     // una marca antigua puesta a mano en una vista pasa a sus quests
@@ -124,6 +124,14 @@
   document.addEventListener('change', function(e){
     var b = e.target;
     if (!b.matches || !b.matches('input[type=checkbox][data-k]')) return;
+    if (b.dataset.got){
+      var gid = b.dataset.got;
+      if (b.checked){ GOT[gid] = 1; tink(); }
+      else { delete GOT[gid]; if (isQ(+gid)) setKey('q' + gid, false); }
+      store.set('llevo', JSON.stringify(GOT));
+      syncGot(); restore();
+      return;
+    }
     storeOK = true;
     if (b.checked) tink();
     var mark = function(k){ setKey(k, true); stamp(k); if (/^q\d+$/.test(k)) markBefore(+k.slice(1), {}); };
@@ -199,10 +207,18 @@
     $$('.dpage').forEach(dqReady);
   }
   // ---------------------------------------------------------------- listo para entrar: las quests que hay que llevar cogidas
-  // Lo que se sabe sin preguntar: con las quests completadas, cuáles puedes coger ya; con el diario de Questie (al importar),
-  // cuáles llevas cogidas. Esto último se guarda aparte ('llevo'): no es una quest hecha y no viaja en el código de progreso
+  // Con las quests completadas se sabe cuáles puedes coger ya. Cuáles llevas cogidas: el diario de Questie al importar, o
+  // la casilla de la quest en «Llévalas cogidas al entrar». Se guarda aparte ('llevo'): no es una quest hecha y no viaja en el código
   var GOT = {};
-  try { if (store.get('llevo-de') === 'questie') GOT = JSON.parse(store.get('llevo') || '{}') || {}; } catch(e){ GOT = {}; }   // las marcas a mano de antes no valen
+  try { GOT = JSON.parse(store.get('llevo') || '{}') || {}; } catch(e){ GOT = {}; }
+  // en «Llévalas cogidas al entrar» la casilla dice «la tengo cogida»: marcada si la llevas o si ya está hecha
+  function syncGot(){
+    $$('input[data-got]').forEach(function(b){
+      var id = +b.dataset.got, done = isQ(id);
+      b.checked = done || !!GOT[id];
+      var li = b.closest('li'); if (li){ li.classList.toggle('hecha', done); li.classList.toggle('cogida', !done && !!GOT[id]); }
+    });
+  }
   function dqReady(pg){
     var blk = $('.dq', pg); if (!blk) return;
     var rows = $$('li.dqc:not([data-opt])', blk), el = $('.dq-ready', blk);
@@ -460,7 +476,7 @@
     host = $('#dcards');
     if (host){
       host.innerHTML = '<div class="cards">' + DG.map(function(g){
-        var pg = document.getElementById('dg-' + g.g), q = countIn(pg, '.dq input[data-k]');
+        var pg = document.getElementById('dg-' + g.g), q = countIn(pg, '.dq input[data-k]');            // incluye las de llevar: cuentan hechas
         var wd = g.wings.filter(isDone).length, done = wd === g.wings.length;
         return '<a class="card' + (inRange(v, g.a, g.b) && !done ? ' at-level' : '') + (done ? ' done' : '') + '" href="#dg-' + g.g + '">' +
           '<span class="c-h"><b>' + esc(g.n) + '</b><span class="lv">' + g.a + '-' + g.b + '</span></span>' +
@@ -855,10 +871,9 @@
     });
     return logs;
   }
-  // lo que llevas según el diario: aceptada y ni entregada ni abandonada después. Cada importación lo rehace entero
+  // lo que llevas según el diario: aceptada y ni entregada ni abandonada después. Solo toca las quests que el diario conoce
   function applyJourney(last, done){
     var got = 0, off = {};
-    GOT = {};
     (done || []).forEach(function(id){ off[D.alias && D.alias[id] || id] = 1; });
     Object.keys(last).forEach(function(k){
       var id = +k; id = D.alias && D.alias[id] || id;
@@ -866,8 +881,8 @@
       else delete GOT[id];
     });
     Object.keys(off).forEach(function(id){ delete GOT[id]; });
-    store.set('llevo', JSON.stringify(GOT)); store.set('llevo-de', 'questie');
-    $$('.dpage').forEach(dqReady);
+    store.set('llevo', JSON.stringify(GOT));
+    syncGot(); $$('.dpage').forEach(dqReady);
     return got;
   }
   function markDone(ids){

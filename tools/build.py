@@ -546,7 +546,8 @@ def dungeon_quest_rows(dbzone, slugs, wings):
         rw = reward_chips(q)
         attrs = f' data-q="{i}"' + (f' data-w="{" ".join(ws)}"' if ws else '')
         if b == 'bread' and not cls: cls = ' class="bc"'
-        return (f'<li{cls} data-lv="{q.get("min") or q["level"]}-{q["level"] + 3}"{attrs}><label><input type="checkbox" data-k="q{i}"><span>'
+        box = f'data-k="q{i}" data-got="{i}" title="La tengo cogida"' if b == 'carry' else f'data-k="q{i}"'
+        return (f'<li{cls} data-lv="{q.get("min") or q["level"]}-{q["level"] + 3}"{attrs}><label><input type="checkbox" {box}><span>'
                 f'<span class="lv">{q["level"]}</span> {qa(i)}{new}{chain}{one}{wt}'
                 f'<span class="qm">{where(q, b)}{f" · {q["xp"]} XP" if q.get("xp") else ""}</span>'
                 f'{f"<span class=qr>{rw}</span>" if rw else ""}</span></label>{inner}</li>')
@@ -570,8 +571,8 @@ def dungeon_quest_rows(dbzone, slugs, wings):
     html_ = ''.join(f'<span class="dq-wn" hidden data-w="{w}">{esc(t)}</span>' for w, t in wname.items()) if multi else ''
     if bk['carry']:
         html_ += ('<h5>Llévalas cogidas al entrar</h5><p class="dq-how">Se cogen fuera y se hacen o se entregan dentro. '
-                  'Con las quests que tienes completadas, la guía sabe cuáles puedes coger ya. Si además '
-                  '<a href="#importar">importas tu archivo de Questie</a>, sabe cuáles llevas cogidas. Las opcionales no cuentan.</p>')
+                  'Aquí la casilla quiere decir <b>la tengo cogida</b>. Se marca sola al <a href="#importar">importar tu archivo de Questie</a>, '
+                  'o márcala tú; cuando la entregues, sigue marcada y cuenta como hecha. Con todas marcadas, estás listo. Las opcionales no cuentan.</p>')
         if multi:
             groups, seen = [], set()
             for w in [w[0] for w in wings]:
@@ -1577,7 +1578,7 @@ IMPORT_HTML = '''<section id="importar" class="sec">
 <textarea id="imp-unk" rows="6" readonly spellcheck="false" aria-label="Quests completadas que la guía no usa"></textarea>
 <div class="sync-btns"><button id="imp-unk-copy" type="button">Copiar la lista</button></div></details>
 </div>
-<p class="src">Las quests completadas solo se añaden, nunca se quitan. Las que llevas cogidas se toman del diario en cada importación; el diario solo conoce las que cogiste con Questie instalado. Marca las quests de las listas de cada zona y los pasos de las cadenas. Los imprescindibles y la ruta del inicio no son quests sueltas: esos se marcan a mano. Probado con el archivo de Questie de Forever. Si una versión nueva cambia el formato y no lo reconoce, el mensaje lo dirá.</p>
+<p class="src">Las quests completadas solo se añaden, nunca se quitan. Las que llevas cogidas se toman del diario en cada importación y marcan las casillas de «Llévalas cogidas al entrar» de las mazmorras; las que el diario no conoce (cogidas antes de instalar Questie) se quedan como las marcaras. Marca las quests de las listas de cada zona y los pasos de las cadenas. Los imprescindibles y la ruta del inicio no son quests sueltas: esos se marcan a mano. Probado con el archivo de Questie de Forever. Si una versión nueva cambia el formato y no lo reconoce, el mensaje lo dirá.</p>
 </section>'''
 
 NOW_HTML = '''<section id="ahora" class="sec">
