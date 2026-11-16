@@ -1324,7 +1324,7 @@ IMP_CAT = {}
 def _cat(c, keys):
     for k in keys.split(): IMP_CAT[k] = c
 _cat('cla', 'dm5 dm6 lm4 lm5 rr3 wl1 av1 ar1 tw1 tw2 tw3 tw4 pl3')
-_cat('maz', 'dm1 dm4 ds1 ds2 wf1 wf2 wf3 wf6 rr1 rr2 dw1 wl3 wl4 av2 bs2 hb1 hb3 sd2 sd3 rg2 rg3 bd1 bd2 ft1 ft2 ft3 ft4 sg1 sg2 ug1 ug4 pl4')
+_cat('maz', 'dm1 dm4 ds1 ds2 wf1 wf2 wf3 wf6 rr1 rr2 dw1 wl3 wl4 bs2 hb1 hb3 sd2 sd3 rg2 rg3 bd1 bd2 ft1 ft2 ft3 ft4 sg1 sg2 ug1 ug4 pl4')
 _cat('obj', 'wl2 rg1 ug2')
 _cat('lla', 'rg4 sg3 sg4 ug3 ug5 pl2')
 _cat('per', 'dm2 lm3 wf5 bs1 ar2 pl1')
@@ -1332,7 +1332,7 @@ _cat('per', 'dm2 lm3 wf5 bs1 ar2 pl1')
 APRO = {'dm3': 'profesión', 'lm1': 'experiencia', 'lm2': 'de paso', 'ds3': 'equipo', 'ew1': 'cadena de otra zona', 'ew2': 'cadena de otra zona',
         'wf4': 'de paso', 'rr4': 'experiencia', 'dw2': 'experiencia', 'dw3': 'experiencia', 'dw4': 'experiencia', 'wl5': 'de paso',
         'wl6': 'experiencia', 'hb2': 'de paso', 'ar3': 'experiencia', 'sd1': 'experiencia', 'rg5': 'equipo', 'bd3': 'equipo',
-        'ug6': 'consumibles', 'pl5': 'profesión'}
+        'ug6': 'consumibles', 'pl5': 'profesión', 'av2': 'recado opcional'}
 
 # explorar: el mismo punto en todas las zonas con mapa
 EXPLORE = ('<li class="man"><label><input type="checkbox" data-k="{k}"><span><span class="cat c-no">Legacy</span> <b>Exploración</b>: descubre todas las subzonas del mapa de {name}.</span></label>'
@@ -1422,16 +1422,19 @@ def imp_detail(key, deps, zone=None):
         mn = min((Q[i].get('min') or Q[i].get('level') or 99) for i in ids)
         lo, hi = min(Q[i]['level'] for i in ids), max(Q[i]['level'] for i in ids)
         when = f'Se puede coger desde nivel {mn}. ' + (f'Es de nivel {lo}' if lo == hi else f'Sus quests van de nivel {lo} a {hi}') + ': con menos nivel que ese, sus enemigos te quedan grandes.'
+        if all(i in BREAD for i in ids): when = f'Se puede coger desde nivel {mn}. Es un recado: no hay que pelear.'
         if zone and zone[1] and mn > zone[1] + 2:
             when += f' Se coge en esta zona, pero no al nivel de la zona ({zone[0]}-{zone[1]}): vuelve cuando tengas nivel {mn}.'
         def dg_ref(g):
             w = next(d[8] for d in DG if d[0] == g)
             return f'<a href="#dg-{g}">{esc(DG_NAME[g])}</a> (niveles {min(x[2] for x in w)}-{max(x[3] for x in w)})'
         # dentro de la mazmorra de verdad, o solo un paso previo que lleva a ella
-        inside = list(dict.fromkeys(DQ_OF[i] for i in ids if i in DQ_OF and (Q[i].get('type') == 'Dungeon' or DGZ.get(Q[i].get('zone')) == DQ_OF[i])))
+        inside = list(dict.fromkeys(dungeon_of(Q[i])[0] for i in ids if dungeon_of(Q[i])[0]))
         lead = [g for g in dict.fromkeys(DQ_OF[i] for i in ids if i in DQ_OF) if g not in inside]
         if inside: when += ' Se resuelve dentro de ' + ' y '.join(dg_ref(g) for g in inside) + ': llévala cogida antes de entrar.'
-        if lead: when += ' Es un paso previo a las quests de ' + ' y '.join(dg_ref(g) for g in lead) + '.'
+        if lead and all(i in BREAD for i in ids):
+            when += ' Es un recado opcional hacia las quests de ' + ' y '.join(dg_ref(g) for g in lead) + ': no hace falta para cogerlas.'
+        elif lead: when += ' Es un paso previo a las quests de ' + ' y '.join(dg_ref(g) for g in lead) + '.'
         rows.append(('Cuándo', when))
     if WHYS.get(key): rows.append(('Por qué', linkify(WHYS[key])))
     if ids:

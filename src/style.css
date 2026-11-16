@@ -752,7 +752,7 @@ ol.chain > li.skip > .cs-b .cs-t::after{content:"no hizo falta";font-size:.82rem
 .dq li.dqc.lista{border-left-color:var(--ok)}
 .dq label.got{display:inline-flex;align-items:center;gap:6px;font-size:.84rem;color:var(--muted);margin:0 0 2px 1.6em;padding:2px 8px;border:1px solid var(--rule);border-radius:999px;cursor:pointer}
 .dq li.dqc.lista label.got{color:var(--ok);border-color:var(--ok)}
-.dq details.pre{margin:2px 0 4px 1.6em}
+.dq details.pre{margin:2px 0 4px 1.6em;padding-left:10px;border-left:2px dotted var(--rule)}
 .dq details.pre > summary, .dq details.dq-more > summary{font-size:.84rem;color:var(--muted);cursor:pointer}
 .dq details.pre .ql{margin:2px 0}
 .dq details.pre.opt > summary{font-style:italic}
